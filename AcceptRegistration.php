@@ -15,3 +15,4 @@ $sql_code = "UPDATE `tbl_user` SET `isApproved` = '1' WHERE `user_ID` = ?";
         }
     $conn->close();
 ?>
+//aaaaaaaa
