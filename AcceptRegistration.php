@@ -4,7 +4,7 @@ $sid = $_REQUEST["var"];
 $reservation = array();
 include "db_connection.php";
 $conn=OpenCon();
-$sql_code = "UPDATE `tbl_user` SET `isApproved` = '1' WHERE `user_ID` = ?";
+$sql_code = "UPDATE `tbl_user` SET `asdasdasdasdasd` = '1' WHERE `user_ID` = ?";
     if($sql=$conn->prepare($sql_code)){
         $sql->bind_param("i",$s_id);
         $s_id = $sid;
