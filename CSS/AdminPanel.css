@@ -1,12 +1,9 @@
-
 /*Header*/
-
 #head-container{
   color: white;
   background-color: #000C7A;
   height: 110;
   width:100%;
-  
 }
 
 .navbar{
@@ -14,6 +11,7 @@ width:85%;
 margin:auto;
 display:flex;
 }
+
 .nav1{
 display:flex;
 width:50%
@@ -32,6 +30,7 @@ a {
   margin-top: 35px;
 }
 
+/*Header-Buttons*/
 .header-btn{
   text-decoration: none;
   background-color: #008F00;
@@ -46,10 +45,10 @@ a {
   color: white;
   background-color: #00f500;
 }
+
 .header-btn:hover{
   color: white;
 }
-
 
 #fb {
   height: 80;
@@ -62,27 +61,12 @@ a {
   width: 80;
 }
 
-
-
 #plv-logo{
   display: block; margin-left: auto; margin-right: auto; margin-bottom: 50; height: 100; width: 100; margin-top: 100;
 }
 
-
-body {
-  margin: 0;
-  padding: 0;
-  background-color: white;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
 .container { 
   padding: 0;
-  
-}
-
-.btn{
-  margin-left: 10px;
 }
 
 .hn-c{
@@ -101,7 +85,6 @@ body {
   width: 40px;
   margin-bottom: 20px;
 }
-
 
 /*DROP DOWN*/
 .dropdown {
@@ -126,6 +109,13 @@ body {
 
 /*CONTENT*/
 /*BODY*/
+body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
 /*Side Bar*/
 ul {
   list-style-type: none;
@@ -136,7 +126,6 @@ ul {
   overflow: auto;
   display: block;
 }
-
 
 .side-nav{
   float: left;
@@ -149,13 +138,9 @@ ul input {
   border-radius: 5px;
 }
 
-
 .content{
   color: black;
- 
-
 }
-
 
 .big-contents{
   margin-left: 220px;
@@ -165,6 +150,11 @@ ul input {
   padding-right: 15px;
   background-color: rgb(202, 199, 199);
   border: black solid 1px;
+}
+
+/*Buttons*/
+.btn{
+  margin-left: 10px;
 }
 
 .btns{
@@ -184,7 +174,6 @@ ul input {
   background-color: rgb(202, 199, 199);
   color: Black;
 }
-
 
 #accept{
   border-style: solid;
