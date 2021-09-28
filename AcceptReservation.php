@@ -15,3 +15,4 @@ $sql_code = "UPDATE `tbl_reservation` SET `r_approved_ID` = '1' WHERE r_ID = ?";
         }
     $conn->close();
 ?>
+//Update this shit
