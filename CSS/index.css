@@ -1,0 +1,254 @@
+
+
+/*Header*/
+
+#head-container{
+  color: white;
+  background-color: #000C7A;
+  height: 110;
+  width:100%;
+  
+}
+
+.navbar{
+width:85%;
+margin:auto;
+display:flex;
+}
+.nav1{
+display:flex;
+width:50%
+}
+
+.nav2{
+  display:flex;
+  width:50%;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+a {
+  text-decoration: underline; 
+  text-align: center;
+  margin-top: 35px;
+}
+
+.header-btn{
+  text-decoration: none;
+  background-color: #008F00;
+  color: white;
+  text-shadow: black 1px 1px;
+  padding: 10px;
+  font-size: 15px;
+  margin-bottom: 30px;
+  margin-left: 10px;
+}
+.header-btn:active{
+  color: white;
+  background-color: #00f500;
+}
+.header-btn:hover{
+  color: white;
+}
+
+
+#fb {
+  height: 80;
+  width: 80;
+  margin-top: 15px;
+}
+
+#user-icon{
+  height: 80;
+  width: 80;
+}
+
+
+
+#plv-logo{
+  display: block; margin-left: auto; margin-right: auto; margin-bottom: 50; height: 100; width: 100; margin-top: 100;
+}
+
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.container { 
+  padding: 0;
+}
+
+#user{
+  height: 40;
+  width: 40;
+}
+
+#notif{
+  margin-top: 35px;
+  margin-left: 20px;
+  height: 40px;
+  width: 40px;
+  margin-bottom: 20px;
+}
+
+
+/*DROP DOWN*/
+.dropdown {
+ position: relative;
+ display:inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  color: black;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/*CONTENT*/
+/*BODY*/
+.content{
+  color: black;
+ 
+
+}
+
+.big-contents{
+  margin-left: 150px;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding-bottom: 15px;
+  padding-right: 15px;
+  background-color: rgb(202, 199, 199);
+  border: black solid 1px;
+}
+
+.btns{
+  display: block;
+  padding: 20px;
+  text-decoration: none;
+  border: 1px solid black;
+  margin: 0;
+  background-color: #555;
+  cursor:pointer; 
+  color: white;
+}
+
+.active, .btns:hover:not(.active) {
+ background-color: green;
+  color: white;
+}
+
+.image{
+  align-items: center;
+  border: black solid 1px;
+  margin-top: 10px;
+  max-width: 80vw;
+  max-height: 20vh;
+  width: auto;
+  height: auto;
+}
+
+/*Dropdowns*/
+/*Carousel*/
+#carousel{
+    max-width:90%;
+    position:relative;
+    margin:auto;
+    padding:1vh 0 5vh 0 ;
+}
+
+
+ul{list-style-type:none;}
+
+#calendar{
+    border:solid;
+    padding: 3vh;
+    border-radius: 10px;
+    margin: 2vw 5vw;
+}
+
+/* Month header */
+.month {
+    width: 100%;
+    text-align: center;
+    padding: 1vh 0px;
+}
+
+/* Month list */
+.month ul{
+    margin:0;
+    padding:0;
+}
+
+.month ul li{
+    color:black;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+/* Next/Prev buttons */
+.month .prev {
+    float:left;
+    padding-top: 10px;
+}
+
+.month .next{
+    float: right;
+    padding-top: 10px;
+}
+
+/* Weekdays */
+.weekdays{
+    margin:0;
+    padding:1vh;
+    background-color: rgb(80, 74, 71);
+    
+}
+
+.weekdays li{
+    display: inline-block;
+    width:13.6%;
+    text-align: center;
+    color: white;
+}
+
+/* Days */
+.days{
+    padding: 10px 0;
+    margin:0;
+    background-color: rgb(32, 30, 30)
+}
+
+.days li{
+    list-style-type:none;
+    display: inline-block;
+    width: 13.6%;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 1.5em;
+    color: white;
+}
+
+/* Highlighted day */
+.days li .active{
+    padding: 5px;
+    color: white;
+}
+
+.resBtn{
+display:grid;
+justify-items:end;
+}

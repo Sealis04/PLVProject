@@ -1,0 +1,152 @@
+
+/*Header*/
+
+#head-container{
+  color: white;
+  background-color: #000C7A;
+  height: 110;
+  width:100%;
+  
+}
+
+.navbar{
+width:85%;
+margin:auto;
+display:flex;
+}
+.nav1{
+display:flex;
+width:50%
+}
+
+.nav2{
+  display:flex;
+  width:50%;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+a {
+  text-decoration: underline; 
+  text-align: center;
+  margin-top: 35px;
+}
+
+.header-btn{
+  text-decoration: none;
+  background-color: #008F00;
+  color: white;
+  text-shadow: black 1px 1px;
+  padding: 10px;
+  font-size: 15px;
+  margin-bottom: 30px;
+}
+.header-btn:active{
+  color: white;
+  background-color: #00f500;
+}
+.header-btn:hover{
+  color: white;
+}
+
+#fb {
+  height: 80;
+  width: 80;
+  margin-top: 15px;
+}
+
+#user-icon{
+  height: 80;
+  width: 80;
+}
+
+
+
+#plv-logo{
+    display: block; margin-left: auto; margin-right: auto; margin-bottom: 50; height: 100; width: 100; margin-top: 100;
+}
+
+
+
+/*body*/
+body {
+    margin: 0;
+    padding: 0;
+
+    /* !!! */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: white;
+}
+
+.container { 
+    padding: 0;
+}
+
+.btn{
+    margin-left: 10px;
+}
+
+
+/* form background*/
+.loginForm{
+    margin-top: 5%;
+    width: 30%;
+    border-radius: 20px;
+    border: 1px black solid;
+}
+
+form {
+    margin-top: 20%;
+}
+
+
+
+/* text boxes*/
+#email{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #000000;
+    -webkit-box-shadow: none;
+    box-shadow: none; 
+    border-radius: 0;
+}
+
+#password{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #000000;
+    -webkit-box-shadow: none;
+    box-shadow: none; 
+    border-radius: 0;
+
+}
+
+#signup{
+    display: block;
+
+}
+
+#login2{
+    /* add */
+    color: white;
+    background-color: #008F00;
+    text-shadow: black 1px 1px;
+    font-size: 15px;
+
+    width: 100%;
+    border: none;
+    border-radius: 3px;
+    padding: 10px;
+    text-align: center;
+}
+
+#login2:active {
+    /* change */
+    background: #00f500;
+
+  outline: none;
+  -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+     -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+          box-shadow: inset 0px 0px 5px #c1c1c1;
+}
+  
