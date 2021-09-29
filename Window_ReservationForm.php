@@ -32,8 +32,8 @@
             $targetDirectory ="C:/xampp/htdocs/practice/assets/".$fileName;
             $userID = $_SESSION["userID"];
             $roomID = $_POST['room'];
-            $equipID = $_POST['equipment'];
-            $qty = $_POST['qty'];
+            // $equipID = $_POST['equipment'];
+            // $qty = $_POST['qty'];
             $today = date("Y-m-d h:i:s");
             $start = $_POST["startTime"];
             $end = $_POST["endTime"];
@@ -43,10 +43,12 @@
             $today_dt = $today_dt->format('Y-m-d h:i:s');
             $start_dt = $start_dt->format('Y-m-d h:i:s');
             $end_dt = $end_dt -> format('Y-m-d h:i:s');
-            $toStore = array_map(null,$equipID,$qty);
-            $keys = array("ID","qty");
-            $toStore = array_map(function ($e) use ($keys) {return array_combine($keys,$e);},$toStore);
-            
+            // $toStore = array_map(null,$equipID,$qty);
+            // $keys = array("ID","qty");
+            // $toStore = array_map(function ($e) use ($keys) {return array_combine($keys,$e);},$toStore);
+        
+//NOTE, REMEMBER TO ADD IF EQUIPID==0 IN CONDITIONS LATER
+
         //check if file is uploaded
         if($_FILES["letterUpload"]["error"]>0){
             $uploadErr = "Please upload letter of approval/s.";
@@ -60,15 +62,15 @@
                                     if($sql->execute()){
                                             $sql_code_2 = "INSERT INTO tbl_equipment_reserved(r_ID,equipment_ID,Qty) VALUES (?,?,?)";
                                             $string = $sql->insert_id;
-                                            foreach($toStore as $values){
-                                                $eID = $values['ID'];
-                                                $qtyVal = $values['qty'];
-                                                if($eID == 0){
-                                                    $eID = NULL;
-                                                }
-                                                if($qtyVal == ""){
-                                                    $qtyVal = 0;
-                                                }
+                                            // foreach($toStore as $values){
+                                            //     $eID = $values['ID'];
+                                            //     $qtyVal = $values['qty'];
+                                            //     if($eID == 0){
+                                            //         $eID = NULL;
+                                            //     }
+                                            //     if($qtyVal == ""){
+                                            //         $qtyVal = 0;
+                                            //     }
                                                 if($sql2 = $conn->prepare($sql_code_2)){
                                                     $sql2->bind_param("sii",$string,$eID,$qtyVal);
                                                     if($sql2->execute()){
@@ -76,15 +78,15 @@
                                                         alert("Reservation success\nStatus: Pending")
                                                         window.location.href = "Window_LOGIN.php"
                                                         </script>';
-                                                        break;
+                                                        //break;
                                                     }
                                                     }else{
                                                         echo '<script>alert("'.$conn->error.'")</script>';
-                                                        break;
+                                                       // break;
                                                     }
-                                                    break;
+                                                   // break;
                                                     $sql2->close();
-                                            }
+                                            //}
                                     }else{
                                         echo '<script>alert("'.$conn->error.'")</script>';
                                     }           
