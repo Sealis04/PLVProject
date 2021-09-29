@@ -1,5 +1,4 @@
 <script >
-            resetWindow();
             renderRestofForm();
             listRoom();
             eventTrigger();
@@ -21,7 +20,7 @@
                                 noOption.value=0;
                                 document.getElementById(equipmentID).appendChild(noOption);
                                 myObj.forEach(function(element,index){
-                                    renderListEquip(equipmentID,noOption,element,index);
+                                    renderListEquip(equipmentID,element,index);
                                 });
                             }
                         }
@@ -33,13 +32,17 @@
                         xmlhttp.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status==200){
                                 var myObj = JSON.parse(this.responseText);
+                                var noOption = document.createElement('option');
+                                noOption.appendChild(document.createTextNode('Please choose a room'));
+                                noOption.value = 0;
+                                document.getElementById("room").appendChild(noOption);
                                 myObj.forEach(renderListRoom);
                             }
                         }
                         xmlhttp.open("GET", "Request_RoomList.php", true);
                         xmlhttp.send();
             }
-            function renderListEquip(equipmentID,noOption,element, index){                
+            function renderListEquip(equipmentID,element, index){                
                 var option = document.createElement('option');
                 option.appendChild(document.createTextNode(element.equipName));
                 option.value = element.equipID;
@@ -290,7 +293,9 @@
             //         end = new Date(value).toISOString().split('T')[0]+' '+new Date(value).toTimeString().split(' ')[0];
             //     middleMan();
             // }
-            
+        
+        //Description:
+        //Changes contents of Room And Equipment list based on date (Due to availability)
             function eventTrigger(){
                 var roomID = document.getElementById('room');
                 var header = document.getElementById('subHeadDiv');
@@ -298,8 +303,6 @@
                 var select = header.getElementsByTagName('select');
                 var input = header.getElementsByTagName('input');
                 var denied =[];
-                var deniedEquip=[];
-                var list = document.getElementById('equipment0');
                     callActiveReservations(function (result){
                     document.getElementById('wrapper').addEventListener('change',function(event){
                     var elem = event.target; 
@@ -316,33 +319,21 @@
                     end = new Date(endTime).toISOString().split('T')[0]+' '+new Date(endTime).toTimeString().split(' ')[0];
                     }
                     if(elem.id == "startTime" || elem.id == "endTime"){
-                        document.getElementById("reservationForm").reset();
+                       // document.getElementById("reservationForm").reset();
                         denied = [];
-                        deniedEquip=[];  
-                        disable(elem,roomID,result,denied,select,input,second,deniedEquip,list);      
+
+                        disable(elem,roomID,result,denied,select,input,second);      
                     }
                     if(elem.parentElement.parentElement.parentElement.id == "equipment_list"){
                         
-                        disableAddBtn(elem,list);
-                        //Might need to remove thi
-                        disable(elem,roomID,result,denied,select,input,second,deniedEquip,list);      
+                        // disableAddBtn(elem,list);
+                        //Might need to remove this
+                        disable(elem,roomID,result,denied,select,input,second);      
                     }
                 })
             });
             }
-
-            function disableAddBtn(elem,list){
-                var lastValue = list.options[list.options.length - 2].value;
-                    if(elem.value == 0){
-                        btn.disabled=true;
-                    }else if(counter >= lastValue){
-                        btn.disabled=true;
-                    }else{
-                        btn.disabled = false;
-                    }
-            }
-
-            function disable(elem,roomID,result,denied,select,input,second,deniedEquip,list){
+            function disable(elem,roomID,result,denied,select,input,second){
                 //put loadDefaultQty here if no conflict schedules;
                 if(start >= end){
                         document.getElementById('endErr').textContent="End must be later than start time."
@@ -358,20 +349,20 @@
                                        roomID.remove(a);
                                     }
                                 }
-                                changeMaxQty(select,input,result,i,second,deniedEquip,list);
+                               // changeMaxQty(select,input,result,i,second,deniedEquip,list);
                             }else{
-                                loadMaxQty(second,select,input)
+                               // loadMaxQty(second,select,input)
                                 if(elem.parentElement.parentElement.parentElement.id != "equipment_list"){
                                 if(denied.length == 0){
                                 roomID.options.length=0;
                                 listRoom();
                                 }
-                                if(deniedEquip.length==0){
-                                    for(var z = 0; z<select.length;z++){
-                                        select[z].options.length=1;
-                                        listEquip(select[z].id);
-                                    }
-                                }
+                                // if(deniedEquip.length==0){
+                                //     for(var z = 0; z<select.length;z++){
+                                //         select[z].options.length=1;
+                                //         listEquip(select[z].id);
+                                //     }
+                                // }
                                 break;
                                 }
                             }
@@ -380,88 +371,18 @@
             }
 
             //adjusted max qty based on conflicting schedules
-        function changeMaxQty(select,input,result2,i,second,deniedEquip,list){
-            // for(var a =0; a<list.length;a++){
-            //     if(list.options[a].value == result2[i]['equipID']){
-            //         deniedEquip.push(result2[i]['equipID']);
-            //         makingListEquip(result2[i]['equipID']);
-            //     }
-            // }
-     
-            // var list = document.getElementById('equipment0');
-            // for(var a=0; a<second.length;a++){
-            //     for(var i=0; i<list.length;i++){
-                    
-            //         console.log(list.options[i].value);
-            //     }
-            // }
-                reservedQty = [];
-                    for(var b =0; b<list.length - 1;b++){ 
-                        callEquipmentQty(list.options[b].value,i, function(result,i){
-                                if(result2[i]['equipID'] == result.equipID){
-                                if(reservedQty[result.equipID]){
-                                    reservedQty[result.equipID] += result2[i]['qty'];
-                                }else{
-                                    reservedQty[result.equipID] = result2[i]['qty'];
-                                }
-                                if(reservedQty[result.equipID] >= result.equipQty){
-                                    deniedEquip.push(result2[i]['equipID']);
-                                    makingListEquip(result2[i]['equipID']);
-                                }else{
-                                availableQty =  result.equipQty - reservedQty[result.equipID];  
-                                for(var b=0;b<second.length;b++){
-                                    console.log(select[b].value);
-                                    console.log(result2[i]['equipID'])
-                                    if(select[b].id){
-                                        if(select[b].value == result2[i]['equipID']){
-                                            input[b].setAttribute('max',availableQty);
-                                           
-                                        }
-                                    }
-                                }
-                            }
-                            }
-                        })
-                    }   
-                   
-            }
+       
                 
 
                
             //default max qty for no conflicting schedules
-            function loadMaxQty(second,select,input){
-                        for(var i=0;i<second.length;i++){
-                            if(select[i].value != 0 ){
-                                if(select[i].id){
-                                callEquipmentQty(select[i].value,i, function (result,i){
-                                    input[i].setAttribute('max',result.equipQty);
-                                    input[i].setAttribute('value',1);
-                                })
-                            }
-                            }else if(select[i].value==0){
-                                if(second.length>1){
-                                    if(second[i].id != "equipment0"){
-                                        if(select[i].value == 0){
-                                            second[i].remove();
-                                            counter--;
-                                        }
-                                    }
-                                }else{
-                                input[i].removeAttribute('max');
-                                input[i].setAttribute('value',"");
-                                }
-                                break;
-                            }
-                        }
-                        
-            }
+            
 
             function callActiveReservations(callback){
                 var  xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function(){
                     if(this.readyState == 4 && this.status==200){
                       if(callback){
-                        
                           callback(JSON.parse(this.responseText));
                       }
                     }
@@ -470,54 +391,145 @@
                 xmlhttp.send();
             }     
 
-            function callEquipmentQty(x,i,callback){
-                if(x!=0){
-                    var  xmlhttp = new XMLHttpRequest();
-                        xmlhttp.onreadystatechange = function(){
-                            if(this.readyState == 4 && this.status==200){
-                                var myObj = JSON.parse(this.responseText);
-                               if(callback){
-                                   callback(JSON.parse(this.responseText),i);
-                               }
-                            }  
-                        }
-                        xmlhttp.open("GET", "Request_QtyOfSpecifiedEquipment.php?var=" + x, true);
-                        xmlhttp.send();  
-                }
-                }
+           
 
 
-            function resetWindow(){
-                if(document.getElementById("subHeadDiv")){
-                    document.getElementById("subHeadDiv").remove();
-                }
-                var subHeadDiv = document.createElement('div');
-                var subDiv = document.createElement('div');
-                var select = document.createElement('select');
-                var input = document.createElement('input');
-                var button = document.createElement('button');
-                input.type= "number";
-                input.min = "1";
-                input.name="qty[]";
-                input.id = "input";
-                button.onclick= function(){
-                    addFunction();
-                };
-                button.id = "addBtn";
-                button.textContent="Add";
-                subHeadDiv.id = "subHeadDiv";
-                subDiv.id = "equipment_list0";
-                select.name = "equipment[]";
-                select.id = "equipment0";
-                select.className ="selectEquipment"
-                subDiv.appendChild(select);
-                subDiv.appendChild(input);
-                subDiv.appendChild(button);
-                document.getElementById("equipment_list").appendChild(subHeadDiv);
-                subHeadDiv.appendChild(subDiv);
-                listEquip('equipment0');
-                
-            }
+
+
+//CODES ABOUT LISTING EQUIIPMENT
+
+// function resetWindow(){
+//                 if(document.getElementById("subHeadDiv")){
+//                     document.getElementById("subHeadDiv").remove();
+//                 }
+//                 var subHeadDiv = document.createElement('div');
+//                 var subDiv = document.createElement('div');
+//                 var select = document.createElement('select');
+//                 var input = document.createElement('input');
+//                 var button = document.createElement('button');
+//                 input.type= "number";
+//                 input.min = "1";
+//                 input.name="qty[]";
+//                 input.id = "input";
+//                 button.onclick= function(){
+//                     addFunction();
+//                 };
+//                 button.id = "addBtn";
+//                 button.textContent="Add";
+//                 subHeadDiv.id = "subHeadDiv";
+//                 subDiv.id = "equipment_list0";
+//                 select.name = "equipment[]";
+//                 select.id = "equipment0";
+//                 select.className ="selectEquipment"
+//                 subDiv.appendChild(select);
+//                 subDiv.appendChild(input);
+//                 subDiv.appendChild(button);
+//                 document.getElementById("equipment_list").appendChild(subHeadDiv);
+//                 subHeadDiv.appendChild(subDiv);
+//                 listEquip('equipment0');
+//             }
+
+// function callEquipmentQty(x,i,callback){
+//                 if(x!=0){
+//                     var  xmlhttp = new XMLHttpRequest();
+//                         xmlhttp.onreadystatechange = function(){
+//                             if(this.readyState == 4 && this.status==200){
+//                                 var myObj = JSON.parse(this.responseText);
+//                                if(callback){
+//                                    callback(JSON.parse(this.responseText),i);
+//                                }
+//                             }  
+//                         }
+//                         xmlhttp.open("GET", "Request_QtyOfSpecifiedEquipment.php?var=" + x, true);
+//                         xmlhttp.send();  
+//                 }
+//                 }
+
+// function loadMaxQty(second,select,input){
+//                         for(var i=0;i<second.length;i++){
+//                             if(select[i].value != 0 ){
+//                                 if(select[i].id){
+//                                 callEquipmentQty(select[i].value,i, function (result,i){
+//                                     input[i].setAttribute('max',result.equipQty);
+//                                     input[i].setAttribute('value',1);
+//                                 })
+//                             }
+//                             }else if(select[i].value==0){
+//                                 if(second.length>1){
+//                                     if(second[i].id != "equipment0"){
+//                                         if(select[i].value == 0){
+//                                             second[i].remove();
+//                                             counter--;
+//                                         }
+//                                     }
+//                                 }else{
+//                                 input[i].removeAttribute('max');
+//                                 input[i].setAttribute('value',"");
+//                                 }
+//                                 break;
+//                             }
+//                         }
+                        
+//             }
+
+// function changeMaxQty(select,input,result2,i,second,deniedEquip,list){
+//             // for(var a =0; a<list.length;a++){
+//             //     if(list.options[a].value == result2[i]['equipID']){
+//             //         deniedEquip.push(result2[i]['equipID']);
+//             //         makingListEquip(result2[i]['equipID']);
+//             //     }
+//             // }
+     
+//             // var list = document.getElementById('equipment0');
+//             // for(var a=0; a<second.length;a++){
+//             //     for(var i=0; i<list.length;i++){
+                    
+//             //         console.log(list.options[i].value);
+//             //     }
+//             // }
+//                 reservedQty = [];
+//                     for(var b =0; b<list.length - 1;b++){ 
+//                         callEquipmentQty(list.options[b].value,i, function(result,i){
+//                                 if(result2[i]['equipID'] == result.equipID){
+//                                 if(reservedQty[result.equipID]){
+//                                     reservedQty[result.equipID] += result2[i]['qty'];
+//                                 }else{
+//                                     reservedQty[result.equipID] = result2[i]['qty'];
+//                                 }
+//                                 if(reservedQty[result.equipID] >= result.equipQty){
+//                                     deniedEquip.push(result2[i]['equipID']);
+//                                     makingListEquip(result2[i]['equipID']);
+//                                 }else{
+//                                 availableQty =  result.equipQty - reservedQty[result.equipID];  
+//                                 for(var b=0;b<second.length;b++){
+//                                     console.log(select[b].value);
+//                                     console.log(result2[i]['equipID'])
+//                                     if(select[b].id){
+//                                         if(select[b].value == result2[i]['equipID']){
+//                                             input[b].setAttribute('max',availableQty);
+                                           
+//                                         }
+//                                     }
+//                                 }
+//                             }
+//                             }
+//                         })
+//                     }   
+                   
+//             }
+
+// function disableAddBtn(elem,list){
+//                 var lastValue = list.options[list.options.length - 2].value;
+//                     if(elem.value == 0){
+//                         btn.disabled=true;
+//                     }else if(counter >= lastValue){
+//                         btn.disabled=true;
+//                     }else{
+//                         btn.disabled = false;
+//                     }
+//             }
+
+
 
 //Some QOL of change notes:
 //when changing dropdown selected, max qty doesn't change, fix it
