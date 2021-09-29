@@ -1,32 +1,17 @@
 <script >
+            generateEquipmentList();
             renderRestofForm();
             listRoom();
             eventTrigger();
-            var btn = document.getElementById('addBtn'); 
-            btn.disabled=true;
+            // var btn = document.getElementById('addBtn'); 
+            // btn.disabled=true;
             var counter = 0;
             var start;
             var end; 
             var reservedQty = 0;
             var availableQty = 0;
-
-            function listEquip(equipmentID){
-                var  xmlhttp = new XMLHttpRequest();
-                        xmlhttp.onreadystatechange = function(){
-                            if(this.readyState == 4 && this.status==200){
-                                var myObj = JSON.parse(this.responseText);
-                                var noOption = document.createElement('option');
-                                noOption.appendChild(document.createTextNode('None'));
-                                noOption.value=0;
-                                document.getElementById(equipmentID).appendChild(noOption);
-                                myObj.forEach(function(element,index){
-                                    renderListEquip(equipmentID,element,index);
-                                });
-                            }
-                        }
-                        xmlhttp.open("GET", "Request_EquipmentList.php", true);
-                        xmlhttp.send();
-            }
+            var exists;
+            var equipArray;
             function listRoom(){
                 var  xmlhttp = new XMLHttpRequest();
                         xmlhttp.onreadystatechange = function(){
@@ -42,15 +27,7 @@
                         xmlhttp.open("GET", "Request_RoomList.php", true);
                         xmlhttp.send();
             }
-            function renderListEquip(equipmentID,element, index){                
-                var option = document.createElement('option');
-                option.appendChild(document.createTextNode(element.equipName));
-                option.value = element.equipID;
-               // document.getElementById(equipmentID).appendChild(noOption);
-                document.getElementById(equipmentID).appendChild(option);
-                //document.getElementById('equipment0').onchange=function(){getValue(this)};
-            }
-
+      
             
 
             function renderListRoom(element, index){                
@@ -142,62 +119,10 @@
                 makingListEquip(select);
                 // defaultValue();
                 //disabled on change
-                // const selectOption = document.querySelectorAll('.selectEquipment');
-                // selectOption.forEach(function(){
-                //     let values = Array.from(selectOption).map(select=>select.value);
-                //                         for (let select of selectOption){
-                //                             select.querySelectorAll('option').forEach((option)=>{
-                //                                 let value = option.value;
-                //                                 if(value != 0&& value !== select.value && values.includes(value)){                    
-                //                                     option.disabled=true;
-                //                                 }else{
-                //                                     option.disabled=false;
-                //                                 }
-                //                             });
-                //                         }
-                // })
-                // selectOption.forEach((elem)=>{
-                //     elem.addEventListener('change',(event)=>{
-                //         let values = Array.from(selectOption).map(select=>select.value);
-                //                         for (let select of selectOption){
-                //                             select.querySelectorAll('option').forEach((option)=>{
-                //                                 let value = option.value;
-                //                                 if(value != 0 && value !== select.value && values.includes(value)){                    
-                //                                     option.disabled=true;
-                //                                 }else{
-                //                                     option.disabled=false;
-                //                                 }
-                //                             });
-                //                         }
-                //     })
-                // })
+                
             }
-            function makingListEquip(select){
-                var list = document.getElementById('equipment0');
-                if(typeof select == "object"){
-                    for (var i=0; i<list.length; i++){
-                    var options = document.createElement('option');
-                    options.value = list.options[i].value;
-                    options.appendChild(document.createTextNode(list.options[i].text));
-                    select.appendChild(options);
-                }
-                }else if(typeof select == "number"){
-                    var header = document.getElementById('equipment_list');
-                    var second = header.getElementsByTagName('div');
-                    var select2 = header.getElementsByTagName('select');
-                    for(var i=0;i<select2.length;i++){
-                        select2[i].remove(select);
-                        if(select2[i].value == 0){
-                            if(select2[i].id == "equipment0"){
-                            }else{
-                                second[i].remove();
-                                counter--;
-                            }
-                        }
-                    }
-                }
-  
-            }
+            
+            
 
         //     function defaultValue(){
         //         var header = document.getElementById('equipment_list');
@@ -299,9 +224,9 @@
             function eventTrigger(){
                 var roomID = document.getElementById('room');
                 var header = document.getElementById('subHeadDiv');
-                var second = header.getElementsByTagName('div');
-                var select = header.getElementsByTagName('select');
-                var input = header.getElementsByTagName('input');
+                //var second = header.getElementsByTagName('div');
+                //var select = header.getElementsByTagName('select');
+               // var input = header.getElementsByTagName('input');
                 var denied =[];
                     callActiveReservations(function (result){
                     document.getElementById('wrapper').addEventListener('change',function(event){
@@ -322,18 +247,18 @@
                        // document.getElementById("reservationForm").reset();
                         denied = [];
 
-                        disable(elem,roomID,result,denied,select,input,second);      
+                        disable(elem,roomID,result,denied);      
                     }
                     if(elem.parentElement.parentElement.parentElement.id == "equipment_list"){
                         
                         // disableAddBtn(elem,list);
                         //Might need to remove this
-                        disable(elem,roomID,result,denied,select,input,second);      
+                        disable(elem,roomID,result,denied);      
                     }
                 })
             });
             }
-            function disable(elem,roomID,result,denied,select,input,second){
+            function disable(elem,roomID,result,denied){
                 //put loadDefaultQty here if no conflict schedules;
                 if(start >= end){
                         document.getElementById('endErr').textContent="End must be later than start time."
@@ -390,11 +315,153 @@
                 xmlhttp.open("GET", "Request_LatestReservations.php", true);
                 xmlhttp.send();
             }     
+            //Checker if User wants to add equip or not
+           function generateEquipmentList(){
+            var mainDiv = document.getElementById("equipmentList");
+            const cb = document.getElementById('equipmentCB');
+            if(cb.checked){
+                var counter= 0;
+                generateTB();
+                
+            }else{
+                removeTB();
+            }
+           }
 
+           function generateTB(){
+            var mainDiv = document.getElementById("equipmentList");
+            var div = document.createElement('div');       
+               var select  = document.createElement('select');
+               var buttonRemove = document.createElement('input');
+               var input = document.createElement('input');
+               var space = document.createElement('br');
+               //div properties
+               div.className = "removableDiv";
+               //select properties
+               select.id = "equipList";
+               select.className = "equipListCN";
+               //input properties
+               input.type = 'number';
+               input.min = '1';
+                //buttonRemove properties;
+                buttonRemove.type="button";
+                buttonRemove.value = "X";
+                mainDiv.appendChild(div);
+                div.appendChild(select);
+                div.appendChild(input);
+                div.appendChild(buttonRemove);
+                div.appendChild(space);
+                generateButton(mainDiv);
+                listEquip(select);
+                disableOnChange();
+            }
+
+           //create an order where if left blank, is ignored by the system. And add button is disabled IF first value is empty;
+           function generateButton(mainDiv){  
+               if(exists == true){
+                document.getElementById("buttonAdd").remove();
+      
+                var buttonAdd = document.createElement('input');
+                buttonAdd.id = "buttonAdd";
+               buttonAdd.type='button';
+               buttonAdd.value="Add more items";
+               buttonAdd.addEventListener("click",generateTB);
+               mainDiv.appendChild(buttonAdd);
+              
+               }else{
+                var buttonAdd = document.createElement('input');
+               buttonAdd.id = "buttonAdd";
+               buttonAdd.type='button';
+               buttonAdd.value="Add more items";
+               buttonAdd.addEventListener("click",generateTB);
+               mainDiv.appendChild(buttonAdd);
+               exists = true;
+               console.log(exists);
+               }
+               
+           }
            
+           function removeTB(){
+            var divsToRemove = document.querySelectorAll('.removableDiv');
+            var buttonAdd = document.getElementById("buttonAdd");
+            if(divsToRemove.length >0){
+                for(var i = divsToRemove.length-1; i>=0;i--){
+                divsToRemove[i].remove();
+            }
+            buttonAdd.remove();
+            exists = false;
+            }
+           }
 
+            function listEquip(select){
+                var  xmlhttp = new XMLHttpRequest();
+                        xmlhttp.onreadystatechange = function(){
+                            if(this.readyState == 4 && this.status==200){
+                                var myObj = JSON.parse(this.responseText);
+                                // var blank = document.createElement('option');
+                                // blank.appendChild(document.createTextNode('Please Add Equipment'));
+                                // blank.value = 0;
+                                // select.appendChild(blank);                        
+                                myObj.forEach(function(element,index){
+                                    renderListEquip(select, element, index)});               
+                            }
+                        }
+                        xmlhttp.open("GET", "Request_EquipmentList.php", true);
+                        xmlhttp.send();
+            }
 
+            function renderListEquip(select, element, index){
+                var option = document.createElement('option');
+                option.appendChild(document.createTextNode(element.equipName));
+                option.value = element.equipID;
+                select.appendChild(option);
+                // document.getElementById(equipmentID).appendChild(option);
+            }
 
+            function disableOnChange(){
+                const selectOption = document.querySelectorAll('.equipListCN');
+                selectOption.forEach(function(){  
+                    let values = Array.from(selectOption).map(select=>select.value);
+                                        for (let select of selectOption){
+                                            select.querySelectorAll('option').forEach((option)=>{
+                                                let value = option.value;
+                                                
+                                                //console.log(select.value);
+                                                //console.log(values);    
+                                                // if(value !== select.value && values.includes(value)){
+                                                //     console.log(value);
+                                                // //    for(i =0; i<(Math.max(value)); i++){
+                                                    
+                                                // //    }
+                                                // }else{
+                                                //     option.disabled=false;
+                                                // }
+                                                if(value == select.value && values.includes(value)){
+                                                   option.enabled = true;
+                                                }else{
+                                                    option.disabled = false;
+                                                }
+                                            });
+                                        }
+                })
+                selectOption.forEach((elem)=>{
+                    elem.addEventListener('change',(event)=>{
+                        let values = Array.from(selectOption).map(select=>select.value);
+                                        for (let select of selectOption){
+                                            select.querySelectorAll('option').forEach((option)=>{
+                                                let value = option.value;
+                                                if(value !== select.value && values.includes(value)){                    
+                                                    option.disabled=true;   
+                                                    console.log(value)                
+                                                }else{
+                                                    option.disabled=false;
+                                                }
+                                            });
+                                        }
+                    })
+                })
+            }
+  
 
 //CODES ABOUT LISTING EQUIIPMENT
 
