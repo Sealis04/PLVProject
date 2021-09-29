@@ -157,9 +157,17 @@
                         <select name="room" id="room" > 
                           </select><br><br>
                         <!--dropdown list equip query-->
-                        <label for="equipment">Equipment needed:</label>
-                        <div id="equipment_list">
+                        <div id = "equipmentList">
+                        <label for= "Equipment" class="labelName"> Add Equipment? </label>
+                        <label class="switch"><input id = "equipmentCB" onClick="generateEquipmentList()" type="checkbox">
+                        <span class="slider round"></span>
+                        </label>
+                        <br>
+                        <br>
                         </div>
+                        <!-- <label for="equipment">Equipment needed:</label>
+                        <div id="equipment_list">
+                        </div> -->
                         <br>
                           <label for="Contact">Contact details:</label>
                           <input type="text" id="contact" disabled name="Contact"><br><br>
