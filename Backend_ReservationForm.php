@@ -8,19 +8,17 @@
             var counter = 0;
             var start;
             var end; 
-            var reservedQty = 0;
-            var availableQty = 0;
-            var exists;
-            var equipArray;
+            var array= [];
             function listRoom(){
                 var  xmlhttp = new XMLHttpRequest();
                         xmlhttp.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status==200){
                                 var myObj = JSON.parse(this.responseText);
-                                var noOption = document.createElement('option');
-                                noOption.appendChild(document.createTextNode('Please choose a room'));
-                                noOption.value = 0;
-                                document.getElementById("room").appendChild(noOption);
+                                // var noOption = document.createElement('option');
+                                // noOption.appendChild(document.createTextNode('Please choose a room'));
+                                // noOption.value = 0;
+                                // noOption.id = 'options';
+                                // document.getElementById("room").appendChild(noOption);
                                 myObj.forEach(renderListRoom);
                             }
                         }
@@ -38,6 +36,7 @@
                 document.getElementById('room').appendChild(option);
             }
 
+            
             
             function renderRestofForm(){
                 var x = "<?php echo $_SESSION["usercourse"];?>;"
@@ -97,30 +96,30 @@
                
             //         }
       
-            function addFunction(){
-                counter ++;
-                btn.disabled = true;
-                var select = document.createElement('select');
-                select.id = "equipment"+counter;
-                select.name="equipment[]";
-                select.className="selectEquipment"
-                var input = document.createElement('input');
-                input.name='qty[]';
-                input.type = 'number';
-                input.min = 1;
-                input.id="input";
-                var space = document.createElement('br');
-                var div = document.createElement('div');
-                div.id = "equipment_list"+ counter;
-               // document.getElementById('equipment_list').appendChild(space);
-                document.getElementById('subHeadDiv').appendChild(div);
-                div.appendChild(select);
-                div.appendChild(input);
-                makingListEquip(select);
-                // defaultValue();
-                //disabled on change
+            // function addFunction(){
+            //     counter ++;
+            //     btn.disabled = true;
+            //     var select = document.createElement('select');
+            //     select.id = "equipment"+counter;
+            //     select.name="equipment[]";
+            //     select.className="selectEquipment"
+            //     var input = document.createElement('input');
+            //     input.name='qty[]';
+            //     input.type = 'number';
+            //     input.min = 1;
+            //     input.id="input";
+            //     var space = document.createElement('br');
+            //     var div = document.createElement('div');
+            //     div.id = "equipment_list"+ counter;
+            //    // document.getElementById('equipment_list').appendChild(space);
+            //     document.getElementById('subHeadDiv').appendChild(div);
+            //     div.appendChild(select);
+            //     div.appendChild(input);
+            //     makingListEquip(select);
+            //     // defaultValue();
+            //     //disabled on change
                 
-            }
+            // }
             
             
 
@@ -221,13 +220,10 @@
         
         //Description:
         //Changes contents of Room And Equipment list based on date (Due to availability)
-            function eventTrigger(){
-                var roomID = document.getElementById('room');
-                var header = document.getElementById('subHeadDiv');
+            function eventTrigger(){            
                 //var second = header.getElementsByTagName('div');
                 //var select = header.getElementsByTagName('select');
                // var input = header.getElementsByTagName('input');
-                var denied =[];
                     callActiveReservations(function (result){
                     document.getElementById('wrapper').addEventListener('change',function(event){
                     var elem = event.target; 
@@ -244,56 +240,48 @@
                     end = new Date(endTime).toISOString().split('T')[0]+' '+new Date(endTime).toTimeString().split(' ')[0];
                     }
                     if(elem.id == "startTime" || elem.id == "endTime"){
-                       // document.getElementById("reservationForm").reset();
                         denied = [];
-
-                        disable(elem,roomID,result,denied);      
-                    }
-                    if(elem.parentElement.parentElement.parentElement.id == "equipment_list"){
-                        
-                        // disableAddBtn(elem,list);
-                        //Might need to remove this
-                        disable(elem,roomID,result,denied);      
+                        disable(result); 
+                        removeTB(true);
                     }
                 })
             });
             }
-            function disable(elem,roomID,result,denied){
-                //put loadDefaultQty here if no conflict schedules;
+            function disable(result){
+                array = [];
+                var roomID = document.getElementById('room');
+                var counting = 0;
+                 var condition = true;
+                //put loadDefaultQty here if no conflict schedules;   
                 if(start >= end){
                         document.getElementById('endErr').textContent="End must be later than start time."
                         document.getElementById('submitBtn').disabled=true;
                     }else{
                         document.getElementById('submitBtn').disabled=false;
                         document.getElementById('endErr').textContent="";
-                        for(var i = 0; i<result.length;i++){
+                        
+                        for(var i = 0; i< result.length;i++){             
                             if(!(end <= result[i]['start'] || start >= result[i]['end'])){
                                 for(var a = 0; a<roomID.length;a++){
-                                    if(roomID.options[a].value == result[i]['room']){
-                                       denied.push(a);
-                                       roomID.remove(a);
+                                    if(roomID.options[a].value == result[i]['room']){ 
+                                    roomID.remove(a);
                                     }
                                 }
-                               // changeMaxQty(select,input,result,i,second,deniedEquip,list);
-                            }else{
-                               // loadMaxQty(second,select,input)
-                                if(elem.parentElement.parentElement.parentElement.id != "equipment_list"){
-                                if(denied.length == 0){
-                                roomID.options.length=0;
-                                listRoom();
+                                array.push({equipID: result[i]['equipID'],qty:result[i]['qty']});
+                               
                                 }
-                                // if(deniedEquip.length==0){
-                                //     for(var z = 0; z<select.length;z++){
-                                //         select[z].options.length=1;
-                                //         listEquip(select[z].id);
-                                //     }
-                                // }
-                                break;
-                                }
+                               //addEquipment is my callback.
+                                condition = false;
                             }
+                            }
+                            if(condition){
+                                roomID.options.length = 0;
+                                listRoom();
+                            }
+                            
+                            
                         }
-                    }
-            }
+                    
 
             //adjusted max qty based on conflicting schedules
        
@@ -315,107 +303,195 @@
                 xmlhttp.open("GET", "Request_LatestReservations.php", true);
                 xmlhttp.send();
             }     
+
+
+
+            //Equipment related stuff
             //Checker if User wants to add equip or not
            function generateEquipmentList(){
             var mainDiv = document.getElementById("equipmentList");
             const cb = document.getElementById('equipmentCB');
             if(cb.checked){
-                var counter= 0;
                 generateTB();
-                
             }else{
                 removeTB();
             }
            }
-
            function generateTB(){
             var mainDiv = document.getElementById("equipmentList");
-            var div = document.createElement('div');       
-               var select  = document.createElement('select');
-               var buttonRemove = document.createElement('input');
-               var input = document.createElement('input');
+            var subDiv_1 = document.createElement('div');
+            subDiv_1.id = 'subDiv_1';
+             var select  = document.createElement('select');
+             var buttonAdd = document.createElement('input');
+             //buttonAdd properties
+             buttonAdd.name = 'buttonAdd';
+             buttonAdd.type = 'button';
+             buttonAdd.value = 'Add';    
+             buttonAdd.id = 'buttonAdd';   
+             buttonAdd.addEventListener('click',addEquipment);       
                var space = document.createElement('br');
-               //div properties
-               div.className = "removableDiv";
                //select properties
                select.id = "equipList";
                select.className = "equipListCN";
-               //input properties
-               input.type = 'number';
-               input.min = '1';
-                //buttonRemove properties;
-                buttonRemove.type="button";
-                buttonRemove.value = "X";
-                mainDiv.appendChild(div);
-                div.appendChild(select);
-                div.appendChild(input);
-                div.appendChild(buttonRemove);
-                div.appendChild(space);
-                generateButton(mainDiv);
-                listEquip(select);
-                disableOnChange();
+               select.addEventListener('change',checkIfSelectedIsAdded);
+                mainDiv.appendChild(subDiv_1);
+                subDiv_1.appendChild(select);
+                subDiv_1.appendChild(buttonAdd);
+                listEquip(true);
+                //disableOnChange();
             }
 
-           //create an order where if left blank, is ignored by the system. And add button is disabled IF first value is empty;
-           function generateButton(mainDiv){  
-               if(exists == true){
-                document.getElementById("buttonAdd").remove();
-      
-                var buttonAdd = document.createElement('input');
-                buttonAdd.id = "buttonAdd";
-               buttonAdd.type='button';
-               buttonAdd.value="Add more items";
-               buttonAdd.addEventListener("click",generateTB);
-               mainDiv.appendChild(buttonAdd);
-              
-               }else{
-                var buttonAdd = document.createElement('input');
-               buttonAdd.id = "buttonAdd";
-               buttonAdd.type='button';
-               buttonAdd.value="Add more items";
-               buttonAdd.addEventListener("click",generateTB);
-               mainDiv.appendChild(buttonAdd);
-               exists = true;
-               console.log(exists);
-               }
-               
-           }
+            function addEquipment(){
+                var mainDiv = document.getElementById("equipmentList");
+                var select = document.getElementById('equipList');
+                var subDiv_2 = document.createElement('div');     
+                subDiv_2.className = "removableDiv";
+                var input_2 = document.createElement('input');
+                var hiddenInput = document.createElement('input');
+                var input = document.createElement('input');
+                var buttonRemove = document.createElement('input');
+                var label = document.createElement('label');
+                // hidden Input
+                hiddenInput.value = select.options[select.selectedIndex].value;
+                hiddenInput.name = "equipment[]";
+                hiddenInput.type = 'hidden';
+                hiddenInput.className = 'hiddenEquipInput';
+                //label properties
+                input_2.value = select.options[select.selectedIndex].text;
+                input_2.className = 'equipInput'
+                input_2.readOnly = true;
+                input_2.type = 'text';
+                //input properties
+                input.type = 'number';
+                input.min = '1';
+                input.name = 'qty[]';
+                //buttonRemove properties
+                buttonRemove.name = 'buttonRemove';
+                buttonRemove.type ='button';
+                buttonRemove.value = 'X';
+                buttonRemove.addEventListener('click',removeSpecificTB)
+                //label properties
+                mainDiv.appendChild(subDiv_2);
+                subDiv_2.appendChild(hiddenInput);
+                subDiv_2.appendChild(input_2);
+                subDiv_2.appendChild(input)
+                subDiv_2.appendChild(buttonRemove);
+                subDiv_2.appendChild(label);
+                listEquip(false,hiddenInput,input,label);
+                checkIfSelectedIsAdded();
+                counter++;
+            }
+        
+            function checkIfSelectedIsAdded(){
+                var subDiv = document.querySelectorAll('.removableDiv');
+                var select = document.getElementById('equipList');
+                var buttonAdd = document.getElementById('buttonAdd');
+                for(var i = subDiv.length - 1;i>=0;i--){
+                        if(subDiv[i].querySelector('.hiddenEquipInput').value == select.options[select.selectedIndex].value){
+                            buttonAdd.disabled = true;
+                            break;
+                        }else{
+                            buttonAdd.disabled = false;
+                        } 
+                }
+                if(select.options.length == counter){
+                    buttonAdd.disabled=  true;
+                }
+            }
            
-           function removeTB(){
+           function removeTB(onChange){
             var divsToRemove = document.querySelectorAll('.removableDiv');
-            var buttonAdd = document.getElementById("buttonAdd");
+            var subDivToRemove = document.getElementById('subDiv_1')
+            if(subDivToRemove){
+                subDivToRemove.remove();
             if(divsToRemove.length >0){
                 for(var i = divsToRemove.length-1; i>=0;i--){
                 divsToRemove[i].remove();
             }
-            buttonAdd.remove();
-            exists = false;
+            const cb = document.getElementById('equipmentCB');
+                cb.checked = false;
+            }
+            counter = 0;
+            }
+
+            if(onChange == true){
+                const cb = document.getElementById('equipmentCB');
+                cb.checked = false;
+                counter = 0;
             }
            }
+           function removeSpecificTB(){
+            var divsToRemove = document.querySelectorAll('.removableDiv');
+               if(divsToRemove.length !=1){
+                   this.parentElement.remove();
+                   counter--;
+               }else{
+                   
+                   removeTB();
+  
+               }
+               checkIfSelectedIsAdded();
+           }
 
-            function listEquip(select){
+            function listEquip(generate,equipID,input,label){
                 var  xmlhttp = new XMLHttpRequest();
                         xmlhttp.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status==200){
                                 var myObj = JSON.parse(this.responseText);
-                                // var blank = document.createElement('option');
-                                // blank.appendChild(document.createTextNode('Please Add Equipment'));
-                                // blank.value = 0;
-                                // select.appendChild(blank);                        
-                                myObj.forEach(function(element,index){
-                                    renderListEquip(select, element, index)});               
+                                var select = document.getElementById('equipList');  
+                                if(generate == true){
+                                    myObj.forEach(function(element,index){
+                                    renderListEquip(select, element, index)}); 
+                                }else{
+                                    myObj.forEach(function(element,index){
+                                        renderMaxQty(equipID,input,label,element, index)}); 
+                                }                  
                             }
                         }
                         xmlhttp.open("GET", "Request_EquipmentList.php", true);
                         xmlhttp.send();
             }
 
+             function renderMaxQty(equip,input,label,element, index){
+                    if(array.length != 0){
+                            for(i = 0; i<array.length;i++){
+                                if(element.equipID == array[i]['equipID']){
+                                    if(element.equipQty !== array[i]['qty']){    
+                                        input.max = element.equipQty - array[i]['qty'];
+                                        label.textContent = 'Max:' + input.max;
+                                    }
+                                }else{
+                                    if(equip.value == element.equipID){
+                                    input.max = element.equipQty;
+                                    label.textContent = 'Max:' + element.equipQty;
+                                    }
+                                }
+                            }
+                    }else{
+                    if(equip.value == element.equipID){
+                    input.max = element.equipQty;
+                    label.textContent = 'Max:' + element.equipQty;
+                    }
+                    }
+        }
+
+
+    
             function renderListEquip(select, element, index){
                 var option = document.createElement('option');
                 option.appendChild(document.createTextNode(element.equipName));
                 option.value = element.equipID;
                 select.appendChild(option);
                 // document.getElementById(equipmentID).appendChild(option);
+                if(array.length !=0){
+                    for(i=0; i<array.length;i++){
+                        if(element.equipID == array[i]['equipID']){
+                            if(element.equipQty == array[i]['qty']){
+                                option.remove(element.equipID);
+                            }
+                        }
+                    }
+                }
             }
 
             function disableOnChange(){
@@ -446,13 +522,13 @@
                 })
                 selectOption.forEach((elem)=>{
                     elem.addEventListener('change',(event)=>{
+                        checkIfSelectedIsAdded();
                         let values = Array.from(selectOption).map(select=>select.value);
                                         for (let select of selectOption){
                                             select.querySelectorAll('option').forEach((option)=>{
                                                 let value = option.value;
                                                 if(value !== select.value && values.includes(value)){                    
-                                                    option.disabled=true;   
-                                                    console.log(value)                
+                                                    option.disabled=true;         
                                                 }else{
                                                     option.disabled=false;
                                                 }
@@ -462,7 +538,6 @@
                 })
             }
   
-
 //CODES ABOUT LISTING EQUIIPMENT
 
 // function resetWindow(){
