@@ -495,6 +495,7 @@
                 }
             }
 
+<<<<<<< Updated upstream
             function disableOnChange(){
                 const selectOption = document.querySelectorAll('.equipListCN');
                 selectOption.forEach(function(){  
