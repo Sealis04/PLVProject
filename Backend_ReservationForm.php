@@ -225,6 +225,7 @@
                 //var select = header.getElementsByTagName('select');
                // var input = header.getElementsByTagName('input');
                     callActiveReservations(function (result){
+                    disable(result);
                     document.getElementById('wrapper').addEventListener('change',function(event){
                     var elem = event.target; 
                     if(elem.id == "startTime"){
@@ -537,6 +538,51 @@
                     })
                 })
             }
+=======
+            // function disableOnChange(){
+            //     const selectOption = document.querySelectorAll('.equipListCN');
+            //     selectOption.forEach(function(){  
+            //         let values = Array.from(selectOption).map(select=>select.value);
+            //                             for (let select of selectOption){
+            //                                 select.querySelectorAll('option').forEach((option)=>{
+            //                                     let value = option.value;
+                                                
+            //                                     //console.log(select.value);
+            //                                     //console.log(values);    
+            //                                     // if(value !== select.value && values.includes(value)){
+            //                                     //     console.log(value);
+            //                                     // //    for(i =0; i<(Math.max(value)); i++){
+                                                    
+            //                                     // //    }
+            //                                     // }else{
+            //                                     //     option.disabled=false;
+            //                                     // }
+            //                                     if(value == select.value && values.includes(value)){
+            //                                        option.enabled = true;
+            //                                     }else{
+            //                                         option.disabled = false;
+            //                                     }
+            //                                 });
+            //                             }
+            //     })
+            //     selectOption.forEach((elem)=>{
+            //         elem.addEventListener('change',(event)=>{
+            //             checkIfSelectedIsAdded();
+            //             let values = Array.from(selectOption).map(select=>select.value);
+            //                             for (let select of selectOption){
+            //                                 select.querySelectorAll('option').forEach((option)=>{
+            //                                     let value = option.value;
+            //                                     if(value !== select.value && values.includes(value)){                    
+            //                                         option.disabled=true;         
+            //                                     }else{
+            //                                         option.disabled=false;
+            //                                     }
+            //                                 });
+            //                             }
+            //         })
+            //     })
+            // }
+>>>>>>> Stashed changes
   
 //CODES ABOUT LISTING EQUIIPMENT
 
