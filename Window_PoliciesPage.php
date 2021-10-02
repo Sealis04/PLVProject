@@ -29,10 +29,10 @@
         </div>
         </nav>
         <div class="container">
-            <legend>Policies</legend>
-            <div class="image">
-                <img src="assets/announcement.png"/>
+            <div id = "carousel">
+                <img class="image" src="assets/announcement.png"/>
             </div>
+            <legend>Policies</legend>
             <div class="text-policies">
                 <h1>Header</h1>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt maxime quos molestias voluptatibus animi rerum facere ex dicta dolor tenetur. 
