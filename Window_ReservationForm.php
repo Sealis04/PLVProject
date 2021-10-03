@@ -178,7 +178,7 @@
                         <div id = "equipmentList">
                         <label for= "Equipment" class="labelName"> Add Equipment? </label>
                         <label class="switch">
-                            <input id = "equipmentCB" onClick="generateEquipmentList()" method = 'post' type="checkbox" name = 'equipAdd'>
+                            <input id = "equipmentCB" onClick="generateEquipmentList()"  type="checkbox" name = 'equipAdd'>
                         <span class="slider round"></span>
                         </label>
                         <br>

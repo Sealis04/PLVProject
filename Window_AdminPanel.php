@@ -36,12 +36,11 @@
                 <li><input type="button" id="myReservation" class="btns" value="My Reservation"></li>
                 <li><input type="button" id="userProfile" class="btns" value="User Registrations"></li>
                 <li><input type="button" id="userReservations" class="btns" value = "User Reservations"></li>
+                <li><input type = "button" id = "editContents" class="btns" value = "Edit Content"></li>
                   </ul>
             </div>
             <div class="big-contents">
                 <div class = "content" id="content">
-                    <h2></h2>
-                    <p></p>
                 </div>  
     </div>
         </div>
