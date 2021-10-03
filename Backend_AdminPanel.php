@@ -13,8 +13,8 @@
         var userProfID= userProf.id;
         var userResID=userRes.id;
         var editContID = editCont.id;
-
-        var boolVar = true;
+        var equipBtn = true;
+        var roomBtn = true;
         callUserDetails();
         for (var i = 0; i < btns.length; i++) {
             btns[i].addEventListener("click", function() {
@@ -147,8 +147,9 @@
                 }else if(document.getElementById("motherDiv")){
                     document.getElementById("motherDiv").remove();
                     console.log("di nag wowork yung user reges")
-                }else if(document.getElementById('frontPanel')){
-                    document.getElementById('frontPanel').remove();
+                }else if(document.getElementById('motherDiv')){
+                    document.getElementById("motherDiv").remove();
+                    console.log("edit not work");
                 }
              }
 
@@ -289,6 +290,9 @@
             }
 
             function editContent(){
+                var motherDiv = document.createElement('div');
+                motherDiv.id = "motherDiv";
+                document.getElementById('content').appendChild(motherDiv);
                 //equipList
                 var equipLabel = document.createElement('label');
                 equipLabel.textContent = 'Equipment list';
@@ -303,12 +307,12 @@
                 equipInput.addEventListener('click',function(){
                     loadEquip("1",equipDiv)
                 });
-                document.getElementById("content").appendChild(equipDiv);
+                motherDiv.appendChild(equipDiv);
                 equipDiv.appendChild(equipLabel);
                 equipDiv.appendChild(equipInput);
                 //roomList
                 var roomLabel = document.createElement('label');
-                roomLabel.textContent = 'Equipment list';
+                roomLabel.textContent = 'Room list';
                 var roomDiv = document.createElement('div');
                 roomDiv.id = 'roomPanel';
                 roomDiv.className = 'sidePanel';
@@ -320,7 +324,7 @@
                 roomInput.addEventListener('click',function(){
                     loadEquip("2",roomDiv);
                 });
-                document.getElementById("content").appendChild(roomDiv);
+                motherDiv.appendChild(roomDiv);
                 roomDiv.appendChild(roomLabel);
                 roomDiv.appendChild(roomInput);
 
@@ -331,17 +335,36 @@
                 div.id = "divID";
                 switch(param){
                     case "1":
-                        div.style.height = '100%';
+                        if(equipBtn){
+                        div.style.height = '50%';
                         activeDiv.appendChild(div);
+                        equipBtn = false;
+                        }else{
+                        equipBtn =true;
+                        document.getElementById('divID').remove();
+                        }
                         break;
                     case "2":
-                        div.style.height = '100%';
+                        if(roomBtn){
+                        div.style.height = '50%';
                         activeDiv.appendChild(div);
+                        roomBtn = false;
+                        }else{
+                        roomBtn =true;
+                        document.getElementById('divID').remove();
+                        }
                         break;
                     default:
                         console.log(param);
                         console.log('something seems to be wrong');
                 }
+                var x = document.querySelectorAll('.sidePanel');
+               
+                // for(a = 0; a <= x.length; a++){
+                //     if(x[a].id == activeDiv.id){
+                //     console.log(x[a].id);
+                //     }
+                // }
                 // if(boolVar){
                 // var subDiv =  document.getElementById('frontPanel');
                 // div.style.height = '100%';
