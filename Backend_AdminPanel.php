@@ -5,19 +5,25 @@
         var reservation = document.getElementById("myReservation");
         var userProf= document.getElementById("userProfile");
         var userRes=document.getElementById("userReservations");
+        var editCont = document.getElementById('editContents');
+
+
+        var profileID = profile.id;
+        var reservationID = reservation.id;
+        var userProfID= userProf.id;
+        var userResID=userRes.id;
+        var editContID = editCont.id;
+
+        var boolVar = true;
         callUserDetails();
         for (var i = 0; i < btns.length; i++) {
             btns[i].addEventListener("click", function() {
             var current = document.getElementsByClassName("active");
             current[0].className = current[0].className.replace(" active", "");
             this.className += " active";
-            var profileID = profile.id;
-            var reservationID = reservation.id;
-            var userProfID= userProf.id;
-            var userResID=userRes.id;
             if(current[0].id == profileID){
                 dropContent();
-                callUserDetails()
+                callUserDetails();
             }else if(current[0].id == reservationID){
                 dropContent();
                 callReservationDetails();
@@ -27,6 +33,9 @@
             }else if(current[0].id == userResID){
                 dropContent();
                 resList();
+            }else if(current[0].id == editContID){
+                dropContent();
+                editContent();
             }
             })
         }
@@ -138,8 +147,8 @@
                 }else if(document.getElementById("motherDiv")){
                     document.getElementById("motherDiv").remove();
                     console.log("di nag wowork yung user reges")
-                }else{
-
+                }else if(document.getElementById('frontPanel')){
+                    document.getElementById('frontPanel').remove();
                 }
              }
 
@@ -277,6 +286,72 @@
                         }
                         xmlhttp.open("GET", "Request_DeclineReservation.php?var="+ eventID, true);
                         xmlhttp.send();
+            }
+
+            function editContent(){
+                //equipList
+                var equipLabel = document.createElement('label');
+                equipLabel.textContent = 'Equipment list';
+                var equipDiv = document.createElement('div');
+                equipDiv.id = 'equipPanel';
+                equipDiv.className = 'sidePanel';
+                var equipInput = document.createElement('input');
+                equipInput.id = 'dropBtn';
+                equipInput.className = 'openBtn';
+                equipInput.type = "button";
+                equipInput.value = ">";
+                equipInput.addEventListener('click',function(){
+                    loadEquip("1",equipDiv)
+                });
+                document.getElementById("content").appendChild(equipDiv);
+                equipDiv.appendChild(equipLabel);
+                equipDiv.appendChild(equipInput);
+                //roomList
+                var roomLabel = document.createElement('label');
+                roomLabel.textContent = 'Equipment list';
+                var roomDiv = document.createElement('div');
+                roomDiv.id = 'roomPanel';
+                roomDiv.className = 'sidePanel';
+                var roomInput = document.createElement('input');
+                roomInput.id = 'dropBtn';
+                roomInput.className = 'openBtn';
+                roomInput.type = "button";
+                roomInput.value = ">";
+                roomInput.addEventListener('click',function(){
+                    loadEquip("2",roomDiv);
+                });
+                document.getElementById("content").appendChild(roomDiv);
+                roomDiv.appendChild(roomLabel);
+                roomDiv.appendChild(roomInput);
+
+            }
+
+            function loadEquip(param,activeDiv){
+                var div = document.createElement('div');
+                div.id = "divID";
+                switch(param){
+                    case "1":
+                        div.style.height = '100%';
+                        activeDiv.appendChild(div);
+                        break;
+                    case "2":
+                        div.style.height = '100%';
+                        activeDiv.appendChild(div);
+                        break;
+                    default:
+                        console.log(param);
+                        console.log('something seems to be wrong');
+                }
+                // if(boolVar){
+                // var subDiv =  document.getElementById('frontPanel');
+                // div.style.height = '100%';
+                // subDiv.appendChild(div);
+                // boolVar = false;
+                // }
+                // else if(!boolVar){
+                // boolVar = true;
+                // document.getElementById('divID').remove();
+                // }
             }
 
 </script>
