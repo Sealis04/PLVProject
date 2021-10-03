@@ -9,8 +9,8 @@ $sql_code = "UPDATE `tbl_reservation` SET `r_approved_ID` = '3' WHERE r_ID = ?";
         $sql->bind_param("i",$r_id);
         $r_id = $rid;
             if($sql->execute()){
-                echo $rid;
-                //echo "Reservation declined!";
+               
+                echo "Reservation declined!";
                 }
              $sql->close();
         }

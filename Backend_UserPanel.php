@@ -76,12 +76,29 @@
             }
 
             function reservationContent(motherDiv,element, index){
-            var div = document.createElement('div')
-            div.className ="reservation"; 
+                var div = document.createElement('div')
+            div.id = "resContent";
+            div.className ="resContent"; 
             div.innerHTML = '<h3> Event:'+element.event+'</h3>';
             div.innerHTML +='<h3>Date and Time: '+element.start+" to "+element.end+" </h3><br>";
-            div.innerHTML += '<input type="button" class="header-btn btn" value="Edit" onclick="editReservation('+element.eventID+')">';
-            div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">'
+            
+            //div.innerHTML += '<input type="button" class="header-btn btn" value="Edit" onclick="cancelReservation('+element.eventID+')">';
+            // div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">';
+            if(element.status != 1){
+                if(element.approval == 1){
+                    div.innerHTML +='<h4> Status:' + "Approved"+'<h4><br>';
+                    div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">'
+                }else if(element.approval == 2){
+                    div.innerHTML +='<h4> Status:' + "Pending"+'<h4><br>';
+                    div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">'
+                }else{
+                div.innerHTML +='<h4> Status:' + "Declined"+'<h4><br>';
+                div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel" disabled>'
+                }
+            }else{
+                div.innerHTML +='<h4> Status:' + "Cancelled"+'<h4><br>';
+                div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel" disabled>'
+            }
             document.getElementById("content").appendChild(motherDiv);
             motherDiv.appendChild(div);
             }
