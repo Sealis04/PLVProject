@@ -32,10 +32,11 @@
 
         <!--body-->
         <div class="container">
-            <div class="row">
-                <div class="image">
-                    <img src="assets/announcement.png"/>
-                </div>
+            <div id = "carousel">
+            <img class="image" src="assets/announcement.png"/>
+            </div>
+            <div class="row"> 
+                    
                 <legend>Room And Equipment</legend>
                 <div class="bodyContainer">
                     <div class="side-nav" id="list">

@@ -5,19 +5,25 @@
         var reservation = document.getElementById("myReservation");
         var userProf= document.getElementById("userProfile");
         var userRes=document.getElementById("userReservations");
+        var editCont = document.getElementById('editContents');
+
+
+        var profileID = profile.id;
+        var reservationID = reservation.id;
+        var userProfID= userProf.id;
+        var userResID=userRes.id;
+        var editContID = editCont.id;
+        var equipBtn = true;
+        var roomBtn = true;
         callUserDetails();
         for (var i = 0; i < btns.length; i++) {
             btns[i].addEventListener("click", function() {
             var current = document.getElementsByClassName("active");
             current[0].className = current[0].className.replace(" active", "");
             this.className += " active";
-            var profileID = profile.id;
-            var reservationID = reservation.id;
-            var userProfID= userProf.id;
-            var userResID=userRes.id;
             if(current[0].id == profileID){
                 dropContent();
-                callUserDetails()
+                callUserDetails();
             }else if(current[0].id == reservationID){
                 dropContent();
                 callReservationDetails();
@@ -27,6 +33,9 @@
             }else if(current[0].id == userResID){
                 dropContent();
                 resList();
+            }else if(current[0].id == editContID){
+                dropContent();
+                editContent();
             }
             })
         }
@@ -65,18 +74,19 @@
                 profile.removeAttribute("disabled");
                 userProf.removeAttribute("disabled");
                 userRes.removeAttribute("disabled");
+                editCont.removeAttribute("disabled");
                 var xmlhttp = new XMLHttpRequest();
                         xmlhttp.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status==200){
                                 var myObj = JSON.parse(this.responseText);
                                 if(myObj[0] == null){
                                 var motherDiv = document.createElement('div');
-                                motherDiv.id="motherDiv";
+                                motherDiv.id="currentUserReservation";
                                 motherDiv.innerHTML = '<h3> No reservations </h3?>';
                                 document.getElementById("content").appendChild(motherDiv);
                                 }else{
                                 var motherDiv = document.createElement('div');
-                                motherDiv.id="motherDiv";
+                                motherDiv.id="currentUserReservation";
                                 myObj.forEach(function(element,index){
                                     reservationContent(motherDiv,element,index)
                                 });
@@ -93,8 +103,24 @@
             div.className ="resContent"; 
             div.innerHTML = '<h3> Event:'+element.event+'</h3>';
             div.innerHTML +='<h3>Date and Time: '+element.start+" to "+element.end+" </h3><br>";
-            div.innerHTML += '<input type="button" class="header-btn btn" value="Edit" onclick="cancelReservation('+element.eventID+')">';
-            div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">'
+            
+            //div.innerHTML += '<input type="button" class="header-btn btn" value="Edit" onclick="cancelReservation('+element.eventID+')">';
+            // div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">';
+            if(element.status != 1){
+                if(element.approval == 1){
+                    div.innerHTML +='<h4> Status:' + "Approved"+'<h4><br>';
+                    div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">'
+                }else if(element.approval == 2){
+                    div.innerHTML +='<h4> Status:' + "Pending"+'<h4><br>';
+                    div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">'
+                }else{
+                div.innerHTML +='<h4> Status:' + "Declined"+'<h4><br>';
+                div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel" disabled>'
+                }
+            }else{
+                div.innerHTML +='<h4> Status:' + "Cancelled"+'<h4><br>';
+                div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel" disabled>'
+            }
             document.getElementById("content").appendChild(motherDiv);
             motherDiv.appendChild(div);
             }
@@ -128,18 +154,17 @@
              function dropContent(){
                 if(document.getElementById("profContent")){
                     document.getElementById("profContent").remove();
-                    console.log("di nag wowork yung 1")
-                }else if(document.getElementById("motherDiv")){
-                    document.getElementById("motherDiv").remove();
+                }else if(document.getElementById("regList")){
+                    document.getElementById("regList").remove();
                     console.log("di nag wowork yung 2")
-                }else if(document.getElementById("motherDiv")){
-                    document.getElementById("motherDiv").remove();
+                }else if(document.getElementById("resList")){
+                    document.getElementById("resList").remove();
                     console.log("di nag wowork yung user prof")
-                }else if(document.getElementById("motherDiv")){
-                    document.getElementById("motherDiv").remove();
+                }else if(document.getElementById("currentUserReservation")){
+                    document.getElementById("currentUserReservation").remove();
                     console.log("di nag wowork yung user reges")
-                }else{
-
+                }else if(document.getElementById('editList')){
+                    document.getElementById("editList").remove();
                 }
              }
 
@@ -150,6 +175,7 @@
                 document.getElementById("myProfile").removeAttribute("disabled");
                 document.getElementById("myReservation").removeAttribute("disabled");
                 document.getElementById("userReservations").removeAttribute("disabled");
+                editCont.removeAttribute("disabled");
                 var xmlhttp = new XMLHttpRequest();
                         xmlhttp.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status==200){
@@ -157,12 +183,12 @@
                                 if(myObj[0] == null){
                                 var motherDiv = document.createElement('div');
                                 motherDiv.className="userProfContent";
-                                motherDiv.id="motherDiv";
+                                motherDiv.id="regList";
                                 motherDiv.innerHTML = '<h3> No user registration</h3?>';
                                 document.getElementById("content").appendChild(motherDiv);
                                 }else{
                                 var motherDiv = document.createElement('div');
-                                motherDiv.id="motherDiv";
+                                motherDiv.id="regList";
                                 myObj.forEach(function(element,index){
                                 registrationContent(motherDiv,element,index);
                                 });
@@ -195,7 +221,7 @@
                                 window.location.href = "Window_AdminPanel.php";
                             }
                         }
-                        xmlhttp.open("GET", "Request_AcceptReservation.php?var="+ user, true);
+                        xmlhttp.open("GET", "Request_AcceptRegistration.php?var="+ user, true);
                         xmlhttp.send();
             }
 
@@ -218,6 +244,7 @@
                 document.getElementById("myProfile").removeAttribute("disabled");
                 document.getElementById("myReservation").removeAttribute("disabled");
                 document.getElementById("userProfile").removeAttribute("disabled");
+                editCont.removeAttribute("disabled");
                 var xmlhttp = new XMLHttpRequest();
                         xmlhttp.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status==200){
@@ -225,14 +252,14 @@
                                 if(myObj[0] == null){
                                 var motherDiv = document.createElement('div');
                                 motherDiv.className="userResContent";
-                                motherDiv.id="motherDiv";
+                                motherDiv.id="resList";
                                 motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                                 document.getElementById("content").appendChild(motherDiv);
                                 }else{
                                 var motherDiv = document.createElement('div');
-                                motherDiv.id="motherDiv";
+                                motherDiv.id="resList";
                                 myObj.forEach(function(element,index){
-                                reservationContent(motherDiv,element,index);
+                                userReservationContent(motherDiv,element,index);
                                 });}
                             }
                         }
@@ -241,7 +268,7 @@
 
             }
 
-            function reservationContent(motherDiv,element, index){
+            function userReservationContent(motherDiv,element, index){
             var div = document.createElement('div')
             div.id = "userResContent";
             div.className ="userResContent"; 
@@ -277,6 +304,99 @@
                         }
                         xmlhttp.open("GET", "Request_DeclineReservation.php?var="+ eventID, true);
                         xmlhttp.send();
+            }
+
+            function editContent(){
+                document.getElementById("userReservations").removeAttribute('disabled');
+                document.getElementById("myProfile").removeAttribute("disabled");
+                document.getElementById("myReservation").removeAttribute("disabled");
+                document.getElementById("userProfile").removeAttribute("disabled");
+                editCont.disabled= true;
+                var motherDiv = document.createElement('div');
+                motherDiv.id = "editList";
+                document.getElementById('content').appendChild(motherDiv);
+                //equipList
+                var equipLabel = document.createElement('label');
+                equipLabel.textContent = 'Equipment list';
+                var equipDiv = document.createElement('div');
+                equipDiv.id = 'equipPanel';
+                equipDiv.className = 'sidePanel';
+                var equipInput = document.createElement('input');
+                equipInput.id = 'dropBtn';
+                equipInput.className = 'openBtn';
+                equipInput.type = "button";
+                equipInput.value = ">";
+                equipInput.addEventListener('click',function(){
+                    loadEquip("1",equipDiv)
+                });
+                motherDiv.appendChild(equipDiv);
+                equipDiv.appendChild(equipLabel);
+                equipDiv.appendChild(equipInput);
+                //roomList
+                var roomLabel = document.createElement('label');
+                roomLabel.textContent = 'Room list';
+                var roomDiv = document.createElement('div');
+                roomDiv.id = 'roomPanel';
+                roomDiv.className = 'sidePanel';
+                var roomInput = document.createElement('input');
+                roomInput.id = 'dropBtn';
+                roomInput.className = 'openBtn';
+                roomInput.type = "button";
+                roomInput.value = ">";
+                roomInput.addEventListener('click',function(){
+                    loadEquip("2",roomDiv);
+                });
+                motherDiv.appendChild(roomDiv);
+                roomDiv.appendChild(roomLabel);
+                roomDiv.appendChild(roomInput);
+
+            }
+
+            function loadEquip(param,activeDiv){
+                var div = document.createElement('div');
+                div.id = "divID";
+                switch(param){
+                    case "1":
+                        if(equipBtn){
+                        div.style.height = '50%';
+                        activeDiv.appendChild(div);
+                        equipBtn = false;
+                        }else{
+                        equipBtn =true;
+                        document.getElementById('divID').remove();
+                        }
+                        break;
+                    case "2":
+                        if(roomBtn){
+                        div.style.height = '50%';
+                        activeDiv.appendChild(div);
+                        roomBtn = false;
+                        }else{
+                        roomBtn =true;
+                        document.getElementById('divID').remove();
+                        }
+                        break;
+                    default:
+                        console.log(param);
+                        console.log('something seems to be wrong');
+                }
+                var x = document.querySelectorAll('.sidePanel');
+               
+                // for(a = 0; a <= x.length; a++){
+                //     if(x[a].id == activeDiv.id){
+                //     console.log(x[a].id);
+                //     }
+                // }
+                // if(boolVar){
+                // var subDiv =  document.getElementById('frontPanel');
+                // div.style.height = '100%';
+                // subDiv.appendChild(div);
+                // boolVar = false;
+                // }
+                // else if(!boolVar){
+                // boolVar = true;
+                // document.getElementById('divID').remove();
+                // }
             }
 
 </script>

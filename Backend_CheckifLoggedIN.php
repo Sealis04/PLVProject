@@ -2,7 +2,7 @@
     $conn = OpenCon();
   //check if user is logged in
   if(!isset($_SESSION["userID"])){
-    echo '<a href="login.php" id=l"login" type=button class="header-btn btn">Log in</a>';
+    echo '<a href="Window_LOGIN.php" id=l"login" type=button class="header-btn btn">Log in</a>';
   }
   else{
     echo '<a  href="Window_UserPanel.php"><img id="user" src="assets/usericon.png"/></a>';
