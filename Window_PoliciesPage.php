@@ -1,3 +1,4 @@
+
 <html>
     <head>
         <title>PLVRS</title>
@@ -28,14 +29,12 @@
             </div>
         </div>
         </nav>
-
-          <div class="container">
-            <div id = "carousel">
-                <img class="image" src="assets/announcement.png"/>
-            </div>
-            <legend>Policies</legend>
+    <div class="container">
+        <legend>Policies</legend>
+        <div class="image">
+            <img src="assets/announcement.png" />
+        </div>
     </div>
-  
 
     <div class="container">
 
