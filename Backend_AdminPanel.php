@@ -349,31 +349,44 @@
                 motherDiv.appendChild(roomDiv);
                 roomDiv.appendChild(roomLabel);
                 roomDiv.appendChild(roomInput);
+                var form = document.getElementById('equipID');
+                        form.addEventListener("input", function(){
+                            console.log('change');
+                        })
 
             }
 
             function loadEquip(param,activeDiv){
+                var x = document.querySelectorAll('.sidePanel');
+                for (a = 0; a<x.length; a++){
+                   
+                }
                 var div = document.createElement('div');
                 div.id = "divID";
+                div.className = 'mainDiv_edit'
                 switch(param){
                     case "1":
                         if(equipBtn){
+                        div.id = "equipID";
                         div.style.height = '50%';
                         activeDiv.appendChild(div);
                         equipBtn = false;
+                        listEquip(div, div.id)
                         }else{
                         equipBtn =true;
-                        document.getElementById('divID').remove();
+                        document.getElementById('equipID').remove();
                         }
                         break;
                     case "2":
                         if(roomBtn){
+                        div.id = "roomID";
                         div.style.height = '50%';
                         activeDiv.appendChild(div);
                         roomBtn = false;
+                        listRoom(div,div.id);
                         }else{
                         roomBtn =true;
-                        document.getElementById('divID').remove();
+                        document.getElementById('roomID').remove();
                         }
                         break;
                     default:
@@ -398,5 +411,110 @@
                 // document.getElementById('divID').remove();
                 // }
             }
+            function listEquip(mainDiv,type){
+                var  xmlhttp = new XMLHttpRequest();
+                        xmlhttp.onreadystatechange = function(){
+                            if(this.readyState == 4 && this.status==200){
+                                var myObj = JSON.parse(this.responseText); 
+                                    myObj.forEach(function(element,index){
+                                    generateTabContent(mainDiv, type,element , index)});        
+                            }
+                        }
+                        xmlhttp.open("GET", "Request_EquipmentList.php", true);
+                        xmlhttp.send();
+            }
 
+            function listRoom(mainDiv, type){
+                var  xmlhttp = new XMLHttpRequest();
+                        xmlhttp.onreadystatechange = function(){
+                            if(this.readyState == 4 && this.status==200){
+                                var myObj = JSON.parse(this.responseText);
+                                myObj.forEach(function(element,index){
+                                    generateTabContent(mainDiv,type,element,index);
+                                    addButton(mainDiv   ,type);
+                                });
+                            }
+                        }
+                        xmlhttp.open("GET", "Request_RoomList.php", true);
+                        xmlhttp.send();
+            }
+
+               //Called by function that lists all Equipment (should be a foreach kinda thing)
+               function generateTabContent(mainDiv,type,element,index){
+                  
+                var subDiv = document.createElement('div');
+                var subDiv2 = document.createElement('div');
+                //subDiv elements
+                subDiv.className = 'subDiv_edit';
+                var img = document.createElement('img');
+                //img.src = "D:\Anime & Pics\Stuff I want to draw\28296561-9b48-4e6b-b61b-ac1c80f65526.png"
+                var div = document.createElement('div');
+                div.class = 'checkbox';
+                var input = document.createElement('input');
+                input.type = 'checkbox';
+                var label = document.createElement('label');
+                label.textContent="Availability";
+                div.appendChild(input);
+                div.appendChild(label);
+                subDiv.appendChild(img);
+                subDiv.appendChild(div);
+                //subDiv2 elements
+                var topDiv = document.createElement('div');
+                var midDiv = document.createElement('div');
+                //topDiv elements
+                topDiv.className = 'top';
+                var topLabel1 = document.createElement('label');
+                var topLabel2 = document.createElement('label');
+                var topInput2 = document.createElement('input');
+              
+                if(type == 'equipID'){
+                topLabel1.textContent = "Equipment Name:";
+                topLabel2.textContent = "Quantity";
+                }else if(type == 'roomID'){
+                topLabel1.textContent = "Room Name:";
+                }  
+                var topInput1 = document.createElement('input');
+                topDiv.appendChild(topLabel1);
+                topDiv.appendChild(topInput1);
+                if(topLabel2.textContent != ""){
+                topDiv.appendChild(topLabel2);
+                topDiv.appendChild(topInput2);
+                }
+                //midDiv elements
+                midDiv.className = "middle";
+                var midInput = document.createElement('input');
+                midInput.className="description";
+                midInput.placeholder="Equipment Description";
+                midDiv.appendChild(midInput);
+                subDiv2.appendChild(topDiv);
+                subDiv2.appendChild(midDiv);
+                mainDiv.appendChild(subDiv);
+                mainDiv.appendChild(subDiv2);
+
+                //putting values into the inputs 
+                if(type == 'equipID'){
+                    console.log("im in");
+                    topInput1.value = element.equipName;
+                    topInput2.value = element.equipQty;
+                    midInput.value = element.equipDesc;
+                }else if(type == 'roomID'){
+                    topInput1.value = element.roomName;
+                    midInput.value = element.roomDesc;
+                }
+            }
+            
+//Added at the end once everything is rendered
+            function addButton(mainDiv, type){
+                var botDiv = document.createElement('div');
+                //bottomDiv elements
+                botDiv.className="bottom";
+                var botInput = document.createElement('input');
+                botInput.type='button';
+                botInput.value = "Add Equipment";
+                botDiv.appendChild(botInput);
+                mainDiv.appendChild(botDiv);
+            }
+            
+
+        
 </script>
