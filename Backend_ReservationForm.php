@@ -151,7 +151,7 @@
             //                     var roomID = document.getElementById('room');
             //                     var denied = [];
             //                     var approved = [];
-            //                     if(typeof end === "undefined"){
+            //                     if(wwwwwwwww end === "undefined"){
             //                             var endTime = document.getElementById('endTime').value;
             //                             end = new Date(endTime).toISOString().split('T')[0]+' '+new Date(endTime).toTimeString().split(' ')[0];
             //                         }
