@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 13, 2021 at 09:19 AM
+-- Generation Time: Oct 13, 2021 at 09:25 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -181,7 +181,8 @@ INSERT INTO `tbl_room` (`room_ID`, `room_name`, `room_capacity`, `room_descripti
 (5, 'BA simulation', 50, 'BA simulation'),
 (6, 'Pre school simulation', 120, 'Pre school simulation'),
 (7, 'Speech Laboratory', NULL, 'Speech Laboratory'),
-(8, 'Student Lounge', NULL, 'Student Lounge');
+(8, 'Student Lounge', NULL, 'Student Lounge'),
+(9, 'Holding Area', NULL, 'Holding Area');
 
 -- --------------------------------------------------------
 
@@ -300,7 +301,7 @@ ALTER TABLE `tbl_reservation`
 -- AUTO_INCREMENT for table `tbl_room`
 --
 ALTER TABLE `tbl_room`
-  MODIFY `room_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `room_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tbl_user`
