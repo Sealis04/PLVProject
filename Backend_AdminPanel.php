@@ -429,7 +429,7 @@
                 row1.appendChild(column4);
                 row1.appendChild(column5);
                 var x = document.querySelectorAll('.sidePanel');
-               
+              
 
     // if(typeof(form) != 'undefined' && form != null){
     //     var form = document.getElementById('myForm');
@@ -469,7 +469,7 @@
                                 var myObj = JSON.parse(this.responseText);
                                     myObj.forEach(function(element,index){
                                     generateTabContent(mainDiv, type,element , index)});      
-                                    addButton(mainDiv ,type);
+                                    addButton(type);
                             }
                         }
                         xmlhttp.open("GET", "Request_EquipmentList.php", true);
@@ -485,7 +485,7 @@
                                     generateTabContent(mainDiv,type,element,index);
                                    
                                 });
-                                addButton(mainDiv ,type);
+                                addButton(type);
                             }
                         }
                         xmlhttp.open("GET", "Request_RoomList.php", true);
@@ -496,30 +496,106 @@
                function generateTabContent(mainDiv,type,element,index){
                 var tr = document.createElement('tr');
                 mainDiv.appendChild(tr);
-                var tdName = document.createElement('td');                    
+                var tdName = document.createElement('td');
+                var inputName = document.createElement('input');     
+                inputName.disabled = true;       
+                tdName.appendChild(inputName);
+
                 var tdDesc = document.createElement('td');
+                var inputDesc = document.createElement('input');     
+                inputDesc.disabled = true;   
+                tdDesc.appendChild(inputDesc);
+
                 var tdAvailability = document.createElement('td');
+                var checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = 'availabilityCB';
+                checkbox.disabled = true;
+                tdAvailability.appendChild(checkbox);
+
+
                 var tdRemove = document.createElement('td');
+                var editBtn = document.createElement ('input');
+                editBtn.type = 'button';
+                editBtn.value = "Edit";
+                var removeBtn = document.createElement('input');
+                removeBtn.type = 'button';
+                removeBtn.value = "Remove";
+                tdRemove.appendChild(editBtn);
+                tdRemove.appendChild(removeBtn);
+
                 tr.appendChild(tdName);
-               var checkbox = document.createElement('input');
-               checkbox.type = 'checkbox';
-               tdAvailability.appendChild(checkbox);
-               checkbox.disabled = true;
-                if(type == "roomID"){
-                    tdName.textContent = element.roomName;
-                    tdDesc.textContent = element.roomDesc;
-                }else if(type == "equipID"){
-                    console.log('asd');
-                    var tdQuantity = document.createElement('td');
-                    tr.appendChild(tdQuantity);
-                    tdName.textContent = element.equipName;
-                    tdQuantity.textContent = element.equipQty;
-                    tdDesc.textContent = element.equipDesc;
+
+                switch(type){
+                    case'roomID':
+                        inputName.value = element.roomName;  
+                        inputDesc.value = element.roomDesc;
+                        break;
+                    case 'equipID':
+                        var tdQuantity = document.createElement('td');
+                        var inputQuantity = document.createElement('input');
+                        tdQuantity.appendChild(inputQuantity);
+                        tr.appendChild(tdQuantity)
+                        inputQuantity.disabled = true;
+                        inputQuantity.value = element.equipQty;
+                        inputName.value = element.equipName;    
+                        inputDesc.value = element.equipDesc;
+                        break;
                 }
                 tr.appendChild(tdDesc);
                 tr.appendChild(tdAvailability);
                 tr.appendChild(tdRemove);
                 
+                
+
+
+                //appending of elements
+               
+               
+                
+              
+            //     var tr = document.createElement('tr');
+            //     mainDiv.appendChild(tr);
+            //     var tdName = document.createElement('td');                    
+            //     var tdDesc = document.createElement('td');
+            //     var tdAvailability = document.createElement('td');
+            //     var tdRemove = document.createElement('td');
+            //     tr.appendChild(tdName);
+            //    var checkbox = document.createElement('input');
+            //    var edit = document.createElement('input');
+            //    var remove = document.createElement('input');
+            //    edit.value = "Edit";
+               
+            //    remove.value = "Remove";
+            //    edit.type = 'button';
+            //    remove.type = 'button';
+            //    tdRemove.appendChild(edit);
+            //    tdRemove.appendChild(remove);
+            //    checkbox.type = 'checkbox';
+            //    tdAvailability.appendChild(checkbox);
+            //    checkbox.disabled = true;
+            //     if(type == "roomID"){
+            //         tdName.textContent = element.roomName;
+            //         tdDesc.textContent = element.roomDesc;
+            //         edit.addEventListener('click',function(){
+            //        changeContent(tdName, tdDesc, ...Array(1), checkbox,)
+            //    });
+            //     }else if(type == "equipID"){
+            //         console.log('asd');
+            //         var tdQuantity = document.createElement('td');
+            //         tr.appendChild(tdQuantity);
+            //         tdName.textContent = element.equipName;
+            //         tdQuantity.textContent = element.equipQty;
+            //         tdDesc.textContent = element.equipDesc;
+            //         edit.addEventListener('click',function(){
+            //        changeContent(tdName, tdDesc, tdQuantity, checkbox,)
+            //    });
+            //     }
+            //     tr.appendChild(tdDesc);
+            //     tr.appendChild(tdAvailability);
+            //     tr.appendChild(tdRemove);
+                
+               
                 // var subDiv = document.createElement('div');
                 // var subDiv2 = document.createElement('div');
                 // //subDiv elements
@@ -582,16 +658,24 @@
 
 
             }
+
+            function changeContent(name,desc,quantity, checkbox){
+                    console.log('hey im in');
+                }
             
 //Added at the end once everything is rendered
-            function addButton(mainDiv, type){
+            function addButton(type){
+                if(type == 'roomID'){
+                    var mainDiv = document.getElementById('roomID');
+                }else if(type == 'equipID'){
+                    var mainDiv = document.getElementById('equipID');
+                }
                 var botDiv = document.createElement('div');
                 //bottomDiv elements
                 botDiv.className="bottom";
                 var botInput = document.createElement('input');
                 botInput.type='submit';
                 botInput.value = "Add Equipment";
-
                 botDiv.appendChild(botInput);
                 mainDiv.appendChild(botDiv);
             }
