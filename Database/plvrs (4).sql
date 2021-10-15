@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 13, 2021 at 03:02 PM
+-- Generation Time: Oct 14, 2021 at 01:25 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -118,6 +118,17 @@ INSERT INTO `tbl_equipment_reserved` (`r_ID`, `equipment_ID`, `Qty`) VALUES
 (476, NULL, NULL),
 (477, NULL, NULL),
 (478, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_policy`
+--
+
+CREATE TABLE `tbl_policy` (
+  `policy_categories` varchar(255) DEFAULT NULL,
+  `policy_description` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
