@@ -14,7 +14,8 @@ $sql_code = "SELECT * FROM tbl_equipment WHERE ?";
                         'equipID'=> $row["equipment_ID"],
                         'equipName' => $row["equipment_name"],
                         'equipQty' => $row["equipment_quantity"],
-                        'equipDesc' => $row["equipment_description"]
+                        'equipDesc' => $row["equipment_description"],
+                        'equipAvailability' => $row['equipment_availability']
                     );
                     }
                 }
