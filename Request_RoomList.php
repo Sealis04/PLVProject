@@ -14,7 +14,8 @@ $sql_code = "SELECT * FROM tbl_room WHERE ?";
                         'roomID'=> $row["room_ID"],
                         'roomName' => $row["room_name"],
                         'roomCap' => $row["room_capacity"],
-                        'roomDesc' => $row["room_description"]
+                        'roomDesc' => $row["room_description"],
+                        'roomAvailability' => $row['room_availability']
                     );
                     }
                 }
