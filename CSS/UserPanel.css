@@ -200,3 +200,17 @@ margin:200px;
  margin:5px;
 }
 
+.resContent{
+  padding-left: 10%;
+}
+
+
+.big-contents{
+  margin-left: 280px;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding-bottom: 15px;
+  padding-right: 15px;
+  background-color: rgb(202, 199, 199);
+  border: black solid 1px;
+}
