@@ -135,7 +135,7 @@ body {
   border: black 2px solid;
 }
 
-.text-policies{
+/*.text-policies{
   font-size: 20;
   text-align: justify;
   color: black;
@@ -148,92 +148,27 @@ body {
   padding-bottom: 20px;
   padding-top: 20px;
   position: relative;
-}
+}*/
 
-.text-policies2{
-  font-size: 20;
+.policy{
+  border: black solid 3px;
+  border-radius: 10px;
   text-align: justify;
-  color: black;
-  width: 100%;
-  border: black 2px solid;
-  border-radius: 5px;
-  margin-top: 40;
-  padding-left: 300px;
-  padding-right: 100px;
-  padding-bottom: 90px;
-  padding-top: 80px;
-  position: relative;
-}
-
-.text-policies3{
-  font-size: 20;
-  text-align: justify;
-  color: black;
-  width: 100%;
-  border: black 2px solid;
-  border-radius: 5px;
-  margin-top: 40;
-  padding-left: 300px;
-  padding-right: 100px;
-  padding-bottom: 60px;
-  padding-top: 60px;
-  position: relative;
-}
-
-.text-policies4{
-  font-size: 20;
-  text-align: justify;
-  color: black;
-  width: 100%;
-  border: black 2px solid;
-  border-radius: 5px;
-  margin-top: 40;
-  padding-left: 300px;
-  padding-right: 100px;
-  padding-bottom: 100px;
-  padding-top: 100px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 20 0 20 0;
+  font-size: 24;
+  padding: 10 50 20 50;
 }
 
 .policy img{
-  height: 20%;
-  width: auto;
-  float: left;
-  margin-left: 70px;
-  margin-top: 70px;
-}
-.policy2 img{
-  height: 30%;
-  width: auto;
-  float: left;
-  margin-left: -250px;
-  margin-top: 20px;
-}
-
-.policy3 img{
-  height: 30%;
-  width: auto;
-  float: left;
-  margin-left: -190px;
-  margin-top: 70px;
-}
-
-.policy4 img{
-  height: 30%;
-  width: auto;
-  float: left;
-  margin-left: -300px;
-  margin-top: 10px;
+  height:auto;
+  width: 50%;
+  margin: 20 auto 20 auto;
+  border-radius: 10px;
 }
 
 #return-img img{
   padding: 10px;
 }
 
-#policy img {
-  height: 20% !important;
-  width: auto !important;
-  float: left !important;
-  margin-left: -180px !important;
-  margin-top: 60px !important;
-}
