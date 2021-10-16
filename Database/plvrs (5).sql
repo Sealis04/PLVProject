@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2021 at 01:25 PM
+-- Generation Time: Oct 16, 2021 at 05:57 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -117,7 +117,9 @@ INSERT INTO `tbl_equipment_reserved` (`r_ID`, `equipment_ID`, `Qty`) VALUES
 (475, NULL, NULL),
 (476, NULL, NULL),
 (477, NULL, NULL),
-(478, NULL, NULL);
+(478, NULL, NULL),
+(479, NULL, NULL),
+(480, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -126,9 +128,19 @@ INSERT INTO `tbl_equipment_reserved` (`r_ID`, `equipment_ID`, `Qty`) VALUES
 --
 
 CREATE TABLE `tbl_policy` (
-  `policy_categories` varchar(255) DEFAULT NULL,
-  `policy_description` varchar(255) DEFAULT NULL
+  `policy_category` varchar(25) DEFAULT NULL,
+  `policy_description` varchar(300) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_policy`
+--
+
+INSERT INTO `tbl_policy` (`policy_category`, `policy_description`) VALUES
+('Reservation', '•	First come, first serve basis whether the requestor is a professor or a student and whatever the events purpose.\r\n•	To request, fill out the registration form indicate the necessary details, facility to be reserved, equipment (if any), and props (if any), date and time, attach the letter of approv'),
+('Rooms and Equipment', '•	The rooms that can be reserved are: Lecture Room 301, 302, 303, 401, 402, and 403. Pre-school Simulation Room, Business Administration Simulation Room, and Auditorium.\r\n•	Auditorium only allows 1 reservation per day.\r\n•	Any requested reservation of a room that exceeds the maximum capacity of each '),
+('Violation', '•	The borrower who fails to return an equipment within the day after using it, will have a “red mark” on their profile indicating a Negative Trust.\r\n•	Having a “red mark” on their profile can reflect on their clearance.\r\n•	Verified users agree not to damage the room and equipment reserved.\r\n•	If an '),
+('Others', '•	Notifications will be via PLVRS and email notification.\r\n•	The GSO can be contacted via email notification or telephone number.\r\n•	Food and Beverages are strictly not allowed in the Auditorium and Simulation Rooms.\r\n');
 
 -- --------------------------------------------------------
 
@@ -196,6 +208,15 @@ CREATE TABLE `tbl_user` (
   `isAdmin` tinyint(1) DEFAULT NULL,
   `isApproved` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_user`
+--
+
+INSERT INTO `tbl_user` (`user_ID`, `user_email`, `user_password`, `user_firstName`, `user_middleName`, `user_lastName`, `user_contactNumber`, `user_course_ID`, `PLV_ID`, `isAdmin`, `isApproved`) VALUES
+(13, 'admin1@gmail.com', '$2y$10$AWJtx8Od.kq/3XCnnPGO0.KYknstQL8COfywaUz7FswJ7N5B/5o1K', 'Bryan', 'Darilag', 'Garcia', '9399465176', 1, 'C:/xampp/htdocs/practice/assets/plvrs (4).sql', 1, 1),
+(14, 'user1@gmail.com', '$2y$10$ZLiYnQmADleMdiI.UO5EWesok.d4WqwYdH3kqo4sPanAQu.LvHUpG', 'Bryan', 'Darilag', 'Garcia', '9399465176', 1, 'C:/xampp/htdocs/practice/assets/plvrs (4).sql', 0, 1),
+(15, 'user2@gmail.com', '$2y$10$ej/E2MuY.7KzwB6LbAhlquQh4Sp6sUWs6dEONhlNjiEflrvRAhqFu', 'Juan', 'Pedro', 'Penduko', '9098898899', 1, 'C:/xampp/htdocs/practice/assets/plvrs (4).sql', 0, 2);
 
 --
 -- Indexes for dumped tables
@@ -275,7 +296,7 @@ ALTER TABLE `tbl_equipment`
 -- AUTO_INCREMENT for table `tbl_reservation`
 --
 ALTER TABLE `tbl_reservation`
-  MODIFY `r_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=479;
+  MODIFY `r_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=481;
 
 --
 -- AUTO_INCREMENT for table `tbl_room`
@@ -287,7 +308,7 @@ ALTER TABLE `tbl_room`
 -- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `user_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `user_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables
