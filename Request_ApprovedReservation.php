@@ -15,6 +15,7 @@
                             'approval'=>$row['r_approved_ID'],
                             'room'=>$row['r_room_ID'],
                             'eventID'=> $row["r_ID"],
+                            'userID'=> $row['r_user_ID'],
                         );
                         }
                     }else{
