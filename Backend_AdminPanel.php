@@ -1,9 +1,5 @@
 <script>
     //public form changes
-
-
-
-
     var header = document.getElementById("list");
     var btns = header.getElementsByClassName("btns");
     var profile = document.getElementById("myProfile");
@@ -292,8 +288,8 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
-                //window.location.href = "Window_AdminPanel.php";
+                alert(this.responseText);
+                window.location.href = "Window_AdminPanel.php";
             }
         }
         xmlhttp.open("GET", "Request_AcceptReservation.php?var=" + eventID + '&userID=' + userID, true);
@@ -756,5 +752,7 @@
                 botDiv.appendChild(botInput);
                 mainDiv.appendChild(botDiv);
             }
+            
+            //notif part
         
 </script>
