@@ -45,5 +45,6 @@
     </div>
         </div>
         <?php require "Backend_AdminPanel.php";?>
+        <?php require "Backend_Notification.php";?>
     </body>
 </html>
