@@ -7,16 +7,16 @@ include "db_connection.php";
 $conn=OpenCon();
 $email;
 getEmail($userID);
-sendEmail();
-// $sql_code = "UPDATE `tbl_reservation` SET `r_approved_ID` = '1' WHERE r_ID = ?";
-//     if($sql=$conn->prepare($sql_code)){
-//         $sql->bind_param("i",$r_id);
-//         $r_id = $rid;
-//             if($sql->execute()){
-//                 echo "Reservation accepted!";
-//                 }
-//              $sql->close();
-//         }
+sendEmail($email,$rid);
+$sql_code = "UPDATE `tbl_reservation` SET `r_approved_ID` = '1' WHERE r_ID = ?";
+    if($sql=$conn->prepare($sql_code)){
+        $sql->bind_param("i",$r_id);
+        $r_id = $rid;
+            if($sql->execute()){
+                echo "Reservation accepted!";
+                }
+             $sql->close();
+        }
     $conn->close();
     function getEmail($userID){
         $conn=OpenCon();
@@ -33,10 +33,29 @@ sendEmail();
            $sql->close();
        }
     }
-    function sendEmail(){
-        $email = "suatengco04@gmail.com";
+    function sendEmail($email,$rid){
+        $conn=OpenCon();
+        //qquerying reservation details
+        $sql_code = "SELECT * FROM tbl_reservation WHERE r_ID = ?";
+        if($sql=$conn->prepare($sql_code)){
+            $sql->bind_param("i",$r_user);
+            $r_user = $rid;
+                if($sql->execute()){
+                    $result = $sql->get_result();
+                        while($row = $result->fetch_assoc()){
+                            $event = $row['r_event'];
+                            $start = $row['r_startDateAndTime'];
+                            $end = $row['r_endDateAndTime'];
+                            $room = $row['r_room_ID'];
+                        }
+                    }else{
+                        echo $conn->error;
+                    }
+                 $sql->close();
+            }
         $subject = 'PLVRS Reservation Notification';
-        $message = 'This is to inform you that your reservation has been accepted, congratulations!';
+        $message = 'This is to inform you that your reservation for' . $event . ',which will be held at'.$room.'has been accepted, congratulations!';
+        $message += 'The event starts at '.$start.'and ends at'.$end;
         $fromEmail = $_SESSION["email"];
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
