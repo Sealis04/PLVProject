@@ -266,7 +266,7 @@
                 }
             }
         }
-        xmlhttp.open("GET", "Request_ApprovedReservation.php", true);
+        xmlhttp.open("GET", "Request_unapprovedReservation.php", true);
         xmlhttp.send();
 
     }
@@ -278,7 +278,7 @@
         div.innerHTML = '<h3> Event:' + element.event + '</h3>';
         div.innerHTML += '<h3>Date and Time: ' + element.start + " to " + element.end + " </h3><br>";
         div.innerHTML += '<input type="button" class="header-btn btn" value="Accept" onclick="AcceptReservation(' + element.eventID +','+ element.userID +')">';
-        div.innerHTML += '<input type="button" class="header-btn btn" onclick="DeclineReservation(' + element.eventID + ')" value="Decline">';
+        div.innerHTML += '<input type="button" class="header-btn btn" onclick="DeclineReservation(' + element.eventID +','+ element.userID + ')" value="Decline">';
         document.getElementById("content").appendChild(motherDiv);
         motherDiv.appendChild(div);
     }
@@ -297,7 +297,7 @@
     }
 
     //Decline Reservation
-    function DeclineReservation(eventID) {
+    function DeclineReservation(eventID,userID) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -305,7 +305,7 @@
                 window.location.href = "Window_AdminPanel.php";
             }
         }
-        xmlhttp.open("GET", "Request_DeclineReservation.php?var=" + eventID, true);
+        xmlhttp.open("GET", "Request_DeclineReservation.php?var=" + eventID + '&userID='+userID, true);
         xmlhttp.send();
     }
 
