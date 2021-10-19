@@ -87,25 +87,59 @@
                     motherDiv.innerHTML = '<h3> No reservations </h3?>';
                     document.getElementById("content").appendChild(motherDiv);
                 } else {
+                    var x = [];
                     var motherDiv = document.createElement('div');
+                    var list = document.createElement('li');
                     motherDiv.id = "currentUserReservation";
                     myObj.forEach(function(element, index) {
-                        reservationContent(motherDiv, element, index)
+                         x.push(reservationContent(motherDiv,list, element, index));
                     });
+                   x.forEach(reservedEquipment);
                 }
             }
         }
         xmlhttp.open("GET", "Request_ReservationForUser.php?var=" + userID, true);
         xmlhttp.send();
     }
-
-    function reservationContent(motherDiv, element, index) {
+    function reservedEquipment(element,index){
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                    var myObj = JSON.parse(this.responseText);
+                    var list = document.createElement('div');
+                    myObj.forEach(function(element,index){
+                        listEquipmentReserved(list,element,index);
+                    });
+            }
+        }
+        xmlhttp.open("GET", "Request_ReservationForUserEquipment.php?var=" + element, true);
+        xmlhttp.send();
+    }
+    //HTML PART THAT LISTS THE EQUIPMENT IN THE WINDOW
+    function listEquipmentReserved(list,element,index){
+        if(typeof(document.getElementById('userResContent') != undefined && document.getElementById('userResContent') != null)){
+            
+            var div = document.getElementById('resContent');
+            console.log('me in');
+        }else{
+            
+            var div = document.getElementById('userResContent');
+        }
+       
+        
+        var label = document.createElement('label');
+        label.textContent = element.equipName;
+        list.appendChild(label);
+        div.appendChild(list);
+    }
+    //HTML PART THAT LISTS THE RESERVATIONS IN THE WINDOW
+    function reservationContent(motherDiv, list, element, index) {
         var div = document.createElement('div')
         div.id = "resContent";
         div.className = "resContent";
         div.innerHTML = '<h3> Event:' + element.event + '</h3>';
         div.innerHTML += '<h3>Date and Time: ' + element.start + " to " + element.end + " </h3><br>";
-        
+        div.innerHTML += '<h3>Room:' + element.room;
         //div.innerHTML += '<input type="button" class="header-btn btn" value="Edit" onclick="cancelReservation('+element.eventID+')">';
         // div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">';
         if (element.status != 1) {
@@ -125,6 +159,7 @@
         }
         document.getElementById("content").appendChild(motherDiv);
         motherDiv.appendChild(div);
+        return element.reservationID;
     }
 
     function cancelReservation(eventID) {
@@ -200,7 +235,7 @@
         xmlhttp.open("GET", "Request_PendingRegistrations.php", true);
         xmlhttp.send();
     }
-
+    //HTML PART THAT LISTS THE REGISTRATION OF USERS
     function registrationContent(motherDiv, element, index) {
         var div = document.createElement('div')
         div.id = "userProfContent";
@@ -259,10 +294,12 @@
                     document.getElementById("content").appendChild(motherDiv);
                 } else {
                     var motherDiv = document.createElement('div');
+                    var x = [];
                     motherDiv.id = "resList";
                     myObj.forEach(function(element, index) {
-                        userReservationContent(motherDiv, element, index);
+                        x.push(userReservationContent(motherDiv, element, index));
                     });
+                    x.forEach(reservedEquipment);
                 }
             }
         }
@@ -270,7 +307,7 @@
         xmlhttp.send();
 
     }
-
+    //HTML PART THAT LISTS THE RESERVATION OF ITS USERS
     function userReservationContent(motherDiv, element, index) {
         var div = document.createElement('div')
         div.id = "userResContent";
@@ -281,9 +318,10 @@
         div.innerHTML += '<input type="button" class="header-btn btn" onclick="DeclineReservation(' + element.eventID +','+ element.userID + ')" value="Decline">';
         document.getElementById("content").appendChild(motherDiv);
         motherDiv.appendChild(div);
+        return element.eventID;
     }
 
-    // Accept Reservatione
+    // Accept Reservations
     function AcceptReservation(eventID,userID) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -308,7 +346,7 @@
         xmlhttp.open("GET", "Request_DeclineReservation.php?var=" + eventID + '&userID='+userID, true);
         xmlhttp.send();
     }
-
+//HTML PART THAT LISTS THE TAB CONTENT FOR EDIT
     function editTabContent() {
         active = false;
         equipBtn = true;
@@ -373,7 +411,7 @@
     }
 
 
-
+//HTML PART THAT DISPLAYS THE TABLE
     function loadLists(param, activeDiv) {
 
         var div = document.createElement('div');
@@ -446,38 +484,6 @@
         row1.appendChild(column3);
         row1.appendChild(column4);
         row1.appendChild(column5);
-        //Logic to close other tabs when user presses another tab
-
-
-
-        // if(typeof(form) != 'undefined' && form != null){
-        //     var form = document.getElementById('myForm');
-        //     //form updated
-        //     var saving = false;
-        //     form.onsubmit = function(){saving = true;};
-
-        //     //form not saved warning
-        //     //Unload doesn't seem to be working, study how it works
-        //     // window.onunload = function(){
-        //     //     if(!saving){
-        //     //         console.log(asd);
-        //     //         var f = checkIfFormChange(form);
-        //     //         if(f.length > 0) alert("Form updates have not been saved");
-        //     //     }
-        //     // };
-        //     window.unload = function(){
-        //         alert('woops');
-
-        //     }
-
-
-
-        //         window.addEventListener("unload",function(e){
-        //                 e.returnValue = ("Form update have not been saved, Leave?");
-        //             })
-
-
-        //     }
     }
 
     function turnOffOn(div) {
@@ -630,35 +636,7 @@
             enableButtons(type,name,quantity,desc,availability,ID,value);
         }
     }
-        // if(typeof(form) != 'undefined' && form != null){
-        //     var form = document.getElementById('myForm');
-        //     //form updated
-        //     var saving = false;
-        //     form.onsubmit = function(){saving = true;};
-
-        //     //form not saved warning
-        //     //Unload doesn't seem to be working, study how it works
-        //     // window.onunload = function(){
-        //     //     if(!saving){
-        //     //         console.log(asd);
-        //     //         var f = checkIfFormChange(form);
-        //     //         if(f.length > 0) alert("Form updates have not been saved");
-        //     //     }
-        //     // };
-        //     window.unload = function(){
-        //         alert('woops');
-
-        //     }
-
-
-
-        //         window.addEventListener("unload",function(e){
-        //                 e.returnValue = ("Form update have not been saved, Leave?");
-        //             })
-
-
-        //     }
-
+    
 
         function listEquip(mainDiv, type) {
             var xmlhttp = new XMLHttpRequest();
