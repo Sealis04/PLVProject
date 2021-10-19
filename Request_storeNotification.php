@@ -6,7 +6,19 @@ function notification($userID,$decision){
         $sql->bind_param('ii',$userID,$decision);
         $sql->execute();
     }
+    $conn ->close();
 }
+if (isset($_REQUEST['id'])){
+include 'db_connection.php';
+    $conn = OpenCon();    
+    $sql_code = 'UPDATE `tbl_notification` SET `isRead`= 1 WHERE `notificationID` = ?';
+    if($sql = $conn->prepare($sql_code)){
+        $sql->bind_param('i',$_REQUEST['id']);
+        $sql->execute();
+    }
+    $conn ->close();
+}
+
 
 
 
