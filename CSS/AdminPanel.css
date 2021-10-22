@@ -317,3 +317,30 @@ margin-top: 5px;
 margin-left: auto;
 margin-right: 10px;
 }
+
+
+/*EDIT TABLES*/
+#availabilityCB {
+  width: 200px;
+margin: 0 auto;
+
+}
+
+table{
+ text-align: center;
+}
+
+.bottom input{
+ float: right;
+ margin-top: 8px;
+ margin-right: 138;
+ background-color: #008F00 !important;
+ text-decoration: none;
+border-radius: 5px;
+ 
+}
+
+.resContent img{
+ float: right;
+ vertical-align: middle;
+ }
