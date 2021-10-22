@@ -30,6 +30,7 @@ if($sql=$conn->prepare($sql_code)){
                 'id' => $row['notificationID'],
                 'isRead'=> $row['isRead'],
                 'decision' => $row['decision'],
+                'userID'=>$row['forUserID'],
                 'text' =>''
             );
         }

@@ -3,7 +3,7 @@
 $reservation = array();
 include "db_connection.php";
 $conn = OpenCon();
-$sql_code = "SELECT * FROM tbl_reservation WHERE r_approved_ID = 2 AND r_status = 0 AND r_startDateAndTime > CURRENT_DATE();";
+$sql_code = "SELECT * FROM tbl_reservation WHERE r_approved_ID = 1 AND r_status = 0 AND r_endDateAndTime < CURRENT_DATE();";
 if ($sql = $conn->prepare($sql_code)) {
     if ($sql->execute()) {
         $result = $sql->get_result();
@@ -28,15 +28,6 @@ if ($sql = $conn->prepare($sql_code)) {
                 }
                 $sql2->close();
             }
-            // $reservation[] = array(
-            //     'event' => $row["r_event"],
-            //     'start' => $row["r_startDateAndTime"],
-            //     'end' => $row["r_endDateAndTime"],
-            //     'approval' => $row['r_approved_ID'],
-            //     'room' => $row['r_room_ID'],
-            //     'eventID' => $row["r_ID"],
-            //     'userID' => $row['r_user_ID'],
-            // );
         }
     } else {
         echo $conn->error;

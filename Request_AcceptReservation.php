@@ -17,7 +17,7 @@ $sql_code = "UPDATE `tbl_reservation` SET `r_approved_ID` = '1' WHERE r_ID = ?";
              $sql->close();
         }
     $conn->close();
-    getEmail($userID,$rid);
+     getEmail($userID,$rid);
     notification($userID,1);
     
     ?>
