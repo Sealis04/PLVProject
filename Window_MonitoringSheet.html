@@ -1,53 +1,63 @@
+
 <html>
+
     <head>
         <title>PLVRS</title>
         <link rel="icon" href="assets/plv.png">
         <meta charset="UTF-8">
         <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
         <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
-
+    
         <link rel="stylesheet" href="css/Form.css">
     </head>
+    
     <body>
         <nav id="head-container">
             <div class="container hn-c">
-              <img id="fb" src="assets/plv.png" alt="PLV Logo">
-              <a href="RoomAndEquipment.html" type="button" class="header-btn btn ">Rooms and Equipment</a>
-              <a href="Policies.html" type="button" class="header-btn btn">Policies</a>
-              <a  href=""><img id="user" src="assets/usericon.png"/></a>
-              
-              <div class="dropdown">
-                <a  href=""><img id="notif" class="dropbtn" src="assets/notif.png"/><span>1</span></a>
-                <div class="dropdown-content">
-                <p>Hello World!</p>
+                <img id="fb" src="assets/plv.png" alt="PLV Logo">
+                <a href="RoomAndEquipment.html" type="button" class="header-btn btn ">Rooms and Equipment</a>
+                <a href="Policies.html" type="button" class="header-btn btn">Policies</a>
+                <a href=""><img id="user" src="assets/usericon.png" /></a>
+    
+                <div class="dropdown">
+                    <a href=""><img id="notif" class="dropbtn" src="assets/notif.png" /><span>1</span></a>
+                    <div class="dropdown-content">
+                        <p>Hello World!</p>
+                    </div>
                 </div>
-              </div>
-              <a>ASDASDASd</a>
+                <a>ASDASDASd</a>
         </nav>
-
+    
         <div class="container">
             <div class="row">
-                <div>
-                    <ul class="head-list">
-                        <li>ITEM</li>
-                        <li>STATUS</li>
-                        <li>QUANTITY</li>
-                        <li>REMARKS</li>
-                    </ul>
-                    <div>
-                    <ul class="content-list">
-                        <li>Item#1</li>
-                        <li><input type="checkbox" name="cbx#1" value="cbx#1">
-                            <label for="cbx#1">Damaged</label>
-                        </li>
-                        <li><input type="number" id="qty#1" name="qty#1">
-                        </li>
-                        <li><input type="text" id="tbx#1" name="tbx#1">
-                        </li>
-                    </ul>
+                <div id="EventName">
+                    <h3 class="block">Event name:</h3><br>
+                    <input type="text">
                 </div>
+                <div id="PersonReserve">
+                    <h3>Reserver Name:</h3>
+                    <input type="text">
+                </div>
+                <div id="RoomReservation">
+                    <h3>Room Reservation:</h3>
+                    <input type="text">
+                </div>
+                <div class="block" id="EventDate">
+                    <h3>Event Date:</h3>
+                    <input type= "Date">
+                </div>  
+                <div id="remarks">
+                    <h3>Remarks:</h3>
+                    <textarea>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, similique veritatis ipsum tempore itaque sint tenetur dolores consequatur hic quaerat minus debitis natus adipisci odio, dolorum ab delectus earum repellendus.</textarea>
+                </div>
+                <div id="CheckBox">
+                    <h3>Damages <input type="checkbox"></h3>
+                </div>
+                <div id="EquipmentList">
+                    <h3>Equipment List</h3>
                 </div>
             </div>
         </div>
     </body>
-</html>
+    
+    </html>

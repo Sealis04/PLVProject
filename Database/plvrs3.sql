@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2021 at 05:57 AM
+-- Generation Time: Oct 19, 2021 at 03:48 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `plvrs`
+-- Database: `plvrs3`
 --
 
 -- --------------------------------------------------------
@@ -41,6 +41,27 @@ INSERT INTO `tbl_approved` (`approve_ID`, `approve_response`) VALUES
 (1, 'Approved'),
 (2, 'Pending'),
 (3, 'Declined');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_category_policy`
+--
+
+CREATE TABLE `tbl_category_policy` (
+  `ct_ID` int(10) NOT NULL,
+  `ct_category_name` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_category_policy`
+--
+
+INSERT INTO `tbl_category_policy` (`ct_ID`, `ct_category_name`) VALUES
+(1, 'Reservations'),
+(2, 'Room and Equipment'),
+(3, 'Violations'),
+(4, 'Other');
 
 -- --------------------------------------------------------
 
@@ -119,28 +140,84 @@ INSERT INTO `tbl_equipment_reserved` (`r_ID`, `equipment_ID`, `Qty`) VALUES
 (477, NULL, NULL),
 (478, NULL, NULL),
 (479, NULL, NULL),
-(480, NULL, NULL);
+(480, NULL, NULL),
+(481, 1, 14),
+(481, 2, 13),
+(482, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_policy`
+-- Table structure for table `tbl_notification`
 --
 
-CREATE TABLE `tbl_policy` (
-  `policy_category` varchar(25) DEFAULT NULL,
-  `policy_description` varchar(300) DEFAULT NULL
+CREATE TABLE `tbl_notification` (
+  `notificationID` int(11) NOT NULL,
+  `forUserID` int(11) NOT NULL,
+  `isRead` tinyint(1) NOT NULL DEFAULT 0,
+  `time` datetime NOT NULL DEFAULT current_timestamp(),
+  `decision` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tbl_policy`
+-- Dumping data for table `tbl_notification`
 --
 
-INSERT INTO `tbl_policy` (`policy_category`, `policy_description`) VALUES
-('Reservation', '•	First come, first serve basis whether the requestor is a professor or a student and whatever the events purpose.\r\n•	To request, fill out the registration form indicate the necessary details, facility to be reserved, equipment (if any), and props (if any), date and time, attach the letter of approv'),
-('Rooms and Equipment', '•	The rooms that can be reserved are: Lecture Room 301, 302, 303, 401, 402, and 403. Pre-school Simulation Room, Business Administration Simulation Room, and Auditorium.\r\n•	Auditorium only allows 1 reservation per day.\r\n•	Any requested reservation of a room that exceeds the maximum capacity of each '),
-('Violation', '•	The borrower who fails to return an equipment within the day after using it, will have a “red mark” on their profile indicating a Negative Trust.\r\n•	Having a “red mark” on their profile can reflect on their clearance.\r\n•	Verified users agree not to damage the room and equipment reserved.\r\n•	If an '),
-('Others', '•	Notifications will be via PLVRS and email notification.\r\n•	The GSO can be contacted via email notification or telephone number.\r\n•	Food and Beverages are strictly not allowed in the Auditorium and Simulation Rooms.\r\n');
+INSERT INTO `tbl_notification` (`notificationID`, `forUserID`, `isRead`, `time`, `decision`) VALUES
+(22, 13, 0, '2021-10-18 20:16:38', 1),
+(23, 13, 0, '2021-10-18 20:54:58', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_policies`
+--
+
+CREATE TABLE `tbl_policies` (
+  `p_ID` int(10) NOT NULL,
+  `p_description` varchar(300) DEFAULT NULL,
+  `p_ct_ID` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_policies`
+--
+
+INSERT INTO `tbl_policies` (`p_ID`, `p_description`, `p_ct_ID`) VALUES
+(1, '•	First come, first serve basis whether the requestor is a professor or a student and whatever the events purpose.', 1),
+(2, '•	To request, fill out the registration form indicate the necessary details, facility to be reserved, equipment (if any), and props (if any), date and time, attach the letter of approval then click submit. ', 1),
+(3, '•	The reservation request will not proceed if there is no attached letter of approval.', 1),
+(4, '•	A room can be reserved even if there is no equipment borrowed.', 1),
+(5, '•	Equipment cannot be borrowed if there is no room reserved.', 1),
+(6, '•	Once submitted, there will be 3 days allotted for the administrator to respond.', 1),
+(7, '•	The status of your reservation will show if it is “Pending”, “Viewed”, or “Approved/Declined”.', 1),
+(8, '•	Minimum of 3 days before the event to book for a reservation.', 1),
+(9, '•	Requested reservation lesser than 3 days before the event will automatically denied.', 1),
+(10, '•	PLV Students, PLV Professors, and PLV admin personnel can request a reservation.', 1),
+(11, '•	The requestor cannot be able to request a reservation for a room that is not available on the PLVRS.', 1),
+(12, '•	The user can send a follow up using “submit a ticket” in the system. The GSO will be notified via PLVRS and email notification.', 1),
+(13, '•	The requestor will have a proper documentation of follow up ticket to be sent on their email to inform that the follow up was sent.', 1),
+(14, '•	The requestor can reschedule the request for reservation whether it is approved or pending.', 1),
+(15, '•	To request a reschedule, the only requirement is the same letter of approval with rescheduled date that is signed by the respected authorities.', 1),
+(16, '•	Requestor can cancel minimum of 1 day before the reserved date whether the status of their request is pending or approved.', 1),
+(17, '•	The rooms that can be reserved are: Lecture Room 301, 302, 303, 401, 402, and 403. Pre-school Simulation Room, Business Administration Simulation Room, and Auditorium.', 2),
+(18, '•	Auditorium only allows 1 reservation per day.', 1),
+(19, '•	Any requested reservation of a room that exceeds the maximum capacity of each room are automatically declined.', 2),
+(20, '•	One projector is allowed to borrow per Lecture Room and Simulation Room.', 2),
+(21, '•	It is advisable not to bring the same equipment that the GSO can provide to maximize the usage of it dedicated for the university.', 2),
+(22, '•	Any equipment that will be borrowed shall be returned directly to the office by the borrower within the day after using it.', 2),
+(23, '•	The number of rooms and equipment as well as its availability is recorded in the system for reliable monitoring.', 2),
+(24, '•	There will be a monitoring sheet and inventory report generated every after reservation. Its content will depend on the reservation details and will automatically update the availability of room and equipment once the request for the reservation is submitted.', 2),
+(25, '•	In case it coincides to a broken equipment or is needed within the next reservation, the system will automatically notify the requestor who will be affected.', 2),
+(26, '•	The borrower who fails to return an equipment within the day after using it, will have a “red mark” on their profile indicating a Negative Trust.', 3),
+(27, '•	Having a “red mark” on their profile can reflect on their clearance.', 3),
+(28, '•	Verified users agree not to damage the room and equipment reserved.', 3),
+(29, '•	If an equipment is lightly damaged, it will be replaced with the same specification. But, if an equipment is severely damaged, the Local Government Unit (LGU) will be responsible for it.', 3),
+(30, '•	Affixing items to the walls, floor, ceilings of any room, taping, or nailing items to any surface is prohibited.', 3),
+(31, '•	The requestor who damages an item will be contacted by the GSO and must personally go to their office.', 3),
+(32, '•	Notifications will be via PLVRS and email notification.', 4),
+(33, '•	The GSO can be contacted via email notification or telephone number.', 4),
+(34, '•	Food and Beverages are strictly not allowed in the Auditorium and Simulation Rooms.', 4);
 
 -- --------------------------------------------------------
 
@@ -153,12 +230,20 @@ CREATE TABLE `tbl_reservation` (
   `r_event` date DEFAULT NULL,
   `r_startDateAndTime` datetime DEFAULT NULL,
   `r_endDateAndTime` datetime DEFAULT NULL,
-  `r_status` tinyint(1) DEFAULT NULL,
+  `r_status` tinyint(1) DEFAULT 0,
   `r_user_ID` int(10) DEFAULT NULL,
   `r_approved_ID` int(10) DEFAULT NULL,
   `r_room_ID` int(10) NOT NULL,
   `r_letter_file` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_reservation`
+--
+
+INSERT INTO `tbl_reservation` (`r_ID`, `r_event`, `r_startDateAndTime`, `r_endDateAndTime`, `r_status`, `r_user_ID`, `r_approved_ID`, `r_room_ID`, `r_letter_file`) VALUES
+(481, NULL, '2021-10-21 08:00:00', '2021-10-22 09:00:00', 0, 13, 1, 2, 'C:/xampp/htdocs/practice/assets/039e462305c40d47ea99b2e9b4a330e5.jpg'),
+(482, NULL, '2021-10-21 08:00:00', '2021-10-21 09:00:00', 0, 13, 1, 1, 'C:/xampp/htdocs/practice/assets/147340154_148337303789733_1933449064246305894_o.png');
 
 -- --------------------------------------------------------
 
@@ -229,6 +314,12 @@ ALTER TABLE `tbl_approved`
   ADD PRIMARY KEY (`approve_ID`);
 
 --
+-- Indexes for table `tbl_category_policy`
+--
+ALTER TABLE `tbl_category_policy`
+  ADD PRIMARY KEY (`ct_ID`);
+
+--
 -- Indexes for table `tbl_course`
 --
 ALTER TABLE `tbl_course`
@@ -246,6 +337,19 @@ ALTER TABLE `tbl_equipment`
 ALTER TABLE `tbl_equipment_reserved`
   ADD KEY `tbl_equipment_reserved_ibfk_2` (`equipment_ID`),
   ADD KEY `tbl_equipment_reserved_ibfk_1` (`r_ID`);
+
+--
+-- Indexes for table `tbl_notification`
+--
+ALTER TABLE `tbl_notification`
+  ADD PRIMARY KEY (`notificationID`);
+
+--
+-- Indexes for table `tbl_policies`
+--
+ALTER TABLE `tbl_policies`
+  ADD PRIMARY KEY (`p_ID`),
+  ADD KEY `p_ct_ID` (`p_ct_ID`);
 
 --
 -- Indexes for table `tbl_reservation`
@@ -281,6 +385,12 @@ ALTER TABLE `tbl_approved`
   MODIFY `approve_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `tbl_category_policy`
+--
+ALTER TABLE `tbl_category_policy`
+  MODIFY `ct_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `tbl_course`
 --
 ALTER TABLE `tbl_course`
@@ -293,10 +403,22 @@ ALTER TABLE `tbl_equipment`
   MODIFY `equipment_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `tbl_notification`
+--
+ALTER TABLE `tbl_notification`
+  MODIFY `notificationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT for table `tbl_policies`
+--
+ALTER TABLE `tbl_policies`
+  MODIFY `p_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
 -- AUTO_INCREMENT for table `tbl_reservation`
 --
 ALTER TABLE `tbl_reservation`
-  MODIFY `r_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=481;
+  MODIFY `r_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=483;
 
 --
 -- AUTO_INCREMENT for table `tbl_room`
@@ -315,26 +437,10 @@ ALTER TABLE `tbl_user`
 --
 
 --
--- Constraints for table `tbl_equipment_reserved`
+-- Constraints for table `tbl_policies`
 --
-ALTER TABLE `tbl_equipment_reserved`
-  ADD CONSTRAINT `tbl_equipment_reserved_ibfk_1` FOREIGN KEY (`r_ID`) REFERENCES `tbl_reservation` (`r_ID`),
-  ADD CONSTRAINT `tbl_equipment_reserved_ibfk_2` FOREIGN KEY (`equipment_ID`) REFERENCES `tbl_equipment` (`equipment_ID`);
-
---
--- Constraints for table `tbl_reservation`
---
-ALTER TABLE `tbl_reservation`
-  ADD CONSTRAINT `tbl_reservation_ibfk_1` FOREIGN KEY (`r_user_ID`) REFERENCES `tbl_user` (`user_ID`),
-  ADD CONSTRAINT `tbl_reservation_ibfk_2` FOREIGN KEY (`r_approved_ID`) REFERENCES `tbl_approved` (`approve_ID`),
-  ADD CONSTRAINT `tbl_reservation_ibfk_4` FOREIGN KEY (`r_room_ID`) REFERENCES `tbl_room` (`room_ID`);
-
---
--- Constraints for table `tbl_user`
---
-ALTER TABLE `tbl_user`
-  ADD CONSTRAINT `tbl_user_ibfk_1` FOREIGN KEY (`user_course_ID`) REFERENCES `tbl_course` (`course_ID`),
-  ADD CONSTRAINT `tbl_user_ibfk_2` FOREIGN KEY (`isApproved`) REFERENCES `tbl_approved` (`approve_ID`);
+ALTER TABLE `tbl_policies`
+  ADD CONSTRAINT `tbl_policies_ibfk_1` FOREIGN KEY (`p_ct_ID`) REFERENCES `tbl_category_policy` (`ct_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
