@@ -42,6 +42,9 @@ a {
   margin-bottom: 30px;
 
 }
+
+
+
 .header-btn:active{
   color: white;
   background-color: #00f500;
@@ -117,7 +120,7 @@ body {
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   padding: 12px 16px;
   z-index: 1;
-  color: black;
+  color: rgb(48, 46, 46);
 }
 
 .dropdown:hover .dropdown-content {
@@ -140,7 +143,7 @@ ul {
 
 .side-nav{
   float: left;
-  margin: auto;
+  margin-left: -225;
   width: 30%;
 }
 
@@ -152,6 +155,7 @@ ul input {
 
 .content{
   color: black;
+  
 }
 
 .resContent{
@@ -159,15 +163,7 @@ ul input {
 }
 
 
-.big-contents{
-  margin-left: 280px;
-  border-radius: 10px;
-  margin-top: 10px;
-  padding-bottom: 15px;
-  padding-right: 15px;
-  background-color: rgb(202, 199, 199);
-  border: black solid 1px;
-}
+
 
 .btns{
   display: block;
@@ -175,7 +171,7 @@ ul input {
   text-decoration: none;
   border: 1px solid black;
   margin: 0;
-  background-color: #555;
+  background-color: #000C7A;
   cursor:pointer; 
   color: white;
   font-weight: bold;
@@ -183,7 +179,7 @@ ul input {
 }
 
 .active, .btns:hover:not(.active) {
-  background-color: rgb(202, 199, 199);
+  background-color: #f8f8ff;
   color: Black;
 }
 
@@ -231,11 +227,93 @@ ul input {
 
 
 .big-contents{
-  margin-left: 280px;
+  margin-left: 30px;
   border-radius: 10px;
-  margin-top: 10px;
+  margin-top: 35px;
   padding-bottom: 15px;
   padding-right: 15px;
-  background-color: rgb(202, 199, 199);
+  background-color: #f8f8ff;
   border: black solid 1px;
+}
+
+#profContent h4{
+  margin: 0;
+  padding: 0;
+}
+#profContent h3{
+  margin-top: 30;
+  margin-bottom: -10;
+}
+
+#resContent h3{
+  margin: 0;
+  padding: 0;
+}
+
+#resContent h4{
+  margin-top: 5;
+  margin-bottom: 1px;
+}
+
+#resContent input{
+  margin-top: 60px;
+  margin: 0;
+
+}
+
+
+#userProfContent h3{
+  margin: 0;
+  padding: 0;
+}
+
+._edit{
+  margin-top: 15px !important;
+}
+
+
+
+
+#userProfContent input{
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+
+.accepted{
+  color: green;
+  margin-bottom: 40px !important;
+}
+
+.pending{
+    color:orange;
+}
+
+.declined{
+  color:red;
+}
+.cancelled{
+color: gray;
+}
+
+.decline{
+background-color: red;
+}
+
+.userProfContent img{
+float: right;
+vertical-align: middle;
+}
+
+#userResContent h3{
+margin: 0;
+padding: 0;
+}
+
+
+#userResContent input{
+margin-top: 5px;
+margin-left: auto;
+margin-right: 10px;
 }

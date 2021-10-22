@@ -137,25 +137,25 @@
         var div = document.createElement('div')
         div.id = "resContent";
         div.className = "resContent";
-        div.innerHTML = '<h3> Event:' + element.event + '</h3>';
+        div.innerHTML = '<h3 class="_edit"> Event:' + element.event + '</h3>';
         div.innerHTML += '<h3>Date and Time: ' + element.start + " to " + element.end + " </h3><br>";
         div.innerHTML += '<h3>Room:' + element.room;
         //div.innerHTML += '<input type="button" class="header-btn btn" value="Edit" onclick="cancelReservation('+element.eventID+')">';
         // div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">';
         if (element.status != 1) {
             if (element.approval == 1) {
-                div.innerHTML += '<h4> Status:' + "Approved" + '<h4><br>';
-                div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation(' + element.eventID + ')" value="Cancel">'
+                div.innerHTML += '<h4 class="accepted"> Status:' + "Approved" + '<h4><br>';
+                div.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + element.eventID + ')" value="Cancel">'
             } else if (element.approval == 2) {
-                div.innerHTML += '<h4> Status:' + "Pending" + '<h4><br>';
-                div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation(' + element.eventID + ')" value="Cancel">'
+                div.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '<h4><br>';
+                div.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + element.eventID + ')" value="Cancel">'
             } else {
-                div.innerHTML += '<h4> Status:' + "Declined" + '<h4><br>';
-                div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation(' + element.eventID + ')" value="Cancel" disabled>'
+                div.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '<h4><br>';
+                div.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + element.eventID + ')" value="Cancel" disabled>'
             }
         } else {
-            div.innerHTML += '<h4> Status:' + "Cancelled" + '<h4><br>';
-            div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation(' + element.eventID + ')" value="Cancel" disabled>'
+            div.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '<h4><br>';
+            div.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + element.eventID + ')" value="Cancel" disabled>'
         }
         document.getElementById("content").appendChild(motherDiv);
         motherDiv.appendChild(div);
@@ -240,10 +240,11 @@
         var div = document.createElement('div')
         div.id = "userProfContent";
         div.className = "userProfContent";
-        div.innerHTML += '<h3> Name:' + element.firstName + '&nbsp' + element.middleName + '&nbsp' + element.lastName + '</h3>';
+        div.innerHTML += '<img src="Assets/wew.png">';
+        div.innerHTML += '<h3 class="_edit"> Name:' + element.firstName + '&nbsp' + element.middleName + '&nbsp' + element.lastName + '</h3>';
         div.innerHTML += '<h3> Course:' + element.course + '</h3>';
         div.innerHTML += '<input type="button" class="header-btn btn" value="Accept" onclick="AcceptRegistration(' + element.user + ')">';
-        div.innerHTML += '<input type="button" class="header-btn btn" onclick="DeclineRegistration(' + element.user + ')" value="Decline">';
+        div.innerHTML += '<input type="button" class="decline header-btn btn" onclick="DeclineRegistration(' + element.user + ')" value="Decline">';
         document.getElementById("content").appendChild(motherDiv);
         motherDiv.appendChild(div);
     }
@@ -312,10 +313,10 @@
         var div = document.createElement('div')
         div.id = "userResContent";
         div.className = "userResContent";
-        div.innerHTML = '<h3> Event:' + element.event + '</h3>';
+        div.innerHTML = '<h3 class="_edit"> Event:' + element.event + '</h3>';
         div.innerHTML += '<h3>Date and Time: ' + element.start + " to " + element.end + " </h3><br>";
         div.innerHTML += '<input type="button" class="header-btn btn" value="Accept" onclick="AcceptReservation(' + element.eventID +','+ element.userID +')">';
-        div.innerHTML += '<input type="button" class="header-btn btn" onclick="DeclineReservation(' + element.eventID +','+ element.userID + ')" value="Decline">';
+        div.innerHTML += '<input type="button" class="decline header-btn btn" onclick="DeclineReservation(' + element.eventID +','+ element.userID + ')" value="Decline">';
         document.getElementById("content").appendChild(motherDiv);
         motherDiv.appendChild(div);
         return element.eventID;
