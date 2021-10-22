@@ -240,7 +240,7 @@
         var div = document.createElement('div')
         div.id = "userProfContent";
         div.className = "userProfContent";
-        div.innerHTML += '<img src="Assets/wew.png">';
+        div.innerHTML += '<img src="Assets/img.png">';
         div.innerHTML += '<h3 class="_edit"> Name:' + element.firstName + '&nbsp' + element.middleName + '&nbsp' + element.lastName + '</h3>';
         div.innerHTML += '<h3> Course:' + element.course + '</h3>';
         div.innerHTML += '<input type="button" class="header-btn btn" value="Accept" onclick="AcceptRegistration(' + element.user + ')">';
@@ -570,8 +570,8 @@
 
         var tdRemove = document.createElement('td');
         var editBtn = document.createElement('input');
-        editBtn.type = 'button';
-        editBtn.value = "Edit";
+        editBtn.type = 'image'; 
+        editBtn.src = "Assets/c2.png";
         editBtn.className = 'editButton';
         if (type == 'roomID') {
             editBtn.addEventListener('click', function() {
@@ -584,8 +584,8 @@
         }
 
         var removeBtn = document.createElement('input');
-        removeBtn.type = 'button';
-        removeBtn.value = "Remove";
+        removeBtn.type = 'image'; 
+        removeBtn.src = "Assets/c1.png";
         removeBtn.addEventListener('click', function() {
             removeContent(type, tr);
         });
