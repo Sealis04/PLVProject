@@ -128,8 +128,10 @@
     function listEquipmentReserved(list, element, index) {
         if (typeof(document.getElementById('userResContent')) != undefined && document.getElementById('userResContent') != null) {
             var div = document.getElementById('userResContent');
-        } else {
+        } else if(typeof(document.getElementById('resContent')) != undefined && document.getElementById('resContent') != null){
             var div = document.getElementById('resContent');
+        }else{
+            var div = document.getElementById('monitoringForm');
         }
 
 
@@ -214,8 +216,10 @@
         } else if (document.getElementById("currentUserReservation")) {
             document.getElementById("currentUserReservation").remove();
             console.log("di nag wowork yung user reges")
-        } else if (document.getElementById('editList')) {
+        }else if (document.getElementById('editList')) {
             document.getElementById("editList").remove();
+        }else if (document.getElementById('monitoringContent')){
+            document.getElementById("monitoringContent").remove();
         }
     }
 
@@ -592,8 +596,8 @@
 
         var tdRemove = document.createElement('td');
         var editBtn = document.createElement('input');
-        editBtn.type = 'button';
-        editBtn.value = "Edit";
+        editBtn.type = 'image';
+        editBtn.src = "Assets/c2.png";
         editBtn.className = 'editButton';
         if (type == 'roomID') {
             editBtn.addEventListener('click', function() {
@@ -606,8 +610,8 @@
         }
 
         var removeBtn = document.createElement('input');
-        removeBtn.type = 'button';
-        removeBtn.value = "Remove";
+        removeBtn.type = 'image';
+        removeBtn.value = "Assets/c2.png";
         removeBtn.addEventListener('click', function() {
             removeContent(type, tr);
         });
@@ -632,9 +636,6 @@
         tr.appendChild(tdDesc);
         tr.appendChild(tdAvailability);
         tr.appendChild(tdRemove);
-
-
-
 
         //appending of element
     }
@@ -754,7 +755,6 @@
         botDiv.appendChild(botInput);
         mainDiv.appendChild(botDiv);
     }
-
     //Monitoring form
     function monitoringContent() {
         document.getElementById("userReservations").removeAttribute('disabled');
@@ -764,10 +764,8 @@
         editCont.removeAttribute("disabled");
         monitorForm.disabled = false;
         var motherDiv = document.createElement('div');
-        motherDiv.id = "monitoringForm ";
+        motherDiv.id = "monitoringContent";
         document.getElementById('content').appendChild(motherDiv);
-      
-
         //format of monitoring
         callFinishedReservatiions(motherDiv);
     }
@@ -781,8 +779,10 @@
                 } else {
                     var x = [];
                     myObj.forEach(function(element, index) {
-                        finishedReservationContent(div, element, index);
+                        x.push(finishedReservationContent(div, element, index));  
                     });
+                    x.forEach(reservedEquipment);
+                    console.log(x);
                     console.log(myObj);
                 }
             }
@@ -792,6 +792,6 @@
     }
 
     function finishedReservationContent(div,element,index){
-        
+        return element.reservationID
     }
 </script>
