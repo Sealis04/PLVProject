@@ -238,3 +238,36 @@ input:checked + .slider:before {
   margin-right: 2vw;
   margin-top:2vw;
 }
+
+
+
+#EventName input{
+  border-radius: 3px;
+  width: 30%;
+}
+
+#EventDate input{
+  border-radius: 3px;
+}
+
+#PersonReserve input{
+  border-radius: 3px;
+  width: 30%;
+}
+
+#RoomReservation input{
+  border-radius: 3px;
+  width: 30%;
+}
+
+textarea{
+    width: 80%;
+    height: 15%;
+    resize: none;
+    border-radius: 3px;
+}
+
+.block{
+    display:inline-block;
+}
+
