@@ -17,7 +17,8 @@ if ($sql = $conn->prepare($sql_code)) {
                         $policies[] = array(
                             'p_description' => $row['p_description'],
                             'p_category'=>$row2['ct_category_name'],
-                            'p_ID' => $row['p_ct_ID'],
+                            'p_ct_ID' => $row['p_ct_ID'],
+                            'p_ID' => $row['p_ID'],
                         );
                     }
                 }

@@ -16,6 +16,7 @@
     var editContID = editCont.id;
     var equipBtn;
     var roomBtn;
+    var policiesBtn;
     var checker = true;
     var active;
     callUserDetails();
@@ -128,9 +129,9 @@
     function listEquipmentReserved(list, element, index) {
         if (typeof(document.getElementById('userResContent')) != undefined && document.getElementById('userResContent') != null) {
             var div = document.getElementById('userResContent');
-        } else if(typeof(document.getElementById('resContent')) != undefined && document.getElementById('resContent') != null){
+        } else if (typeof(document.getElementById('resContent')) != undefined && document.getElementById('resContent') != null) {
             var div = document.getElementById('resContent');
-        }else{
+        } else {
             var div = document.getElementById('monitoringForm');
         }
 
@@ -216,9 +217,9 @@
         } else if (document.getElementById("currentUserReservation")) {
             document.getElementById("currentUserReservation").remove();
             console.log("di nag wowork yung user reges")
-        }else if (document.getElementById('editList')) {
+        } else if (document.getElementById('editList')) {
             document.getElementById("editList").remove();
-        }else if (document.getElementById('monitoringContent')){
+        } else if (document.getElementById('monitoringContent')) {
             document.getElementById("monitoringContent").remove();
         }
     }
@@ -377,6 +378,7 @@
         active = false;
         equipBtn = true;
         roomBtn = true;
+        policiesBtn = true;
         document.getElementById("userReservations").removeAttribute('disabled');
         document.getElementById("myProfile").removeAttribute("disabled");
         document.getElementById("myReservation").removeAttribute("disabled");
@@ -432,6 +434,9 @@
         polInput.className = 'openBtn';
         polInput.type = 'button';
         polInput.value = '>';
+        polInput.addEventListener('click', function() {
+            loadLists("3", polDiv)
+        })
         motherDiv.appendChild(polDiv);
         polDiv.appendChild(policiesList);
         polDiv.appendChild(polInput);
@@ -473,9 +478,13 @@
                     column4.textContent = "Equipment Availability";
                     div.append(table);
                     equipBtn = false;
-                    listEquip(table, div.id)
+                    listEquip(table, div.id);
                     turnOffOn(div);
                     active = true;
+                    row1.appendChild(column1);
+                    row1.appendChild(column2);
+                    row1.appendChild(column3);
+                    row1.appendChild(column4);
                 } else {
                     equipBtn = true;
                     document.getElementById('equipID').remove();
@@ -497,35 +506,90 @@
                     listRoom(table, div.id);
                     turnOffOn(div);
                     active = true;
+                    row1.appendChild(column1);
+                    row1.appendChild(column2);
+                    row1.appendChild(column3);
+                    row1.appendChild(column4);
                 } else {
                     roomBtn = true;
                     document.getElementById('roomID').remove();
                     active = false;
                 }
                 break;
+            case "3":
+                if (policiesBtn) {
+                    div.id = 'policiesID'
+                    div.style.height = '50%';
+                    table.id = 'roomTbl';
+                    activeDiv.appendChild(div);
+                    column1.textContent = 'Policy Category';
+                    column2.textContent = 'Policies';
+                    div.append(table);
+                    turnOffOn(div);
+                    listPolicies(table,div.id);
+                    policiesBtn = false;
+                    active = true;
+                    row1.appendChild(column1);
+                    row1.appendChild(column2);
+                } else {
+                    policiesBtn = true;
+                    document.getElementById('policiesID').remove();
+                    active = false;
+                }
+                break;
             default:
                 console.log('something seems to be wrong');
         }
-        row1.appendChild(column1);
-        row1.appendChild(column2);
-        row1.appendChild(column3);
-        row1.appendChild(column4);
+
+
         row1.appendChild(column5);
+
     }
 
     function turnOffOn(div) {
         if (active) {
             if (div.id == 'equipID') {
                 roomBtn = true;
-                document.getElementById('roomID').remove();
+                policiesBtn = true;
+                if (typeof(document.getElementById('roomID')) != undefined && document.getElementById('roomID') != null) {
+                    document.getElementById('roomID').remove();
+                } else {
+                    document.getElementById('policiesID').remove();
+                }
             } else if (div.id == 'roomID') {
                 equipBtn = true;
-                document.getElementById('equipID').remove();
+                policiesBtn = true;
+                if (typeof(document.getElementById('equipID')) != undefined && document.getElementById('equipID') != null) {
+                    document.getElementById('equipID').remove();
+                } else {
+                    document.getElementById('policiesID').remove();
+                }
+            } else if (div.id == 'policiesID') {
+                roomBtn = true;
+                equipBtn = true;
+                if (typeof(document.getElementById('roomID')) != undefined && document.getElementById('roomID') != null) {
+                    document.getElementById('roomID').remove();
+                } else {
+                    document.getElementById('equipID').remove();
+                }
             }
             enableButtons();
         }
     }
-
+    function listPolicies(mainDiv,type){
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var myObj = JSON.parse(this.responseText);
+                myObj.forEach(function(element, index) {
+                    generatePolicies(mainDiv, type, element, index)
+                });
+                addButton(type);
+            }
+        }
+        xmlhttp.open("GET", "Request_Policies.php", true);
+        xmlhttp.send();
+    }
     function listEquip(mainDiv, type) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -556,7 +620,42 @@
         xmlhttp.open("GET", "Request_RoomList.php", true);
         xmlhttp.send();
     }
+    //Call for policies instead of generateTabContent()
 
+    function generatePolicies(mainDiv,type,element,index){
+        var tr = document.createElement('tr');
+        tr.id = index;
+        mainDiv.appendChild(tr);
+        var tdName = document.createElement('td');
+        var inputName= document.createElement('input');
+        inputName.disabled = true;
+        inputName.id = 'contentName';
+        tdName.appendChild(inputName);
+
+        var tdDesc = document.createElement('td');
+        var inputDesc = document.createElement('textarea');
+        inputDesc.disabled = true;
+        inputDesc.id = 'contentDesc';
+        tdDesc.appendChild(inputDesc);
+
+        var tdRemove = document.createElement('td');
+        var editBtn = document.createElement('input');
+        editBtn.type = 'image';
+        editBtn.src = "Assets/c2.png";
+        editBtn.className = 'editButton';
+        editBtn.addEventListener('click',function(){
+            editContent(type, tr, this, element.p_ID);
+        })
+        var removeBtn = document.createElement('input');
+        removeBtn.type = 'image';
+        removeBtn.value = "Assets/c2.png";
+        tdRemove.appendChild(editBtn);
+        tdRemove.appendChild(removeBtn);
+
+        tr.appendChild(tdName);
+        tr.appendChild(tdDesc);
+        tr.appendChild(tdRemove);
+        }
     //Called by function that lists all Equipment (should be a foreach kinda thing)
     function generateTabContent(mainDiv, type, element, index) {
         var tr = document.createElement('tr');
@@ -641,6 +740,20 @@
     }
 
     function editContent(type, rowID, value, ID) {
+        if(type == 'policiesID'){
+        var name = rowID.children[0].firstChild;
+        var desc = rowID.children[1].firstChild;
+        if (checker == true) {
+            name.disabled = false;
+            desc.disabled = false;
+            disableButtons(value);
+            checker = false;
+        } else if (checker == false) {
+            name.disabled = true;
+            desc.disabled = true;
+            enableButtons(type, name, ...Array(1),desc,...Array(1), ID, value);
+        }
+        }else{
         var name = rowID.children[0].firstChild;
         var quantity = rowID.children[1].firstChild;
         var desc = rowID.children[2].firstChild;
@@ -659,6 +772,8 @@
             quantity.disabled = true;
             enableButtons(type, name, quantity, desc, availability, ID, value);
         }
+        }
+       
     }
 
 
@@ -687,6 +802,8 @@
             editRoomQuery(name.value, quantity.value, desc.value, availability.checked, ID);
         } else if (type == 'equipID') {
             editEquipQuery(name.value, quantity.value, desc.value, availability.checked, ID);
+        }else if(type == 'policiesID'){
+            editPoliciesQuery(name.value,desc.value,ID);
         }
         checker = true;
         if (typeof(value) != undefined && value != null) {
@@ -700,11 +817,23 @@
         for (a = 0; a < x.length; a++) {
             if (value != x[a]) {
                 x[a].disabled = true;
-                value.value = 'Apply';
+
+                //changeimg of edit to apply
+               // value.value = 'Apply';
             }
         }
     }
-
+    function editPoliciesQuery(name,desc,ID){
+       //editPolicies
+       var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+            }
+        }
+        xmlhttp.open("GET", "Request_EditPolicies.php?name=" + name + '&desc=' + desc + '&ID=' + ID, true);
+        xmlhttp.send();
+    }
     function editEquipQuery(name, quantity, desc, availability, ID) {
         var eAvailability;
         if (availability) {
@@ -741,19 +870,22 @@
 
     //Added at the end once everything is rendered
     function addButton(type) {
-        if (type == 'roomID') {
-            var mainDiv = document.getElementById('roomID');
-        } else if (type == 'equipID') {
-            var mainDiv = document.getElementById('equipID');
-        }
-        var botDiv = document.createElement('div');
-        //bottomDiv elements
-        botDiv.className = "bottom";
-        var botInput = document.createElement('input');
-        botInput.type = 'submit';
-        botInput.value = "Add Equipment";
-        botDiv.appendChild(botInput);
-        mainDiv.appendChild(botDiv);
+        // if (type == 'roomID') {
+        //     console.log(type);
+        //     var mainDiv = document.getElementById('roomID');
+        // } else if (type == 'equipID') {
+        //     var mainDiv = document.getElementById('equipID');
+        // }else if(type == 'policiesID'){
+        //     var mainDiv = document.getElementById('policiesID');
+        // }
+        // var botDiv = document.createElement('div');
+        // //bottomDiv elements
+        // botDiv.className = "bottom";
+        // var botInput = document.createElement('input');
+        // botInput.type = 'submit';
+        // botInput.value = "Add Equipment";
+        // botDiv.appendChild(botInput);
+        // mainDiv.appendChild(botDiv);
     }
     //Monitoring form
     function monitoringContent() {
@@ -769,7 +901,8 @@
         //format of monitoring
         callFinishedReservatiions(motherDiv);
     }
-    function callFinishedReservatiions(div){
+
+    function callFinishedReservatiions(div) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -779,7 +912,7 @@
                 } else {
                     var x = [];
                     myObj.forEach(function(element, index) {
-                        x.push(finishedReservationContent(div, element, index));  
+                        x.push(finishedReservationContent(div, element, index));
                     });
                     x.forEach(reservedEquipment);
                     console.log(x);
@@ -791,7 +924,7 @@
         xmlhttp.send();
     }
 
-    function finishedReservationContent(div,element,index){
+    function finishedReservationContent(div, element, index) {
         return element.reservationID
     }
 </script>
