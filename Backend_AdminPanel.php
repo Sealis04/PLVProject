@@ -520,13 +520,13 @@
                 if (policiesBtn) {
                     div.id = 'policiesID'
                     div.style.height = '50%';
-                    table.id = 'roomTbl';
+                    table.id = 'policiesTbl';
                     activeDiv.appendChild(div);
                     column1.textContent = 'Policy Category';
                     column2.textContent = 'Policies';
                     div.append(table);
                     turnOffOn(div);
-                    listPolicies(table,div.id);
+                    listPolicies(table, div.id);
                     policiesBtn = false;
                     active = true;
                     row1.appendChild(column1);
@@ -576,20 +576,23 @@
             enableButtons();
         }
     }
-    function listPolicies(mainDiv,type){
+
+    function listPolicies(mainDiv, type) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
                 myObj.forEach(function(element, index) {
-                    generatePolicies(mainDiv, type, element, index)
+                    generatePolicies(mainDiv, type, element, index);
                 });
+                var x = document.getElementsByClassName('policyList');
                 addButton(type);
             }
         }
         xmlhttp.open("GET", "Request_Policies.php", true);
         xmlhttp.send();
     }
+
     function listEquip(mainDiv, type) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -602,6 +605,26 @@
             }
         }
         xmlhttp.open("GET", "Request_EquipmentList.php", true);
+        xmlhttp.send();
+    }
+
+    function listCategPolicies(x, add) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var myObj = JSON.parse(this.responseText);
+                if (add) {
+                    myObj.forEach(function(element, index) {
+                        categoryPolicyList(x, element, index)
+                    })
+                } else {
+                    myObj.forEach(function(element, index) {
+                        categoryPolicyList(x, element, index);
+                    })
+                }
+            }
+        }
+        xmlhttp.open("GET", "Request_CategoryPolicies.php", true);
         xmlhttp.send();
     }
 
@@ -611,8 +634,7 @@
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
                 myObj.forEach(function(element, index) {
-                    generateTabContent(mainDiv, type, element, index);
-
+                    var x = generateTabContent(mainDiv, type, element, index);
                 });
                 addButton(type);
             }
@@ -621,116 +643,164 @@
         xmlhttp.send();
     }
     //Call for policies instead of generateTabContent()
+    function categoryPolicyList(list, element, index) {
+        var option = document.createElement('option');
+        option.textContent = element.ct_Name;
+        option.value = element.ct_ID;
+        list.appendChild(option);
+    }
 
-    function generatePolicies(mainDiv,type,element,index){
+    function generatePolicies(mainDiv, type, element, index, add, btn) {
         var tr = document.createElement('tr');
         tr.id = index;
         mainDiv.appendChild(tr);
         var tdName = document.createElement('td');
-        var inputName= document.createElement('input');
-        inputName.disabled = true;
-        inputName.id = 'contentName';
-        tdName.appendChild(inputName);
+
+        // var inputName= document.createElement('input');
+        // inputName.disabled = true;
+        // inputName.id = 'contentName';
+        // inputName.value = element.p_category;
+        // tdName.appendChild(inputName);
 
         var tdDesc = document.createElement('td');
         var inputDesc = document.createElement('textarea');
-        inputDesc.disabled = true;
+
         inputDesc.id = 'contentDesc';
         tdDesc.appendChild(inputDesc);
 
         var tdRemove = document.createElement('td');
         var editBtn = document.createElement('input');
         editBtn.type = 'image';
-        editBtn.src = "Assets/c2.png";
         editBtn.className = 'editButton';
-        editBtn.addEventListener('click',function(){
-            editContent(type, tr, this, element.p_ID);
-        })
         var removeBtn = document.createElement('input');
         removeBtn.type = 'image';
-        removeBtn.value = "Assets/c2.png";
+        if (add) {
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.setAttribute('list', 'policies');
+            tdName.appendChild(input);
+            var listName = document.createElement('datalist');
+            listName.id = 'policies';
+            listName.className = 'policyList'
+            editBtn.src = '';
+            editBtn.placeholder = "Apply";
+            editBtn.addEventListener('click', function() {
+                editContent(type, tr, this, ...Array(1), add, btn)
+            })
+            btn.disabled = true;
+            editBtn.placeholder = 'Save';
+            removeBtn.placeholder = 'Cancel';
+            editBtn.src = '';
+            removeBtn.src = '';
+            checker = false;
+            listCategPolicies(listName, add);
+        } else {
+            var listName = document.createElement('select');
+            listCategPolicies(listName);
+            listName.className = 'policyList';
+
+            for (var a = 0; a < listName.length; a++) {
+                console.log(a);
+            }
+            editBtn.src = "Assets/c2.png";
+            editBtn.addEventListener('click', function() {
+                editContent(type, tr, this, element.p_ID);
+            })
+            removeBtn.value = "Assets/c2.png";
+            inputDesc.disabled = true;
+            inputDesc.value = element.p_description;
+            listName.disabled = true;
+
+        }
         tdRemove.appendChild(editBtn);
         tdRemove.appendChild(removeBtn);
-
+        tdName.appendChild(listName);
         tr.appendChild(tdName);
         tr.appendChild(tdDesc);
         tr.appendChild(tdRemove);
-        }
+    }
     //Called by function that lists all Equipment (should be a foreach kinda thing)
-    function generateTabContent(mainDiv, type, element, index) {
+    function generateTabContent(mainDiv, type, element, index, add, btn) {
+ 
         var tr = document.createElement('tr');
         tr.id = index;
         mainDiv.appendChild(tr);
         var tdName = document.createElement('td');
         var inputName = document.createElement('input');
-        inputName.disabled = true;
         inputName.id = 'contentName';
         tdName.appendChild(inputName);
-
-
         var tdQuantity = document.createElement('td');
         var inputQuantity = document.createElement('input');
         inputQuantity.id = 'contentQuantity';
         tdQuantity.appendChild(inputQuantity);
-        inputQuantity.disabled = true;
-
         var tdDesc = document.createElement('td');
         var inputDesc = document.createElement('input');
-        inputDesc.disabled = true;
         inputDesc.id = 'contentDesc';
         tdDesc.appendChild(inputDesc);
-
         var tdAvailability = document.createElement('td');
         var checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = 'availabilityCB';
-        checkbox.disabled = true;
-        if (element.roomAvailability == 0 || element.equipAvailability == 0) {
-            checkbox.checked = true;
-        } else {
-            checkbox.checked = false;
-        }
-        tdAvailability.appendChild(checkbox);
-
-
         var tdRemove = document.createElement('td');
         var editBtn = document.createElement('input');
         editBtn.type = 'image';
-        editBtn.src = "Assets/c2.png";
         editBtn.className = 'editButton';
-        if (type == 'roomID') {
-            editBtn.addEventListener('click', function() {
-                editContent(type, tr, this, element.roomID);
-            });
-        } else if (type == 'equipID') {
-            editBtn.addEventListener('click', function() {
-                editContent(type, tr, this, element.equipID);
-            });
-        }
-
         var removeBtn = document.createElement('input');
         removeBtn.type = 'image';
-        removeBtn.value = "Assets/c2.png";
-        removeBtn.addEventListener('click', function() {
-            removeContent(type, tr);
-        });
+        tdAvailability.appendChild(checkbox);
+        if (add) {
+            btn.disabled = true;
+            checkbox.disabled = false;
+            editBtn.src = "";
+            removeBtn.src = '';
+            checker = false;
+            checkbox.checked = true;
+            editBtn.addEventListener('click',function(){
+                editContent(type,tr,this,...Array(1),add,btn)
+            })
+        } else {
+            inputName.disabled = true;
+            inputQuantity.disabled = true;
+            inputDesc.disabled = true;
+            checkbox.disabled = true;
+            if (element.roomAvailability == 0 || element.equipAvailability == 0) {
+                checkbox.checked = true;
+            } else {
+                checkbox.checked = false;
+            }
+          
+            switch (type) {
+                case 'roomID':
+                    editBtn.addEventListener('click', function() {
+                        editContent(type, tr, this, element.roomID);
+                    });
+                    inputName.value = element.roomName;
+                    inputDesc.value = element.roomDesc;
+                    inputQuantity.value = element.roomCap;
+                    break;
+                case 'equipID':
+                    editBtn.addEventListener('click', function() {
+                        editContent(type, tr, this, element.equipID);
+                    });
+                    inputQuantity.value = element.equipQty;
+                    inputName.value = element.equipName;
+                    inputDesc.value = element.equipDesc;
+                    break;
+            }
+            editBtn.src = "Assets/c2.png";
+            removeBtn.value = "Assets/c2.png";
+            removeBtn.addEventListener('click', function() {
+                removeContent(type, tr);
+            });
+        }
+
+
+
         tdRemove.appendChild(editBtn);
         tdRemove.appendChild(removeBtn);
-
         tr.appendChild(tdName);
 
-        switch (type) {
-            case 'roomID':
-                inputName.value = element.roomName;
-                inputDesc.value = element.roomDesc;
-                inputQuantity.value = element.roomCap;
-                break;
-            case 'equipID':
-                inputQuantity.value = element.equipQty;
-                inputName.value = element.equipName;
-                inputDesc.value = element.equipDesc;
-                break;
-        }
+
         tr.appendChild(tdQuantity)
         tr.appendChild(tdDesc);
         tr.appendChild(tdAvailability);
@@ -739,41 +809,46 @@
         //appending of element
     }
 
-    function editContent(type, rowID, value, ID) {
-        if(type == 'policiesID'){
-        var name = rowID.children[0].firstChild;
-        var desc = rowID.children[1].firstChild;
-        if (checker == true) {
-            name.disabled = false;
-            desc.disabled = false;
-            disableButtons(value);
-            checker = false;
-        } else if (checker == false) {
-            name.disabled = true;
-            desc.disabled = true;
-            enableButtons(type, name, ...Array(1),desc,...Array(1), ID, value);
+    function editContent(type, rowID, value, ID, add, btn) {
+        if (type == 'policiesID') {
+            var name = rowID.children[0].firstChild;
+            var desc = rowID.children[1].firstChild;
+            if (checker == true) {
+                name.disabled = false;
+                desc.disabled = false;
+                disableButtons(value);
+                checker = false;
+            } else if (checker == false) {
+                if(add){
+                    btn.disabled=false;
+                }
+                desc.disabled = true;
+                enableButtons(type, name, ...Array(1), desc, ...Array(1), ID, value, add);
+            }
+        } else {
+            var name = rowID.children[0].firstChild;
+            var quantity = rowID.children[1].firstChild;
+            var desc = rowID.children[2].firstChild;
+            var availability = rowID.children[3].firstChild;
+            if (checker == true) {
+                name.disabled = false;
+                desc.disabled = false;
+                availability.disabled = false;
+                quantity.disabled = false;
+                disableButtons(value);
+                checker = false;
+            } else if (checker == false) {
+                if(add){
+                    btn.disabled=false;
+                }
+                name.disabled = true;
+                desc.disabled = true;
+                availability.disabled = true;
+                quantity.disabled = true;
+                enableButtons(type, name, quantity, desc, availability, ID, value,add);
+            }
         }
-        }else{
-        var name = rowID.children[0].firstChild;
-        var quantity = rowID.children[1].firstChild;
-        var desc = rowID.children[2].firstChild;
-        var availability = rowID.children[3].firstChild;
-        if (checker == true) {
-            name.disabled = false;
-            desc.disabled = false;
-            availability.disabled = false;
-            quantity.disabled = false;
-            disableButtons(value);
-            checker = false;
-        } else if (checker == false) {
-            name.disabled = true;
-            desc.disabled = true;
-            availability.disabled = true;
-            quantity.disabled = true;
-            enableButtons(type, name, quantity, desc, availability, ID, value);
-        }
-        }
-       
+
     }
 
 
@@ -793,23 +868,32 @@
     }
 
 
-    function enableButtons(type, name, quantity, desc, availability, ID, value) {
+    function enableButtons(type, name, quantity, desc, availability, ID, value, add) {
         var x = document.querySelectorAll('.editButton');
         for (a = 0; a < x.length; a++) {
             x[a].disabled = false;
         }
-        if (type == 'roomID') {
-            editRoomQuery(name.value, quantity.value, desc.value, availability.checked, ID);
-        } else if (type == 'equipID') {
-            editEquipQuery(name.value, quantity.value, desc.value, availability.checked, ID);
-        }else if(type == 'policiesID'){
-            editPoliciesQuery(name.value,desc.value,ID);
+        if (add) {
+            if (type == 'roomID') {
+                addRoomQuery(name.value, quantity.value, desc.value, availability.checked);
+            } else if (type == 'equipID') {
+                addEquipQuery(name.value, quantity.value, desc.value, availability.checked);
+            } else if (type == 'policiesID') {
+                addPoliciesQuery(name.value, desc.value);
+            }
+        } else {
+            if (type == 'roomID') {
+                editRoomQuery(name.value, quantity.value, desc.value, availability.checked, ID);
+            } else if (type == 'equipID') {
+                editEquipQuery(name.value, quantity.value, desc.value, availability.checked, ID);
+            } else if (type == 'policiesID') {
+                editPoliciesQuery(name.value, desc.value, ID);
+            }
+            if (typeof(value) != undefined && value != null) {
+                value.value = "Edit";
+            }
         }
         checker = true;
-        if (typeof(value) != undefined && value != null) {
-            value.value = "Edit";
-        }
-
     }
 
     function disableButtons(value) {
@@ -819,21 +903,66 @@
                 x[a].disabled = true;
 
                 //changeimg of edit to apply
-               // value.value = 'Apply';
+                // value.value = 'Apply';
             }
         }
     }
-    function editPoliciesQuery(name,desc,ID){
-       //editPolicies
-       var xmlhttp = new XMLHttpRequest();
+    function addRoomQuery(name,quantity,desc,availability){
+        var eAvailability;
+        if (availability) {
+            eAvailability = 0;
+        } else if (!availability) {
+            eAvailability = 1;
+        }
+        
+          var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 console.log(this.responseText);
             }
         }
+        xmlhttp.open("GET", "Request_AddRoom.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability , true);
+        xmlhttp.send();
+    }
+
+    function addEquipQuery(name,quantity,desc,availability){
+        var eAvailability;
+        if (availability) {
+            eAvailability = 0;
+        } else if (!availability) {
+            eAvailability = 1;
+        }
+
+          var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+            }
+        }
+        xmlhttp.open("GET", "Request_AddEquip.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability , true);
+        xmlhttp.send();
+    }
+    function addPoliciesQuery(name, desc) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+            }
+        }
+        xmlhttp.open("GET", "Request_AddPolicies.php?name=" + name + '&desc=' + desc, true);
+        xmlhttp.send();
+    }
+
+    function editPoliciesQuery(name, desc, ID) {
+        //editPolicies
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {}
+        }
         xmlhttp.open("GET", "Request_EditPolicies.php?name=" + name + '&desc=' + desc + '&ID=' + ID, true);
         xmlhttp.send();
     }
+
     function editEquipQuery(name, quantity, desc, availability, ID) {
         var eAvailability;
         if (availability) {
@@ -870,24 +999,42 @@
 
     //Added at the end once everything is rendered
     function addButton(type) {
-        // if (type == 'roomID') {
-        //     console.log(type);
-        //     var mainDiv = document.getElementById('roomID');
-        // } else if (type == 'equipID') {
-        //     var mainDiv = document.getElementById('equipID');
-        // }else if(type == 'policiesID'){
-        //     var mainDiv = document.getElementById('policiesID');
-        // }
-        // var botDiv = document.createElement('div');
-        // //bottomDiv elements
-        // botDiv.className = "bottom";
-        // var botInput = document.createElement('input');
-        // botInput.type = 'submit';
-        // botInput.value = "Add Equipment";
-        // botDiv.appendChild(botInput);
-        // mainDiv.appendChild(botDiv);
+        var botDiv = document.createElement('div');
+        botDiv.className = "bottom";
+        var botInput = document.createElement('input');
+        botInput.type = 'submit';
+
+        if (type == 'roomID') {
+            var mainDiv = document.getElementById('roomID');
+            var table = document.getElementById('roomTbl');
+            botInput.addEventListener('click', function() {
+                generateTabContent(table, type, ...Array(2), true, botInput);
+            })
+            botInput.value = "Add Room";
+        } else if (type == 'equipID') {
+        
+            botInput.value = "Add Equipment";
+            var mainDiv = document.getElementById('equipID');
+            var table = document.getElementById('equipmentTbl');
+            console.log(table)
+            botInput.addEventListener('click', function() {
+                generateTabContent(table, type, ...Array(2), true, botInput);
+            })
+        } else if (type == 'policiesID') {
+            botInput.value = "Add Policy";
+            var mainDiv = document.getElementById('policiesID');
+            var table = document.getElementById('policiesTbl');
+            botInput.addEventListener('click', function() {
+                generatePolicies(table, type, ...Array(2), true, botInput);
+            })
+        }
+        //bottomDiv elements
+
+        botDiv.appendChild(botInput);
+        mainDiv.appendChild(botDiv);
     }
     //Monitoring form
+
     function monitoringContent() {
         document.getElementById("userReservations").removeAttribute('disabled');
         document.getElementById("myProfile").removeAttribute("disabled");
