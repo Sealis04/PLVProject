@@ -395,7 +395,7 @@
         equipDiv.id = 'equipPanel';
         equipDiv.className = 'sidePanel';
         var equipInput = document.createElement('input');
-        equipInput.id = 'dropBtn';
+        equipInput.id = 'equipBtn';
         equipInput.className = 'openBtn';
         equipInput.type = "button";
         equipInput.value = ">";
@@ -412,7 +412,7 @@
         roomDiv.id = 'roomPanel';
         roomDiv.className = 'sidePanel';
         var roomInput = document.createElement('input');
-        roomInput.id = 'dropBtn';
+        roomInput.id = 'roomBtn';
         roomInput.className = 'openBtn';
         roomInput.type = "button";
         roomInput.value = ">";
@@ -430,7 +430,7 @@
         polDiv.id = 'polPanel';
         polDiv.className = 'sidePanel';
         var polInput = document.createElement('input');
-        polInput.id = 'dropBtn';
+        polInput.id = 'polBtn';
         polInput.className = 'openBtn';
         polInput.type = 'button';
         polInput.value = '>';
@@ -923,6 +923,11 @@
         }
         xmlhttp.open("GET", "Request_AddRoom.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability , true);
         xmlhttp.send();
+        dropContent();
+        editTabContent();
+        var roomDiv = document.getElementById('roomPanel');
+        var roomBtn = document.getElementById('roomBtn');
+        equipBtn.click('2',equipDiv);
     }
 
     function addEquipQuery(name,quantity,desc,availability){
@@ -939,8 +944,14 @@
                 console.log(this.responseText);
             }
         }
-        xmlhttp.open("GET", "Request_AddEquip.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability , true);
+        xmlhttp.open("GET", "Request_AddEquipment.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability , true);
         xmlhttp.send();
+        dropContent();
+        editTabContent();
+        var equipDiv = document.getElementById('equipPanel');
+        var equipBtn = document.getElementById('equipBtn');
+        equipBtn.click('2',equipDiv);
+        
     }
     function addPoliciesQuery(name, desc) {
         var xmlhttp = new XMLHttpRequest();
@@ -1044,6 +1055,7 @@
         monitorForm.disabled = false;
         var motherDiv = document.createElement('div');
         motherDiv.id = "monitoringContent";
+        motherDiv.className = 'row';
         document.getElementById('content').appendChild(motherDiv);
         //format of monitoring
         callFinishedReservatiions(motherDiv);
@@ -1062,7 +1074,6 @@
                         x.push(finishedReservationContent(div, element, index));
                     });
                     x.forEach(reservedEquipment);
-                    console.log(x);
                     console.log(myObj);
                 }
             }
@@ -1072,6 +1083,31 @@
     }
 
     function finishedReservationContent(div, element, index) {
-        return element.reservationID
+        console.log(element.event);
+        var label = document.createElement('label');
+        label.id = 'eventName';
+        label.className= 'block';
+        label.textContent = 'Event: '+ element.event;
+        var space = document.createElement('br');
+        var date = document.createElement('label');
+        date.id = 'EventDate';
+        date.className= 'block';
+        date.textContent = 'From: ' + element.start +'to' + element.end;
+       
+        var sideDiv = document.createElement('div');
+        sideDiv.className='sidePanel';
+        var sideInput = document.createElement('input');
+        sideInput.className = 'openBtn';
+        sideInput.type = 'button';
+        sideInput.value = '>';
+        sideInput.addEventListener('click',function(){
+            loadContent(element.reservationID)
+        })
+        sideDiv.appendChild(label);
+        sideDiv.appendChild(space);
+        sideDiv.appendChild(date);
+        sideDiv.appendChild(sideInput);
+        div.appendChild(sideDiv);
+        return element.reservationID;
     }
 </script>
