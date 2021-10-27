@@ -16,6 +16,7 @@
                             'middleName' => $row["user_middleName"],
                             'lastName'=>$row["user_lastName"],
                             'course'=>$row['course_name'],
+                            'fileName' => $row['r_letter_file'], 
                         );
                         }
                     }else{

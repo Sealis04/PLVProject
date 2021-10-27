@@ -260,7 +260,7 @@
         var div = document.createElement('div')
         div.id = "userProfContent";
         div.className = "userProfContent";
-        div.innerHTML += '<img src="Assets/wew.png">';
+        div.innerHTML += '<img src="Assets/"'+element.fileName + '>';
         div.innerHTML += '<h3 class="_edit"> Name:' + element.firstName + '&nbsp' + element.middleName + '&nbsp' + element.lastName + '</h3>';
         div.innerHTML += '<h3> Course:' + element.course + '</h3>';
         div.innerHTML += '<input type="button" class="header-btn btn" value="Accept" onclick="AcceptRegistration(' + element.user + ')">';
@@ -925,6 +925,43 @@
     }
 
     function finishedReservationContent(div, element, index) {
-        return element.reservationID
+        console.log(element.event);
+        var label = document.createElement('label');
+        label.id = 'eventName';
+        label.className= 'block';
+        label.textContent = 'Event: '+ element.event;
+        var space = document.createElement('br');
+        var date = document.createElement('label');
+        date.id = 'EventDate';
+        date.className= 'block';
+        date.textContent = 'From: ' + element.start +'to' + element.end;
+       
+        var sideDiv = document.createElement('div');
+        sideDiv.className='sidePanel';
+        var sideInput = document.createElement('input');
+        sideInput.className = 'openBtn';
+        sideInput.type = 'button';
+        sideInput.value = '>';
+        sideInput.addEventListener('click',function(){
+            loadContent(element.reservationID,div)
+        })
+        sideDiv.appendChild(label);
+        sideDiv.appendChild(space);
+        sideDiv.appendChild(date);
+        sideDiv.appendChild(sideInput);
+        div.appendChild(sideDiv);
+        return element.reservationID;
     }
+
+    function loadContent(ID,div){
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var myObj = JSON.parse(this.responseText);
+            }
+        }
+        xmlhttp.open("GET", "Request_SpecificReservation.php?ID="+ID, true);
+        xmlhttp.send();
+    }
+    
 </script>
