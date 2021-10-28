@@ -3,7 +3,7 @@
 $reservation = array();
 include "db_connection.php";
 $conn = OpenCon();
-$sql_code = "SELECT * FROM tbl_reservation WHERE r_approved_ID = 1 AND r_status = 0 AND r_endDateAndTime < CURRENT_DATE();";
+$sql_code = "SELECT * FROM tbl_reservation WHERE r_approved_ID = 1 AND r_status = 0 AND r_reviewed = 0 AND r_endDateAndTime < CURRENT_DATE();";
 if ($sql = $conn->prepare($sql_code)) {
     if ($sql->execute()) {
         $result = $sql->get_result();

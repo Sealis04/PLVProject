@@ -1,4 +1,5 @@
 <?php
+//returns array of equipment \
 $categories = array();
 include "db_connection.php";
 $conn=OpenCon();
