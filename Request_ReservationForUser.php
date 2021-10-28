@@ -5,7 +5,7 @@ $reservation = array();
 $equipment = array();
 include "db_connection.php";
 $conn = OpenCon();
-$sql_code = "SELECT * FROM tbl_reservation WHERE r_user_ID = ? and r_startDateAndTime > CURRENT_DATE();";
+$sql_code = "SELECT * FROM tbl_reservation WHERE r_user_ID = ? and r_status = 0 AND r_startDateAndTime > CURRENT_DATE();";
 if ($sql = $conn->prepare($sql_code)) {
     $sql->bind_param("i", $r_user);
     $r_user = $userID;
@@ -25,7 +25,8 @@ if ($sql = $conn->prepare($sql_code)) {
                             'approval' => $row['r_approved_ID'],
                             'reservationID' => $row["r_ID"],
                             'status' => $row['r_status'],
-                            'room' => $row2['room_name']
+                            'room' => $row2['room_name'],
+                            'userID'=>$row['r_user_ID']
                         ); 
                     }
                 }
