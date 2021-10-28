@@ -41,13 +41,13 @@ $email = $password=$userID="";
         }
         //Email Password Match
         if(empty($emailErr) && empty($passwordErr)){
-            $sql_code = "Select * FROM tbl_user WHERE user_email= ?";
+            $sql_code = "SELECT * FROM tbl_user WHERE user_email= ?";
             if($sql = $conn->prepare($sql_code)){
                 $sql->bind_param("s", $email);
                 if($sql ->execute()){
                     $sql->store_result();
                     if($sql->num_rows ==1){
-                        $sql->bind_result($userID,$email,$password_db,$userfn,$usermn,$userln,$usercn,$usercourse,$userIDImage,$isAdmin,$isApproved);
+                        $sql->bind_result($userID,$email,$password_db,$userfn,$usermn,$userln,$usercn,$usercourse,$userIDImage,$isAdmin,$isApproved,$isMarked);
                         if($sql->fetch()){
                             if($isApproved == 1){
                                 if(password_verify($password,$password_db)){
@@ -61,6 +61,7 @@ $email = $password=$userID="";
                                     $_SESSION["isAdmin"]=$isAdmin;
                                     $_SESSION["isApproved"]=$isApproved;
                                     $_SESSION["password"]=$password_db;
+                                    $_SESSION['isMarked'] = $isMarked;
                                     header("location: Window_HomePage.php");
                                 }else{
                                     $passwordErr="Invalid password";  

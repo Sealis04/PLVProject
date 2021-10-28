@@ -1,7 +1,5 @@
 <?php
-//returns array of reservation \
 $sid = $_REQUEST["var"];
-$reservation = array();
 session_start();
 include "db_connection.php";
 include 'Backend_SendEmail.php';
