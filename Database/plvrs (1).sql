@@ -3,15 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
-<<<<<<< HEAD:Database/plvrs3.sql
--- Generation Time: Oct 24, 2021 at 12:15 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.3
-=======
--- Generation Time: Oct 28, 2021 at 09:08 AM
+-- Generation Time: Oct 29, 2021 at 05:09 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.5
->>>>>>> main:Database/plvrs.sql
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -68,14 +62,10 @@ INSERT INTO `tbl_category_policy` (`ct_ID`, `ct_category_name`) VALUES
 (3, 'Declined Reservation'),
 (4, 'Inventory'),
 (5, 'Important'),
-<<<<<<< HEAD:Database/plvrs3.sql
-(6, 'Restrictions');
-=======
 (6, 'Restrictions'),
 (7, 'Inventory'),
 (8, 'mnbvcmh'),
 (9, '');
->>>>>>> main:Database/plvrs.sql
 
 -- --------------------------------------------------------
 
@@ -166,7 +156,19 @@ INSERT INTO `tbl_equipment_reserved` (`r_ID`, `equipment_ID`, `Qty`) VALUES
 (481, 1, 14),
 (481, 2, 13),
 (482, NULL, NULL),
-(483, NULL, NULL);
+(483, NULL, NULL),
+(484, NULL, NULL),
+(485, NULL, NULL),
+(486, NULL, NULL),
+(487, NULL, NULL),
+(488, NULL, NULL),
+(489, NULL, NULL),
+(490, NULL, NULL),
+(491, NULL, NULL),
+(492, NULL, NULL),
+(493, NULL, NULL),
+(494, NULL, NULL),
+(495, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -177,18 +179,24 @@ INSERT INTO `tbl_equipment_reserved` (`r_ID`, `equipment_ID`, `Qty`) VALUES
 CREATE TABLE `tbl_notification` (
   `notificationID` int(11) NOT NULL,
   `forUserID` int(11) NOT NULL,
+  `isUser` tinyint(11) NOT NULL,
   `isRead` tinyint(1) NOT NULL DEFAULT 0,
   `time` datetime NOT NULL DEFAULT current_timestamp(),
-  `decision` tinyint(1) NOT NULL
+  `decision` tinyint(1) NOT NULL,
+  `r_ID` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_notification`
 --
 
-INSERT INTO `tbl_notification` (`notificationID`, `forUserID`, `isRead`, `time`, `decision`) VALUES
-(22, 13, 1, '2021-10-18 20:16:38', 1),
-(23, 13, 1, '2021-10-18 20:54:58', 1);
+INSERT INTO `tbl_notification` (`notificationID`, `forUserID`, `isUser`, `isRead`, `time`, `decision`, `r_ID`) VALUES
+(22, 13, 0, 0, '2021-10-18 20:16:38', 1, 481),
+(23, 13, 1, 0, '2021-10-18 20:54:58', 1, 481),
+(24, 15, 1, 0, '2021-10-28 16:52:12', 1, 481),
+(25, 13, 1, 0, '2021-10-28 21:13:04', 3, 481),
+(38, 13, 1, 0, '2021-10-29 23:08:23', 1, 488),
+(39, 13, 0, 0, '2021-10-29 23:08:53', 2, 495);
 
 -- --------------------------------------------------------
 
@@ -212,16 +220,12 @@ INSERT INTO `tbl_policies` (`p_ID`, `p_description`, `p_ct_ID`) VALUES
 (3, 'Requested reservation that are made 2 days before the event, exceeds the maximum capacity of a room, unavailable rooms in PLVRS, and coinciding schedule with other reservations will be declined by the GSO.', 3),
 (4, 'The rooms that can be reserved are: Lecture Room 301, 302, 303, 401, 402, and 403. Pre-school Simulation Room, Business Administration Simulation Room, and Auditorium. The equipment that can be borrowed are: projectors, 2 projector screens, 2 mobile speakers with microphones each, and 1500 monobloc ', 4),
 (5, 'The equipment borrowed must returned directly to the office within the day after using it. If there are damages on a borrowed room or equipment, the requestor will be contacted by the GSO and must personally go to their office.', 5),
-<<<<<<< HEAD:Database/plvrs3.sql
-(6, 'Requestor cannot borrow an equipment if there is no room reserved. Auditorium only allow 1 reservation per day. One projector is allowed to borrow per Lecture and Simulation Room. ', 6);
-=======
 (6, 'Requestor cannot borrow an equipment if there is no room reserved. Auditorium only allow 1 reservation per day. One projector is allowed to borrow per Lecture and Simulation Room. ', 6),
 (35, 'xcvxcvxcvxcvxcv', 7),
 (36, 'vbmg', 5),
 (37, '6ulryufl', 8),
 (38, '', 9),
 (39, '', 1);
->>>>>>> main:Database/plvrs.sql
 
 -- --------------------------------------------------------
 
@@ -248,9 +252,21 @@ CREATE TABLE `tbl_reservation` (
 --
 
 INSERT INTO `tbl_reservation` (`r_ID`, `r_event`, `r_startDateAndTime`, `r_endDateAndTime`, `r_status`, `r_user_ID`, `r_approved_ID`, `r_room_ID`, `r_reviewed`, `r_letter_file`, `r_Remarks`) VALUES
-(481, 'asdasd', '2021-10-21 08:00:00', '2021-10-22 09:00:00', 0, 13, 1, 2, 0, 'C:/xampp/htdocs/practice/assets/039e462305c40d47ea99b2e9b4a330e5.jpg', ''),
+(481, 'asdasd', '2021-10-19 08:00:00', '2021-10-19 09:00:00', 0, 13, 1, 2, 0, 'C:/xampp/htdocs/practice/assets/039e462305c40d47ea99b2e9b4a330e5.jpg', 'asd'),
 (482, 'Something', '2021-10-21 08:00:00', '2021-10-21 09:00:00', 0, 13, 1, 1, 0, 'C:/xampp/htdocs/practice/assets/147340154_148337303789733_1933449064246305894_o.png', ''),
-(483, NULL, '2021-10-30 08:00:00', '2021-10-30 09:00:00', 0, 13, 2, 1, 0, 'C:/xampp/htdocs/practice/assets/03.png', '');
+(483, NULL, '2021-10-30 08:00:00', '2021-10-30 09:00:00', 0, 13, 1, 1, 0, 'C:/xampp/htdocs/practice/assets/03.png', ''),
+(484, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 0, 2, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
+(485, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 1, 3, 0, 'C:/xampp/htdocs/practice/assets/Carpal tunnel exercise.jpg', ''),
+(486, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 1, 4, 0, 'C:/xampp/htdocs/practice/assets/AP-hd_leftyhandcream_210624.jpg', ''),
+(487, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 1, 5, 0, 'C:/xampp/htdocs/practice/assets/Carpal tunnel exercise.jpg', ''),
+(488, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 1, 6, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
+(489, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 7, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
+(490, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 8, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
+(491, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 9, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
+(492, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 10, 0, 'C:/xampp/htdocs/practice/assets/Carpal tunnel exercise.jpg', ''),
+(493, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 11, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
+(494, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 12, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
+(495, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 1, 0, 'C:/xampp/htdocs/practice/assets/download.png', '');
 
 -- --------------------------------------------------------
 
@@ -316,7 +332,7 @@ CREATE TABLE `tbl_user` (
 INSERT INTO `tbl_user` (`user_ID`, `user_email`, `user_password`, `user_firstName`, `user_middleName`, `user_lastName`, `user_contactNumber`, `user_course_ID`, `PLV_ID`, `isAdmin`, `isApproved`, `r_marked`) VALUES
 (13, 'admin1@gmail.com', '$2y$10$AWJtx8Od.kq/3XCnnPGO0.KYknstQL8COfywaUz7FswJ7N5B/5o1K', 'Bryan', 'Darilag', 'Garcia', '9399465176', 1, 'C:/xampp/htdocs/practice/assets/plvrs (4).sql', 1, 1, 0),
 (14, 'user1@gmail.com', '$2y$10$ZLiYnQmADleMdiI.UO5EWesok.d4WqwYdH3kqo4sPanAQu.LvHUpG', 'Bryan', 'Darilag', 'Garcia', '9399465176', 1, 'C:/xampp/htdocs/practice/assets/plvrs (4).sql', 0, 1, 0),
-(15, 'user2@gmail.com', '$2y$10$ej/E2MuY.7KzwB6LbAhlquQh4Sp6sUWs6dEONhlNjiEflrvRAhqFu', 'Juan', 'Pedro', 'Penduko', '9098898899', 1, 'C:/xampp/htdocs/practice/assets/plvrs (4).sql', 0, 2, 0);
+(15, 'user2@gmail.com', '$2y$10$ej/E2MuY.7KzwB6LbAhlquQh4Sp6sUWs6dEONhlNjiEflrvRAhqFu', 'Juan', 'Pedro', 'Penduko', '9098898899', 1, 'C:/xampp/htdocs/practice/assets/plvrs (4).sql', 0, 3, 0);
 
 --
 -- Indexes for dumped tables
@@ -357,7 +373,8 @@ ALTER TABLE `tbl_equipment_reserved`
 -- Indexes for table `tbl_notification`
 --
 ALTER TABLE `tbl_notification`
-  ADD PRIMARY KEY (`notificationID`);
+  ADD PRIMARY KEY (`notificationID`),
+  ADD KEY `r_ConstraintID` (`r_ID`);
 
 --
 -- Indexes for table `tbl_policies`
@@ -403,11 +420,7 @@ ALTER TABLE `tbl_approved`
 -- AUTO_INCREMENT for table `tbl_category_policy`
 --
 ALTER TABLE `tbl_category_policy`
-<<<<<<< HEAD:Database/plvrs3.sql
-  MODIFY `ct_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-=======
   MODIFY `ct_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
->>>>>>> main:Database/plvrs.sql
 
 --
 -- AUTO_INCREMENT for table `tbl_course`
@@ -425,7 +438,7 @@ ALTER TABLE `tbl_equipment`
 -- AUTO_INCREMENT for table `tbl_notification`
 --
 ALTER TABLE `tbl_notification`
-  MODIFY `notificationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `notificationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `tbl_policies`
@@ -437,7 +450,7 @@ ALTER TABLE `tbl_policies`
 -- AUTO_INCREMENT for table `tbl_reservation`
 --
 ALTER TABLE `tbl_reservation`
-  MODIFY `r_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=484;
+  MODIFY `r_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=496;
 
 --
 -- AUTO_INCREMENT for table `tbl_room`
@@ -454,6 +467,12 @@ ALTER TABLE `tbl_user`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `tbl_notification`
+--
+ALTER TABLE `tbl_notification`
+  ADD CONSTRAINT `r_ConstraintID` FOREIGN KEY (`r_ID`) REFERENCES `tbl_reservation` (`r_ID`);
 
 --
 -- Constraints for table `tbl_policies`

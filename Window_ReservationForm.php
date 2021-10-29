@@ -13,6 +13,7 @@
     <?php
     include "db_connection.php";
     include "Backend_GetAllReservations.php";
+    include "Request_storeNotification.php";
     $allReservations = json_decode(getAll());
     session_start();
     $conn= OpenCon();
@@ -75,6 +76,8 @@
             if($sql = $conn->prepare($sql_code)){
                 $sql->bind_param("iiisss",$userID,$roomID,$approveID,$targetDirectory,$start,$end);
                                     if($sql->execute()){
+                                        $lastID = $conn->insert_id;
+                                        notification($userID,2,0,$lastID);
                                         if(!empty($toStore)){
                                             foreach($toStore as $values){
                                                 $eID = $values['ID'];
