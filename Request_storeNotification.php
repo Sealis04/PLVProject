@@ -1,9 +1,9 @@
 <?php
-function notification($userID,$decision){
+function notification($userID,$decision,$type){
     $conn = OpenCon();    
-    $sql_code = 'INSERT INTO `tbl_notification`(`forUserID`,`decision`) VALUES (?,?)';
+    $sql_code = 'INSERT INTO `tbl_notification`(`forUserID`,`decision`,`type`) VALUES (?,?,?)';
     if($sql = $conn->prepare($sql_code)){
-        $sql->bind_param('ii',$userID,$decision);
+        $sql->bind_param('iii',$userID,$decision,$type);
         $sql->execute();
     }
     $conn ->close();
