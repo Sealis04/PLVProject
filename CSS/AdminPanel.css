@@ -158,13 +158,6 @@ ul input {
   
 }
 
-.resContent{
-  padding-left: 10%;
-}
-
-
-
-
 .btns{
   display: block;
   padding: 20px;
@@ -221,11 +214,6 @@ ul input {
   background-color: #444;
 }
 
-.resContent{
-  padding-left: 10%;
-}
-
-
 .big-contents{
   margin-left: 30px;
   border-radius: 10px;
@@ -234,6 +222,7 @@ ul input {
   padding-right: 15px;
   background-color: #f8f8ff;
   border: black solid 1px;
+  padding-left: 100px;
 }
 
 #profContent h4{
@@ -271,15 +260,11 @@ ul input {
   margin-top: 15px !important;
 }
 
-
-
-
 #userProfContent input{
   margin-top: 30px;
   margin-left: auto;
   margin-right: 10px;
 }
-
 
 .accepted{
   color: green;
@@ -344,3 +329,75 @@ border-radius: 5px;
  float: right;
  vertical-align: middle;
  }
+
+ .pendingDiv h2{
+   font-size: 16;
+ }
+
+/*User Reservation*/
+ .finishedDiv h2{
+   font-size: 16;
+   margin-top: 50px;
+   margin-bottom: 40px;
+ }
+
+ /*User Reservation Outter Button 1*/
+.pendingDiv .openBtn{
+  margin-top: -38px;
+  margin-right: 10px;
+}
+
+/*User Reservation Outter Button 2*/
+.finishedDiv .openBtn{
+  margin-top: -68px;
+  margin-right: 10px;
+}
+/*Event Name of Pending Reservation*/
+._edit{
+  margin-top: -30px;
+}
+/*Event Date of Pending Reservation*/
+.pendingDiv .block{
+  margin-top: -25px;
+  margin-bottom: 40px;
+}
+
+/*Event Date of Finished and Reviewed Reservation*/
+.finishedDiv #Eventdate{
+  margin-top: -30px;
+}
+
+/*Finished and Reviewed Reservation Inner Button*/
+.finishedDiv .sidepanel .openBtn{
+  margin-right: 60px;
+}
+/*Pending Reservation Inner Button*/
+.pendingDiv .userResContent .openBtn{
+  margin-top: -80px;
+}
+
+.subclassname h3{
+  font-size: 20;
+  margin-left: 10px;
+  margin-top: -10px;
+}
+
+/*Monitoring Form*/
+.content .row .openBtn{
+  margin-right: 15px;
+  margin-top: -60px;
+}
+
+/*Monitoring Form Content*/
+.content .row h3{
+  font-size: 20;
+}
+
+.content .row #EventDate{
+  margin-top: -20px;
+}
+
+/**/
+#remarksArea{
+  display: block;
+}
