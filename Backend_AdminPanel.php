@@ -4,16 +4,25 @@
     var btns = header.getElementsByClassName("btns");
     var profile = document.getElementById("myProfile");
     var reservation = document.getElementById("myReservation");
-    var userProf = document.getElementById("userProfile");
-    var userRes = document.getElementById("userReservations");
-    var editCont = document.getElementById('editContents');
-    var monitorForm = document.getElementById('monitoringForm');
-    var monitoringID = monitorForm.id;
+    var isAdmin = <?php echo $_SESSION['isAdmin'] ?>;
+    <?php
+    if ($_SESSION['isAdmin'] == 1) {
+    ?>
+        var userProf = document.getElementById("userProfile");
+        var userRes = document.getElementById("userReservations");
+        var editCont = document.getElementById('editContents');
+        var monitorForm = document.getElementById('monitoringForm');
+        var userProfID = userProf.id;
+        var userResID = userRes.id;
+        var editContID = editCont.id;
+        var monitoringID = monitorForm.id;
+    <?php
+    }
+    ?>
     var profileID = profile.id;
     var reservationID = reservation.id;
-    var userProfID = userProf.id;
-    var userResID = userRes.id;
-    var editContID = editCont.id;
+
+
     var equipBtn;
     var roomBtn;
     var policiesBtn;
@@ -31,34 +40,61 @@
             var current = document.getElementsByClassName("active");
             current[0].className = current[0].className.replace(" active", "");
             this.className += " active";
-            if (current[0].id == profileID) {
-               await dropContent();
-                callUserDetails();
-            } else if (current[0].id == reservationID) {
-                await   dropContent();
-                callReservationDetails();
-            } else if (current[0].id == userProfID) {
-                await   dropContent();
-                regList()
-            } else if (current[0].id == userResID) {
-                await   dropContent();
-                resList();
-            } else if (current[0].id == editContID) {
-                await   dropContent();
-                editTabContent();
-            } else if (current[0].id == monitoringID) {
-                await  dropContent();
-                monitoringContent();
+            if (isAdmin == 0) {
+                if (current[0].id == profileID) {
+                    await dropContent();
+                    callUserDetails();
+                    disableAndRemove(profile)
+                } else if (current[0].id == reservationID) {
+                    await dropContent();
+                    callReservationDetails();
+                    disableAndRemove(reservation)
+                }
+            } else {
+                if (current[0].id == profileID) {
+                    await dropContent();
+                    callUserDetails();
+                    disableAndRemove(profile);
+                } else if (current[0].id == reservationID) {
+                    await dropContent();
+                    callReservationDetails();
+                    disableAndRemove(reservation)
+                } else if (current[0].id == userProfID) {
+                    await dropContent();
+                    regList();
+                    disableAndRemove(userProf)
+                } else if (current[0].id == userResID) {
+                    await dropContent();
+                    resList();
+                    disableAndRemove(userRes)
+                } else if (current[0].id == editContID) {
+                    await dropContent();
+                    editTabContent();
+                    disableAndRemove(editCont)
+                } else if (current[0].id == monitoringID) {
+                    await dropContent();
+                    monitoringContent();
+                    disableAndRemove(monitorForm);
+                }
             }
+
+
         })
     }
 
+    function disableAndRemove(id) {
+        document.getElementById(id.id).disabled = true;
+        var rest = document.querySelectorAll('.tab');
+        for (a = 0; a < rest.length; a++) {
+            if (rest[a].id != id.id) {
+                console.log(rest[a].id);
+                console.log('asd');
+                rest[a].removeAttribute('disabled');
+            }
+        }
+    }
+
     function callUserDetails() {
-        profile.disabled = "true";
-        reservation.removeAttribute("disabled");
-        userProf.removeAttribute("disabled");
-        document.getElementById("monitoringForm").removeAttribute("disabled");
-        userRes.removeAttribute("disabled");
         var asd = <?php echo $_SESSION["usercourse"]; ?>;
         var fn = "<?php echo $_SESSION["fullName"]; ?>";
         var cn = <?php echo $_SESSION["usercontactnumber"]; ?>;
@@ -85,12 +121,6 @@
 
     function callReservationDetails() {
         userID = <?php echo $_SESSION["userID"] ?>;
-        reservation.disabled = "true";
-        profile.removeAttribute("disabled");
-        userProf.removeAttribute("disabled");
-        userRes.removeAttribute("disabled");
-        editCont.removeAttribute("disabled");
-        document.getElementById("monitoringForm").removeAttribute("disabled");
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -115,7 +145,7 @@
         xmlhttp.send();
     }
 
-    function reservedEquipment(resID, mainDiv, userID, forUser, status, approval,typePending) {
+    function reservedEquipment(resID, mainDiv, userID, forUser, status, approval, typePending) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -130,7 +160,7 @@
                 myObj.forEach(function(element, index) {
                     listEquipmentReserved(mainDiv, element, index);
                 });
-                    if (forUser) {
+                if (forUser) {
                     if (status != 1) {
                         if (approval == 1) {
                             mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Approved" + '<h4><br>';
@@ -146,15 +176,15 @@
                         mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Cancelled" + '<h4><br>';
                         mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>'
                     }
-                } 
-                if(typePending){
+                }
+                if (typePending) {
                     mainDiv.innerHTML += '<input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ')">'
                     mainDiv.innerHTML += '<input type="button" class = "header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ')">'
 
                 }
-                   
-                
-                
+
+
+
 
             }
         }
@@ -235,12 +265,6 @@
     // USER REGISTRATION
     function regList() {
         //must need to added
-        document.getElementById("userProfile").disabled = "true";
-        document.getElementById("myProfile").removeAttribute("disabled");
-        document.getElementById("myReservation").removeAttribute("disabled");
-        document.getElementById("userReservations").removeAttribute("disabled");
-        document.getElementById("monitoringForm").removeAttribute("disabled");
-        editCont.removeAttribute("disabled");
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -311,15 +335,9 @@
         check = false;
         pending = false;
         finished = false;
-        document.getElementById("userReservations").disabled = "true";
-        document.getElementById("myProfile").removeAttribute("disabled");
-        document.getElementById("myReservation").removeAttribute("disabled");
-        document.getElementById("userProfile").removeAttribute("disabled");
-        document.getElementById("monitoringForm").removeAttribute("disabled");
-        editCont.removeAttribute("disabled");
         var bigcontent = document.getElementById('content');
         var biggestDiv = document.createElement('div');
-        biggestDiv.id ='biggestDiv';
+        biggestDiv.id = 'biggestDiv';
         var bigDiv = document.createElement('div');
         bigDiv.className = 'pendingDiv';
         bigDiv.id = 'bigPendingDiv';
@@ -366,7 +384,7 @@
                     check = false;
                     finished = false;
                 } else {
-                    
+
                     document.getElementById('resList').remove();
                     loadPendingReservation(div);
                     check = true;
@@ -412,7 +430,7 @@
                     motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                 } else {
                     myObj.forEach(function(element, index) {
-                        userReservationContent(motherDiv,...Array(1), element, index);
+                        userReservationContent(motherDiv, ...Array(1), element, index);
                     });
                 }
             }
@@ -422,7 +440,7 @@
         bigDiv.appendChild(motherDiv);
     }
 
-    function loadPendingReservation(bigDiv,typePending) {
+    function loadPendingReservation(bigDiv, typePending) {
         var typePending = true;
         var motherDiv = document.createElement('div');
         motherDiv.className = "userResContent";
@@ -435,7 +453,7 @@
                     motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                 } else {
                     myObj.forEach(function(element, index) {
-                        userReservationContent(motherDiv, typePending,element, index);
+                        userReservationContent(motherDiv, typePending, element, index);
                     });
                 }
             }
@@ -465,8 +483,8 @@
         sideInput.type = 'button';
         sideInput.value = '>';
         sideInput.addEventListener('click', function() {
-            loadResContent(element.reservationID, fullName, element.roomID, element.userID,typePending);
-           // loadImage(element.imgLetter, mainDiv);
+            loadResContent(element.reservationID, fullName, element.roomID, element.userID, typePending);
+            // loadImage(element.imgLetter, mainDiv);
         })
         sideDiv.appendChild(label);
         sideDiv.appendChild(space);
@@ -492,7 +510,7 @@
         mainDiv.appendChild(image);
     }
 
-    function loadResContent(resID, fullName, roomID, userID,typePending) {
+    function loadResContent(resID, fullName, roomID, userID, typePending) {
         if (userResClick) {
             console.log(activeID);
             console.log(resID);
@@ -502,19 +520,19 @@
                 userResClick = false;
             } else {
                 document.getElementById('subContents').remove();
-                loadRestofResContent(resID, fullName, roomID, userID,typePending);
+                loadRestofResContent(resID, fullName, roomID, userID, typePending);
                 activeID = resID;
                 userResClick = true;
-                
+
             }
         } else {
-            loadRestofResContent(resID, fullName, roomID, userID,typePending);
+            loadRestofResContent(resID, fullName, roomID, userID, typePending);
             userResClick = true;
             activeID = resID;
         }
     }
 
-    function loadRestofResContent(resID, fullName, roomID, userID,typePending) {
+    function loadRestofResContent(resID, fullName, roomID, userID, typePending) {
         var sideDiv = document.getElementById('monitor' + resID);
         var mainDiv = document.createElement('div');
         mainDiv.id = 'subContents';
@@ -525,7 +543,7 @@
                 const myObj = await JSON.parse(this.responseText);
                 mainDiv.innerHTML = await '<h3> Full Name:' + fullName + '</h3>';
                 mainDiv.innerHTML += await '<h3> Room Name:' + myObj.roomName + '</h3>';
-                reservedEquipment(resID, mainDiv, userID,...Array(3),typePending);
+                reservedEquipment(resID, mainDiv, userID, ...Array(3), typePending);
             }
 
         }
@@ -566,12 +584,6 @@
         equipBtn = true;
         roomBtn = true;
         policiesBtn = true;
-        document.getElementById("userReservations").removeAttribute('disabled');
-        document.getElementById("myProfile").removeAttribute("disabled");
-        document.getElementById("myReservation").removeAttribute("disabled");
-        document.getElementById("userProfile").removeAttribute("disabled");
-        document.getElementById("monitoringForm").removeAttribute("disabled");
-        editCont.disabled = true;
         var motherDiv = document.createElement('div');
         motherDiv.id = "editList";
         document.getElementById('content').appendChild(motherDiv);
@@ -1235,12 +1247,6 @@
     //Monitoring form
 
     function monitoringContent() {
-        document.getElementById("userReservations").removeAttribute('disabled');
-        document.getElementById("myProfile").removeAttribute("disabled");
-        document.getElementById("myReservation").removeAttribute("disabled");
-        document.getElementById("userProfile").removeAttribute("disabled");
-        editCont.removeAttribute("disabled");
-        monitorForm.disabled = true;
         var motherDiv = document.createElement('div');
         motherDiv.id = "monitoringContent";
         motherDiv.className = 'row';

@@ -3,9 +3,15 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+<<<<<<< HEAD:Database/plvrs3.sql
+-- Generation Time: Oct 24, 2021 at 12:15 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.3
+=======
 -- Generation Time: Oct 28, 2021 at 09:08 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.5
+>>>>>>> main:Database/plvrs.sql
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -62,10 +68,14 @@ INSERT INTO `tbl_category_policy` (`ct_ID`, `ct_category_name`) VALUES
 (3, 'Declined Reservation'),
 (4, 'Inventory'),
 (5, 'Important'),
+<<<<<<< HEAD:Database/plvrs3.sql
+(6, 'Restrictions');
+=======
 (6, 'Restrictions'),
 (7, 'Inventory'),
 (8, 'mnbvcmh'),
 (9, '');
+>>>>>>> main:Database/plvrs.sql
 
 -- --------------------------------------------------------
 
@@ -202,12 +212,16 @@ INSERT INTO `tbl_policies` (`p_ID`, `p_description`, `p_ct_ID`) VALUES
 (3, 'Requested reservation that are made 2 days before the event, exceeds the maximum capacity of a room, unavailable rooms in PLVRS, and coinciding schedule with other reservations will be declined by the GSO.', 3),
 (4, 'The rooms that can be reserved are: Lecture Room 301, 302, 303, 401, 402, and 403. Pre-school Simulation Room, Business Administration Simulation Room, and Auditorium. The equipment that can be borrowed are: projectors, 2 projector screens, 2 mobile speakers with microphones each, and 1500 monobloc ', 4),
 (5, 'The equipment borrowed must returned directly to the office within the day after using it. If there are damages on a borrowed room or equipment, the requestor will be contacted by the GSO and must personally go to their office.', 5),
+<<<<<<< HEAD:Database/plvrs3.sql
+(6, 'Requestor cannot borrow an equipment if there is no room reserved. Auditorium only allow 1 reservation per day. One projector is allowed to borrow per Lecture and Simulation Room. ', 6);
+=======
 (6, 'Requestor cannot borrow an equipment if there is no room reserved. Auditorium only allow 1 reservation per day. One projector is allowed to borrow per Lecture and Simulation Room. ', 6),
 (35, 'xcvxcvxcvxcvxcv', 7),
 (36, 'vbmg', 5),
 (37, '6ulryufl', 8),
 (38, '', 9),
 (39, '', 1);
+>>>>>>> main:Database/plvrs.sql
 
 -- --------------------------------------------------------
 
@@ -389,7 +403,11 @@ ALTER TABLE `tbl_approved`
 -- AUTO_INCREMENT for table `tbl_category_policy`
 --
 ALTER TABLE `tbl_category_policy`
+<<<<<<< HEAD:Database/plvrs3.sql
+  MODIFY `ct_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+=======
   MODIFY `ct_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+>>>>>>> main:Database/plvrs.sql
 
 --
 -- AUTO_INCREMENT for table `tbl_course`
