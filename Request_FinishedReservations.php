@@ -1,14 +1,10 @@
 <?php
 //returns array of reservation 
-$userID = $_REQUEST["var"];
 $reservation = array();
-$equipment = array();
 include "db_connection.php";
 $conn = OpenCon();
-$sql_code = "SELECT * FROM tbl_reservation WHERE r_user_ID = ? and r_status = 0 AND r_startDateAndTime > CURRENT_DATE();";
+$sql_code = "SELECT * FROM tbl_reservation WHERE r_approved_ID = 1 AND r_status = 0 AND r_reviewed = 0 AND r_endDateAndTime < CURRENT_DATE();";
 if ($sql = $conn->prepare($sql_code)) {
-    $sql->bind_param("i", $r_user);
-    $r_user = $userID;
     if ($sql->execute()) {
         $result = $sql->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -27,7 +23,7 @@ if ($sql = $conn->prepare($sql_code)) {
                             'status' => $row['r_status'],
                             'room' => $row2['room_name'],
                             'userID'=>$row['r_user_ID']
-                        ); 
+                        );
                     }
                 }
                 $sql2->close();

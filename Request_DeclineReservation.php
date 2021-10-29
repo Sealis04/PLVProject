@@ -14,7 +14,6 @@ $sql_code = "UPDATE `tbl_reservation` SET `r_approved_ID` = '3' WHERE r_ID = ?";
         $r_id = $rid;
             if($sql->execute()){
                 echo "Reservation declined!";
-                
                 }
              $sql->close();
         }

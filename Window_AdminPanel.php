@@ -37,6 +37,7 @@
                 <li><input type="button" id="userProfile" class="btns" value="User Registrations"></li>
                 <li><input type="button" id="userReservations" class="btns" value = "User Reservations"></li>
                 <li><input type = "button" id = "editContents" class="btns" value = "Edit Content"></li>
+                <li><input type = "button" id = "monitoringForm" class="btns" value = "Monitoring Form"></li>
                   </ul>
             </div>
             <div class="big-contents">

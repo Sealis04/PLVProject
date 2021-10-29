@@ -32,7 +32,7 @@
         var notifDiv = document.createElement('div');
         notifDiv.id = 'class';
         var href = document.createElement('a');
-        href.href = '';
+        //href.href = 'Window_AdminPanel.php/my'+ element.userID;
         href.addEventListener('click',function(){
             notifRead(element.id);
         })

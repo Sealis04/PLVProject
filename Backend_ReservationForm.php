@@ -269,7 +269,7 @@
                                     }
                                 }
                                 array.push({equipID: result[i]['equipID'],qty:result[i]['qty']});
-                               
+                                
                                 }
                                //addEquipment is my callback.
                                 condition = false;
