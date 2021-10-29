@@ -60,3 +60,15 @@ button:focus{
     background-color: black;
     color: white;
 }
+
+#n_img{
+    width: 25%;
+}
+
+#n_content{
+    width: 75%;
+}
+
+.row{
+    width: 100%;
+}
