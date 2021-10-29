@@ -133,43 +133,6 @@ CREATE TABLE `tbl_equipment_reserved` (
   `Qty` int(255) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `tbl_equipment_reserved`
---
-
-INSERT INTO `tbl_equipment_reserved` (`r_ID`, `equipment_ID`, `Qty`) VALUES
-(437, 1, 12),
-(437, 2, 12),
-(438, 1, 2),
-(464, 1, 12),
-(470, 5, 1),
-(471, 1, 1),
-(472, 1, 1),
-(473, NULL, NULL),
-(474, NULL, NULL),
-(475, NULL, NULL),
-(476, NULL, NULL),
-(477, NULL, NULL),
-(478, NULL, NULL),
-(479, NULL, NULL),
-(480, NULL, NULL),
-(481, 1, 14),
-(481, 2, 13),
-(482, NULL, NULL),
-(483, NULL, NULL),
-(484, NULL, NULL),
-(485, NULL, NULL),
-(486, NULL, NULL),
-(487, NULL, NULL),
-(488, NULL, NULL),
-(489, NULL, NULL),
-(490, NULL, NULL),
-(491, NULL, NULL),
-(492, NULL, NULL),
-(493, NULL, NULL),
-(494, NULL, NULL),
-(495, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -186,17 +149,6 @@ CREATE TABLE `tbl_notification` (
   `r_ID` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `tbl_notification`
---
-
-INSERT INTO `tbl_notification` (`notificationID`, `forUserID`, `isUser`, `isRead`, `time`, `decision`, `r_ID`) VALUES
-(22, 13, 0, 0, '2021-10-18 20:16:38', 1, 481),
-(23, 13, 1, 0, '2021-10-18 20:54:58', 1, 481),
-(24, 15, 1, 0, '2021-10-28 16:52:12', 1, 481),
-(25, 13, 1, 0, '2021-10-28 21:13:04', 3, 481),
-(38, 13, 1, 0, '2021-10-29 23:08:23', 1, 488),
-(39, 13, 0, 0, '2021-10-29 23:08:53', 2, 495);
 
 -- --------------------------------------------------------
 
@@ -220,12 +172,7 @@ INSERT INTO `tbl_policies` (`p_ID`, `p_description`, `p_ct_ID`) VALUES
 (3, 'Requested reservation that are made 2 days before the event, exceeds the maximum capacity of a room, unavailable rooms in PLVRS, and coinciding schedule with other reservations will be declined by the GSO.', 3),
 (4, 'The rooms that can be reserved are: Lecture Room 301, 302, 303, 401, 402, and 403. Pre-school Simulation Room, Business Administration Simulation Room, and Auditorium. The equipment that can be borrowed are: projectors, 2 projector screens, 2 mobile speakers with microphones each, and 1500 monobloc ', 4),
 (5, 'The equipment borrowed must returned directly to the office within the day after using it. If there are damages on a borrowed room or equipment, the requestor will be contacted by the GSO and must personally go to their office.', 5),
-(6, 'Requestor cannot borrow an equipment if there is no room reserved. Auditorium only allow 1 reservation per day. One projector is allowed to borrow per Lecture and Simulation Room. ', 6),
-(35, 'xcvxcvxcvxcvxcv', 7),
-(36, 'vbmg', 5),
-(37, '6ulryufl', 8),
-(38, '', 9),
-(39, '', 1);
+(6, 'Requestor cannot borrow an equipment if there is no room reserved. Auditorium only allow 1 reservation per day. One projector is allowed to borrow per Lecture and Simulation Room. ', 6);
 
 -- --------------------------------------------------------
 
@@ -246,27 +193,6 @@ CREATE TABLE `tbl_reservation` (
   `r_letter_file` varchar(255) DEFAULT NULL,
   `r_Remarks` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tbl_reservation`
---
-
-INSERT INTO `tbl_reservation` (`r_ID`, `r_event`, `r_startDateAndTime`, `r_endDateAndTime`, `r_status`, `r_user_ID`, `r_approved_ID`, `r_room_ID`, `r_reviewed`, `r_letter_file`, `r_Remarks`) VALUES
-(481, 'asdasd', '2021-10-19 08:00:00', '2021-10-19 09:00:00', 0, 13, 1, 2, 0, 'C:/xampp/htdocs/practice/assets/039e462305c40d47ea99b2e9b4a330e5.jpg', 'asd'),
-(482, 'Something', '2021-10-21 08:00:00', '2021-10-21 09:00:00', 0, 13, 1, 1, 0, 'C:/xampp/htdocs/practice/assets/147340154_148337303789733_1933449064246305894_o.png', ''),
-(483, NULL, '2021-10-30 08:00:00', '2021-10-30 09:00:00', 0, 13, 1, 1, 0, 'C:/xampp/htdocs/practice/assets/03.png', ''),
-(484, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 0, 2, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
-(485, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 1, 3, 0, 'C:/xampp/htdocs/practice/assets/Carpal tunnel exercise.jpg', ''),
-(486, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 1, 4, 0, 'C:/xampp/htdocs/practice/assets/AP-hd_leftyhandcream_210624.jpg', ''),
-(487, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 1, 5, 0, 'C:/xampp/htdocs/practice/assets/Carpal tunnel exercise.jpg', ''),
-(488, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 1, 6, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
-(489, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 7, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
-(490, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 8, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
-(491, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 9, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
-(492, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 10, 0, 'C:/xampp/htdocs/practice/assets/Carpal tunnel exercise.jpg', ''),
-(493, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 11, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
-(494, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 12, 0, 'C:/xampp/htdocs/practice/assets/download.png', ''),
-(495, NULL, '2021-11-01 08:00:00', '2021-11-01 09:00:00', 0, 13, 2, 1, 0, 'C:/xampp/htdocs/practice/assets/download.png', '');
 
 -- --------------------------------------------------------
 
@@ -295,14 +221,7 @@ INSERT INTO `tbl_room` (`room_ID`, `room_name`, `room_capacity`, `room_descripti
 (6, 'Pre school simulation', 120, 'Pre school simulation', 0),
 (7, 'Speech Laboratory', 0, 'Speech Laboratory', 0),
 (8, 'Student Lounge', 0, 'Student Lounge', 0),
-(9, 'Holding Area', 0, 'Holding Area', 0),
-(10, 'adsg', 1245, 'awd', 0),
-(11, 'zcvb', 136, 'asd', 0),
-(12, 'zbz', 0, '124', 0),
-(13, 'zbz', 0, '124', 0),
-(14, 'cvn', 0, 'afzxv', 0),
-(15, 'vbnrh', 0, 'ae123', 0),
-(16, 'vbnrh', 0, 'ae123', 0);
+(9, 'Holding Area', 0, 'Holding Area', 0);
 
 -- --------------------------------------------------------
 
