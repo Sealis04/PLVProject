@@ -9,16 +9,10 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                var list = document.getElementById('notifList');
-                var div = document.createElement('div');
-                div.className = "row";
-                var button = document.createElement('input');
-                button.type = 'button';
-                button.value = 'Mark all as read';
-                div.appendChild(button);
-                list.appendChild(div);
+
                 var myObj = JSON.parse(this.responseText);
                 if (clicked == false) {
+                    console.log(this.responseText);
                     myObj.forEach(function(element, index) {
                         listNotif(myObj.length, element, index)
                     });
@@ -36,6 +30,14 @@
         }
         xmlhttp.open("GET", "Request_Notifications.php?reset=" + reset, true);
         xmlhttp.send();
+        var list = document.getElementById('notifList');
+        var div = document.createElement('div');
+        div.className = "row";
+        var button = document.createElement('input');
+        button.type = 'button';
+        button.value = 'Mark all as read';
+        div.appendChild(button);
+        list.appendChild(div);
     }
 
     function listNotif(length, element, index) {
