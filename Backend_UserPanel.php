@@ -108,7 +108,7 @@
                         xmlhttp.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status==200){
                                 alert(this.responseText);
-                                window.location.href = "Window_UserPanel.php";
+                                window.location.href = "/GitHub/Window_UserPanel.php";
                             }
                         }
                         xmlhttp.open("GET", "Request_RemoveReservation.php?var="+ eventID, true);

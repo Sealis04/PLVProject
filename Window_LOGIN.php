@@ -1,11 +1,11 @@
 <html>
         <head>
         <title>PLVRS</title>
-        <link rel="icon" href="assets/plv.png">
+        <link rel="icon" href="/GitHub/assets/plv.png">
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/GitHub/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
         <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="css/login.css">
+        <link rel="stylesheet" href="/GitHub/css/login.css">
         </head>
     <body>
     <?php
@@ -68,11 +68,11 @@ $email = $password=$userID="";
                                 }
                             }else if ($isApproved == 2){ 
                                 echo '<script>alert("Account still pending, please wait")
-                                     window.location.href="Window_HomePage.php"
+                                     window.location.href="/GitHub/Window_HomePage.php"
                                      </script>';
                             }else if($isApproved==3){
                                 echo '<script>alert("Account has been rejected, please try again")
-                                     window.location.href="Window_HomePage.php"
+                                     window.location.href="/GitHub/Window_HomePage.php"
                                      </script>';
                             }
                             
@@ -102,9 +102,9 @@ $email = $password=$userID="";
             <div class="navbar">
             <div class="nav1">
               <img id="fb" src="assets/plv.png" alt="PLV Logo">
-              <a href="Window_HomePage.php" type="button" class="header-btn btn ">Home</a>
-              <a href="Window_RoomAndEquipment.php" type="button" class="header-btn btn ">Rooms and Equipment</a>
-              <a href="Window_PoliciesPage.php" type="button" class="header-btn btn">Policies</a>
+              <a href="/GitHub/Window_HomePage.php" type="button" class="header-btn btn ">Home</a>
+              <a href="/GitHub/Window_RoomAndEquipment.php" type="button" class="header-btn btn ">Rooms and Equipment</a>
+              <a href="/GitHub/Window_PoliciesPage.php" type="button" class="header-btn btn">Policies</a>
             </div>
             <div class="nav2">
               <?php
@@ -127,7 +127,7 @@ $email = $password=$userID="";
                         <span class="error"><?php echo $passwordErr;?></span>
                       </div>
                       <button type="submit" id="login2">Login</button>
-                      <a id="signup" href="Window_Registrationpage.php">Sign up</a>
+                      <a id="signup" href="/GitHub/Window_Registrationpage.php">Sign up</a>
                 </form>
             </div>
             <div class="col-xs-4"></div>
