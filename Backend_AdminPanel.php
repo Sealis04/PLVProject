@@ -106,7 +106,7 @@
                 profileContent(fn, this.responseText, cn, email, pass);
             }
         }
-        xmlhttp.open("GET", "Request_Course.php?var=" + asd, true);
+        xmlhttp.open("GET", "/GitHub/Request_Course.php?var=" + asd, true);
         xmlhttp.send();
     }
 
@@ -141,7 +141,7 @@
                 }
             }
         }
-        xmlhttp.open("GET", "Request_ReservationForUser.php?var=" + userID, true);
+        xmlhttp.open("GET", "/GitHub/Request_ReservationForUser.php?var=" + userID, true);
         xmlhttp.send();
     }
 
@@ -188,7 +188,7 @@
 
             }
         }
-        xmlhttp.open("GET", "Request_ReservationForUserEquipment.php?var=" + resID, true);
+        xmlhttp.open("GET", "/GitHub/Request_ReservationForUserEquipment.php?var=" + resID, true);
         xmlhttp.send();
     }
     //HTML PART THAT LISTS THE EQUIPMENT IN THE WINDOW
@@ -224,7 +224,7 @@
                 callReservationDetails();
             }
         }
-        xmlhttp.open("GET", "Request_RemoveReservation.php?var=" + eventID, true);
+        xmlhttp.open("GET", "/GitHub/Request_RemoveReservation.php?var=" + eventID, true);
         xmlhttp.send();
     }
 
@@ -237,7 +237,7 @@
                 callReservationDetails();
             }
         }
-        xmlhttp.open("GET", "Request_EditReservation.php?var=" + eventID, true);
+        xmlhttp.open("GET", "/GitHub/Request_EditReservation.php?var=" + eventID, true);
         xmlhttp.send();
     }
 
@@ -284,7 +284,7 @@
                 }
             }
         }
-        xmlhttp.open("GET", "Request_PendingRegistrations.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_PendingRegistrations.php", true);
         xmlhttp.send();
     }
     //HTML PART THAT LISTS THE REGISTRATION OF USERS
@@ -312,7 +312,7 @@
                 regList();
             }
         }
-        xmlhttp.open("GET", "Request_AcceptRegistration.php?var=" + user, true);
+        xmlhttp.open("GET", "/GitHub/Request_AcceptRegistration.php?var=" + user, true);
         xmlhttp.send();
     }
 
@@ -326,7 +326,7 @@
                 regList();
             }
         }
-        xmlhttp.open("GET", "Request_DeclineRegistration.php?var=" + user, true);
+        xmlhttp.open("GET", "/GitHub/Request_DeclineRegistration.php?var=" + user, true);
         xmlhttp.send();
     }
 
@@ -425,17 +425,23 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                var myObj = JSON.parse(this.responseText);
-                if (myObj[0] == null) {
-                    motherDiv.innerHTML = '<h3> No user reservation </h3?>';
-                } else {
-                    myObj.forEach(function(element, index) {
-                        userReservationContent(motherDiv, ...Array(1), element, index);
-                    });
-                }
+                var url = 'http://localhost/GitHub/Window_AdminPanel.php/?page=2&tab=3';
+                var url_string = new URL(url);
+                var c = url_string.searchParams.get('page');
+                console.log(c);
+                console.log(this.responseText);
+                motherDiv.innerHTML = this.responseText;
+                // var myObj = JSON.parse(this.responseText);
+                // if (myObj[0] == null) {
+                //     motherDiv.innerHTML = '<h3> No user reservation </h3?>';
+                // } else {
+                //     myObj.forEach(function(element, index) {
+                //         userReservationContent(motherDiv, ...Array(1), element, index);
+                //     });
+                // }
             }
         }
-        xmlhttp.open("GET", "Request_AllReservations.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_AllReservations.php", true);
         xmlhttp.send();
         bigDiv.appendChild(motherDiv);
     }
@@ -458,7 +464,7 @@
                 }
             }
         }
-        xmlhttp.open("GET", "Request_unapprovedReservation.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_unapprovedReservation.php", true);
         xmlhttp.send();
         bigDiv.appendChild(motherDiv);
     }
@@ -547,7 +553,7 @@
             }
 
         }
-        xmlhttp.open("GET", "Request_SpecificRoom.php?var=" + roomID, true);
+        xmlhttp.open("GET", "/GitHub/Request_SpecificRoom.php?var=" + roomID, true);
         xmlhttp.send();
         sideDiv.appendChild(mainDiv);
     }
@@ -561,7 +567,7 @@
                 resList();
             }
         }
-        xmlhttp.open("GET", "Request_AcceptReservation.php?var=" + eventID + '&userID=' + userID, true);
+        xmlhttp.open("GET", "/GitHub/Request_AcceptReservation.php?var=" + eventID + '&userID=' + userID, true);
         xmlhttp.send();
     }
 
@@ -575,7 +581,7 @@
                 resList();
             }
         }
-        xmlhttp.open("GET", "Request_DeclineReservation.php?var=" + eventID + '&userID=' + userID, true);
+        xmlhttp.open("GET", "/GitHub/Request_DeclineReservation.php?var=" + eventID + '&userID=' + userID, true);
         xmlhttp.send();
     }
     //HTML PART THAT LISTS THE TAB CONTENT FOR EDIT
@@ -787,7 +793,7 @@
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "Request_Policies.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_Policies.php", true);
         xmlhttp.send();
     }
 
@@ -802,7 +808,7 @@
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "Request_EquipmentList.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_EquipmentList.php", true);
         xmlhttp.send();
     }
 
@@ -822,7 +828,7 @@
                 }
             }
         }
-        xmlhttp.open("GET", "Request_CategoryPolicies.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_CategoryPolicies.php", true);
         xmlhttp.send();
     }
 
@@ -837,7 +843,7 @@
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "Request_RoomList.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_RoomList.php", true);
         xmlhttp.send();
     }
     //Call for policies instead of generateTabContent()
@@ -1061,7 +1067,7 @@
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "Request_EquipmentList.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_EquipmentList.php", true);
         xmlhttp.send();
     }
 
@@ -1120,7 +1126,7 @@
                 console.log(this.responseText);
             }
         }
-        xmlhttp.open("GET", "Request_AddRoom.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
+        xmlhttp.open("GET", "/GitHub/Request_AddRoom.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
         xmlhttp.send();
         dropContent();
         editTabContent();
@@ -1143,7 +1149,7 @@
                 console.log(this.responseText);
             }
         }
-        xmlhttp.open("GET", "Request_AddEquipment.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
+        xmlhttp.open("GET", "/GitHub/Request_AddEquipment.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
         xmlhttp.send();
         dropContent();
         editTabContent();
@@ -1160,7 +1166,7 @@
                 console.log(this.responseText);
             }
         }
-        xmlhttp.open("GET", "Request_AddPolicies.php?name=" + name + '&desc=' + desc, true);
+        xmlhttp.open("GET", "/GitHub/Request_AddPolicies.php?name=" + name + '&desc=' + desc, true);
         xmlhttp.send();
     }
 
@@ -1170,7 +1176,7 @@
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {}
         }
-        xmlhttp.open("GET", "Request_EditPolicies.php?name=" + name + '&desc=' + desc + '&ID=' + ID, true);
+        xmlhttp.open("GET", "/GitHub/Request_EditPolicies.php?name=" + name + '&desc=' + desc + '&ID=' + ID, true);
         xmlhttp.send();
     }
 
@@ -1187,7 +1193,7 @@
                 console.log(this.responseText);
             }
         }
-        xmlhttp.open("GET", "Request_EditEquipList.php?name=" + name + '&quantity=' + quantity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
+        xmlhttp.open("GET", "/GitHub/Request_EditEquipList.php?name=" + name + '&quantity=' + quantity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
         xmlhttp.send();
     }
 
@@ -1204,7 +1210,7 @@
                 console.log(this.responseText);
             }
         }
-        xmlhttp.open("GET", "Request_EditRoomList.php?name=" + name + '&cap=' + capacity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
+        xmlhttp.open("GET", "/GitHub/Request_EditRoomList.php?name=" + name + '&cap=' + capacity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
         xmlhttp.send();
     }
 
@@ -1269,7 +1275,7 @@
                 }
             }
         }
-        xmlhttp.open("GET", "Request_FinishedReservations.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_FinishedReservations.php", true);
         xmlhttp.send();
     }
 
@@ -1338,7 +1344,7 @@
             }
 
         }
-        xmlhttp.open("GET", "Request_SpecificReservation.php?r_ID=" + ID, true);
+        xmlhttp.open("GET", "/GitHub/Request_SpecificReservation.php?r_ID=" + ID, true);
         xmlhttp.send();
     }
 
@@ -1355,7 +1361,7 @@
                 const second = await loadEquipDetails(ID, mainDiv, userID);
             }
         }
-        xmlhttp.open("GET", "Request_SpecificRoom.php?var=" + roomID, true);
+        xmlhttp.open("GET", "/GitHub/Request_SpecificRoom.php?var=" + roomID, true);
         xmlhttp.send();
     }
 
@@ -1377,7 +1383,7 @@
                 mainDiv.innerHTML += '<br><input type="button" value="Submit" id = "' + ID + '" onclick = "submitRemark(this,' + userID + ')" >'
             }
         }
-        xmlhttp.open("GET", "Request_ReservationForUserEquipment.php?var=" + ID, true);
+        xmlhttp.open("GET", "/GitHub/Request_ReservationForUserEquipment.php?var=" + ID, true);
         xmlhttp.send();
     }
 
@@ -1404,7 +1410,7 @@
                 monitoringContent();
             }
         }
-        xmlhttp.open("GET", "Request_EditFinishedReservation.php?var=" + btn.id + "&remark=" + x.value + "&marked=" + marked + "&userID=" + userID, true);
+        xmlhttp.open("GET", "/GitHub/Request_EditFinishedReservation.php?var=" + btn.id + "&remark=" + x.value + "&marked=" + marked + "&userID=" + userID, true);
         xmlhttp.send();
     }
 </script>
