@@ -136,14 +136,14 @@
                             mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Approved" + '<h4><br>';
                             mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">'
                         } else if (approval == 2) {
-                            mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Pending" + '<h4><br>';
+                            mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '<h4><br>';
                             mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">'
                         } else {
-                            mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Declined" + '<h4><br>';
+                            mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '<h4><br>';
                             mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>'
                         }
                     } else {
-                        mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Cancelled" + '<h4><br>';
+                        mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '<h4><br>';
                         mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>'
                     }
                 } 
@@ -327,8 +327,8 @@
         label.textContent = 'Pending Reservations';
         var sideInput = document.createElement('input');
         sideInput.className = 'openBtn';
-        sideInput.type = 'button';
-        sideInput.value = '>';
+        sideInput.type = 'image';
+        sideInput.src = 'Assets/side-arrow.png';
         sideInput.addEventListener('click', function() {
             buttonFunctions(bigDiv)
         })
@@ -341,8 +341,8 @@
         label2.textContent = 'Finished And Reviewed Reservations';
         var sideInput2 = document.createElement('input');
         sideInput2.className = 'openBtn';
-        sideInput2.type = 'button';
-        sideInput2.value = '>';
+        sideInput2.type = 'image';
+        sideInput2.src = 'Assets/side-arrow.png';
         sideInput2.addEventListener('click', function() {
             buttonFunctions(bigDiv2)
         })
@@ -462,8 +462,8 @@
         sideDiv.id = 'monitor' + element.reservationID;
         var sideInput = document.createElement('input');
         sideInput.className = 'openBtn';
-        sideInput.type = 'button';
-        sideInput.value = '>';
+        sideInput.type = 'image';
+        sideInput.src = 'Assets/side-arrow.png';
         sideInput.addEventListener('click', function() {
             loadResContent(element.reservationID, fullName, element.roomID, element.userID,typePending);
            // loadImage(element.imgLetter, mainDiv);
@@ -584,8 +584,8 @@
         var equipInput = document.createElement('input');
         equipInput.id = 'equipBtn';
         equipInput.className = 'openBtn';
-        equipInput.type = "button";
-        equipInput.value = ">";
+        equipInput.type = 'image';
+        equipInput.src = 'Assets/side-arrow.png';  
         equipInput.addEventListener('click', function() {
             loadLists("1", equipDiv)
         });
@@ -601,8 +601,8 @@
         var roomInput = document.createElement('input');
         roomInput.id = 'roomBtn';
         roomInput.className = 'openBtn';
-        roomInput.type = "button";
-        roomInput.value = ">";
+        roomInput.type = 'image';
+        roomInput.src = 'Assets/side-arrow.png';
         roomInput.addEventListener('click', function() {
             loadLists("2", roomDiv);
         });
@@ -619,8 +619,8 @@
         var polInput = document.createElement('input');
         polInput.id = 'polBtn';
         polInput.className = 'openBtn';
-        polInput.type = 'button';
-        polInput.value = '>';
+        polInput.type = 'image';
+        polInput.src = 'Assets/side-arrow.png';
         polInput.addEventListener('click', function() {
             loadLists("3", polDiv)
         })
@@ -892,7 +892,7 @@
             editBtn.addEventListener('click', function() {
                 editContent(type, tr, this, element.p_ID);
             })
-            removeBtn.value = "Assets/c2.png";
+            removeBtn.src = "Assets/c1.png";
             inputDesc.disabled = true;
             inputDesc.value = element.p_description;
             listName.disabled = true;
@@ -974,7 +974,7 @@
                     break;
             }
             editBtn.src = "Assets/c2.png";
-            removeBtn.value = "Assets/c2.png";
+            removeBtn.src = "Assets/c1.png";
             removeBtn.addEventListener('click', function() {
                 removeContent(type, tr);
             });
