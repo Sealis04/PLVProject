@@ -35,5 +35,6 @@ if ($sql = $conn->prepare($sql_code)) {
     $sql->close();
 }
 $conn->close();
+
 $myJSON = json_encode($reservation);
 echo $myJSON;

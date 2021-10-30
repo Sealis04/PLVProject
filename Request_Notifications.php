@@ -21,9 +21,9 @@ $info = array();
 //     setCookie("loadedNotifications",$loadedNots,time()+86400,"/");
 // }
 if($isAdmin != 1){
-    $sql_code = 'SELECT * FROM `tbl_notification` WHERE `forUserID` = ? AND type = 1 ORDER BY `time` DESC LIMIT 10';
+    $sql_code = 'SELECT * FROM `tbl_notification` WHERE `forUserID` = ? AND isUser = 1 ORDER BY `time` DESC LIMIT 10';
 }else{
-    $sql_code = 'SELECT * FROM `tbl_notification` WHERE type = 0 ORDER BY `time` DESC LIMIT 10';
+    $sql_code = 'SELECT * FROM `tbl_notification` WHERE isUser = 0 ORDER BY `time` DESC LIMIT 10';
 }
 
 if($sql=$conn->prepare($sql_code)){
@@ -74,7 +74,6 @@ for($i = 0; $i<count($notifications); $i++){
                                 $notifications[$i] += array(
                                     'roomName'=> $row3['room_name']
                                 );
-
                             }
                         }else{
                            echo $conn->error;
@@ -92,6 +91,7 @@ for($i = 0; $i<count($notifications); $i++){
   
 }
 $conn->close();
+
 if(empty($notifications)){
     echo 'No New Notifications';
 }else{

@@ -17,6 +17,7 @@
     exit;
     }
     include "db_connection.php";
+    include "Request_storeNotification";
     $conn = OpenCon();
     //Form part
     $emailErr = $passwordErr = $contactErr = $firstNameErr = $middleNameErr = $lastNameErr=$uploadErr="";

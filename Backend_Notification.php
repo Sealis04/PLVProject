@@ -12,10 +12,19 @@
 
                 var myObj = JSON.parse(this.responseText);
                 if (clicked == false) {
+                    var list = document.getElementById('notifList');
+                    var div = document.createElement('div');
+                    div.className = "row";
+                    var button = document.createElement('input');
+                    button.type = 'button';
+                    button.value = 'Mark all as read';
+                    div.appendChild(button);
+                    list.appendChild(div);
                     console.log(this.responseText);
                     myObj.forEach(function(element, index) {
                         listNotif(myObj.length, element, index)
                     });
+                    
                     var dropdown = document.getElementById('notifDropdown');
                     var notifCount = document.createElement('span');
                     notifCount.textContent = count;
@@ -28,16 +37,8 @@
 
             }
         }
-        xmlhttp.open("GET", "Request_Notifications.php?reset=" + reset, true);
+        xmlhttp.open("GET", "/GitHub/Request_Notifications.php?reset=" + reset, true);
         xmlhttp.send();
-        var list = document.getElementById('notifList');
-        var div = document.createElement('div');
-        div.className = "row";
-        var button = document.createElement('input');
-        button.type = 'button';
-        button.value = 'Mark all as read';
-        div.appendChild(button);
-        list.appendChild(div);
     }
 
     function listNotif(length, element, index) {
@@ -95,7 +96,7 @@
                 div.innerHTML += '</div>';
             }
         }
-        xmlhttp.open("GET", "Request_NotifReservation.php?id=" + r_ID, true);
+        xmlhttp.open("GET", "/GitHub/Request_NotifReservation.php?id=" + r_ID, true);
         xmlhttp.send();
     }
 
@@ -104,7 +105,7 @@
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {}
         }
-        xmlhttp.open("GET", "Request_storeNotification.php?id=" + id, true);
+        xmlhttp.open("GET", "/GitHub/Request_storeNotification.php?id=" + id, true);
         xmlhttp.send();
     }
 </script>
