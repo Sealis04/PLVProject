@@ -31,7 +31,7 @@
         <div class="container">
             <div id = "list" class="side-nav">
                 <ul >
-                <li><input type="button" id="myProfile" class="btns tab active" value = "My Profile"></li>
+                <li><input type="button" id="myProfile" class="btns tab " value = "My Profile"></li>
                 <li><input type="button" id="myReservation" class="btns tab" value="My Reservation"></li>
                 <?php
                 if($_SESSION['isAdmin'] == 1){

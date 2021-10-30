@@ -21,8 +21,6 @@
     ?>
     var profileID = profile.id;
     var reservationID = reservation.id;
-
-
     var equipBtn;
     var roomBtn;
     var policiesBtn;
@@ -34,7 +32,25 @@
     var check;
     var pending;
     var finished;
-    callUserDetails();
+    var url = window.location.href;
+    var url_string = new URL(url);
+    var c = url_string.searchParams.get('page');
+    var categ = url_string.searchParams.get('category');
+    var page_number;
+    if(c != null){
+        if(categ == 'finished'){
+        resList();
+        userRes.className += " active";
+        buttonFunctions(document.getElementById('bigFinishedDiv'),c)
+        }else if(categ == 'pending'){
+        resList();
+        userRes.className += " active";
+        buttonFunctions(document.getElementById('bigPendingDiv'),c)
+        }
+    }else{
+        callUserDetails();
+        profile.className += " active";
+    }
     for (var i = 0; i < btns.length; i++) {
         btns[i].addEventListener("click", async function() {
             var current = document.getElementsByClassName("active");
@@ -87,10 +103,12 @@
         var rest = document.querySelectorAll('.tab');
         for (a = 0; a < rest.length; a++) {
             if (rest[a].id != id.id) {
-                console.log(rest[a].id);
-                console.log('asd');
                 rest[a].removeAttribute('disabled');
             }
+        }
+        if(c!= null){
+            var newURL = "/GitHub/Window_AdminPanel.php";
+            window.history.replaceState({},document.title,""+newURL);
         }
     }
 
@@ -180,12 +198,7 @@
                 if (typePending) {
                     mainDiv.innerHTML += '<input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ')">'
                     mainDiv.innerHTML += '<input type="button" class = "header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ')">'
-
                 }
-
-
-
-
             }
         }
         xmlhttp.open("GET", "/GitHub/Request_ReservationForUserEquipment.php?var=" + resID, true);
@@ -218,7 +231,6 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                console.log(eventID)
                 // alert(this.responseText);
                 dropContent();
                 callReservationDetails();
@@ -248,13 +260,10 @@
             document.getElementById("profContent").remove();
         } else if (document.getElementById("regList")) {
             document.getElementById("regList").remove();
-            console.log("di nag wowork yung 2")
         } else if (document.getElementById("biggestDiv")) {
             document.getElementById("biggestDiv").remove();
-            console.log("di nag wowork yung user prof")
         } else if (document.getElementById("currentUserReservation")) {
             document.getElementById("currentUserReservation").remove();
-            console.log("di nag wowork yung user reges")
         } else if (document.getElementById('editList')) {
             document.getElementById("editList").remove();
         } else if (document.getElementById('monitoringContent')) {
@@ -345,10 +354,11 @@
         label.textContent = 'Pending Reservations';
         var sideInput = document.createElement('input');
         sideInput.className = 'openBtn';
+        sideInput.id = 'pendingBtn';
         sideInput.type = 'button';
         sideInput.value = '>';
         sideInput.addEventListener('click', function() {
-            buttonFunctions(bigDiv)
+            buttonFunctions(bigDiv);
         })
         bigDiv.appendChild(label);
         bigDiv.appendChild(sideInput)
@@ -359,10 +369,11 @@
         label2.textContent = 'Finished And Reviewed Reservations';
         var sideInput2 = document.createElement('input');
         sideInput2.className = 'openBtn';
+        sideInput2.id = 'finishedBtn';
         sideInput2.type = 'button';
         sideInput2.value = '>';
         sideInput2.addEventListener('click', function() {
-            buttonFunctions(bigDiv2)
+            buttonFunctions(bigDiv2);
         })
         bigDiv2.appendChild(label2);
         bigDiv2.appendChild(sideInput2)
@@ -373,9 +384,8 @@
 
     }
 
-    function buttonFunctions(div) {
+    function buttonFunctions(div,page_number = 1) {
         userResClick = false;
-
         if (check) {
             if (div.id == 'bigPendingDiv') {
                 if (pending) {
@@ -386,7 +396,7 @@
                 } else {
 
                     document.getElementById('resList').remove();
-                    loadPendingReservation(div);
+                    loadPendingReservation(div,null,page_number);
                     check = true;
                     pending = true;
                     finished = false;
@@ -399,7 +409,7 @@
                     finished = false;
                 } else {
                     document.getElementById('resList').remove();
-                    loadFinishedReservation(div);
+                    loadFinishedReservation(div,page_number);
                     check = true;
                     finished = true;
                     pending = false;
@@ -407,10 +417,10 @@
             }
         } else {
             if (div.id == 'bigPendingDiv') {
-                loadPendingReservation(div);
+                loadPendingReservation(div,null,page_number);
                 pending = true;
             } else if (div.id == 'bigFinishedDiv') {
-                loadFinishedReservation(div);
+                loadFinishedReservation(div,page_number);
                 finished = true;
             }
             check = true;
@@ -418,36 +428,7 @@
 
     }
 
-    function loadFinishedReservation(bigDiv) {
-        var motherDiv = document.createElement('div');
-        motherDiv.className = "userResContent";
-        motherDiv.id = "resList";
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var url = 'http://localhost/GitHub/Window_AdminPanel.php/?page=2&tab=3';
-                var url_string = new URL(url);
-                var c = url_string.searchParams.get('page');
-                console.log(c);
-                console.log(this.responseText);
-                motherDiv.innerHTML = this.responseText;
-                // var myObj = JSON.parse(this.responseText);
-                // if (myObj[0] == null) {
-                //     motherDiv.innerHTML = '<h3> No user reservation </h3?>';
-                // } else {
-                //     myObj.forEach(function(element, index) {
-                //         userReservationContent(motherDiv, ...Array(1), element, index);
-                //     });
-                // }
-            }
-        }
-        xmlhttp.open("GET", "/GitHub/Request_AllReservations.php", true);
-        xmlhttp.send();
-        bigDiv.appendChild(motherDiv);
-    }
-
-    function loadPendingReservation(bigDiv, typePending) {
-        var typePending = true;
+    function loadFinishedReservation(bigDiv,page_number) {
         var motherDiv = document.createElement('div');
         motherDiv.className = "userResContent";
         motherDiv.id = "resList";
@@ -459,12 +440,36 @@
                     motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                 } else {
                     myObj.forEach(function(element, index) {
+                        userReservationContent(motherDiv, ...Array(1), element, index);
+                    });
+                }
+            }
+        }
+        xmlhttp.open("GET", "/GitHub/Request_AllReservations.php?page=" + page_number, true);
+        xmlhttp.send();
+        bigDiv.appendChild(motherDiv);
+    }
+
+    function loadPendingReservation(bigDiv, typePending,page_number) {
+        var typePending = true;
+        var motherDiv = document.createElement('div');
+        motherDiv.className = "userResContent";
+        motherDiv.id = "resList";
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var myObj = JSON.parse(this.responseText);
+                if (myObj[0] == null) {
+                    motherDiv.innerHTML = '<h3> No user reservation </h3?>';
+                } else {
+                  
+                    myObj.forEach(function(element, index) {
                         userReservationContent(motherDiv, typePending, element, index);
                     });
                 }
             }
         }
-        xmlhttp.open("GET", "/GitHub/Request_unapprovedReservation.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_unapprovedReservation.php?page=" + page_number, true);
         xmlhttp.send();
         bigDiv.appendChild(motherDiv);
     }
@@ -488,8 +493,13 @@
         sideInput.className = 'openBtn';
         sideInput.type = 'button';
         sideInput.value = '>';
+        console.log(element.reservationID);
+        console.log(element.roomID);
+        console.log(element.userID);
+        console.log(fullName);
         sideInput.addEventListener('click', function() {
             loadResContent(element.reservationID, fullName, element.roomID, element.userID, typePending);
+            
             // loadImage(element.imgLetter, mainDiv);
         })
         sideDiv.appendChild(label);
@@ -497,6 +507,10 @@
         sideDiv.appendChild(date);
         sideDiv.appendChild(sideInput);
         div.appendChild(sideDiv);
+
+        if(element.pagination != undefined){
+           div.innerHTML += element.pagination;
+        }
         // var motherDiv = document.createElement('div')
         // div.id = "userResContent";
         // div.className = "userResContent";
@@ -517,11 +531,9 @@
     }
 
     function loadResContent(resID, fullName, roomID, userID, typePending) {
+      
         if (userResClick) {
-            console.log(activeID);
-            console.log(resID);
             if (activeID == resID) {
-                console.log('a')
                 document.getElementById('subContents').remove();
                 userResClick = false;
             } else {
@@ -1233,7 +1245,6 @@
             botInput.value = "Add Equipment";
             var mainDiv = document.getElementById('equipID');
             var table = document.getElementById('equipmentTbl');
-            console.log(table)
             botInput.addEventListener('click', function() {
                 generateTabContent(table, type, ...Array(2), true, botInput);
             })
