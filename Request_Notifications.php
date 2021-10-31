@@ -86,7 +86,7 @@ for($i = 0; $i<count($notifications); $i++){
             }
             $sql2->close();
         }
-        $notifications[$i]['text']='A user has made a reservation for room ' . $notifications[$i]['roomName'];
+        $notifications[$i]['text']='There are '.count($notifications).' reservation requests to be reviewed';
     }
   
 }

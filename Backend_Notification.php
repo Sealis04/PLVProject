@@ -15,16 +15,23 @@
                     var list = document.getElementById('notifList');
                     var div = document.createElement('div');
                     div.className = "row";
+                    list.appendChild(div);
+                    console.log(this.responseText);
+                    if (isAdmin != 1) {
                     var button = document.createElement('input');
                     button.type = 'button';
                     button.value = 'Mark all as read';
                     div.appendChild(button);
-                    list.appendChild(div);
-                    console.log(this.responseText);
-                    myObj.forEach(function(element, index) {
-                        listNotif(myObj.length, element, index)
-                    });
-                    
+                        myObj.forEach(function(element, index) {
+                            listNotif(myObj.length, element, index)
+                        });
+                    } else {
+                        var notif = document.createElement('notif');
+                        notif.innerHTML = myObj[myObj.length - 1].text;
+                        list.appendChild(notif);
+                    }
+
+                    console.log(myObj[0].text);
                     var dropdown = document.getElementById('notifDropdown');
                     var notifCount = document.createElement('span');
                     notifCount.textContent = count;
@@ -44,27 +51,16 @@
     function listNotif(length, element, index) {
         var list = document.getElementById('notifList');
         var div = document.createElement('div');
-        if (isAdmin != 1) {
-            div.innerHTML += '<div id = "imgNotif" class="column">';
-            div.innerHTML += '<img id="_notif" src = "">';
-            div.innerHTML += '</div>';
-            div.innerHTML += '<div id="detNotif" class = "column">';
-            div.innerHTML += '<p id="name">' + element.text + '</p>';
-            if (element.isRead == 0) {
-                count++;
-            }
-            loadNotifDetails(element.r_ID, div);
-        } else {
-            div.innerHTML += '<div id= "imgNotiif" class="column">';
-            div.innerHTML += '<img id="_notif" src="">';
-            div.innerHTML += '</div>';
-            div.innerHTML += '<div id ="detNotif" class="column">';
-            div.innerHTML += '<p id="name">' + element.text + '</p>';
-            if (element.isRead == 0) {
-                count++;
-            }
-            loadNotifDetails(element.r_ID, div);
+        div.innerHTML += '<div id = "imgNotif" class="column">';
+        div.innerHTML += '<img id="_notif" src = "">';
+        div.innerHTML += '</div>';
+        div.innerHTML += '<div id="detNotif" class = "column">';
+        div.innerHTML += '<p id="name">' + element.text + '</p>';
+        if (element.isRead == 0) {
+            count++;
         }
+        loadNotifDetails(element.r_ID, div);
+
         list.appendChild(div);
         // var notifDiv = document.createElement('div');
         // notifDiv.id = 'class';
