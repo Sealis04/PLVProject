@@ -46,6 +46,9 @@
             resList();
             userRes.className += " active";
             buttonFunctions(document.getElementById('bigPendingDiv'), c)
+        }else if(categ == 'user'){
+            callReservationDetails(c);
+            reservation.className += ' active';
         }
     } else {
         callUserDetails();
@@ -137,7 +140,7 @@
     }
 
 
-    function callReservationDetails() {
+    function callReservationDetails(page_number = 1) {
         userID = <?php echo $_SESSION["userID"] ?>;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -152,14 +155,19 @@
                     var x = [];
                     var motherDiv = document.createElement('div');
                     var list = document.createElement('li');
+                    var page = document.createElement('div');
+                    page.id = 'pages';
                     motherDiv.id = "currentUserReservation";
+
                     myObj.forEach(function(element, index) {
-                        reservationContent(motherDiv, userID, element, index);
+                        reservationContent(motherDiv, userID, page,element, index);
                     });
+                    page.innerHTML = myObj[myObj.length-1].pagination;
+                    motherDiv.appendChild(page);
                 }
             }
         }
-        xmlhttp.open("GET", "/Request_ReservationForUser.php?var=" + userID, true);
+        xmlhttp.open("GET", "/Request_ReservationForUser.php?var=" + userID + '&page=' + page_number, true);
         xmlhttp.send();
     }
 
@@ -207,7 +215,7 @@
 
     }
     //HTML PART THAT LISTS THE RESERVATIONS IN THE WINDOW
-    function reservationContent(motherDiv, userID, element, index) {
+    function reservationContent(motherDiv, userID,page, element, index) {
         var div = document.createElement('div')
         div.id = "resContent";
         div.className = "resContent";
@@ -218,6 +226,10 @@
         //div.innerHTML += '<input type="button" class="header-btn btn" value="Edit" onclick="cancelReservation('+element.eventID+')">';
         // div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">';
 
+        if (typeof(element.pagination) != undefined && element.pagination != null) {
+            page.innerHTML = element.pagination;
+            motherDiv.appendChild(page);
+        }
         document.getElementById("content").appendChild(motherDiv);
         motherDiv.appendChild(div);
         return element.reservationID;
