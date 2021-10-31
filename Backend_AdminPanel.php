@@ -200,7 +200,6 @@
                     mainDiv.innerHTML += '<input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ')">'
                     mainDiv.innerHTML += '<input type="button" class = "header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ')">'
                 }
-            }
         }
         xmlhttp.open("GET", "/GitHub/Request_ReservationForUserEquipment.php?var=" + resID, true);
         xmlhttp.send();
