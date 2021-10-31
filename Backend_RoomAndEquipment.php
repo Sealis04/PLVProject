@@ -3,39 +3,13 @@
                     // Add active class to the current button (highlight it)
                     var header = document.getElementById("list");
                     var btns = header.getElementsByClassName("btns");
-                    var x =
-                    "<?php   
-                    $conn=OpenCon();
-                    $sql_code = "SELECT * FROM tbl_room WHERE ?";
-                    if($sql=$conn->prepare($sql_code)){
-                        $sql->bind_param("i",$room_ID);
-                        $room_ID = 1;
-                            if($sql->execute()){
-                                $result = $sql->get_result();
-                                $row = $result ->fetch_assoc();
-                                echo $row["room_ID"];
-                                $_SESSION["room_ID"] = $row["room_ID"];;
-                                }
-                                $sql->close();
-                            }
-                            $conn->close();
-                    ?>";
-                    var defaultClass = document.getElementById(x);
-                    defaultClass.className += ' active';
-                    //calls default selected (ID with value x)
-                    var  xmlhttp = new XMLHttpRequest();
-                        xmlhttp.onreadystatechange = function(){
-                            if(this.readyState == 4 && this.status==200){
-                                var myObj = JSON.parse(this.responseText);
-                                document.getElementById("h1").textContent=myObj.roomName;
-                                document.getElementById("p1").textContent=myObj.roomDesc;
-                            }
-                        }
-                        xmlhttp.open("GET", "Request_SpecificRoom.php?var=" + x, true);
-                        xmlhttp.send();
-                    for (var i = 0; i < btns.length; i++) {
 
-                        btns[i].addEventListener("click", function() {;
+                    //calls default selected (ID with value x)
+                    var x;
+                        
+                    for (var i = 0; i <= btns.length-1; i++) {
+                        x = btns[0].id;
+                        btns[i].addEventListener("click", function() {
                         var current = document.getElementsByClassName("active");
                         current[0].className = current[0].className.replace(" active", "");
                         this.className += " active";
@@ -58,11 +32,23 @@
                         }
                         xmlhttp.open("GET", "Request_SpecificRoom.php?var=" + currID, true);
                         xmlhttp.send();
-                        }else{
-
                         }
                         });
                     }
+                    var defaultClass = document.getElementById(x);
+                       defaultClass.className += ' active';
+                 
+                    var  xmlhttp = new XMLHttpRequest();
+                        xmlhttp.onreadystatechange = function(){
+                            if(this.readyState == 4 && this.status==200){
+                                var myObj = JSON.parse(this.responseText);
+                                document.getElementById("h1").textContent=myObj.roomName;
+                                document.getElementById("p1").textContent=myObj.roomDesc;
+                            }
+                        }
+                        xmlhttp.open("GET", "Request_SpecificRoom.php?var=" + x, true);
+                        xmlhttp.send();
+
                     function callList(result){
                         var  xmlhttp = new XMLHttpRequest();
                         xmlhttp.onreadystatechange = function(){

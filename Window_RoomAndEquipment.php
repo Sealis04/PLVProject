@@ -44,10 +44,8 @@
                         <?php
                     //creates entire list of rooms. 
                         $conn=OpenCon();
-                        $sql_code = "SELECT * FROM tbl_room WHERE ?";
+                        $sql_code = "SELECT * FROM tbl_room WHERE isDeleted = 0";
                         if($sql=$conn->prepare($sql_code)){
-                            $sql->bind_param("i",$room_ID);
-                            $room_ID = 1;
                                 if($sql->execute()){
                                     $result = $sql->get_result();
                                     while($row = $result->fetch_assoc()){
