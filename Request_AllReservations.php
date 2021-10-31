@@ -89,7 +89,7 @@ if(count($reservation)!=0 ){
      if(!$adjacents) $adjacents = 1;
      if(!$limit) $limit = 4;
      if(!$page) $page = 1;
-     if(!$targetpage) $targetpage = "Window_AdminPanel.php/";
+     if(!$targetpage) $targetpage = "/Window_AdminPanel.php/";
      
  
      //other vars
