@@ -5,7 +5,6 @@ $page = $_REQUEST['page'];
 $reservation = array();
 include "db_connection.php";
 $conn = OpenCon();
-$page = 1;
 $limit = 2;
 if ($page)
     $start = ($page - 1) * $limit;             //first item to display on this page
