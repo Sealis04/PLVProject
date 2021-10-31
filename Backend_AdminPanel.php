@@ -985,6 +985,7 @@
             removeBtn.src = "/Assets/c1.png";
             checker = false;
             checkbox.checked = true;
+            disableButtons(this);
             editBtn.addEventListener('click', function() {
                 editContent(type, tr, this, ...Array(1), add, btn)
             })
@@ -1006,8 +1007,8 @@
 
             switch (type) {
                 case 'roomID':
-                    editBtn.addEventListener('click', function() {
-                        editContent(type, tr, this, element.roomID);
+                    editBtn.addEventListener('click', async function() {
+                        await editContent(type, tr, this, element.roomID);
                     });
                     inputName.value = element.roomName;
                     inputDesc.value = element.roomDesc;
@@ -1151,7 +1152,6 @@
         }
         xmlhttp.open("GET", "/Request_EquipmentList.php", true);
         xmlhttp.send();
-
     }
 
 
@@ -1169,6 +1169,7 @@
                 addPoliciesQuery(name.value, desc.value);
             }
         } else {
+            document.getElementById('addBtn').disabled = false;
             if (type == 'roomID') {
                 editRoomQuery(name.value, quantity.value, desc.value, availability.checked, ID);
             } else if (type == 'equipID') {
@@ -1185,10 +1186,10 @@
 
     function disableButtons(value) {
         var x = document.querySelectorAll('.editButton');
+        document.getElementById('addBtn').disabled = true;
         for (a = 0; a < x.length; a++) {
             if (value != x[a]) {
                 x[a].disabled = true;
-
                 //changeimg of edit to apply
                 // value.value = 'Apply';
             }
@@ -1309,7 +1310,7 @@
         botDiv.className = "bottom";
         var botInput = document.createElement('input');
         botInput.type = 'submit';
-
+        botInput.id = 'addBtn';
         if (type == 'roomID') {
             var mainDiv = document.getElementById('roomID');
             var table = document.getElementById('roomTbl');
