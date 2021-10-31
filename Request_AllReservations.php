@@ -71,7 +71,12 @@ else
                  $sql->close();
             }
             $conn->close();
- getPaginationString($page,$total_items,$limit,false,'/GitHub/Window_AdminPanel.php/',"?page=","&category=",$reservation);
+$pagination = getPaginationString($page,$total_items,$limit,false,'/GitHub/Window_AdminPanel.php/',"?page=","&category=",$reservation);
+ $reservation [count($reservation)-1] += array(
+    'pagination' => $pagination,
+);
+ $myJSON = json_encode($reservation);
+ echo $myJSON;
 
  function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1, $targetpage = "/", $pagestring = "?page=",$category = "&category=",$reservation)
  {	
@@ -183,12 +188,10 @@ else
          else
              $pagination .= "<span class=\"disabled\">next ></span>";
          $pagination .= "</div>\n";
-             $reservation [count($reservation)-1] += array(
-                 'pagination' => $pagination,
-             );
+         
+         
      }
- $myJSON = json_encode($reservation);
- echo $myJSON;
+return $pagination;
  }
-
+ 
 
