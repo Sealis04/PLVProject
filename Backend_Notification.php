@@ -45,7 +45,7 @@
 
             }
         }
-        xmlhttp.open("GET", "/GitHub/Request_Notifications.php?reset=" + reset, true);
+        xmlhttp.open("GET", "/Request_Notifications.php?reset=" + reset, true);
         xmlhttp.send();
     }
 
@@ -93,7 +93,7 @@
                 div.innerHTML += '</div>';
             }
         }
-        xmlhttp.open("GET", "/GitHub/Request_NotifReservation.php?id=" + r_ID, true);
+        xmlhttp.open("GET", "/Request_NotifReservation.php?id=" + r_ID, true);
         xmlhttp.send();
     }
 
@@ -102,7 +102,7 @@
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {}
         }
-        xmlhttp.open("GET", "/GitHub/Request_storeNotification.php?id=" + id, true);
+        xmlhttp.open("GET", "/Request_storeNotification.php?id=" + id, true);
         xmlhttp.send();
     }
 </script>
