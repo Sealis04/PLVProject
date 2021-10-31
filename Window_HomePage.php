@@ -1,12 +1,12 @@
 <html>
     <head>
         <title>PLVRS</title>
-        <link rel="icon" href="/GitHub/assets/plv.png">
+        <link rel="icon" href="assets/plv.png">
         <meta charset="UTF-8">
        
-        <link rel="stylesheet" href="/GitHub/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
         <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="/GitHub/css/index.css">
+        <link rel="stylesheet" href="css/index.css">
     </head>
     <body>
         <?php
@@ -17,9 +17,9 @@
             <div class="navbar">
             <div class="nav1">
               <img id="fb" src="assets/plv.png" alt="PLV Logo">
-              <a href="/GitHub/Window_HomePage.php" type="button" class="header-btn btn ">Home</a>
-              <a href="/GitHub/Window_RoomAndEquipment.php" type="button" class="header-btn btn ">Rooms and Equipment</a>
-              <a href="/GitHub/Window_PoliciesPage.php" type="button" class="header-btn btn">Policies</a>
+              <a href="Window_HomePage.php" type="button" class="header-btn btn ">Home</a>
+              <a href="Window_RoomAndEquipment.php" type="button" class="header-btn btn ">Rooms and Equipment</a>
+              <a href="Window_PoliciesPage.php" type="button" class="header-btn btn">Policies</a>
             </div>
             <div class="nav2">
               <?php
@@ -86,7 +86,7 @@
                     <li>31</li>
                 </ul>
                 <div class="resBtn">
-                <a href ="<?php echo(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"])?"/GitHub/Window_ReservationForm.php":"/GitHub/Window_LOGIN.php" ?>">
+                <a href ="<?php echo(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"])?"Window_ReservationForm.php":"Window_LOGIN.php" ?>">
                 <input class = "header-btn btn" type="button" value="Create Reservation"></a>
                 </div>
             </div>
