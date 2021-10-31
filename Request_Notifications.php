@@ -1,6 +1,5 @@
 <?php
 include "db_connection.php";
-
 session_start();
 $conn = OpenCon();
 $userID = $_SESSION["userID"];
@@ -91,12 +90,6 @@ for($i = 0; $i<count($notifications); $i++){
   
 }
 $conn->close();
-
-if(empty($notifications)){
-    echo 'No New Notifications';
-}else{
     $myJSON =  json_encode($notifications);
     echo $myJSON;
-}
-
 ?>

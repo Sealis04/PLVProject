@@ -9,34 +9,35 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-
                 var myObj = JSON.parse(this.responseText);
                 if (clicked == false) {
                     var list = document.getElementById('notifList');
                     var div = document.createElement('div');
                     div.className = "row";
                     list.appendChild(div);
-                    console.log(this.responseText);
-                    if (isAdmin != 1) {
-                    var button = document.createElement('input');
-                    button.type = 'button';
-                    button.value = 'Mark all as read';
-                    div.appendChild(button);
-                        myObj.forEach(function(element, index) {
-                            listNotif(myObj.length, element, index)
-                        });
-                    } else {
-                        var notif = document.createElement('notif');
-                        notif.innerHTML = myObj[myObj.length - 1].text;
-                        list.appendChild(notif);
+                    if (myObj.length > 0) {
+                        if (isAdmin != 1) {
+                            var button = document.createElement('input');
+                            button.type = 'button';
+                            button.value = 'Mark all as read';
+                            div.appendChild(button);
+                            myObj.forEach(function(element, index) {
+                                listNotif(myObj.length, element, index)
+                            });
+                        } else {
+                            var notif = document.createElement('notif');
+                            notif.innerHTML = myObj[myObj.length - 1].text;
+                            list.appendChild(notif);
+                        }
+                        var dropdown = document.getElementById('notifDropdown');
+                        var notifCount = document.createElement('span');
+                        notifCount.textContent = count;
+                        dropdown.appendChild(notifCount);
+                        clicked = true;
+                    }else{
+                        div.innerHTML = ' No New Notifications';
                     }
 
-                    console.log(myObj[0].text);
-                    var dropdown = document.getElementById('notifDropdown');
-                    var notifCount = document.createElement('span');
-                    notifCount.textContent = count;
-                    dropdown.appendChild(notifCount);
-                    clicked = true;
                 } else {
                     document.getElementsByClassName('notifs').remove
                     clicked == false;
