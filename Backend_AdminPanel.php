@@ -4,16 +4,23 @@
     var btns = header.getElementsByClassName("btns");
     var profile = document.getElementById("myProfile");
     var reservation = document.getElementById("myReservation");
-    var userProf = document.getElementById("userProfile");
-    var userRes = document.getElementById("userReservations");
-    var editCont = document.getElementById('editContents');
-    var monitorForm = document.getElementById('monitoringForm');
-    var monitoringID = monitorForm.id;
+    var isAdmin = <?php echo $_SESSION['isAdmin'] ?>;
+    <?php
+    if ($_SESSION['isAdmin'] == 1) {
+    ?>
+        var userProf = document.getElementById("userProfile");
+        var userRes = document.getElementById("userReservations");
+        var editCont = document.getElementById('editContents');
+        var monitorForm = document.getElementById('monitoringForm');
+        var userProfID = userProf.id;
+        var userResID = userRes.id;
+        var editContID = editCont.id;
+        var monitoringID = monitorForm.id;
+    <?php
+    }
+    ?>
     var profileID = profile.id;
     var reservationID = reservation.id;
-    var userProfID = userProf.id;
-    var userResID = userRes.id;
-    var editContID = editCont.id;
     var equipBtn;
     var roomBtn;
     var policiesBtn;
@@ -25,40 +32,87 @@
     var check;
     var pending;
     var finished;
-    callUserDetails();
+    var url = window.location.href;
+    var url_string = new URL(url);
+    var c = url_string.searchParams.get('page');
+    var categ = url_string.searchParams.get('category');
+    var page_number;
+    if(c != null){
+        if(categ == 'finished'){
+        resList();
+        userRes.className += " active";
+        buttonFunctions(document.getElementById('bigFinishedDiv'),c)
+        }else if(categ == 'pending'){
+        resList();
+        userRes.className += " active";
+        buttonFunctions(document.getElementById('bigPendingDiv'),c)
+        }
+    }else{
+        callUserDetails();
+        profile.className += " active";
+    }
     for (var i = 0; i < btns.length; i++) {
         btns[i].addEventListener("click", async function() {
             var current = document.getElementsByClassName("active");
             current[0].className = current[0].className.replace(" active", "");
             this.className += " active";
-            if (current[0].id == profileID) {
-               await dropContent();
-                callUserDetails();
-            } else if (current[0].id == reservationID) {
-                await   dropContent();
-                callReservationDetails();
-            } else if (current[0].id == userProfID) {
-                await   dropContent();
-                regList()
-            } else if (current[0].id == userResID) {
-                await   dropContent();
-                resList();
-            } else if (current[0].id == editContID) {
-                await   dropContent();
-                editTabContent();
-            } else if (current[0].id == monitoringID) {
-                await  dropContent();
-                monitoringContent();
+            if (isAdmin == 0) {
+                if (current[0].id == profileID) {
+                    await dropContent();
+                    callUserDetails();
+                    disableAndRemove(profile)
+                } else if (current[0].id == reservationID) {
+                    await dropContent();
+                    callReservationDetails();
+                    disableAndRemove(reservation)
+                }
+            } else {
+                if (current[0].id == profileID) {
+                    await dropContent();
+                    callUserDetails();
+                    disableAndRemove(profile);
+                } else if (current[0].id == reservationID) {
+                    await dropContent();
+                    callReservationDetails();
+                    disableAndRemove(reservation)
+                } else if (current[0].id == userProfID) {
+                    await dropContent();
+                    regList();
+                    disableAndRemove(userProf)
+                } else if (current[0].id == userResID) {
+                    await dropContent();
+                    resList();
+                    disableAndRemove(userRes)
+                } else if (current[0].id == editContID) {
+                    await dropContent();
+                    editTabContent();
+                    disableAndRemove(editCont)
+                } else if (current[0].id == monitoringID) {
+                    await dropContent();
+                    monitoringContent();
+                    disableAndRemove(monitorForm);
+                }
             }
+
+
         })
     }
 
+    function disableAndRemove(id) {
+        document.getElementById(id.id).disabled = true;
+        var rest = document.querySelectorAll('.tab');
+        for (a = 0; a < rest.length; a++) {
+            if (rest[a].id != id.id) {
+                rest[a].removeAttribute('disabled');
+            }
+        }
+        if(c!= null){
+            var newURL = "/GitHub/Window_AdminPanel.php";
+            window.history.replaceState({},document.title,""+newURL);
+        }
+    }
+
     function callUserDetails() {
-        profile.disabled = "true";
-        reservation.removeAttribute("disabled");
-        userProf.removeAttribute("disabled");
-        document.getElementById("monitoringForm").removeAttribute("disabled");
-        userRes.removeAttribute("disabled");
         var asd = <?php echo $_SESSION["usercourse"]; ?>;
         var fn = "<?php echo $_SESSION["fullName"]; ?>";
         var cn = <?php echo $_SESSION["usercontactnumber"]; ?>;
@@ -70,7 +124,7 @@
                 profileContent(fn, this.responseText, cn, email, pass);
             }
         }
-        xmlhttp.open("GET", "Request_Course.php?var=" + asd, true);
+        xmlhttp.open("GET", "/GitHub/Request_Course.php?var=" + asd, true);
         xmlhttp.send();
     }
 
@@ -85,12 +139,6 @@
 
     function callReservationDetails() {
         userID = <?php echo $_SESSION["userID"] ?>;
-        reservation.disabled = "true";
-        profile.removeAttribute("disabled");
-        userProf.removeAttribute("disabled");
-        userRes.removeAttribute("disabled");
-        editCont.removeAttribute("disabled");
-        document.getElementById("monitoringForm").removeAttribute("disabled");
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -111,11 +159,11 @@
                 }
             }
         }
-        xmlhttp.open("GET", "Request_ReservationForUser.php?var=" + userID, true);
+        xmlhttp.open("GET", "/GitHub/Request_ReservationForUser.php?var=" + userID, true);
         xmlhttp.send();
     }
 
-    function reservedEquipment(resID, mainDiv, userID, forUser, status, approval,typePending) {
+    function reservedEquipment(resID, mainDiv, userID, forUser, status, approval, typePending) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -130,12 +178,9 @@
                 myObj.forEach(function(element, index) {
                     listEquipmentReserved(mainDiv, element, index);
                 });
-                    if (forUser) {
+                if (forUser) {
                     if (status != 1) {
                         if (approval == 1) {
-                            mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Approved" + '<h4><br>';
-                            mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">'
-                        } else if (approval == 2) {
                             mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '<h4><br>';
                             mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">'
                         } else {
@@ -143,22 +188,21 @@
                             mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>'
                         }
                     } else {
-                        mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '<h4><br>';
+                            mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '<h4><br>';
+                            mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>'
+                        }
+                    } else {
+                        mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Cancelled" + '<h4><br>';
                         mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>'
                     }
-                } 
-                if(typePending){
+                }
+                if (typePending) {
                     mainDiv.innerHTML += '<input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ')">'
                     mainDiv.innerHTML += '<input type="button" class = "header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ')">'
-
                 }
-                   
-                
-                
-
             }
         }
-        xmlhttp.open("GET", "Request_ReservationForUserEquipment.php?var=" + resID, true);
+        xmlhttp.open("GET", "/GitHub/Request_ReservationForUserEquipment.php?var=" + resID, true);
         xmlhttp.send();
     }
     //HTML PART THAT LISTS THE EQUIPMENT IN THE WINDOW
@@ -188,13 +232,12 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                console.log(eventID)
                 // alert(this.responseText);
                 dropContent();
                 callReservationDetails();
             }
         }
-        xmlhttp.open("GET", "Request_RemoveReservation.php?var=" + eventID, true);
+        xmlhttp.open("GET", "/GitHub/Request_RemoveReservation.php?var=" + eventID, true);
         xmlhttp.send();
     }
 
@@ -207,7 +250,7 @@
                 callReservationDetails();
             }
         }
-        xmlhttp.open("GET", "Request_EditReservation.php?var=" + eventID, true);
+        xmlhttp.open("GET", "/GitHub/Request_EditReservation.php?var=" + eventID, true);
         xmlhttp.send();
     }
 
@@ -218,13 +261,10 @@
             document.getElementById("profContent").remove();
         } else if (document.getElementById("regList")) {
             document.getElementById("regList").remove();
-            console.log("di nag wowork yung 2")
         } else if (document.getElementById("biggestDiv")) {
             document.getElementById("biggestDiv").remove();
-            console.log("di nag wowork yung user prof")
         } else if (document.getElementById("currentUserReservation")) {
             document.getElementById("currentUserReservation").remove();
-            console.log("di nag wowork yung user reges")
         } else if (document.getElementById('editList')) {
             document.getElementById("editList").remove();
         } else if (document.getElementById('monitoringContent')) {
@@ -235,12 +275,6 @@
     // USER REGISTRATION
     function regList() {
         //must need to added
-        document.getElementById("userProfile").disabled = "true";
-        document.getElementById("myProfile").removeAttribute("disabled");
-        document.getElementById("myReservation").removeAttribute("disabled");
-        document.getElementById("userReservations").removeAttribute("disabled");
-        document.getElementById("monitoringForm").removeAttribute("disabled");
-        editCont.removeAttribute("disabled");
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -260,7 +294,7 @@
                 }
             }
         }
-        xmlhttp.open("GET", "Request_PendingRegistrations.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_PendingRegistrations.php", true);
         xmlhttp.send();
     }
     //HTML PART THAT LISTS THE REGISTRATION OF USERS
@@ -288,7 +322,7 @@
                 regList();
             }
         }
-        xmlhttp.open("GET", "Request_AcceptRegistration.php?var=" + user, true);
+        xmlhttp.open("GET", "/GitHub/Request_AcceptRegistration.php?var=" + user, true);
         xmlhttp.send();
     }
 
@@ -302,7 +336,7 @@
                 regList();
             }
         }
-        xmlhttp.open("GET", "Request_DeclineRegistration.php?var=" + user, true);
+        xmlhttp.open("GET", "/GitHub/Request_DeclineRegistration.php?var=" + user, true);
         xmlhttp.send();
     }
 
@@ -311,15 +345,9 @@
         check = false;
         pending = false;
         finished = false;
-        document.getElementById("userReservations").disabled = "true";
-        document.getElementById("myProfile").removeAttribute("disabled");
-        document.getElementById("myReservation").removeAttribute("disabled");
-        document.getElementById("userProfile").removeAttribute("disabled");
-        document.getElementById("monitoringForm").removeAttribute("disabled");
-        editCont.removeAttribute("disabled");
         var bigcontent = document.getElementById('content');
         var biggestDiv = document.createElement('div');
-        biggestDiv.id ='biggestDiv';
+        biggestDiv.id = 'biggestDiv';
         var bigDiv = document.createElement('div');
         bigDiv.className = 'pendingDiv';
         bigDiv.id = 'bigPendingDiv';
@@ -327,6 +355,7 @@
         label.textContent = 'Pending Reservations';
         var sideInput = document.createElement('input');
         sideInput.className = 'openBtn';
+        sideInput.id = 'pendingBtn';
         sideInput.type = 'image';
         sideInput.src = 'Assets/side-arrow.png';
         sideInput.addEventListener('click', function() {
@@ -344,7 +373,7 @@
         sideInput2.type = 'image';
         sideInput2.src = 'Assets/side-arrow.png';
         sideInput2.addEventListener('click', function() {
-            buttonFunctions(bigDiv2)
+            buttonFunctions(bigDiv2);
         })
         bigDiv2.appendChild(label2);
         bigDiv2.appendChild(sideInput2)
@@ -355,9 +384,8 @@
 
     }
 
-    function buttonFunctions(div) {
+    function buttonFunctions(div,page_number = 1) {
         userResClick = false;
-
         if (check) {
             if (div.id == 'bigPendingDiv') {
                 if (pending) {
@@ -366,9 +394,9 @@
                     check = false;
                     finished = false;
                 } else {
-                    
+
                     document.getElementById('resList').remove();
-                    loadPendingReservation(div);
+                    loadPendingReservation(div,null,page_number);
                     check = true;
                     pending = true;
                     finished = false;
@@ -381,7 +409,7 @@
                     finished = false;
                 } else {
                     document.getElementById('resList').remove();
-                    loadFinishedReservation(div);
+                    loadFinishedReservation(div,page_number);
                     check = true;
                     finished = true;
                     pending = false;
@@ -389,10 +417,10 @@
             }
         } else {
             if (div.id == 'bigPendingDiv') {
-                loadPendingReservation(div);
+                loadPendingReservation(div,null,page_number);
                 pending = true;
             } else if (div.id == 'bigFinishedDiv') {
-                loadFinishedReservation(div);
+                loadFinishedReservation(div,page_number);
                 finished = true;
             }
             check = true;
@@ -400,7 +428,7 @@
 
     }
 
-    function loadFinishedReservation(bigDiv) {
+    function loadFinishedReservation(bigDiv,page_number) {
         var motherDiv = document.createElement('div');
         motherDiv.className = "userResContent";
         motherDiv.id = "resList";
@@ -412,17 +440,17 @@
                     motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                 } else {
                     myObj.forEach(function(element, index) {
-                        userReservationContent(motherDiv,...Array(1), element, index);
+                        userReservationContent(motherDiv, ...Array(1), element, index);
                     });
                 }
             }
         }
-        xmlhttp.open("GET", "Request_AllReservations.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_AllReservations.php?page=" + page_number, true);
         xmlhttp.send();
         bigDiv.appendChild(motherDiv);
     }
 
-    function loadPendingReservation(bigDiv,typePending) {
+    function loadPendingReservation(bigDiv, typePending,page_number) {
         var typePending = true;
         var motherDiv = document.createElement('div');
         motherDiv.className = "userResContent";
@@ -434,13 +462,14 @@
                 if (myObj[0] == null) {
                     motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                 } else {
+                  
                     myObj.forEach(function(element, index) {
-                        userReservationContent(motherDiv, typePending,element, index);
+                        userReservationContent(motherDiv, typePending, element, index);
                     });
                 }
             }
         }
-        xmlhttp.open("GET", "Request_unapprovedReservation.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_unapprovedReservation.php?page=" + page_number, true);
         xmlhttp.send();
         bigDiv.appendChild(motherDiv);
     }
@@ -464,15 +493,24 @@
         sideInput.className = 'openBtn';
         sideInput.type = 'image';
         sideInput.src = 'Assets/side-arrow.png';
+        console.log(element.reservationID);
+        console.log(element.roomID);
+        console.log(element.userID);
+        console.log(fullName);
         sideInput.addEventListener('click', function() {
-            loadResContent(element.reservationID, fullName, element.roomID, element.userID,typePending);
-           // loadImage(element.imgLetter, mainDiv);
+            loadResContent(element.reservationID, fullName, element.roomID, element.userID, typePending);
+            
+            // loadImage(element.imgLetter, mainDiv);
         })
         sideDiv.appendChild(label);
         sideDiv.appendChild(space);
         sideDiv.appendChild(date);
         sideDiv.appendChild(sideInput);
         div.appendChild(sideDiv);
+
+        if(element.pagination != undefined){
+           div.innerHTML += element.pagination;
+        }
         // var motherDiv = document.createElement('div')
         // div.id = "userResContent";
         // div.className = "userResContent";
@@ -492,29 +530,27 @@
         mainDiv.appendChild(image);
     }
 
-    function loadResContent(resID, fullName, roomID, userID,typePending) {
+    function loadResContent(resID, fullName, roomID, userID, typePending) {
+      
         if (userResClick) {
-            console.log(activeID);
-            console.log(resID);
             if (activeID == resID) {
-                console.log('a')
                 document.getElementById('subContents').remove();
                 userResClick = false;
             } else {
                 document.getElementById('subContents').remove();
-                loadRestofResContent(resID, fullName, roomID, userID,typePending);
+                loadRestofResContent(resID, fullName, roomID, userID, typePending);
                 activeID = resID;
                 userResClick = true;
-                
+
             }
         } else {
-            loadRestofResContent(resID, fullName, roomID, userID,typePending);
+            loadRestofResContent(resID, fullName, roomID, userID, typePending);
             userResClick = true;
             activeID = resID;
         }
     }
 
-    function loadRestofResContent(resID, fullName, roomID, userID,typePending) {
+    function loadRestofResContent(resID, fullName, roomID, userID, typePending) {
         var sideDiv = document.getElementById('monitor' + resID);
         var mainDiv = document.createElement('div');
         mainDiv.id = 'subContents';
@@ -525,11 +561,11 @@
                 const myObj = await JSON.parse(this.responseText);
                 mainDiv.innerHTML = await '<h3> Full Name:' + fullName + '</h3>';
                 mainDiv.innerHTML += await '<h3> Room Name:' + myObj.roomName + '</h3>';
-                reservedEquipment(resID, mainDiv, userID,...Array(3),typePending);
+                reservedEquipment(resID, mainDiv, userID, ...Array(3), typePending);
             }
 
         }
-        xmlhttp.open("GET", "Request_SpecificRoom.php?var=" + roomID, true);
+        xmlhttp.open("GET", "/GitHub/Request_SpecificRoom.php?var=" + roomID, true);
         xmlhttp.send();
         sideDiv.appendChild(mainDiv);
     }
@@ -543,7 +579,7 @@
                 resList();
             }
         }
-        xmlhttp.open("GET", "Request_AcceptReservation.php?var=" + eventID + '&userID=' + userID, true);
+        xmlhttp.open("GET", "/GitHub/Request_AcceptReservation.php?var=" + eventID + '&userID=' + userID, true);
         xmlhttp.send();
     }
 
@@ -557,7 +593,7 @@
                 resList();
             }
         }
-        xmlhttp.open("GET", "Request_DeclineReservation.php?var=" + eventID + '&userID=' + userID, true);
+        xmlhttp.open("GET", "/GitHub/Request_DeclineReservation.php?var=" + eventID + '&userID=' + userID, true);
         xmlhttp.send();
     }
     //HTML PART THAT LISTS THE TAB CONTENT FOR EDIT
@@ -566,12 +602,6 @@
         equipBtn = true;
         roomBtn = true;
         policiesBtn = true;
-        document.getElementById("userReservations").removeAttribute('disabled');
-        document.getElementById("myProfile").removeAttribute("disabled");
-        document.getElementById("myReservation").removeAttribute("disabled");
-        document.getElementById("userProfile").removeAttribute("disabled");
-        document.getElementById("monitoringForm").removeAttribute("disabled");
-        editCont.disabled = true;
         var motherDiv = document.createElement('div');
         motherDiv.id = "editList";
         document.getElementById('content').appendChild(motherDiv);
@@ -775,7 +805,7 @@
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "Request_Policies.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_Policies.php", true);
         xmlhttp.send();
     }
 
@@ -790,7 +820,7 @@
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "Request_EquipmentList.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_EquipmentList.php", true);
         xmlhttp.send();
     }
 
@@ -810,7 +840,7 @@
                 }
             }
         }
-        xmlhttp.open("GET", "Request_CategoryPolicies.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_CategoryPolicies.php", true);
         xmlhttp.send();
     }
 
@@ -825,7 +855,7 @@
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "Request_RoomList.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_RoomList.php", true);
         xmlhttp.send();
     }
     //Call for policies instead of generateTabContent()
@@ -938,7 +968,7 @@
             btn.disabled = true;
             checkbox.disabled = false;
             editBtn.src = "";
-            removeBtn.src = '';
+            removeBtn.src = "Assets/c1.png";
             checker = false;
             checkbox.checked = true;
             editBtn.addEventListener('click', function() {
@@ -1049,7 +1079,7 @@
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "Request_EquipmentList.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_EquipmentList.php", true);
         xmlhttp.send();
     }
 
@@ -1108,7 +1138,7 @@
                 console.log(this.responseText);
             }
         }
-        xmlhttp.open("GET", "Request_AddRoom.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
+        xmlhttp.open("GET", "/GitHub/Request_AddRoom.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
         xmlhttp.send();
         dropContent();
         editTabContent();
@@ -1131,7 +1161,7 @@
                 console.log(this.responseText);
             }
         }
-        xmlhttp.open("GET", "Request_AddEquipment.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
+        xmlhttp.open("GET", "/GitHub/Request_AddEquipment.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
         xmlhttp.send();
         dropContent();
         editTabContent();
@@ -1148,7 +1178,7 @@
                 console.log(this.responseText);
             }
         }
-        xmlhttp.open("GET", "Request_AddPolicies.php?name=" + name + '&desc=' + desc, true);
+        xmlhttp.open("GET", "/GitHub/Request_AddPolicies.php?name=" + name + '&desc=' + desc, true);
         xmlhttp.send();
     }
 
@@ -1158,7 +1188,7 @@
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {}
         }
-        xmlhttp.open("GET", "Request_EditPolicies.php?name=" + name + '&desc=' + desc + '&ID=' + ID, true);
+        xmlhttp.open("GET", "/GitHub/Request_EditPolicies.php?name=" + name + '&desc=' + desc + '&ID=' + ID, true);
         xmlhttp.send();
     }
 
@@ -1175,7 +1205,7 @@
                 console.log(this.responseText);
             }
         }
-        xmlhttp.open("GET", "Request_EditEquipList.php?name=" + name + '&quantity=' + quantity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
+        xmlhttp.open("GET", "/GitHub/Request_EditEquipList.php?name=" + name + '&quantity=' + quantity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
         xmlhttp.send();
     }
 
@@ -1192,7 +1222,7 @@
                 console.log(this.responseText);
             }
         }
-        xmlhttp.open("GET", "Request_EditRoomList.php?name=" + name + '&cap=' + capacity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
+        xmlhttp.open("GET", "/GitHub/Request_EditRoomList.php?name=" + name + '&cap=' + capacity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
         xmlhttp.send();
     }
 
@@ -1215,7 +1245,6 @@
             botInput.value = "Add Equipment";
             var mainDiv = document.getElementById('equipID');
             var table = document.getElementById('equipmentTbl');
-            console.log(table)
             botInput.addEventListener('click', function() {
                 generateTabContent(table, type, ...Array(2), true, botInput);
             })
@@ -1235,12 +1264,6 @@
     //Monitoring form
 
     function monitoringContent() {
-        document.getElementById("userReservations").removeAttribute('disabled');
-        document.getElementById("myProfile").removeAttribute("disabled");
-        document.getElementById("myReservation").removeAttribute("disabled");
-        document.getElementById("userProfile").removeAttribute("disabled");
-        editCont.removeAttribute("disabled");
-        monitorForm.disabled = true;
         var motherDiv = document.createElement('div');
         motherDiv.id = "monitoringContent";
         motherDiv.className = 'row';
@@ -1263,7 +1286,7 @@
                 }
             }
         }
-        xmlhttp.open("GET", "Request_FinishedReservations.php", true);
+        xmlhttp.open("GET", "/GitHub/Request_FinishedReservations.php", true);
         xmlhttp.send();
     }
 
@@ -1284,8 +1307,8 @@
         sideDiv.id = 'monitor' + element.reservationID;
         var sideInput = document.createElement('input');
         sideInput.className = 'openBtn';
-        sideInput.type = 'button';
-        sideInput.value = '>';
+        sideInput.type = 'image';
+        sideInput.src = 'Assets/side-arrow.png';
         sideInput.addEventListener('click', function() {
             loadContent(element.reservationID);
 
@@ -1332,7 +1355,7 @@
             }
 
         }
-        xmlhttp.open("GET", "Request_SpecificReservation.php?r_ID=" + ID, true);
+        xmlhttp.open("GET", "/GitHub/Request_SpecificReservation.php?r_ID=" + ID, true);
         xmlhttp.send();
     }
 
@@ -1349,7 +1372,7 @@
                 const second = await loadEquipDetails(ID, mainDiv, userID);
             }
         }
-        xmlhttp.open("GET", "Request_SpecificRoom.php?var=" + roomID, true);
+        xmlhttp.open("GET", "/GitHub/Request_SpecificRoom.php?var=" + roomID, true);
         xmlhttp.send();
     }
 
@@ -1371,7 +1394,7 @@
                 mainDiv.innerHTML += '<br><input type="button" value="Submit" id = "' + ID + '" onclick = "submitRemark(this,' + userID + ')" >'
             }
         }
-        xmlhttp.open("GET", "Request_ReservationForUserEquipment.php?var=" + ID, true);
+        xmlhttp.open("GET", "/GitHub/Request_ReservationForUserEquipment.php?var=" + ID, true);
         xmlhttp.send();
     }
 
@@ -1398,7 +1421,7 @@
                 monitoringContent();
             }
         }
-        xmlhttp.open("GET", "Request_EditFinishedReservation.php?var=" + btn.id + "&remark=" + x.value + "&marked=" + marked + "&userID=" + userID, true);
+        xmlhttp.open("GET", "/GitHub/Request_EditFinishedReservation.php?var=" + btn.id + "&remark=" + x.value + "&marked=" + marked + "&userID=" + userID, true);
         xmlhttp.send();
     }
 </script>

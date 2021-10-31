@@ -2,12 +2,12 @@
 <html>
     <head>
         <title>PLVRS</title>
-        <link rel="icon" href="assets/plv.png">
+        <link rel="icon" href="/GitHub/assets/plv.png">
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="css/registration.css">
-        <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/GitHub/css/registration.css">
+        <link rel="stylesheet" href="/GitHub/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
         <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="css/registration.css">
+        <link rel="stylesheet" href="/GitHub/css/registration.css">
     </head>
     <body>
     <?php
@@ -17,6 +17,7 @@
     exit;
     }
     include "db_connection.php";
+    include "Request_storeNotification";
     $conn = OpenCon();
     //Form part
     $emailErr = $passwordErr = $contactErr = $firstNameErr = $middleNameErr = $lastNameErr=$uploadErr="";
@@ -119,7 +120,7 @@
             if($sql->execute()){
               echo '<script>
                     alert("Registration Successful!\n Status:Pending")
-                    window.location.href = "Window_LOGIN.php"
+                    window.location.href = "/GitHub/Window_LOGIN.php"
                     </script>';
             }else{
               echo "Something went wrong";
@@ -146,9 +147,9 @@
             <div class="navbar">
             <div class="nav1">
               <img id="fb" src="assets/plv.png" alt="PLV Logo">
-              <a href="Window_HomePage.php" type="button" class="header-btn btn ">Home</a>
-              <a href="Window_RoomAndEquipment.php" type="button" class="header-btn btn ">Rooms and Equipment</a>
-              <a href="Window_PoliciesPage.php" type="button" class="header-btn btn">Policies</a>
+              <a href="/GitHub/Window_HomePage.php" type="button" class="header-btn btn ">Home</a>
+              <a href="/GitHub/Window_RoomAndEquipment.php" type="button" class="header-btn btn ">Rooms and Equipment</a>
+              <a href="/GitHub/Window_PoliciesPage.php" type="button" class="header-btn btn">Policies</a>
             </div>
             <div class="nav2">
               <?php
@@ -200,7 +201,7 @@
                         <span class="error"><?php echo $uploadErr;?></span>
                       </div>
                       <button type="submit" class="sgn-btn btn" id="register" style="margin:auto;" name="registerBtn">Register</button>
-                      <a href="Window_LOGIN.php" style="text-decoration: underline; text-align: center;display: block; margin-top: 30px;">Log in</a>
+                      <a href="/GitHub/Window_LOGIN.php" style="text-decoration: underline; text-align: center;display: block; margin-top: 30px;">Log in</a>
                 </form>
             </div>
             <div class="col-xs-4"></div>

@@ -18,6 +18,6 @@ $sql_code = "UPDATE `tbl_reservation` SET `r_approved_ID` = '3' WHERE r_ID = ?";
              $sql->close();
         }
     $conn->close();
-notification($userID,3);
+notification($userID,3,1,$rid);
 getEmail($userID,$rid);
 ?>
