@@ -71,7 +71,7 @@ else
                  $sql->close();
             }
             $conn->close();
-$pagination = getPaginationString($page,$total_items,$limit,false,'Window_AdminPanel.php/',"?page=","&category=",$reservation);
+$pagination = getPaginationString($page,$total_items,$limit,false,'/Window_AdminPanel.php/',"?page=","&category=",$reservation);
 if(count($reservation)!=0 ){
     $reservation [count($reservation)-1] += array(
         'pagination' => $pagination,
