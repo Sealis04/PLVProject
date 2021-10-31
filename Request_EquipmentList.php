@@ -3,7 +3,7 @@
 $equip = array();
 include "db_connection.php";
 $conn=OpenCon();
-$sql_code = "SELECT * FROM tbl_equipment WHERE 1";
+$sql_code = "SELECT * FROM tbl_equipment WHERE isDeleted = 0";
     if($sql=$conn->prepare($sql_code)){
             if($sql->execute()){
                 $result = $sql->get_result();

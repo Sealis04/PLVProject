@@ -46,7 +46,7 @@
             resList();
             userRes.className += " active";
             buttonFunctions(document.getElementById('bigPendingDiv'), c)
-        }else if(categ == 'user'){
+        } else if (categ == 'user') {
             callReservationDetails(c);
             reservation.className += ' active';
         }
@@ -160,9 +160,9 @@
                     motherDiv.id = "currentUserReservation";
 
                     myObj.forEach(function(element, index) {
-                        reservationContent(motherDiv, userID, page,element, index);
+                        reservationContent(motherDiv, userID, page, element, index);
                     });
-                    page.innerHTML = myObj[myObj.length-1].pagination;
+                    page.innerHTML = myObj[myObj.length - 1].pagination;
                     motherDiv.appendChild(page);
                 }
             }
@@ -215,7 +215,7 @@
 
     }
     //HTML PART THAT LISTS THE RESERVATIONS IN THE WINDOW
-    function reservationContent(motherDiv, userID,page, element, index) {
+    function reservationContent(motherDiv, userID, page, element, index) {
         var div = document.createElement('div')
         div.id = "resContent";
         div.className = "resContent";
@@ -405,7 +405,7 @@
                 } else {
 
                     document.getElementById('resList').remove();
-                    loadPendingReservation(div, null, page,page_number);
+                    loadPendingReservation(div, null, page, page_number);
                     check = true;
                     pending = true;
                     finished = false;
@@ -418,7 +418,7 @@
                     finished = false;
                 } else {
                     document.getElementById('resList').remove();
-                    loadFinishedReservation(div, page,page_number);
+                    loadFinishedReservation(div, page, page_number);
                     check = true;
                     finished = true;
                     pending = false;
@@ -426,10 +426,10 @@
             }
         } else {
             if (div.id == 'bigPendingDiv') {
-                loadPendingReservation(div, null, page,page_number);
+                loadPendingReservation(div, null, page, page_number);
                 pending = true;
             } else if (div.id == 'bigFinishedDiv') {
-                loadFinishedReservation(div, page,page_number);
+                loadFinishedReservation(div, page, page_number);
                 finished = true;
             }
             check = true;
@@ -473,7 +473,7 @@
                 } else {
                     console.log(myObj);
                     myObj.forEach(function(element, index) {
-                        userReservationContent(motherDiv, typePending,page,element, index);
+                        userReservationContent(motherDiv, typePending, page, element, index);
                     });
                 }
             }
@@ -483,7 +483,7 @@
         bigDiv.appendChild(motherDiv);
     }
     //HTML PART THAT LISTS THE RESERVATION OF ITS USERS
-    function userReservationContent(div, typePending, page,element, index) {
+    function userReservationContent(div, typePending, page, element, index) {
         var label = document.createElement('h3');
         label.id = 'eventName';
         label.className = 'block';
@@ -802,6 +802,7 @@
     function listPolicies(mainDiv, type) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
+            var list = document.createElement('select');
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
                 myObj.forEach(function(element, index) {
@@ -829,19 +830,24 @@
         xmlhttp.send();
     }
 
-    function listCategPolicies(x, add) {
+    function listCategPolicies(x, add, value) {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
+        xmlhttp.onreadystatechange = async function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
                 if (add) {
-                    myObj.forEach(function(element, index) {
-                        categoryPolicyList(x, element, index)
-                    })
+                    await myObj.forEach(function(element, index) {
+                        categoryPolicyList(x, element, index, value)
+                    });
                 } else {
-                    myObj.forEach(function(element, index) {
-                        categoryPolicyList(x, element, index);
-                    })
+                    await myObj.forEach(function(element, index) {
+                        categoryPolicyList(x, element, index, value);
+                    });
+                    for (a = 0; a < x.options.length; a++) {
+                        if (value == x.options[a].innerHTML) {
+                            x.selectedIndex = a;
+                        }
+                    }
                 }
             }
         }
@@ -864,14 +870,14 @@
         xmlhttp.send();
     }
     //Call for policies instead of generateTabContent()
-    function categoryPolicyList(list, element, index) {
+    function categoryPolicyList(list, element, index, value) {
         var option = document.createElement('option');
         option.textContent = element.ct_Name;
         option.value = element.ct_ID;
         list.appendChild(option);
     }
 
-    function generatePolicies(mainDiv, type, element, index, add, btn) {
+    async function generatePolicies(mainDiv, type, element, index, add, btn) {
         var tr = document.createElement('tr');
         tr.id = index;
         mainDiv.appendChild(tr);
@@ -908,6 +914,10 @@
             editBtn.addEventListener('click', function() {
                 editContent(type, tr, this, ...Array(1), add, btn)
             })
+            removeBtn.addEventListener('click', function() {
+               tr.remove();
+               btn.disabled = false;
+            });
             btn.disabled = true;
             editBtn.placeholder = 'Save';
             removeBtn.placeholder = 'Cancel';
@@ -917,21 +927,20 @@
             listCategPolicies(listName, add);
         } else {
             var listName = document.createElement('select');
-            listCategPolicies(listName);
+            listCategPolicies(listName, ...Array(1), element.p_category);
             listName.className = 'policyList';
-
-            for (var a = 0; a < listName.length; a++) {
-                console.log(a);
-            }
+            listName.id = element.p_ID;
             editBtn.src = "/Assets/c2.png";
             editBtn.addEventListener('click', function() {
                 editContent(type, tr, this, element.p_ID);
             })
+            removeBtn.addEventListener('click', function() {
+                removePolicies(element.p_ID)
+            });
             removeBtn.src = "/Assets/c1.png";
             inputDesc.disabled = true;
             inputDesc.value = element.p_description;
             listName.disabled = true;
-
         }
         tdRemove.appendChild(editBtn);
         tdRemove.appendChild(removeBtn);
@@ -979,7 +988,11 @@
             editBtn.addEventListener('click', function() {
                 editContent(type, tr, this, ...Array(1), add, btn)
             })
-            
+            removeBtn.addEventListener('click', function() {
+                        tr.remove();
+                        btn.disabled = false;
+                    });
+
         } else {
             inputName.disabled = true;
             inputQuantity.disabled = true;
@@ -999,17 +1012,17 @@
                     inputName.value = element.roomName;
                     inputDesc.value = element.roomDesc;
                     inputQuantity.value = element.roomCap;
-                    removeBtn.addEventListener('click',function(){
-                    removeRoom(element.roomID)
-                         });
+                    removeBtn.addEventListener('click', function() {
+                        removeRoom(element.roomID)
+                    });
                     break;
                 case 'equipID':
                     editBtn.addEventListener('click', function() {
                         editContent(type, tr, this, element.equipID);
                     });
-                    removeBtn.addEventListener('click',function(){
-                    removeEquipment(element.equipID)
-                         });
+                    removeBtn.addEventListener('click', function() {
+                        removeEquipment(element.equipID)
+                    });
                     inputQuantity.value = element.equipQty;
                     inputName.value = element.equipName;
                     inputDesc.value = element.equipDesc;
@@ -1033,24 +1046,52 @@
 
         //appending of element
     }
-    function removeEquipment(ID){
+
+    function removePolicies(ID) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
+                dropContent();
+                editTabContent();
+                var poliDiv = document.getElementById('polPanel');
+                var poliBtn = document.getElementById('polBtn');
+                polBtn.click('3', poliDiv);
             }
         }
-        xmlhttp.open("GET", "/Request_RemoveEquipment.php?var="+ID, true);
+        xmlhttp.open("GET", "/Request_RemovePolicies.php?var=" + ID, true);
         xmlhttp.send();
     }
-    function removeRoom(ID){
+
+    function removeEquipment(ID) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                var myObj = JSON.parse(this.responseText);
+                dropContent();
+                editTabContent();
+                var equipDiv = document.getElementById('equipPanel');
+                var equipBtn = document.getElementById('equipBtn');
+                equipBtn.click('2', equipDiv);
             }
         }
-        xmlhttp.open("GET", "/Request_RemoveRoom.php?var="+ID, true);
+        xmlhttp.open("GET", "/Request_RemoveEquipment.php?var=" + ID, true);
         xmlhttp.send();
+
+    }
+
+    function removeRoom(ID) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                dropContent();
+                editTabContent();
+                var roomDiv = document.getElementById('roomPanel');
+                var roomBtn = document.getElementById('roomBtn');
+                roomBtn.click('2', roomDiv);
+            }
+        }
+        xmlhttp.open("GET", "/Request_RemoveRoom.php?var=" + ID, true);
+        xmlhttp.send();
+
     }
 
     function editContent(type, rowID, value, ID, add, btn) {
@@ -1066,6 +1107,7 @@
                 if (add) {
                     btn.disabled = false;
                 }
+                name.disabled = true;
                 desc.disabled = true;
                 enableButtons(type, name, ...Array(1), desc, ...Array(1), ID, value, add);
             }
@@ -1109,6 +1151,7 @@
         }
         xmlhttp.open("GET", "/Request_EquipmentList.php", true);
         xmlhttp.send();
+
     }
 
 
@@ -1172,7 +1215,7 @@
         editTabContent();
         var roomDiv = document.getElementById('roomPanel');
         var roomBtn = document.getElementById('roomBtn');
-        equipBtn.click('2', equipDiv);
+        roomBtn.click('2', equipDiv);
     }
 
     function addEquipQuery(name, quantity, desc, availability) {
@@ -1203,7 +1246,11 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
+                dropContent();
+                editTabContent();
+                var poliDiv = document.getElementById('polPanel');
+                var poliBtn = document.getElementById('polBtn');
+                polBtn.click('3', poliDiv);
             }
         }
         xmlhttp.open("GET", "/Request_AddPolicies.php?name=" + name + '&desc=' + desc, true);
@@ -1214,7 +1261,9 @@
         //editPolicies
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {}
+            if (this.readyState == 4 && this.status == 200) {
+
+            }
         }
         xmlhttp.open("GET", "/Request_EditPolicies.php?name=" + name + '&desc=' + desc + '&ID=' + ID, true);
         xmlhttp.send();
