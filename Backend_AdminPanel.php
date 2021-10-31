@@ -923,11 +923,11 @@
             for (var a = 0; a < listName.length; a++) {
                 console.log(a);
             }
-            editBtn.src = "Assets/c2.png";
+            editBtn.src = "/Assets/c2.png";
             editBtn.addEventListener('click', function() {
                 editContent(type, tr, this, element.p_ID);
             })
-            removeBtn.src = "Assets/c1.png";
+            removeBtn.src = "/Assets/c1.png";
             inputDesc.disabled = true;
             inputDesc.value = element.p_description;
             listName.disabled = true;
@@ -973,12 +973,13 @@
             btn.disabled = true;
             checkbox.disabled = false;
             editBtn.src = "";
-            removeBtn.src = "Assets/c1.png";
+            removeBtn.src = "/Assets/c1.png";
             checker = false;
             checkbox.checked = true;
             editBtn.addEventListener('click', function() {
                 editContent(type, tr, this, ...Array(1), add, btn)
             })
+            
         } else {
             inputName.disabled = true;
             inputQuantity.disabled = true;
@@ -998,11 +999,17 @@
                     inputName.value = element.roomName;
                     inputDesc.value = element.roomDesc;
                     inputQuantity.value = element.roomCap;
+                    removeBtn.addEventListener('click',function(){
+                    removeRoom(element.roomID)
+                         });
                     break;
                 case 'equipID':
                     editBtn.addEventListener('click', function() {
                         editContent(type, tr, this, element.equipID);
                     });
+                    removeBtn.addEventListener('click',function(){
+                    removeEquipment(element.equipID)
+                         });
                     inputQuantity.value = element.equipQty;
                     inputName.value = element.equipName;
                     inputDesc.value = element.equipDesc;
@@ -1010,9 +1017,6 @@
             }
             editBtn.src = "Assets/c2.png";
             removeBtn.src = "Assets/c1.png";
-            removeBtn.addEventListener('click', function() {
-                removeContent(type, tr);
-            });
         }
 
 
@@ -1028,6 +1032,25 @@
         tr.appendChild(tdRemove);
 
         //appending of element
+    }
+    function removeEquipment(ID){
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+            }
+        }
+        xmlhttp.open("GET", "/Request_RemoveEquipment.php?var="+ID, true);
+        xmlhttp.send();
+    }
+    function removeRoom(ID){
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var myObj = JSON.parse(this.responseText);
+            }
+        }
+        xmlhttp.open("GET", "/Request_RemoveRoom.php?var="+ID, true);
+        xmlhttp.send();
     }
 
     function editContent(type, rowID, value, ID, add, btn) {
