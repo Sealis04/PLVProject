@@ -62,10 +62,13 @@ if ($sql = $conn->prepare($sql_code)) {
     $sql->close();
 }
 $conn->close();
-$pagination = getPaginationString($page,$total_items,$limit,false,'/GitHub/Window_AdminPanel.php/',"?page=","&category=");
-$reservation[count($reservation)-1]+=array(
-	'pagination' => $pagination
-);
+$pagination = getPaginationString($page,$total_items,$limit,false,'Window_AdminPanel.php/',"?page=","&category=");
+if(count($reservation)!=0){
+	$reservation[count($reservation)-1]+=array(
+		'pagination' => $pagination
+	);
+}
+
 $myJSON = json_encode($reservation);
 echo $myJSON;
 
@@ -78,7 +81,7 @@ function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1
 	if(!$adjacents) $adjacents = 1;
 	if(!$limit) $limit = 4;
 	if(!$page) $page = 1;
-	if(!$targetpage) $targetpage = "/GitHub/Window_AdminPanel.php/";
+	if(!$targetpage) $targetpage = "Window_AdminPanel.php/";
     
 
 	//other vars
