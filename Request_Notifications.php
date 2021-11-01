@@ -20,7 +20,8 @@ $info = array();
 //     setCookie("loadedNotifications",$loadedNots,time()+86400,"/");
 // }
 if($isAdmin != 1){
-    $sql_code = 'SELECT * FROM `tbl_notification` WHERE `forUserID` = ? AND `decision` != 2 ORDER BY `time` DESC LIMIT 10';
+    $sql_code = 'SELECT * FROM `tbl_notification` as notif INNER JOIN tbl_reservation as res
+    ON notif.notificationID = res.notificationID WHERE notif.forUserID = ? AND `decision` != 2 ORDER BY `time` DESC LIMIT 10';
     if($sql=$conn->prepare($sql_code)){
         if($isAdmin != 1){
             $sql->bind_param('i',$userID);
@@ -29,17 +30,41 @@ if($isAdmin != 1){
             $result = $sql->get_result();
             while($row = $result->fetch_assoc()){
                 $notifications[] = array(
-                    'id' => $row['notificationID'],
-                    'isRead'=> $row['isRead'],
-                    'decision' => $row['decision'],
-                    'userID'=>$row['forUserID'],
-                    'text' =>'',
+                    'resid' => $row['notificationID'],
+                    'resisRead'=> $row['isRead'],
+                    'resdecision' => $row['decision'],
+                    'resuserID'=>$row['forUserID'],
+                    'resStart' => $row['r_startDateAndTime'],
+                    'resEnd' => $row['r_endDateAndTime'],
+                    'resName'=> $row['r_event']
                 );
             }
         }else{
            echo $conn->error;
         }
         $sql->close();
+    }
+
+    $sql_code2 = 'SELECT * FROM `tbl_notification` as notif INNER JOIN tbl_user as user
+    ON notif.notificationID = user.notificationID WHERE notif.forUserID = ? AND `decision` != 2 ORDER BY `time` DESC LIMIT 10';
+    if($sql2=$conn->prepare($sql_code2)){
+        if($isAdmin != 1){
+            $sql2->bind_param('i',$userID);
+        }
+        if($sql2->execute()){ 
+            $result2 = $sql2->get_result();
+            while($row = $result2->fetch_assoc()){
+                $notifications[] = array(
+                    'regid' => $row['notificationID'],
+                    'regisRead'=> $row['isRead'],
+                    'regdecision' => $row['decision'],
+                    'reguserID'=>$row['forUserID']
+                );
+            }
+        }else{
+           echo $conn->error;
+        }
+        $sql2->close();
     }
 }else{
     $sql_code = 'SELECT COUNT(*) as num FROM tbl_notification INNER JOIN tbl_reservation ON tbl_notification.notificationID = tbl_reservation.notificationID WHERE tbl_reservation.r_approved_ID = 2 ';
@@ -61,17 +86,24 @@ $sql5->close();
 }
 
 
-    for($i = 0; $i<count($notifications); $i++){
-        $decision = $notifications[$i]['decision'];
-        if($decision == 1){
-            $result = 'approved';
-        }else if($decision == 3){
-            $result = 'declined';
-        }
-       if($isAdmin != 1){
-            $notifications[$i]["text"] = 'Your reservation has been '. $result;
-        }
-    }
+    // for($i = 0; $i<count($notifications); $i++){
+    //     $decision = $notifications[$i]['resdecision'];
+    //     $decision2 = $notifications[$i]['regdecision'];
+    //     if($decision == 1){
+    //         $result = 'approved';
+    //     }else if($decision == 3){
+    //         $result = 'declined';
+    //     }
+    //     if($decision2 == 1){
+    //         $result2 = 'approved';
+    //     }else if($decision2 == 3){
+    //         $result2 = 'declined';
+    //     }
+    //    if($isAdmin != 1){
+    //         $notifications[$i]["restext"] = $result;
+    //         $notifications[$i]['regtext'] = $result2;
+    //     }
+    // }
 
 
 $conn->close();
