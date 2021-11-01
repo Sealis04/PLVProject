@@ -16,7 +16,6 @@ function update($userID,$decision){
     if($sql = $conn->prepare($sql_code)){
         $sql->bind_param('ii',$decision,$userID);
        if($sql->execute()){
-           return $conn->insert_id;
        }
     }
     $conn ->close();
