@@ -47,7 +47,7 @@ $email = $password=$userID="";
                 if($sql ->execute()){
                     $sql->store_result();
                     if($sql->num_rows ==1){
-                        $sql->bind_result($userID,$email,$password_db,$userfn,$usermn,$userln,$usercn,$usercourse,$userIDImage,$isAdmin,$isApproved,$isMarked);
+                        $sql->bind_result($userID,$email,$password_db,$userfn,$usermn,$userln,$usercn,$usercourse,$userIDImage,$isAdmin,$isApproved,$isMarked,$notifID);
                         if($sql->fetch()){
                             if($isApproved == 1){
                                 if(password_verify($password,$password_db)){

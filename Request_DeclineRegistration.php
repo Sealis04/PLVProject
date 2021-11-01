@@ -16,5 +16,5 @@ $sql_code = "UPDATE `tbl_user` SET `isApproved` = '3' WHERE `user_ID` = ?";
         }
     $conn->close();
     getEmail($sid, null);
-    notification($sid,1);
+    update($sid,1);
 ?>
