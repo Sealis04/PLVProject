@@ -314,11 +314,11 @@
         var div = document.createElement('div')
         div.id = "userProfContent";
         div.className = "userProfContent";
-        div.innerHTML += '<img src="Assets/wew.png">';
+        div.innerHTML += '<img src="/assets/wew.png" alt="student image">';
         div.innerHTML += '<h3 class="_edit"> Name:' + element.firstName + '&nbsp' + element.middleName + '&nbsp' + element.lastName + '</h3>';
         div.innerHTML += '<h3> Course:' + element.course + '</h3>';
         div.innerHTML += '<input type="button" class="header-btn btn" value="Accept" onclick="AcceptRegistration(' + element.user + ')">';
-        div.innerHTML += '<input type="button" class="header-btn btn" onclick="DeclineRegistration(' + element.user + ')" value="Decline">';
+        div.innerHTML += '<input type="button" class="decline header-btn btn" onclick="DeclineRegistration(' + element.user + ')" value="Decline">';
         document.getElementById("content").appendChild(motherDiv);
         motherDiv.appendChild(div);
         
@@ -374,7 +374,7 @@
         sideInput.className = 'openBtn';
         sideInput.id = 'pendingBtn';
         sideInput.type = 'image';
-        sideInput.src = '/Assets/side-arrow.png';
+        sideInput.src = '/assets/side-arrow.png';
         sideInput.addEventListener('click', function() {
             buttonFunctions(bigDiv)
         })
@@ -388,7 +388,7 @@
         var sideInput2 = document.createElement('input');
         sideInput2.className = 'openBtn';
         sideInput2.type = 'image';
-        sideInput2.src = '/Assets/side-arrow.png';
+        sideInput2.src = '/assets/side-arrow.png';
         sideInput2.addEventListener('click', function() {
             buttonFunctions(bigDiv2);
         })
@@ -511,7 +511,7 @@
         var sideInput = document.createElement('input');
         sideInput.className = 'openBtn';
         sideInput.type = 'image';
-        sideInput.src = '/Assets/side-arrow.png';
+        sideInput.src = '/assets/side-arrow.png';
         sideInput.addEventListener('click', function() {
             loadResContent(element.reservationID, fullName, element.roomID, element.userID, typePending);
             // loadImage(element.imgLetter, mainDiv);
@@ -630,7 +630,7 @@
         equipInput.id = 'equipBtn';
         equipInput.className = 'openBtn';
         equipInput.type = 'image';
-        equipInput.src = '/Assets/side-arrow.png';
+        equipInput.src = '/assets/side-arrow.png';
         equipInput.addEventListener('click', function() {
             loadLists("1", equipDiv)
         });
@@ -647,7 +647,7 @@
         roomInput.id = 'roomBtn';
         roomInput.className = 'openBtn';
         roomInput.type = 'image';
-        roomInput.src = '/Assets/side-arrow.png';
+        roomInput.src = '/assets/side-arrow.png';
         roomInput.addEventListener('click', function() {
             loadLists("2", roomDiv);
         });
@@ -665,7 +665,7 @@
         polInput.id = 'polBtn';
         polInput.className = 'openBtn';
         polInput.type = 'image';
-        polInput.src = '/Assets/side-arrow.png';
+        polInput.src = '/assets/side-arrow.png';
         polInput.addEventListener('click', function() {
             loadLists("3", polDiv)
         })
@@ -919,7 +919,7 @@
             var listName = document.createElement('datalist');
             listName.id = 'policies';
             listName.className = 'policyList'
-            editBtn.src = '';
+            editBtn.src = '/assets/c2.png';
             editBtn.placeholder = "Apply";
             editBtn.addEventListener('click', function() {
                 editContent(type, tr, this, ...Array(1), add, btn)
@@ -931,8 +931,8 @@
             btn.disabled = true;
             editBtn.placeholder = 'Save';
             removeBtn.placeholder = 'Cancel';
-            editBtn.src = '';
-            removeBtn.src = '';
+            editBtn.src = '/assets/c2.png';
+            removeBtn.src = '/assets/c1.png';
             checker = false;
             listCategPolicies(listName, add);
         } else {
@@ -940,14 +940,14 @@
             listCategPolicies(listName, ...Array(1), element.p_category);
             listName.className = 'policyList';
             listName.id = element.p_ID;
-            editBtn.src = "/Assets/c2.png";
+            editBtn.src = "/assets/c2.png";
             editBtn.addEventListener('click', function() {
                 editContent(type, tr, this, element.p_ID);
             })
             removeBtn.addEventListener('click', function() {
                 removePolicies(element.p_ID)
             });
-            removeBtn.src = "/Assets/c1.png";
+            removeBtn.src = "/assets/c1.png";
             inputDesc.disabled = true;
             inputDesc.value = element.p_description;
             listName.disabled = true;
@@ -991,8 +991,8 @@
         if (add) {
             btn.disabled = true;
             checkbox.disabled = false;
-            editBtn.src = "";
-            removeBtn.src = "/Assets/c1.png";
+            editBtn.src = "/assets/c2.png";
+            removeBtn.src = "/assets/c1.png";
             checker = false;
             checkbox.checked = true;
             disableButtons(this);
@@ -1039,8 +1039,8 @@
                     inputDesc.value = element.equipDesc;
                     break;
             }
-            editBtn.src = "Assets/c2.png";
-            removeBtn.src = "Assets/c1.png";
+            editBtn.src = "/assets/c2.png";
+            removeBtn.src = "/assets/c1.png";
         }
 
 
@@ -1396,7 +1396,7 @@
         var sideInput = document.createElement('input');
         sideInput.className = 'openBtn';
         sideInput.type = 'image';
-        sideInput.src = '/Assets/side-arrow.png';
+        sideInput.src = '/assets/side-arrow.png';
         sideInput.addEventListener('click', function() {
             loadContent(element.reservationID);
 

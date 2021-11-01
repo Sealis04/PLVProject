@@ -7,9 +7,9 @@
   }
   else{
     include 'Backend_Notification.php';
-    echo '<a  href="/Window_AdminPanel.php"><img id="user" src="assets/usericon.png"/></a>';
+    echo '<a  href="/Window_AdminPanel.php"><img id="user" src="/assets/usericon.png"/></a>';
     echo '<div id="notifDropdown" class="dropdown">';
-    echo '<img id="notif" src="assets/notif.png"/>';
+    echo '<img id="notif" src="/assets/notif.png"/>';
     echo '<div id="notifList" class="dropdown-content">';
     echo '</div>';
     echo '</div>';
