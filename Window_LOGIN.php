@@ -52,6 +52,7 @@ $email = $password=$userID="";
                             if($isApproved == 1){
                                 if(password_verify($password,$password_db)){
                                     //Stores user info
+                                    session_regenerate_id();
                                     $_SESSION["loggedin"] = true;
                                     $_SESSION["fullName"]=$userfn." ".$usermn." ". $userln;
                                     $_SESSION["userID"] = $userID;

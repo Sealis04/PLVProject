@@ -1,13 +1,12 @@
 <script>
 listCategPolicies();
-callPolicies();
 function callPolicies(){
     var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
+        xmlhttp.onreadystatechange = async function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
                 var divs = document.querySelectorAll('.policyDivs');
-                myObj.forEach(async function(element,index){
+               await myObj.forEach(async function(element,index){
                     await listPolicyDetails(divs,element,index);
                 })
             }
@@ -24,15 +23,16 @@ function callPolicies(){
         }
     }
 }
-function listCategPolicies(){
+ function listCategPolicies(){
     var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
+        xmlhttp.onreadystatechange = async function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
                 var mainDiv = document.getElementById('policies');      
-                myObj.forEach(function(element,index){
-                listPolicies(mainDiv,element,index);
+                await myObj.forEach(async function(element,index){
+                await listPolicies(mainDiv,element,index);
                 });
+                callPolicies();
             }
         }
         xmlhttp.open("GET", "Request_CategoryPolicies.php", true);
