@@ -1408,10 +1408,11 @@
     }
     function editUserQuery(availability,ID){
         var eAvailability;
+        console.log(availability);
         if (availability) {
-            eAvailability = 0;
-        } else if (!availability) {
             eAvailability = 1;
+        } else if (!availability) {
+            eAvailability = 0;
         }
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
