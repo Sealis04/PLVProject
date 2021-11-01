@@ -16,19 +16,16 @@
                     div.className = "row";
                     list.appendChild(div);
                     if (myObj.length > 0) {
-                        if (isAdmin != 1) {
+                        if(isAdmin != 1){
                             var button = document.createElement('input');
                             button.type = 'button';
                             button.value = 'Mark all as read';
                             div.appendChild(button);
+                        }
+                        console.log(myObj);
                             myObj.forEach(function(element, index) {
                                 listNotif(myObj.length, element, index)
                             });
-                        } else {
-                            var notif = document.createElement('notif');
-                            notif.innerHTML = myObj[myObj.length - 1].text;
-                            list.appendChild(notif);
-                        }
                         var dropdown = document.getElementById('notifDropdown');
                         var notifCount = document.createElement('span');
                         notifCount.textContent = count;
@@ -50,6 +47,7 @@
     }
 
     function listNotif(length, element, index) {
+        if(isAdmin != 1){
         var list = document.getElementById('notifList');
         var div = document.createElement('div');
         div.innerHTML += '<div id = "imgNotif" class="column">';
@@ -63,6 +61,16 @@
         loadNotifDetails(element.r_ID, div);
 
         list.appendChild(div);
+        }else{
+            var list = document.getElementById('notifList');
+            var div = document.createElement('div');
+            div.innerHTML += '<div id="detNotif" class="column">';
+            div.innerHTML += '<p id="name">'+ element.adminText +'</p>';
+            div.innerHTML += '<p id="name">'+ element.adminReservations +'</p>';
+            div.innerHTML += '<p id="name">'+ element.adminRegistration +'</p>';
+            list.appendChild(div);
+        }
+     
         // var notifDiv = document.createElement('div');
         // notifDiv.id = 'class';
         // var href = document.createElement('a');

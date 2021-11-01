@@ -69,12 +69,12 @@
            if(move_uploaded_file($fileTmpPath,"assets/".$fileName)){
             // *temporarily approves everything automatically
             $approveID=2;
-            $sql_code = "INSERT INTO tbl_reservation (r_user_ID,r_room_ID,r_approved_ID,r_letter_file,r_startDateAndTime, r_endDateAndTime) VALUES (?,?,?,?,?,?);";
+            $notifID = notification($userID,2);
+            $sql_code = "INSERT INTO tbl_reservation (r_user_ID,r_room_ID,r_approved_ID,r_letter_file,r_startDateAndTime, r_endDateAndTime,notificationID) VALUES (?,?,?,?,?,?,?);";
             if($sql = $conn->prepare($sql_code)){
-                $sql->bind_param("iiisss",$userID,$roomID,$approveID,$targetDirectory,$start,$end);
+                $sql->bind_param("iiisssi",$userID,$roomID,$approveID,$targetDirectory,$start,$end,$notifID);
                                     if($sql->execute()){
                                         $lastID = $conn->insert_id;
-                                        notification($userID,2,0,$lastID);
                                         if(!empty($toStore)){
                                             foreach($toStore as $values){
                                                 $eID = $values['ID'];

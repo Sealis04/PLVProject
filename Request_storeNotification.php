@@ -1,13 +1,27 @@
 <?php
-function notification($userID,$decision,$type,$rID){
+function notification($userID,$decision){
     $conn = OpenCon();    
-    $sql_code = 'INSERT INTO tbl_notification(forUserID,decision,isUser,r_ID) VALUES (?,?,?,?);';
+    $sql_code = 'INSERT INTO tbl_notification(forUserID,decision) VALUES (?,?);';
     if($sql = $conn->prepare($sql_code)){
-        $sql->bind_param('iiii',$userID,$decision,$type,$rID);
-        $sql->execute();
+        $sql->bind_param('iii',$userID,$decision,$type);
+       if($sql->execute()){
+           return $conn->insert_id;
+       }
     }
     $conn ->close();
 }
+function update($userID,$decision){
+    $conn = OpenCon();    
+    $sql_code = '';
+    if($sql = $conn->prepare($sql_code)){
+        $sql->bind_param('iii',$userID,$decision,$type);
+       if($sql->execute()){
+           return $conn->insert_id;
+       }
+    }
+    $conn ->close();
+}
+
 if (isset($_REQUEST['id'])){
 include 'db_connection.php';
     $conn = OpenCon();    

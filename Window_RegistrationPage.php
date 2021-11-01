@@ -17,6 +17,7 @@
     exit;
     }
     include "db_connection.php";
+    include "Request_storeNotification.php";
     //include "Request_storeNotification";
     $conn = OpenCon();
     //Form part
@@ -111,10 +112,12 @@
         if(empty($emailErr) && empty($passwordErr) && empty($contactErr) && empty($firstNameErr) && empty($middleNameErr) && empty($lastNameErr && empty($uploadErr))){
           if(move_uploaded_file($fileTmpPath,"assets/".$fileName))
           {
+          
           $selectedCourse = $_POST["course"];
-          $sql_code = "INSERT INTO tbl_user (user_email, user_password, user_firstName, user_middleName, user_lastName, user_contactNumber,user_course_ID,PLV_ID,isAdmin,isApproved) VALUES (?, ?, ?, ?, ? , ? , ? , ?, ?, ?)";
+          $sql_code = "INSERT INTO tbl_user (user_email, user_password, user_firstName, user_middleName, user_lastName, user_contactNumber,user_course_ID,PLV_ID,isAdmin,isApproved,notificationID) VALUES (?, ?, ?, ?, ? , ? , ? , ?, ?, ?,?)";
           if($sql = $conn->prepare($sql_code)){
-            $sql->bind_param("sssssiisii",$email,$password_hash,$firstName,$middleName,$lastName,$contact,$selectedCourse,$targetDirectory,$isAdmin,$isApproved);
+            $notifID =  notification(($conn->insert_id),2);
+            $sql->bind_param("sssssiisiii",$email,$password_hash,$firstName,$middleName,$lastName,$contact,$selectedCourse,$targetDirectory,$isAdmin,$isApproved,$notifID);
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             if($sql->execute()){
               echo '<script>
