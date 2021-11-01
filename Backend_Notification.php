@@ -57,6 +57,10 @@
             }
             var list = document.getElementById('notifList');
             var div = document.createElement('a');
+            div.addEventListener('click',function(){
+                notifRead(element.resid);
+                window.location.href = "/Window_AdminPanel.php/ "
+            })
             div.innerHTML += '<div id = "imgNotif" class="column">';
             div.innerHTML += '<img id="_notif" src = "">';
             div.innerHTML += '</div>';
@@ -77,6 +81,10 @@
             }
             var list = document.getElementById('notifList');
             var div = document.createElement('a');
+            div.addEventListener('click',function(){
+                notifRead(element.resid);
+                window.location.href = "/Window_AdminPanel.php/?category=notifUser "
+            })
             div.innerHTML += '<div id = "imgNotif" class="column">';
             div.innerHTML += '<img id="_notif" src = "">';
             div.innerHTML += '</div>';

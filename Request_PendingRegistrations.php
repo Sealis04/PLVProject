@@ -5,7 +5,7 @@ include "db_connection.php";
 include "Backend_Pagination.php";
 $conn = OpenCon();
 $page = $_REQUEST['page'];
-$limit = 2;
+$limit = 5;
 if ($page)
     $start = ($page - 1) * $limit;             //first item to display on this page
 else

@@ -14,8 +14,10 @@ function checkDetails($userID){
                         return 'Account was declined, please register again';
                     }else if($isApproved == 2){
                         return 'Account still pending';
-                    }else if($isMarked = 1){
+                    }else if($isMarked == 1){
                         return 'Account was marked, please contact the GSO department for more details';
+                    }else{
+                        return;
                     }
                 }
              }
