@@ -3,7 +3,7 @@ function notification($userID,$decision){
     $conn = OpenCon();    
     $sql_code = 'INSERT INTO tbl_notification(forUserID,decision) VALUES (?,?);';
     if($sql = $conn->prepare($sql_code)){
-        $sql->bind_param('iii',$userID,$decision,$type);
+        $sql->bind_param('ii',$userID,$decision);
        if($sql->execute()){
            return $conn->insert_id;
        }
@@ -12,9 +12,9 @@ function notification($userID,$decision){
 }
 function update($userID,$decision){
     $conn = OpenCon();    
-    $sql_code = '';
+    $sql_code = 'UPDATE tbl_notification SET decision = ? WHERE forUserID = ?';
     if($sql = $conn->prepare($sql_code)){
-        $sql->bind_param('iii',$userID,$decision,$type);
+        $sql->bind_param('ii',$decision,$userID);
        if($sql->execute()){
            return $conn->insert_id;
        }
