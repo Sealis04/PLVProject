@@ -7,15 +7,15 @@ function callPolicies(){
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
                 var divs = document.querySelectorAll('.policyDivs');
-                myObj.forEach(function(element,index){
-                    listPolicyDetails(divs,element,index);
+                myObj.forEach(async function(element,index){
+                    await listPolicyDetails(divs,element,index);
                 })
             }
         }
         xmlhttp.open("GET", "Request_Policies.php", true);
         xmlhttp.send();
 }
-function listPolicyDetails(div,element,index){
+ function listPolicyDetails(div,element,index){
     for(a = 0; a<div.length; a++){
         if(div[a].id == element.p_ct_ID){
         var div2 = document.createElement('div');

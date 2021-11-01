@@ -3,7 +3,7 @@
 $categories = array();
 include "db_connection.php";
 $conn=OpenCon();
-$sql_code = "SELECT * from tbl_policies INNER JOIN tbl_category_policy ON tbl_policies.p_ct_ID = tbl_category_policy.ct_ID GROUP BY tbl_policies.p_ct_ID";
+$sql_code = "SELECT * from tbl_policies INNER JOIN tbl_category_policy ON tbl_policies.p_ct_ID = tbl_category_policy.ct_ID WHERE tbl_policies.isDeleted = 0 GROUP BY tbl_policies.p_ct_ID";
     if($sql=$conn->prepare($sql_code)){
             if($sql->execute()){
                 $result = $sql->get_result();
