@@ -24,6 +24,7 @@
     var equipBtn;
     var roomBtn;
     var policiesBtn;
+    var userBtn;
     var checker = true;
     var active;
     var isClicked;
@@ -53,10 +54,19 @@
             regList(c);
             userProf.className += ' active'; 
         }
-    } else {
+    }  
+    else if(categ == 'notifUser'){
+            callReservationDetails();
+            reservation.className += ' active';
+        }
+    else {
         callUserDetails();
         profile.className += " active";
     }
+
+   
+
+
     for (var i = 0; i < btns.length; i++) {
         btns[i].addEventListener("click", async function() {
             var current = document.getElementsByClassName("active");
@@ -185,19 +195,25 @@
                 } else {
                     mainDiv.innerHTML += '<h3> Equipment Borrowed: </h3>';
                 }
-                myObj.forEach(function(element, index) {
-                    listEquipmentReserved(mainDiv, element, index);
+                myObj.forEach(async function(element, index) {
+                    await listEquipmentReserved(mainDiv, element, index);
                 });
                 if (forUser) {
+                    console.log(status);
                     if (status != 1) {
+                        console.log('asd');
                         if (approval == 2) {
                             mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '<h4><br>';
                             mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">'
                         } else if (approval == 3) {
                             mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '<h4><br>';
                             mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>'
+                        }else if (approval == 1) {
+                            mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '<h4><br>';
+                            mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>'
                         }
                     } else {
+                        
                         mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '<h4><br>';
                     }
                 }
@@ -227,7 +243,7 @@
         div.innerHTML += '<h3>Room:' + element.room + '</h3>';
         reservedEquipment(element.reservationID, div, userID, true, element.status, element.approval);
         //div.innerHTML += '<input type="button" class="header-btn btn" value="Edit" onclick="cancelReservation('+element.eventID+')">';
-        // div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">';
+        //div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">';
 
         if (typeof(element.pagination) != undefined && element.pagination != null) {
             page.innerHTML = element.pagination;
@@ -235,7 +251,6 @@
         }
         document.getElementById("content").appendChild(motherDiv);
         motherDiv.appendChild(div);
-        return element.reservationID;
     }
 
     function cancelReservation(eventID) {
@@ -617,6 +632,7 @@
         equipBtn = true;
         roomBtn = true;
         policiesBtn = true;
+        userBtn = true;
         var motherDiv = document.createElement('div');
         motherDiv.id = "editList";
         document.getElementById('content').appendChild(motherDiv);
@@ -631,8 +647,8 @@
         equipInput.className = 'openBtn';
         equipInput.type = 'image';
         equipInput.src = '/Assets/side-arrow.png';
-        equipInput.addEventListener('click', function() {
-            loadLists("1", equipDiv)
+        equipInput.addEventListener('click', async function() {
+            await loadLists("1", equipDiv)
         });
         motherDiv.appendChild(equipDiv);
         equipDiv.appendChild(equipLabel);
@@ -648,8 +664,8 @@
         roomInput.className = 'openBtn';
         roomInput.type = 'image';
         roomInput.src = '/Assets/side-arrow.png';
-        roomInput.addEventListener('click', function() {
-            loadLists("2", roomDiv);
+        roomInput.addEventListener('click', async function() {
+            await loadLists("2", roomDiv);
         });
         motherDiv.appendChild(roomDiv);
         roomDiv.appendChild(roomLabel);
@@ -666,12 +682,30 @@
         polInput.className = 'openBtn';
         polInput.type = 'image';
         polInput.src = '/Assets/side-arrow.png';
-        polInput.addEventListener('click', function() {
-            loadLists("3", polDiv)
+        polInput.addEventListener('click', async function() {
+            await  loadLists("3", polDiv)
         })
         motherDiv.appendChild(polDiv);
         polDiv.appendChild(policiesList);
         polDiv.appendChild(polInput);
+
+        //userList
+        var userList = document.createElement('label');
+        userList.textContent = 'Users';
+        var userDiv = document.createElement('div');
+        userDiv.id = 'userPanel';
+        userDiv.className = 'sidePanel';
+        var userInput = document.createElement('input');
+        userInput.id = 'userBtn';
+        userInput.className = 'openBtn';
+        userInput.type = 'image';
+        userInput.src = '/Assets/side-arrow.png';
+        userInput.addEventListener('click', async function() {
+            await loadLists("4", userDiv)
+        })
+        motherDiv.appendChild(userDiv);
+        userDiv.appendChild(userList);
+        userDiv.appendChild(userInput);
     }
 
 
@@ -769,10 +803,31 @@
                     active = false;
                 }
                 break;
+            case "4":
+                if (userBtn) {
+                    div.id = 'userID'
+                    div.style.height = '50%';
+                    table.id = 'userTbl';
+                    activeDiv.appendChild(div);
+                    column1.textContent = 'Full Name';
+                    column2.textContent = 'Marked';
+                    column5.textContent = "Edit";
+                    div.append(table);
+                    turnOffOn(div);
+                    listUsers(table, div.id);
+                    userBtn = false;
+                    active = true;
+                    row1.appendChild(column1);
+                    row1.appendChild(column2);
+                } else {
+                    userBtn = true;
+                    document.getElementById('userID').remove();
+                    active = false;
+                }
+                break;
             default:
                 console.log('something seems to be wrong');
         }
-
 
         row1.appendChild(column5);
 
@@ -783,32 +838,65 @@
             if (div.id == 'equipID') {
                 roomBtn = true;
                 policiesBtn = true;
+                userBtn = true;
                 if (typeof(document.getElementById('roomID')) != undefined && document.getElementById('roomID') != null) {
                     document.getElementById('roomID').remove();
-                } else {
+                } else if(typeof(document.getElementById('policiesID')) != undefined && document.getElementById('policiesID') != null){
                     document.getElementById('policiesID').remove();
+                }else{
+                    document.getElementById('userID').remove();
                 }
             } else if (div.id == 'roomID') {
                 equipBtn = true;
                 policiesBtn = true;
+                userBtn = true;
                 if (typeof(document.getElementById('equipID')) != undefined && document.getElementById('equipID') != null) {
                     document.getElementById('equipID').remove();
-                } else {
+                } else if(typeof(document.getElementById('policiesID')) != undefined && document.getElementById('policiesID') != null) {
                     document.getElementById('policiesID').remove();
+                } else {
+                    document.getElementById('userID').remove();
                 }
             } else if (div.id == 'policiesID') {
                 roomBtn = true;
                 equipBtn = true;
+                userBtn = true;
                 if (typeof(document.getElementById('roomID')) != undefined && document.getElementById('roomID') != null) {
                     document.getElementById('roomID').remove();
-                } else {
+                } else if(typeof(document.getElementById('equipID')) != undefined && document.getElementById('equipID') != null){
                     document.getElementById('equipID').remove();
+                }else {
+                    document.getElementById('userID').remove();
+                }
+            }else if(div.id == 'userID'){
+                roomBtn= true;
+                equipBtn = true;
+                policiesBtn = true;
+                if (typeof(document.getElementById('roomID')) != undefined && document.getElementById('roomID') != null) {
+                    document.getElementById('roomID').remove();
+                } else if(typeof(document.getElementById('equipID')) != undefined && document.getElementById('equipID') != null){
+                    document.getElementById('equipID').remove();
+                }else{
+                    document.getElementById('policiesID').remove();
                 }
             }
             enableButtons();
         }
     }
-
+    function listUsers(mainDiv,type){
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            var list = document.createElement('select');
+            if (this.readyState == 4 && this.status == 200) {
+                var myObj = JSON.parse(this.responseText);
+                myObj.forEach(function(element, index) {
+                    generateUserContent(mainDiv, type, element, index);
+                });
+            }
+        }
+        xmlhttp.open("GET", "/Request_UserList.php", true);
+        xmlhttp.send(); 
+    }
     function listPolicies(mainDiv, type) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -886,7 +974,46 @@
         option.value = element.ct_ID;
         list.appendChild(option);
     }
+    function generateUserContent(mainDiv,type,element,index){
+        var tr = document.createElement('tr');
+        tr.id = index;
+        mainDiv.appendChild(tr);
+        var tdName = document.createElement('td');
+        var fullName = document.createElement('p');
+        fullName.textContent = element.userFName + ' ' + element.userMDName + ' ' + element.userLName;
+        // var inputName= document.createElement('input');
+        // inputName.disabled = true;
+        // inputName.id = 'contentName';
+        // inputName.value = element.p_category;
+        // tdName.appendChild(inputName);
+        var tdAvailability = document.createElement('td');
+        var checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = 'isMarkedCB';
+        checkbox.disabled = true;
+        if (element.isMarked == 0) {
+                checkbox.checked = false;
+            } else {
+                checkbox.checked = true;
+            }
 
+        var tdRemove = document.createElement('td');
+        var editBtn = document.createElement('input');
+        editBtn.type = 'image';
+        editBtn.className = 'editButton';
+
+            editBtn.src = "/Assets/c2.png";
+            editBtn.addEventListener('click', function() {
+                editContent(type, tr, this, element.userID);
+            })
+
+        tdRemove.appendChild(editBtn);
+        tdName.appendChild(fullName);
+        tdAvailability.appendChild(checkbox);
+        tr.appendChild(tdName);
+        tr.appendChild(tdAvailability);
+        tr.appendChild(tdRemove);
+    }
     async function generatePolicies(mainDiv, type, element, index, add, btn) {
         var tr = document.createElement('tr');
         tr.id = index;
@@ -1122,6 +1249,16 @@
                 desc.disabled = true;
                 enableButtons(type, name, ...Array(1), desc, ...Array(1), ID, value, add);
             }
+        }else if(type == 'userID'){
+            var mark = rowID.children[1].firstChild;
+            if (checker == true) {
+                mark.disabled = false;
+                disableButtons(value);
+                checker = false;
+            } else if (checker == false) {
+                mark.disabled = true;
+                enableButtons(type,...Array(2), mark, ...Array(1), ID, value, add);
+            }
         } else {
             var name = rowID.children[0].firstChild;
             var quantity = rowID.children[1].firstChild;
@@ -1179,13 +1316,15 @@
                 addPoliciesQuery(name.value, desc.value);
             }
         } else {
-            document.getElementById('addBtn').disabled = false;
+            if(typeof(document.getElementById('addBtn')) == undefined && document.getElementById('addBtn') != null)document.getElementById('addBtn').disabled = true;  
             if (type == 'roomID') {
                 editRoomQuery(name.value, quantity.value, desc.value, availability.checked, ID);
             } else if (type == 'equipID') {
                 editEquipQuery(name.value, quantity.value, desc.value, availability.checked, ID);
             } else if (type == 'policiesID') {
                 editPoliciesQuery(name.value, desc.value, ID);
+            }else if(type == 'userID'){
+                editUserQuery(desc.checked,ID);
             }
             if (typeof(value) != undefined && value != null) {
                 value.value = "Edit";
@@ -1196,7 +1335,7 @@
 
     function disableButtons(value) {
         var x = document.querySelectorAll('.editButton');
-        document.getElementById('addBtn').disabled = true;
+        if(typeof(document.getElementById('addBtn')) == undefined && document.getElementById('addBtn') != null)document.getElementById('addBtn').disabled = true;   
         for (a = 0; a < x.length; a++) {
             if (value != x[a]) {
                 x[a].disabled = true;
@@ -1205,7 +1344,7 @@
             }
         }
     }
-
+    
     function addRoomQuery(name, quantity, desc, availability) {
         var eAvailability;
         if (availability) {
@@ -1267,7 +1406,22 @@
         xmlhttp.open("GET", "/Request_AddPolicies.php?name=" + name + '&desc=' + desc, true);
         xmlhttp.send();
     }
+    function editUserQuery(availability,ID){
+        var eAvailability;
+        if (availability) {
+            eAvailability = 0;
+        } else if (!availability) {
+            eAvailability = 1;
+        }
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
 
+            }
+        }
+        xmlhttp.open("GET", "/Request_EditUser.php?availability="+ eAvailability + '&ID=' + ID, true);
+        xmlhttp.send();
+    }
     function editPoliciesQuery(name, desc, ID) {
         //editPolicies
         var xmlhttp = new XMLHttpRequest();
@@ -1316,6 +1470,7 @@
 
     //Added at the end once everything is rendered
     function addButton(type) {
+        
         var botDiv = document.createElement('div');
         botDiv.className = "bottom";
         var botInput = document.createElement('input');
@@ -1329,7 +1484,6 @@
             })
             botInput.value = "Add Room";
         } else if (type == 'equipID') {
-
             botInput.value = "Add Equipment";
             var mainDiv = document.getElementById('equipID');
             var table = document.getElementById('equipmentTbl');
