@@ -49,6 +49,9 @@
         } else if (categ == 'user') {
             callReservationDetails(c);
             reservation.className += ' active';
+        }else if(categ == 'registration'){
+            regList(c);
+            userProf.className += ' active'; 
         }
     } else {
         callUserDetails();
@@ -280,7 +283,7 @@
     }
 
     // USER REGISTRATION
-    function regList() {
+    function regList(page_number = 1) {
         //must need to added
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -294,18 +297,20 @@
                     document.getElementById("content").appendChild(motherDiv);
                 } else {
                     var motherDiv = document.createElement('div');
+                    var page = document.createElement('div');
+                    page.id = 'pages';
                     motherDiv.id = "regList";
                     myObj.forEach(function(element, index) {
-                        registrationContent(motherDiv, element, index);
+                        registrationContent(motherDiv,page, element, index);
                     });
                 }
             }
         }
-        xmlhttp.open("GET", "/Request_PendingRegistrations.php", true);
+        xmlhttp.open("GET", "/Request_PendingRegistrations.php?page=" + page_number, true);
         xmlhttp.send();
     }
     //HTML PART THAT LISTS THE REGISTRATION OF USERS
-    function registrationContent(motherDiv, element, index) {
+    function registrationContent(motherDiv, page,element, index) {
         var div = document.createElement('div')
         div.id = "userProfContent";
         div.className = "userProfContent";
@@ -316,6 +321,11 @@
         div.innerHTML += '<input type="button" class="header-btn btn" onclick="DeclineRegistration(' + element.user + ')" value="Decline">';
         document.getElementById("content").appendChild(motherDiv);
         motherDiv.appendChild(div);
+        
+        if (typeof(element.pagination) != undefined && element.pagination != null) {
+            page.innerHTML = element.pagination;
+            motherDiv.appendChild(page);
+        }
     }
 
     // Accept Reservation
