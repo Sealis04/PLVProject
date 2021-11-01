@@ -14,6 +14,7 @@
     include "db_connection.php";
     include "Backend_GetAllReservations.php";
     include "Request_storeNotification.php";
+    include "Request_CheckUserDetails.php";
     $allReservations = json_decode(getAll());
     session_start();
     $conn= OpenCon();
@@ -67,34 +68,38 @@
          
          
            if(move_uploaded_file($fileTmpPath,"assets/".$fileName)){
-            // *temporarily approves everything automatically
-            $approveID=2;
             $notifID = notification($userID,2);
-            $sql_code = "INSERT INTO tbl_reservation (r_user_ID,r_room_ID,r_approved_ID,r_letter_file,r_startDateAndTime, r_endDateAndTime,notificationID) VALUES (?,?,?,?,?,?,?);";
-            if($sql = $conn->prepare($sql_code)){
-                $sql->bind_param("iiisssi",$userID,$roomID,$approveID,$targetDirectory,$start,$end,$notifID);
-                                    if($sql->execute()){
-                                        $lastID = $conn->insert_id;
-                                        if(!empty($toStore)){
-                                            foreach($toStore as $values){
-                                                $eID = $values['ID'];
-                                                $qtyVal = $values['qty'];
-                                                insertEquipment($lastID,$conn,$eID,$qtyVal);    
+            $remarks = checkDetails($userID);
+            if(!isset($remarks)){
+                $sql_code = "INSERT INTO tbl_reservation (r_user_ID,r_room_ID,r_approved_ID,r_letter_file,r_startDateAndTime, r_endDateAndTime,notificationID) VALUES (?,?,?,?,?,?,?);";
+                if($sql = $conn->prepare($sql_code)){
+                    $sql->bind_param("iiisssi",$userID,$roomID,$approveID,$targetDirectory,$start,$end,$notifID);
+                                        if($sql->execute()){
+                                            $lastID = $conn->insert_id;
+                                            if(!empty($toStore)){
+                                                foreach($toStore as $values){
+                                                    $eID = $values['ID'];
+                                                    $qtyVal = $values['qty'];
+                                                    insertEquipment($lastID,$conn,$eID,$qtyVal);    
+                                                }
+                                            }else{
+                                                $eID = NULL;
+                                                $qtyVal = NULL;
+                                                insertEquipment($lastID,$conn,$eID,$qtyVal);
                                             }
+                                          
                                         }else{
-                                            $eID = NULL;
-                                            $qtyVal = NULL;
-                                            insertEquipment($lastID,$conn,$eID,$qtyVal);
-                                        }
-                                      
-                                    }else{
-                                        echo '<script>alert("'.$conn->error.'")</script>';
-                                    }           
-                $sql->close();
-            }
-            
-        } 
+                                            echo '<script>alert("'.$conn->error.'")</script>';
+                                        }           
+                    $sql->close();
+                }
+                
+            }else{
+                echo '<script>alert("'.$remarks.'")</script>';
+                } 
+        }
     }
+           
     $conn->close();
 
     // if($_SERVER["REQUEST_METHOD"]=="POST"){
