@@ -17,7 +17,7 @@
     exit;
     }
     include "db_connection.php";
-    include "Request_storeNotification";
+    //include "Request_storeNotification";
     $conn = OpenCon();
     //Form part
     $emailErr = $passwordErr = $contactErr = $firstNameErr = $middleNameErr = $lastNameErr=$uploadErr="";
@@ -25,7 +25,6 @@
     $isAdmin = 0;
     $isApproved = 2;
      if($_SERVER["REQUEST_METHOD"]=="POST"){
-     
       $fileTmpPath = $_FILES["fileUpload"]["tmp_name"];
       $fileName = $_FILES["fileUpload"]["name"];
       $targetDirectory ="C:/xampp/htdocs/practice/assets/".$fileName;

@@ -82,12 +82,12 @@
                                             foreach($toStore as $values){
                                                 $eID = $values['ID'];
                                                 $qtyVal = $values['qty'];
-                                                insertEquipment($sql,$conn,$eID,$qtyVal);    
+                                                insertEquipment($lastID,$conn,$eID,$qtyVal);    
                                             }
                                         }else{
                                             $eID = NULL;
                                             $qtyVal = NULL;
-                                            insertEquipment($sql,$conn,$eID,$qtyVal);
+                                            insertEquipment($lastID,$conn,$eID,$qtyVal);
                                         }
                                       
                                     }else{
@@ -119,12 +119,11 @@
     //     }
     // }
 
-    function insertEquipment($sql,$conn,$eID,$qtyVal){
+    function insertEquipment($lastID,$conn,$eID,$qtyVal){
       
         $sql_code_2 = "INSERT INTO tbl_equipment_reserved(r_ID,equipment_ID,Qty) VALUES (?,?,?)";
-        $string = $sql->insert_id;
         if($sql2 = $conn->prepare($sql_code_2)){
-            $sql2->bind_param("sii",$string,$eID,$qtyVal);
+            $sql2->bind_param("sii",$lastID,$eID,$qtyVal);
             if($sql2->execute()){
                 echo '<script>
                 alert("Reservation success\nStatus: Pending")
