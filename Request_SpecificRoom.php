@@ -2,7 +2,7 @@
                     include "db_connection.php";
                     $room_ID = $_REQUEST["var"];
                         $conn=OpenCon();
-                        $sql_code = "SELECT room_ID, room_name, room_description FROM tbl_room WHERE room_ID = ? AND isDeleted = 0";
+                        $sql_code = "SELECT room_ID, room_name, room_description FROM tbl_room WHERE room_ID = ? AND isDeleted = 0 AND room_availability = 0";
                         if($sql=$conn->prepare($sql_code)){
                             $sql->bind_param("i",$room_ID);
                                 if($sql->execute()){

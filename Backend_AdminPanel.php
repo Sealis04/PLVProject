@@ -924,7 +924,7 @@
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "/Request_EquipmentList.php", true);
+        xmlhttp.open("GET", "/Request_EquipmentListAndAvailability.php", true);
         xmlhttp.send();
     }
 
@@ -964,7 +964,7 @@
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "/Request_RoomList.php", true);
+        xmlhttp.open("GET", "/Request_RoomListAndAvailability.php", true);
         xmlhttp.send();
     }
     //Call for policies instead of generateTabContent()
@@ -1283,22 +1283,6 @@
             }
         }
 
-    }
-
-
-    function listEquip(mainDiv, type) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var myObj = JSON.parse(this.responseText);
-                myObj.forEach(function(element, index) {
-                    generateTabContent(mainDiv, type, element, index)
-                });
-                addButton(type);
-            }
-        }
-        xmlhttp.open("GET", "/Request_EquipmentList.php", true);
-        xmlhttp.send();
     }
 
 

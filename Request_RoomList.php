@@ -3,7 +3,7 @@
 $equip = array();
 include "db_connection.php";
 $conn=OpenCon();
-$sql_code = "SELECT * FROM tbl_room WHERE isDeleted = 0";
+$sql_code = "SELECT * FROM tbl_room WHERE isDeleted = 0 and room_availability = 0";
     if($sql=$conn->prepare($sql_code)){
         $room_ID = 1;
             if($sql->execute()){
