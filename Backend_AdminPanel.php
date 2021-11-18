@@ -1124,7 +1124,7 @@
 
         var tr = document.createElement('tr');
         tr.id = index;
-        mainDiv.appendChild(tr);
+       
         var tdName = document.createElement('td');
         var inputName = document.createElement('input');
         inputName.id = 'contentName';
@@ -1201,26 +1201,25 @@
             }
             editBtn.src = "/assets/c2.png";
             removeBtn.src = "/assets/c1.png";
-        if (typeof(element.pagination) != undefined && element.pagination != null) {
-            page.innerHTML = element.pagination;
-            mainDiv.appendChild(page);
-        }
+     
         }
 
         var pages = document.getElementById('pages');
        
         tdRemove.appendChild(editBtn);
         tdRemove.appendChild(removeBtn);
-       tr.appendChild(tdName);
-
-
+        tr.appendChild(tdName);
         tr.appendChild(tdQuantity)
         tr.appendChild(tdDesc);
         tr.appendChild(tdAvailability);
         tr.appendChild(tdRemove);
-        //tr.insertBefore(tdName,pages);
+        mainDiv.appendChild(tr);
+        if (typeof(element.pagination) != undefined && element.pagination != null) {
+            page.innerHTML = element.pagination;
+            mainDiv.appendChild(page);
+        }
+       /// tr.before(tdName,pages);
         //appending of element
-        
     }
 
     function removePolicies(ID) {
