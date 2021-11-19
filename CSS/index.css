@@ -4,10 +4,10 @@
 
 #head-container{
   color: white;
-  background-color: #000C7A;
-  height: 110;
-  width:100%;
-  
+    background-color: #0F1057;
+    height: 68;
+    width: 100%;
+    position: fixed;
 }
 
 .navbar{
@@ -15,10 +15,7 @@ width:85%;
 margin:auto;
 display:flex;
 }
-.nav1{
-display:flex;
-width:50%
-}
+
 
 .nav2{
   display:flex;
@@ -27,36 +24,26 @@ width:50%
   justify-content: flex-end;
 }
 
-a {
-  text-decoration: underline; 
-  text-align: center;
-  margin-top: 35px;
-}
-
 .header-btn{
   text-decoration: none;
-  background-color: #008F00;
+  background-color: none;
   color: white;
-  text-shadow: black 1px 1px;
-  padding: 10px;
+  background-color: #0F1057;
   font-size: 15px;
   margin-bottom: 30px;
-  margin-left: 10px;
+  margin-left: -10px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 .header-btn:active{
   color: white;
-  background-color: #00f500;
+  background-color: violet ;
 }
 .header-btn:hover{
   color: white;
 }
 
 
-#fb {
-  height: 80;
-  width: 80;
-  margin-top: 15px;
-}
 
 #user-icon{
   height: 80;
@@ -86,13 +73,7 @@ body {
   width: 40;
 }
 
-#notif{
-  margin-top: 35px;
-  margin-left: 20px;
-  height: 40px;
-  width: 40px;
-  margin-bottom: 20px;
-}
+
 
 
 /*DROP DOWN*/
@@ -112,10 +93,21 @@ body {
   color: black;
 }
 
-.dropdown:hover .dropdown-content {
-  display: block;
+#notif{
+  width: 100%;
 }
 
+#notifDropdown{
+  width: 100%;
+}
+
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  margin-right: 10px;
+  margin-top: 2px;
+  margin-left: 60px;
+}
 /*CONTENT*/
 /*BODY*/
 .content{
@@ -171,13 +163,24 @@ body {
 
 
 ul{list-style-type:none;}
-
+/*CALENDAR CHANGES*/
 #calendar{
     border:solid;
-    padding: 3vh;
+    padding: 1vh;
     border-radius: 10px;
-    margin: 2vw 5vw;
+    width: 85% !important;
+    margin-left: 13.5%;
+    color: black;
 }
+
+
+#monthAndYear{
+  color: black;
+}
+
+/*CALENDAR CHANGES END*/
+
+
 
 /* Month header */
 .month {
@@ -251,4 +254,42 @@ ul{list-style-type:none;}
 .resBtn{
 display:grid;
 justify-items:end;
+}
+
+
+/*Reservations*/
+.reservations{
+  margin-left: 13.5vw !important;
+  color: black;
+  border: 2px black solid;
+  width: 85% !important;
+  margin-top: 20px;
+  border-radius: 7px;
+  
+}
+
+.reservations h3{
+  margin-left: 20px;
+}
+
+
+/*Create reservation*/
+.create-reservation{
+  margin-left: 88.2vw !important;
+  margin: 10px;
+  margin-top: 20px;
+  border-radius: 7px;
+
+}
+
+.reservations h5{
+  color: orange;
+  display: inline-flex;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.reservations h4{
+  font-weight: bold;
+  margin-left: 10px;
 }

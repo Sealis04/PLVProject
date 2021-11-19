@@ -1,3 +1,8 @@
+<html>
+  <head>
+  <link rel="stylesheet" href="css/side-nav.css">
+  </head>
+</html>
 <?php 
     $conn = OpenCon();
    
@@ -7,15 +12,39 @@
   }
   else{
     include 'Backend_Notification.php';
-    echo '<a  href="/Window_AdminPanel.php"><img id="user" src="/assets/usericon.png"/></a>';
-    echo '<div id="notifDropdown" class="dropdown">';
-    echo '<img id="notif" src="/assets/notif.png"/>';
-    echo '<div id="notifList" class="dropdown-content">';
-    echo '</div>';
-    echo '</div>';
-    echo '<a href="/Backend_LOGOUT.php" type="button" class="header-btn btn">Log out</a>';
+
+
+    echo'<!--Content-->';
+      echo'<div class="sidenav">';
+      echo'<img id="fb" src="assets/plv.png" alt="PLV Logo">';
+      echo'<br>';
+
+      echo'<a href="/Window_HomePage.php">Home</a>';
+      echo'    <a href="/Window_RoomAndEquipment.php">Rooms and Equipment</a>';
+      echo'    <a href="/Window_PoliciesPage.php">Policies</a>';;
+      echo '<div id="notifDropdown" class="dropdown">';
+      echo'    <a href="#" id="notif">Notification<sup> 1 </sup></a>';
+      echo '<div id="notifList" class="dropdown-content">';
+      echo '</div>';
+      echo '</div>';
+      echo'    <hr>';
+      echo'    <a href="#about">My Profile</a>';
+      echo'    <a href="#services">My Reservation</a>';
+      echo'     <a href="#clients">User Registration</a>';
+      echo'    <a href="#contact">User Reservation</a>';
+      echo'    <a href="#clients">Edit Content</a>';
+      echo'    <a href="#contact">Monitoring Form</a>';
+      echo'    <hr>';
+          
+      echo'    <a id="logout" href="/Backend_LOGOUT.php" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+      <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+    </svg> Logout</a>';
+        
+      echo ' </div>';
   }
 $conn->close();
 
 
 ?>
+
