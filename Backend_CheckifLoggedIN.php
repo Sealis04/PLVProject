@@ -8,7 +8,7 @@
    
   //check if user is logged in
   if(!isset($_SESSION["userID"])){
-    echo '<a href="/Window_LOGIN.php" id"login" type=button class="header-btn btn">Log in</a>';
+   
   }
   else{
     include 'Backend_Notification.php';

@@ -3,10 +3,10 @@
 
 #head-container{
   color: white;
-  background-color: #000C7A;
-  height: 110;
-  width:100%;
-  
+    background-color: #0F1057;
+    height: 68;
+    width: 100%;
+    position: fixed;
 }
 
 .navbar{
@@ -30,6 +30,7 @@ a {
   text-decoration: underline; 
   text-align: center;
   margin-top: 35px;
+
 }
 
 .header-btn{
@@ -89,10 +90,12 @@ body {
 
 /* form background*/
 .loginForm{
-    margin-top: 5%;
+    margin-top: 10%;
     width: 30%;
     border-radius: 20px;
     border: 1px black solid;
+    text-align: center;
+    
 }
 
 form {
@@ -123,6 +126,9 @@ form {
 
 #signup{
     display: block;
+    text-align: center;
+    padding-left: 0;
+
 
 }
 
