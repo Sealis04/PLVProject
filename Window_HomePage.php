@@ -1,8 +1,6 @@
-<html>
-
 <head>
     <title>PLVRS</title>
-    <link rel="icon" href="assets/plv.png">
+    <link rel="icon" href="assets/                                                              .png">
     <meta charset="UTF-8">
 
     <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
@@ -16,74 +14,18 @@
             include "db_connection.php";
             session_start();
             ?>
-        <nav id="head-container">
-            <div class="navbar">
-            <div class="nav1">
-     
-            </div>
-            <div class="nav2">
+
+            <sidenav>
               <?php
                 require "Backend_CheckifLoggedIN.php";
                 ?>        
-            </div>
-            </div>
-     
+            </sidenav>
+
         <!-- </nav>
         <div class="container">
             <div id="carousel">
                 <img class="image" src="assets/announcement.png" style="width:100%">
-            </div>
-            <div id="calendar">
-                <div class ="month">
-                    <ul>
-                        <li class="prev">&#10094;</li>
-                        <li class="next">&#10095;</li>
-                        <li>August
-                            <br>
-                            <span>2021</span>
-                        </li>
-                    </ul>
-                </div>
-                <ul class="weekdays">
-                    <li>Monday</li>
-                    <li>Tuesday</li>
-                    <li>Wednesday</li>
-                    <li>Thursday</li>
-                    <li>Friday</li>
-                    <li>Saturday</li>
-                    <li>Sunday</li>
-                </ul>
-                <ul class="days">
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
-                    <li>6</li>
-                    <li>7</li>
-                    <li>8</li>
-                    <li>9</li>
-                    <li>10</li>
-                    <li>11</li>
-                    <li>12</li>
-                    <li>13</li>
-                    <li>14</li>
-                    <li>15</li>
-                    <li>16</li>
-                    <li>17</li>
-                    <li>18</li>
-                    <li>19</li>
-                    <li>20</li>
-                    <li>21</li>
-                    <li>22</li>
-                    <li>23</li>
-                    <li>24</li>
-                    <li>25</li>
-                    <li>26</li>
-                    <li>27</li>
-                    <li>28</li>
-                    <li>29</li>
-                    <li>30</li>
+	@@ -86,10 +88,243 @@
                     <li>31</li>
                 </ul>
                 <div class="resBtn">
@@ -93,6 +35,7 @@
                 </div>
             </div>
             </div> -->
+<mainBody>
     <div style="text-align:center"> 
         <input value='<' onclick='prevMonth()' type='button' style="display:inline-block;   ">
         <h3 id="monthAndYear" style="display:inline-block; "></h3> 
@@ -138,7 +81,7 @@
     </div>
     <div id='body'>
 
-        <!-- <div id='hoursLabel' style='flex:1%;'>
+    <!-- <div id='hoursLabel' style='flex:1%;'>
     </div>
     <div id='hoursbody' style='flex:99%'>
     </div> -->
@@ -150,7 +93,7 @@
         </div>
         <div class="reservations">
         <h4>Culminating event</h4>
-        
+
         <h5>November 16,2021
             9:00 AM to 12:00 PM
         </h5>
@@ -163,8 +106,10 @@
 
         <h5>Facilitated by: Mr. Mark Arcedas
         </h5>
- 
+
         </div>
+    </mainBody>
+    
 </body>
 <script>
     let today = new Date();
@@ -265,7 +210,7 @@
             for (let j = 0; j < 7; j++) {
                 if (i == 0 && j < firstDay) {
                     let cell = document.createElement('td');
-                    cell.style = 'height:10vw;text-align:left;vertical-align:top;'
+                    cell.style = 'height:5vw;text-align:left;vertical-align:top;'
                     let cellText = document.createTextNode('');
                     cell.appendChild(cellText);
                     row.appendChild(cell);
@@ -273,12 +218,12 @@
                     break;
                 } else {
                     let cell = document.createElement('td');
-                    cell.style = 'height:10vw;text-align:left;vertical-align:top';
+                    cell.style = 'height:5vw;text-align:left;vertical-align:top';
                     let cellText = document.createTextNode(date);
 
                     if (date === today.getDate() && year == today.getFullYear() && month === today.getMonth()) {
                         cell.classList.add('bg-info');
-                        
+
                     }
                     cell.appendChild(cellText);
                     row.appendChild(cell);
@@ -288,6 +233,8 @@
             tbl_body.appendChild(row);
         }
         addRowHandlers();
+
+
     }
 
     //opens scheduled reservations
@@ -319,6 +266,8 @@
     //     mainDiv.appendChild(div);
 
     // }
+
+
 </script>
 
 </html>
