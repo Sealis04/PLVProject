@@ -2,6 +2,7 @@
 //returns array of reservation 
 $userID = $_REQUEST["var"];
 $page = $_REQUEST['page'];
+$window=$_REQUEST['window'];
 $reservation = array();
 include "db_connection.php";
 include 'Backend_Pagination.php';
@@ -41,8 +42,9 @@ if($sql= $conn->prepare($sql_code)){
     $sql->close();
 }
 $type = 'user';
+$url = '/Window_Panel.php?window=';
 $conn->close();
-$pagination = getPaginationString($page,$total_items,$limit,false,'/Window_AdminPanel.php/',"?page=","&category=",$type);
+$pagination = getPaginationString($page,$total_items,$limit,false,$url,"&page=","&category=",$type);
 if(count($reservation) != 0){
     $reservation[count($reservation)-1]+=array(
         'pagination' => $pagination

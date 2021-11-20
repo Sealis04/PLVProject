@@ -1,64 +1,48 @@
 <head>
     <title>PLVRS</title>
-    <link rel="icon" href="assets/                                                              .png">
+    <link rel="icon" href="assets/plv.png">
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
-    <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/side-nav.css">
+    <link rel="stylesheet" href="/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
+    <script src="/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 
 <body>
     <?php
-            include "db_connection.php";
-            session_start();
-            ?>
+    include "db_connection.php";
+    session_start();
+    ?>
 
-            <sidenav>
-              <?php
-                require "Backend_CheckifLoggedIN.php";
-                ?>        
-            </sidenav>
+    <sidenav>
+        <?php
+        require "Backend_CheckifLoggedIN.php";
+        ?>
+    </sidenav>
+    <mainBody class='main'>
+        <div style="text-align:center">
+            <input value='<' onclick='prevMonth()' type='button' style="display:inline-block;   ">
+            <h3 id="monthAndYear" style="display:inline-block; "></h3>
+            <input value='>' onclick='nextMonth()' type='button' style="display:inline-block; ">
+        </div>
 
-        <!-- </nav>
-        <div class="container">
-            <div id="carousel">
-                <img class="image" src="assets/announcement.png" style="width:100%">
-	@@ -86,10 +88,243 @@
-                    <li>31</li>
-                </ul>
-                <div class="resBtn">
-                <a href ="
-                <?php echo (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]) ? "Window_ReservationForm.php" : "Window_LOGIN.php" ?>">
-                <input class = "header-btn btn" type="button" value="Create Reservation"></a>
-                </div>
-            </div>
-            </div> -->
-<mainBody>
-    <div style="text-align:center"> 
-        <input value='<' onclick='prevMonth()' type='button' style="display:inline-block;   ">
-        <h3 id="monthAndYear" style="display:inline-block; "></h3> 
-        <input value='>' onclick='nextMonth()' type='button' style="display:inline-block; ">
-    </div>
-
-    <table id="calendar" style="table-layout:fixed; width:90%">
-        <thead>
-            <tr>
-                <th>Sun</th>
-                <th>Mon</th>
-                <th>Tue</th>
-                <th>Wed</th>
-                <th>Thurs</th>
-                <th>Fri</th>
-                <th>Sat</th>
-            </tr>
-        </thead>
-        <tbody id="calendar-body">
-        </tbody>
-    </table>
-    <!-- Code for jumping years and months, optional -->
-    <!-- <div>
+        <table id="calendar" style="table-layout:fixed; width:90%">
+            <thead>
+                <tr>
+                    <th>Sun</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thurs</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body">
+            </tbody>
+        </table>
+        <!-- Code for jumping years and months, optional -->
+        <!-- <div>
         <label for="month"></label>
         <select name="month" id="month" onchange='jump()'>
             <option value=0>Jan</option>
@@ -78,38 +62,38 @@
         <select name="year" id="year">
         </select>
     </div> -->
-    </div>
-    <div id='body'>
+        </div>
+        <div id='body'>
 
-    <!-- <div id='hoursLabel' style='flex:1%;'>
+            <!-- <div id='hoursLabel' style='flex:1%;'>
     </div>
     <div id='hoursbody' style='flex:99%'>
     </div> -->
-    </div>
-    <input class ="header-btn btn create-reservation" type="button" value="Create Reservation"></a>
-    <div class="reservations">
-        <h3>  No Reservation</h3>
+        </div>
+        <input class="header-btn btn create-reservation" type="button" value="Create Reservation"></a>
+        <div class="reservations">
+            <h3> No Reservation</h3>
 
         </div>
         <div class="reservations">
-        <h4>Culminating event</h4>
+            <h4>Culminating event</h4>
 
-        <h5>November 16,2021
-            9:00 AM to 12:00 PM
-        </h5>
+            <h5>November 16,2021
+                9:00 AM to 12:00 PM
+            </h5>
 
-        <h5>Auditorium
-        </h5>
+            <h5>Auditorium
+            </h5>
 
-        <h5>Culminating Activity
-        </h5>
+            <h5>Culminating Activity
+            </h5>
 
-        <h5>Facilitated by: Mr. Mark Arcedas
-        </h5>
+            <h5>Facilitated by: Mr. Mark Arcedas
+            </h5>
 
         </div>
     </mainBody>
-    
+
 </body>
 <script>
     let today = new Date();
@@ -120,7 +104,7 @@
     //let selectMonth = document.getElementById('month');
     let months = ['Jan', 'Feb', 'Mar', "Apr", 'May', 'Jun', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
     let monthAndYear = document.getElementById('monthAndYear');
-   // loopYear(currentYear);
+    // loopYear(currentYear);
     calendar(currentMonth, currentYear);
     loopBody('2021', '11', '2');
     //openDate(currentMonth, currentYear, currentDay);
@@ -266,8 +250,6 @@
     //     mainDiv.appendChild(div);
 
     // }
-
-
 </script>
 
 </html>

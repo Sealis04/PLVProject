@@ -38,7 +38,8 @@ $sql_code = "SELECT * FROM tbl_user WHERE isAdmin = 0 and isApproved = 1 LIMIT $
              $sql->close();
         }
     $conn->close();
-    $pagination = getPaginationString($page,$total_items,$limit,false,'/Window_AdminPanel.php/',"?page=","&category=",'userList');
+    $url = '/Window_Panel.php?window=';
+    $pagination = getPaginationString($page,$total_items,$limit,false,$url,"&page=","&category=",'userList');
     if(count($userlist)!=0 ){
         $userlist [count($userlist)-1] += array(
             'pagination' => $pagination,

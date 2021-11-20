@@ -7,7 +7,7 @@ function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1
 	if(!$adjacents) $adjacents = 1;
 	if(!$limit) $limit = 5;
 	if(!$page) $page = 1;
-	if(!$targetpage) $targetpage = "/Window_AdminPanel.php/";
+	if(!$targetpage) $targetpage = "/Window_Panel.php/";
     
 
 	//other vars
@@ -110,7 +110,5 @@ function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1
 		$pagination .= "</div>\n";
 	}
 	return $pagination;
-
 }
-
 ?>

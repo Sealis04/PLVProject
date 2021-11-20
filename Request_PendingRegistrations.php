@@ -41,9 +41,10 @@ if ($sql = $conn->prepare($sql_code)) {
     }
     $sql->close();
 }
+$url = '/Window_Panel.php?window=';
 $type = 'registration';
 $conn->close();
-$pagination = getPaginationString($page, $total_items, $limit, false, '/Window_AdminPanel.php/', "?page=", "&category=",$type);
+$pagination = getPaginationString($page, $total_items, $limit, false, $url, "&page=", "&category=",$type);
 if (count($registration) != 0) {
     $registration[count($registration) - 1] += array(
         'pagination' => $pagination

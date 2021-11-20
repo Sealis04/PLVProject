@@ -39,7 +39,8 @@ $sql_code = "SELECT * FROM tbl_room WHERE isDeleted = 0 LIMIT $start,$limit";
              $sql->close();
         }
     $conn->close();
-    $pagination = getPaginationString($page,$total_items,$limit,false,'/Window_AdminPanel.php/',"?page=","&category=",'room');
+    $url = '/Window_Panel.php?window=';
+    $pagination = getPaginationString($page,$total_items,$limit,false,$url,"&page=","&category=",'room');
     if(count($equip)!=0 ){
         $equip [count($equip)-1] += array(
             'pagination' => $pagination,

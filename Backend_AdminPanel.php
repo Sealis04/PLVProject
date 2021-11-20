@@ -17,7 +17,9 @@
       var url_string = new URL(url);
       var c = url_string.searchParams.get('page');
       var categ = url_string.searchParams.get('category');
+      var windowType = url_string.searchParams.get('window');
       var page_number;
+      console.log(c);
       if (c != null) {
           if (categ == 'finished') {
               resList();
@@ -44,65 +46,48 @@
           }
       } else if (categ == 'notifUser') {
           callReservationDetails();
-      } else {
-          console.log('asd');
-          callUserDetails();
       }
 
 
 
 
-
-    //   if (isAdmin == 0) {
-    //       if (current[0].id == profileID) {
-    //           await dropContent();
-    //           callUserDetails();
-    //           disableAndRemove(profile)
-    //       } else if (current[0].id == reservationID) {
-    //           await dropContent();
-    //           callReservationDetails();
-    //           disableAndRemove(reservation)
-    //       }
-    //   } else {
-    //       if (current[0].id == profileID) {
-    //           await dropContent();
-    //           callUserDetails();
-    //           disableAndRemove(profile);
-    //       } else if (current[0].id == reservationID) {
-    //           await dropContent();
-    //           callReservationDetails();
-    //           disableAndRemove(reservation)
-    //       } else if (current[0].id == userProfID) {
-    //           await dropContent();
-    //           regList();
-    //           disableAndRemove(userProf)
-    //       } else if (current[0].id == userResID) {
-    //           await dropContent();
-    //           resList();
-    //           disableAndRemove(userRes)
-    //       } else if (current[0].id == editContID) {
-    //           await dropContent();
-    //           editTabContent();
-    //           disableAndRemove(editCont)
-    //       } else if (current[0].id == monitoringID) {
-    //           await dropContent();
-    //           monitoringContent();
-    //           disableAndRemove(monitorForm);
-    //       }
-    //   }
-
-
-
-      function disableAndRemove(id) {
-          document.getElementById(id.id).disabled = true;
-          var rest = document.querySelectorAll('.tab');
-          for (a = 0; a < rest.length; a++) {
-              if (rest[a].id != id.id) {
-                  rest[a].removeAttribute('disabled');
-              }
+      console.log(window.location.hash);
+      if (isAdmin == 0) {
+          if (windowType == "Profile") {
+              // dropContent();
+              callUserDetails();
+          } else if (windowType =="MyReservations") {
+              // dropContent();
+              callReservationDetails();
           }
+      } else {
+          if (windowType == "Profile") {
+               dropContent();
+              callUserDetails();
+          } else if (windowType == "MyReservations") {
+              console.log('im in');
+               dropContent();
+              callReservationDetails();
+          } else if (windowType == "UserRegistrations") {
+               dropContent();
+              regList();
+          } else if (windowType == "UserReservation") {
+               dropContent();
+              resList();
+          } else if (windowType == "ContentEdit") {
+               dropContent();
+              editTabContent();
+          } else if (windowType == "Monitoring") {
+               dropContent();
+              monitoringContent();
+          }
+      }
+
+
+
+      function disableAndRemove() {
           if (c != null) {
-              var newURL = "/Window_AdminPanel.php";
+              var newURL = "/Window_Panel.php";
               window.history.replaceState({}, document.title, "" + newURL);
           }
       }
@@ -159,7 +144,7 @@
                   }
               }
           }
-          xmlhttp.open("GET", "/Request_ReservationForUser.php?var=" + userID + '&page=' + page_number, true);
+          xmlhttp.open("GET", "/Request_ReservationForUser.php?var=" + userID + '&page=' + page_number + '&window=' + windowType, true);
           xmlhttp.send();
       }
 
@@ -911,7 +896,7 @@
                   addButton(type);
               }
           }
-          xmlhttp.open("GET", "/Request_EquipmentListAndAvailability.php?page= " + page_number, true);
+          xmlhttp.open("GET", "/Request_EquipmentListAndAvailability.php?page= " + page_number + '&window=' + windowType, true);
           xmlhttp.send();
       }
 

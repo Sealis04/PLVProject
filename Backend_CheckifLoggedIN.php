@@ -27,12 +27,12 @@
       echo '</div>';
       echo '</div>';
       echo'    <hr>';
-      echo'    <a href="#about">My Profile</a>';
-      echo'    <a href="#services">My Reservation</a>';
-      echo'     <a href="#clients">User Registration</a>';
-      echo'    <a href="#contact">User Reservation</a>';
-      echo'    <a href="#clients">Edit Content</a>';
-      echo'    <a href="#contact">Monitoring Form</a>';
+      echo'    <a href="/Window_Panel.php?window=Profile">My Profile</a>';
+      echo'    <a href="/Window_Panel.php?window=MyReservations">My Reservation</a>';
+      echo'    <a href="/Window_Panel.php?window=UserRegistrations">User Registration</a>';
+      echo'    <a href="/Window_Panel.php?window=UserReservation">User Reservation</a>';
+      echo'    <a href="/Window_Panel.php?window=ContentEdit">Edit Content</a>';
+      echo'    <a href="/Window_Panel.php?window=Monitoring/">Monitoring Form</a>';
       echo'    <hr>';
           
       echo'    <a id="logout" href="/Backend_LOGOUT.php" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">

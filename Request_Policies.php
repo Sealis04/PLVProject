@@ -40,8 +40,9 @@ if ($sql = $conn->prepare($sql_code)) {
     }
     $sql->close();
 }
+$url = '/Window_Panel.php?window=';
 $conn->close();
-$pagination = getPaginationString($page,$total_items,$limit,false,'/Window_AdminPanel.php/',"?page=","&category=",'policies');
+$pagination = getPaginationString($page,$total_items,$limit,false,$url,"&page=","&category=",'policies');
 if(count($policies)!=0 ){
     $policies [count($policies)-1] += array(
         'pagination' => $pagination,

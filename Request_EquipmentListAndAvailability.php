@@ -6,7 +6,7 @@ include "backend_Pagination.php";
 $conn=OpenCon();
 
 
-
+$window =$_REQUEST['window'];
 $page = $_REQUEST['page'];
 $limit = 5;
 if ($page)
@@ -39,9 +39,9 @@ $sql_code = "SELECT * FROM tbl_equipment WHERE isDeleted = 0 LIMIT $start,$limit
                 }
              $sql->close();
         }
-    
+    $url = '/Window_Panel.php?window=';
     $conn->close();
-    $pagination = getPaginationString($page,$total_items,$limit,false,'/Window_AdminPanel.php/',"?page=","&category=",'equipment');
+    $pagination = getPaginationString($page,$total_items,$limit,false, $url,"&page=","&category=",'equipment');
     if(count($equip)!=0 ){
         
         $equip [count($equip)-1] += array(
