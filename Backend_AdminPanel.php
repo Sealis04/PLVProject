@@ -1,4 +1,4 @@
-<script>
+  <script>
     //public form changes
     var header = document.getElementById("list");
     var btns = header.getElementsByClassName("btns");
@@ -53,6 +53,23 @@
         }else if(categ == 'registration'){
             regList(c);
             userProf.className += ' active'; 
+        }else if (categ =='equipment'){
+            editTabContent();
+           loadLists('1',document.getElementById('equipPanel'),c)
+            editCont.className += ' active';
+        }else if(categ =='room'){
+            editTabContent();
+           loadLists('2',document.getElementById('roomPanel'),c)
+            editCont.className += ' active';
+        }else if(categ =='policies'){
+            editTabContent();
+           loadLists('3',document.getElementById('polPanel'),c)
+            editCont.className += ' active';
+        }
+        else if(categ =='userList'){
+            editTabContent();
+           loadLists('4',document.getElementById('userPanel'),c)
+            editCont.className += ' active';
         }
     }  
     else if(categ == 'notifUser'){
@@ -710,7 +727,7 @@
 
 
     //HTML PART THAT DISPLAYS THE TABLE
-    function loadLists(param, activeDiv) {
+    function loadLists(param, activeDiv,page_number=1) {
 
         var div = document.createElement('div');
         div.id = "divID";
@@ -744,7 +761,7 @@
                     column4.textContent = "Equipment Availability";
                     div.append(table);
                     equipBtn = false;
-                    listEquip(table, div.id);
+                    listEquip(table, div.id,page_number);
                     turnOffOn(div);
                     active = true;
                     row1.appendChild(column1);
@@ -769,7 +786,7 @@
                     column4.textContent = "Room Availability";
                     div.append(table);
                     roomBtn = false;
-                    listRoom(table, div.id);
+                    listRoom(table, div.id,page_number);
                     turnOffOn(div);
                     active = true;
                     row1.appendChild(column1);
@@ -792,7 +809,7 @@
                     column2.textContent = 'Policies';
                     div.append(table);
                     turnOffOn(div);
-                    listPolicies(table, div.id);
+                    listPolicies(table, div.id,page_number);
                     policiesBtn = false;
                     active = true;
                     row1.appendChild(column1);
@@ -814,7 +831,7 @@
                     column5.textContent = "Edit";
                     div.append(table);
                     turnOffOn(div);
-                    listUsers(table, div.id);
+                    listUsers(table, div.id,page_number);
                     userBtn = false;
                     active = true;
                     row1.appendChild(column1);
@@ -883,48 +900,54 @@
             enableButtons();
         }
     }
-    function listUsers(mainDiv,type){
+    function listUsers(mainDiv,type,page_number){
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             var list = document.createElement('select');
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
+                var page = document.createElement('div');
+                page.id = 'pages';
                 myObj.forEach(function(element, index) {
-                    generateUserContent(mainDiv, type, element, index);
+                    generateUserContent(mainDiv, type, element, index,page);
                 });
             }
         }
-        xmlhttp.open("GET", "/Request_UserList.php", true);
+        xmlhttp.open("GET", "/Request_UserList.php?page=" +page_number, true);
         xmlhttp.send(); 
     }
-    function listPolicies(mainDiv, type) {
+    function listPolicies(mainDiv, type,page_number) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             var list = document.createElement('select');
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
+                var page = document.createElement('div');
+                page.id = 'pages';
                 myObj.forEach(function(element, index) {
-                    generatePolicies(mainDiv, type, element, index);
+                    generatePolicies(mainDiv, type, element, index,...Array(2),page);
                 });
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "/Request_Policies.php", true);
+        xmlhttp.open("GET", "/Request_Policies.php?page=" +page_number, true);
         xmlhttp.send();
     }
 
-    function listEquip(mainDiv, type) {
+    function listEquip(mainDiv, type, page_number) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
+                var page = document.createElement('div');
+                page.id = 'pages';
                 myObj.forEach(function(element, index) {
-                    generateTabContent(mainDiv, type, element, index)
+                    generateTabContent(mainDiv, type, element, index,...Array(2),page)
                 });
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "/Request_EquipmentListAndAvailability.php", true);
+        xmlhttp.open("GET", "/Request_EquipmentListAndAvailability.php?page= " + page_number, true);
         xmlhttp.send();
     }
 
@@ -953,18 +976,20 @@
         xmlhttp.send();
     }
 
-    function listRoom(mainDiv, type) {
+    function listRoom(mainDiv, type,page_number) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
+                var page = document.createElement('div');
+                page.id = 'pages';
                 myObj.forEach(function(element, index) {
-                    var x = generateTabContent(mainDiv, type, element, index);
+                 generateTabContent(mainDiv, type, element, index,...Array(2),page);
                 });
                 addButton(type);
             }
         }
-        xmlhttp.open("GET", "/Request_RoomListAndAvailability.php", true);
+        xmlhttp.open("GET", "/Request_RoomListAndAvailability.php?page="+page_number, true);
         xmlhttp.send();
     }
     //Call for policies instead of generateTabContent()
@@ -974,7 +999,7 @@
         option.value = element.ct_ID;
         list.appendChild(option);
     }
-    function generateUserContent(mainDiv,type,element,index){
+    function generateUserContent(mainDiv,type,element,index,page){
         var tr = document.createElement('tr');
         tr.id = index;
         mainDiv.appendChild(tr);
@@ -1013,8 +1038,12 @@
         tr.appendChild(tdName);
         tr.appendChild(tdAvailability);
         tr.appendChild(tdRemove);
+        if (typeof(element.pagination) != undefined && element.pagination != null) {
+            page.innerHTML = element.pagination;
+            mainDiv.appendChild(page);
+        }
     }
-    async function generatePolicies(mainDiv, type, element, index, add, btn) {
+    async function generatePolicies(mainDiv, type, element, index, add, btn,page) {
         var tr = document.createElement('tr');
         tr.id = index;
         mainDiv.appendChild(tr);
@@ -1085,13 +1114,17 @@
         tr.appendChild(tdName);
         tr.appendChild(tdDesc);
         tr.appendChild(tdRemove);
+        if (typeof(element.pagination) != undefined && element.pagination != null) {
+            page.innerHTML = element.pagination;
+            mainDiv.appendChild(page);
+        }
     }
     //Called by function that lists all Equipment (should be a foreach kinda thing)
-    function generateTabContent(mainDiv, type, element, index, add, btn) {
+    function generateTabContent(mainDiv, type, element, index, add, btn,page) {
 
         var tr = document.createElement('tr');
         tr.id = index;
-        mainDiv.appendChild(tr);
+       
         var tdName = document.createElement('td');
         var inputName = document.createElement('input');
         inputName.id = 'contentName';
@@ -1168,20 +1201,24 @@
             }
             editBtn.src = "/assets/c2.png";
             removeBtn.src = "/assets/c1.png";
+     
         }
 
-
-
+        var pages = document.getElementById('pages');
+       
         tdRemove.appendChild(editBtn);
         tdRemove.appendChild(removeBtn);
         tr.appendChild(tdName);
-
-
         tr.appendChild(tdQuantity)
         tr.appendChild(tdDesc);
         tr.appendChild(tdAvailability);
         tr.appendChild(tdRemove);
-
+        mainDiv.appendChild(tr);
+        if (typeof(element.pagination) != undefined && element.pagination != null) {
+            page.innerHTML = element.pagination;
+            mainDiv.appendChild(page);
+        }
+       /// tr.before(tdName,pages);
         //appending of element
     }
 

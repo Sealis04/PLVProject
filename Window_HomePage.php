@@ -1,5 +1,4 @@
 <html>
-  
 
 <head>
     <title>PLVRS</title>
@@ -94,7 +93,6 @@
                 </div>
             </div>
             </div> -->
-            
     <div style="text-align:center"> 
         <input value='<' onclick='prevMonth()' type='button' style="display:inline-block;   ">
         <h3 id="monthAndYear" style="display:inline-block; "></h3> 
@@ -267,7 +265,7 @@
             for (let j = 0; j < 7; j++) {
                 if (i == 0 && j < firstDay) {
                     let cell = document.createElement('td');
-                    cell.style = 'height:5vw;text-align:left;vertical-align:top;'
+                    cell.style = 'height:10vw;text-align:left;vertical-align:top;'
                     let cellText = document.createTextNode('');
                     cell.appendChild(cellText);
                     row.appendChild(cell);
@@ -275,7 +273,7 @@
                     break;
                 } else {
                     let cell = document.createElement('td');
-                    cell.style = 'height:5vw;text-align:left;vertical-align:top';
+                    cell.style = 'height:10vw;text-align:left;vertical-align:top';
                     let cellText = document.createTextNode(date);
 
                     if (date === today.getDate() && year == today.getFullYear() && month === today.getMonth()) {
@@ -290,8 +288,6 @@
             tbl_body.appendChild(row);
         }
         addRowHandlers();
-
-
     }
 
     //opens scheduled reservations
@@ -323,8 +319,6 @@
     //     mainDiv.appendChild(div);
 
     // }
-
-   
 </script>
 
 </html>
