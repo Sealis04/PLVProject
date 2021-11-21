@@ -81,12 +81,8 @@ body {
 }
 
 #notif{
-  margin-top: 35px;
-  margin-left: 20px;
-  height: 40px;
-  width: 40px;
-  margin-bottom: 20px;
-}
+    width: 100%;
+  }
 
 
 /*DROP DOWN*/
@@ -198,7 +194,8 @@ ul input {
 }
 
 .big-contents{
-  margin-left: 30px;
+  margin-left: 14%;
+  margin-right: 5%;
   border-radius: 10px;
   margin-top: 35px;
   padding-bottom: 15px;
@@ -301,25 +298,32 @@ table{
 .bottom input{
  float: right;
  margin-top: 8px;
- margin-right: 138;
- background-color: #008F00 !important;
+ margin-right: 480px;
+ background-color: #000099 !important;
  text-decoration: none;
 border-radius: 5px;
+font-size: 16px !important;
+color: white;
  
 }
 
+#policiesID{
+  margin-right: 445px;
+  color: white;
+ font-size: 16px !important;
+}
 .resContent img{
  float: right;
  vertical-align: middle;
  }
 
  .pendingDiv h2{
-   font-size: 16;
+   font-size: 24px;
  }
 
 /*User Reservation*/
  .finishedDiv h2{
-   font-size: 16;
+   font-size: 24px;
    margin-top: 50px;
    margin-bottom: 40px;
  }
@@ -426,3 +430,8 @@ div.pagination span.disabled {
 
 * span.elipsis {zoom:100%}
 	
+
+#editList label{
+  font-size: 24px;
+  font-weight: normal !important;
+}
