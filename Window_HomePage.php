@@ -70,12 +70,11 @@
     <div id='hoursbody' style='flex:99%'>
     </div> -->
         </div>
-        <input class="header-btn btn create-reservation" type="button" value="Create Reservation"></a>
-        <div class="reservations">
+        <input class="header-btn btn create-reservation" type="button" value="Create Reservation" onclick="location.href='/Window_ReservationForm.php'"></a>
+        <!-- <div class="reservations">
             <h3> No Reservation</h3>
-
-        </div>
-        <div class="reservations">
+        </div> -->
+        <div class="reservations" id='listBody'>
             <h4>Culminating event</h4>
 
             <h5>November 16,2021
@@ -90,166 +89,9 @@
 
             <h5>Facilitated by: Mr. Mark Arcedas
             </h5>
-
         </div>
     </mainBody>
 
 </body>
-<script>
-    let today = new Date();
-    let currentDay = today.getDay();
-    let currentMonth = today.getMonth();
-    let currentYear = today.getFullYear();
-    //let selectYear = document.getElementById('year');
-    //let selectMonth = document.getElementById('month');
-    let months = ['Jan', 'Feb', 'Mar', "Apr", 'May', 'Jun', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-    let monthAndYear = document.getElementById('monthAndYear');
-    // loopYear(currentYear);
-    calendar(currentMonth, currentYear);
-    loopBody('2021', '11', '2');
-    //openDate(currentMonth, currentYear, currentDay);
-
-    function loopBody() {}
-
-    function nextMonth() {
-        currentYear = (currentMonth == 11) ? currentYear + 1 : currentYear;
-        currentMonth = (currentMonth + 1) % 12;
-        calendar(currentMonth, currentYear);
-    }
-
-    function prevMonth() {
-        currentYear = (currentMonth == 0) ? currentYear - 1 : currentYear;
-        currentMonth = (currentMonth == 0) ? 11 : currentMonth - 1;
-        calendar(currentMonth, currentYear);
-    }
-
-    //Jumping code
-    // function jump() {
-    //     currentYear = parseInt(selectYear.value);
-    //     currentMonth = parseInt(selectMonth.value);
-    //     calendar(currentMonth, currentYear);
-    // }
-
-    // function loopYear(year) {
-    //     var yearList = document.getElementById('year');
-    //     yearList.addEventListener('change', jump);
-    //     for (a = 15; a > 0; a--) {
-    //         var option = document.createElement('option');
-    //         option.textContent = year - a;
-    //         option.value = year - a;
-    //         yearList.appendChild(option);
-    //     }
-    //     for (a = 0; a < 15; a++) {
-    //         var option = document.createElement('option');
-    //         option.textContent = year + a;
-    //         option.value = year + a;
-    //         yearList.appendChild(option);
-    //     }
-    //     for (a = 0; a < yearList.length; a++) {
-    //         if (yearList.options[a].value == year) {
-    //             console.log("im in");
-    //             yearList.selectedIndex = a;
-    //         }
-    //     }
-    // }
-
-    function addRowHandlers() {
-        var table = document.getElementById('calendar');
-        var rows = table.getElementsByTagName('tr');
-        for (i = 0; i < rows.length; i++) {
-            var currentRow = table.rows[i];
-            var columns = currentRow.getElementsByTagName('td');
-            for (a = 0; a < columns.length; a++) {
-                var currentValue = columns[a];
-                var createClickHandler =
-                    function(row) {
-                        return function() {
-                            //var active = document.getElementsByClassName("active");
-                            //active[0].className = active[0].className.replace(" active", "");
-                            //row.className += ' active';
-                            var id = row.innerHTML;
-                            alert(id + ' ' + currentMonth + ' ' + currentYear);
-                            //openDate(currentMonth,currentYear,id);
-                        }
-                    }
-                currentValue.onclick = createClickHandler(currentValue);
-            }
-        }
-    }
-
-    function calendar(month, year) {
-
-        var firstDay = (new Date(year, month)).getDay();
-        let daysInMonth = 32 - new Date(year, 2, 32).getDate();
-        let tbl_body = document.getElementById('calendar-body');
-
-        tbl_body.innerHTML = "";
-        monthAndYear.innerHTML = months[month] + " " + year;
-        // selectYear.value = year;
-        // selectMonth.value = month;
-
-        let date = 1;
-        for (let i = 0; i < 6; i++) {
-            let row = document.createElement('tr');
-            for (let j = 0; j < 7; j++) {
-                if (i == 0 && j < firstDay) {
-                    let cell = document.createElement('td');
-                    cell.style = 'height:5vw;text-align:left;vertical-align:top;'
-                    let cellText = document.createTextNode('');
-                    cell.appendChild(cellText);
-                    row.appendChild(cell);
-                } else if (date > daysInMonth) {
-                    break;
-                } else {
-                    let cell = document.createElement('td');
-                    cell.style = 'height:5vw;text-align:left;vertical-align:top';
-                    let cellText = document.createTextNode(date);
-
-                    if (date === today.getDate() && year == today.getFullYear() && month === today.getMonth()) {
-                        cell.classList.add('bg-info');
-
-                    }
-                    cell.appendChild(cellText);
-                    row.appendChild(cell);
-                    date++;
-                }
-            }
-            tbl_body.appendChild(row);
-        }
-        addRowHandlers();
-
-
-    }
-
-    //opens scheduled reservations
-    // function openDate(currentMonth,currentYear,selectedDay){
-    // var xmlhttp = new XMLHttpRequest();
-    // xmlhttp.onreadystatechange = function() {
-    //     if (this.readyState == 4 && this.status == 200) {
-    //         var myObj = JSON.parse(this.responseText);
-    //         var mainDiv = document.getElementById('body');
-    //         mainDiv.innerHTML ='';
-    //         if(myObj.length != 0){
-    //         myObj.forEach(listEvents);
-    //         }else{
-    //         mainDiv.innerHTML = 'No Reservations scheduled';
-    //         }
-
-    //     }
-    // }
-    // xmlhttp.open("GET", "/Request_CheckReservations.php?month=" + currentMonth + '&year=' + currentYear + '&day=' + selectedDay, true);
-    // xmlhttp.send();
-    // }
-
-    // function listEvents(element,index){
-    //     var mainDiv = document.getElementById('body');
-    //     var div = document.createElement('div');
-    //     div.innerHTML = ' <h3>Event Name: '+ element.event_name+' ['+element.start +' - ' + element.end +']</h3>';
-    //     div.innerHTML += '<h3>Room Name:'+ element.room_name+'</h3>';
-    //     div.innerHTML += '<h3>Reserved By:'+ element.firstName+ ' ' + element.middleName + ' ' + element.lastName+'</h3>';
-    //     mainDiv.appendChild(div);
-
-    // }
-</script>
-
+<?php require 'Backend_Homepage.php'?>
 </html>
