@@ -19,7 +19,6 @@
       var categ = url_string.searchParams.get('category');
       var windowType = url_string.searchParams.get('window');
       var page_number;
-      console.log(c);
       if (c != null) {
           if (categ == 'finished') {
               resList();
@@ -50,8 +49,6 @@
 
 
 
-
-      console.log(window.location.hash);
       if (isAdmin == 0) {
           if (windowType == "Profile") {
               // dropContent();

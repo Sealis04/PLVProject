@@ -32,7 +32,7 @@
       echo'    <a href="/Window_Panel.php?window=UserRegistrations">User Registration</a>';
       echo'    <a href="/Window_Panel.php?window=UserReservation">User Reservation</a>';
       echo'    <a href="/Window_Panel.php?window=ContentEdit">Edit Content</a>';
-      echo'    <a href="/Window_Panel.php?window=Monitoring/">Monitoring Form</a>';
+      echo'    <a href="/Window_Panel.php?window=Monitoring">Monitoring Form</a>';
       echo'    <hr>';
           
       echo'    <a id="logout" href="/Backend_LOGOUT.php" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">

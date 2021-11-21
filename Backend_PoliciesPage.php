@@ -11,7 +11,7 @@ function callPolicies(){
                 })
             }
         }
-        xmlhttp.open("GET", "Request_Policies.php", true);
+        xmlhttp.open("GET", "Request_AllPolicies.php", true);
         xmlhttp.send();
 }
  function listPolicyDetails(div,element,index){
