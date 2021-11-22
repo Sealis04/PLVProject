@@ -3,10 +3,10 @@
 
 #head-container{
   color: white;
-  background-color: #000C7A;
-  height: 110;
-  width:100%;
-  
+    background-color: #0F1057;
+    height: 68;
+    width: 100%;
+    position: fixed;
 }
 
 .navbar{
@@ -140,7 +140,7 @@ a {
   
   /*FORM*/
   .form-container{
-      margin-top: 25px;
+      margin-top: 10%;
       padding: 35px;
       border: 1px black solid;
       border-radius: 10px;
@@ -162,7 +162,7 @@ a {
 
   .submit{
     color: white;
-    background-color: #00b900;
+    background-color: #0F1057;
     text-shadow: black 1px 1px;
     border: none;
     border-radius: 3px;

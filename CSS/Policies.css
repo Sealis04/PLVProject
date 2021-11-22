@@ -4,10 +4,14 @@
 
 #head-container{
   color: white;
-    background-color: #0F1057;
+    background-color: none;
     height: 68;
     width: 100%;
     position: fixed;
+}
+
+legend{
+  margin-top: 10px;
 }
 
 .navbar{
@@ -204,3 +208,11 @@ body {
    margin-top: 2px;
    margin-left: 60px;
  }
+
+ .sidenav a {
+  padding-top: 14px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  display: block;
+}

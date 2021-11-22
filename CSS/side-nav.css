@@ -13,6 +13,7 @@ body {
   overflow-x: hidden;
   padding-top: 0px;
   color: white;
+  top: 0;
 }
 
 .sidenav a {

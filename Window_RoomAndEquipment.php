@@ -16,12 +16,7 @@
                 ?>
         <nav id="head-container">
             <div class="navbar">
-            <div class="nav1">
-              <img id="fb" src="assets/plv.png" alt="PLV Logo">
-              <a href="Window_HomePage.php" type="button" class="header-btn btn ">Home</a>
-              <a href="Window_RoomAndEquipment.php" type="button" class="header-btn btn ">Rooms and Equipment</a>
-              <a href="Window_PoliciesPage.php" type="button" class="header-btn btn">Policies</a>
-            </div>
+            
             <div class="nav2">
               <?php
            require "Backend_CheckifLoggedIN.php";
