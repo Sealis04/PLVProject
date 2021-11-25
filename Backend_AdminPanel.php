@@ -53,34 +53,31 @@
           if (windowType == "Profile") {
               // dropContent();
               callUserDetails();
-          } else if (windowType =="MyReservations") {
+          } else if (windowType == "MyReservations") {
               // dropContent();
               callReservationDetails();
           }
       } else {
           if (windowType == "Profile") {
-               dropContent();
+              dropContent();
               callUserDetails();
           } else if (windowType == "MyReservations") {
-              console.log('im in');
-               dropContent();
+              dropContent();
               callReservationDetails();
           } else if (windowType == "UserRegistrations") {
-               dropContent();
+              dropContent();
               regList();
           } else if (windowType == "UserReservation") {
-               dropContent();
+              dropContent();
               resList();
           } else if (windowType == "ContentEdit") {
-               dropContent();
+              dropContent();
               editTabContent();
           } else if (windowType == "Monitoring") {
-               dropContent();
+              dropContent();
               monitoringContent();
           }
       }
-
-
 
       function disableAndRemove() {
           if (c != null) {
@@ -95,21 +92,49 @@
           var cn = <?php echo $_SESSION["usercontactnumber"]; ?>;
           var email = "<?php echo $_SESSION["email"]; ?>";
           var pass = "<?php echo $_SESSION["password"]; ?>";
+          var pfp = "<?php echo $_SESSION['ID_img'];?>";
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                  profileContent(fn, this.responseText, cn, email, pass);
+                  profileContent(fn, this.responseText, cn, email, pass,pfp);
               }
           }
           xmlhttp.open("GET", "/Request_Course.php?var=" + asd, true);
           xmlhttp.send();
       }
 
-      function profileContent(fullname, course, contact, email, password) {
+      function profileContent(fullname, course, contact, email, password,pfp) {
           var div = document.createElement('difunctionv');
           div.id = "profContent";
           div.innerHTML = '<h3> Name: ' + fullname + '</h3> <br> <h4> Course:' + course + '<h4> <br>';
           div.innerHTML += '<h4> Email:' + email + '<h4><br>';
+
+          // modal img code
+
+          var img = document.createElement('img');
+          img.className = "myImg";
+          img.src = "/Assets/" +pfp;
+          var modal = document.createElement('div');
+          modal.id = 'myModal';
+          modal.className = 'modal';
+          var span = document.createElement('span');
+          span.className = 'close';
+          span.textContent='X';
+          var modalImg = document.createElement('img');
+          modalImg.className = 'modal-content';
+          modalImg.id ='img01';
+          modal.appendChild(span);
+          modal.appendChild(modalImg);
+          div.appendChild(img);
+          div.appendChild(modal);
+          img.onclick = function() {
+              modal.style.display = "block";
+              modalImg.src = this.src;
+          }
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function() {
+              modal.style.display = "none";
+          }
           document.getElementById("content").appendChild(div);
       }
 
@@ -132,7 +157,7 @@
                       var page = document.createElement('div');
                       page.id = 'pages';
                       motherDiv.id = "currentUserReservation";
-
+                      console.log(myObj);
                       myObj.forEach(function(element, index) {
                           reservationContent(motherDiv, userID, page, element, index);
                       });
@@ -160,9 +185,7 @@
                       await listEquipmentReserved(mainDiv, element, index);
                   });
                   if (forUser) {
-                      console.log(status);
                       if (status != 1) {
-                          console.log('asd');
                           if (approval == 2) {
                               mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '<h4><br>';
                               mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">'
@@ -172,6 +195,8 @@
                           } else if (approval == 1) {
                               mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '<h4><br>';
                               mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>'
+                          } else {
+                              mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Reservation is Over" + '<h4><br>';
                           }
                       } else {
 
@@ -202,7 +227,14 @@
           div.innerHTML = '<h3 class="_edit"> Event:' + element.event + '</h3>';
           div.innerHTML += '<h3>Date and Time: ' + element.start + " to " + element.end + " </h3><br>";
           div.innerHTML += '<h3>Room:' + element.room + '</h3>';
-          reservedEquipment(element.reservationID, div, userID, true, element.status, element.approval);
+          var date = new Date();
+          var d1 = new Date(element.end);
+          if (d1 < date) {
+              status = 4;
+          } else {
+              status = element.approval;
+          }
+          reservedEquipment(element.reservationID, div, userID, true, element.status, status);
           //div.innerHTML += '<input type="button" class="header-btn btn" value="Edit" onclick="cancelReservation('+element.eventID+')">';
           //div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">';
 
@@ -210,6 +242,32 @@
               page.innerHTML = element.pagination;
               motherDiv.appendChild(page);
           }
+        //    modal img code
+          var img = document.createElement('img');
+          img.className = "myImg";
+          img.src = "/Assets/" +element.ImgLetter;
+          var modal = document.createElement('div');
+          modal.id = 'myModal';
+          modal.className = 'modal';
+          var span = document.createElement('span');
+          span.className = 'close';
+          span.textContent='X';
+          var modalImg = document.createElement('img');
+          modalImg.className = 'modal-content';
+          modalImg.id ='img01';
+          modal.appendChild(span);
+          modal.appendChild(modalImg);
+          div.appendChild(img);
+          div.appendChild(modal);
+          img.addEventListener('click',function() {
+              modal.style.display = "block";
+              modalImg.src = this.src;
+          });
+
+          // When the user clicks on <span> (x), close the modal
+          span.addEventListener('click',function() {
+              modal.style.display = "none";
+          })
           document.getElementById("content").appendChild(motherDiv);
           motherDiv.appendChild(div);
       }
@@ -457,7 +515,6 @@
                   if (myObj[0] == null) {
                       motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                   } else {
-                      console.log(myObj);
                       myObj.forEach(function(element, index) {
                           userReservationContent(motherDiv, typePending, page, element, index);
                       });
@@ -497,7 +554,6 @@
           sideDiv.appendChild(date);
           sideDiv.appendChild(sideInput);
           div.appendChild(sideDiv);
-          console.log(element.pagination);
           if (typeof(element.pagination) != undefined && element.pagination != null) {
               page.innerHTML = element.pagination;
               div.appendChild(page);
@@ -1323,9 +1379,7 @@
 
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                  console.log(this.responseText);
-              }
+              if (this.readyState == 4 && this.status == 200) {}
           }
           xmlhttp.open("GET", "/Request_AddRoom.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
           xmlhttp.send();
@@ -1346,9 +1400,7 @@
 
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                  console.log(this.responseText);
-              }
+              if (this.readyState == 4 && this.status == 200) {}
           }
           xmlhttp.open("GET", "/Request_AddEquipment.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
           xmlhttp.send();
@@ -1377,7 +1429,6 @@
 
       function editUserQuery(availability, ID) {
           var eAvailability;
-          console.log(availability);
           if (availability) {
               eAvailability = 1;
           } else if (!availability) {
@@ -1414,9 +1465,7 @@
           }
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                  console.log(this.responseText);
-              }
+              if (this.readyState == 4 && this.status == 200) {}
           }
           xmlhttp.open("GET", "/Request_EditEquipList.php?name=" + name + '&quantity=' + quantity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
           xmlhttp.send();
@@ -1431,9 +1480,7 @@
           }
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                  console.log(this.responseText);
-              }
+              if (this.readyState == 4 && this.status == 200) {}
           }
           xmlhttp.open("GET", "/Request_EditRoomList.php?name=" + name + '&cap=' + capacity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
           xmlhttp.send();

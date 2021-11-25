@@ -30,7 +30,7 @@
                                 document.getElementById("p1").textContent=myObj.roomDesc;
                             }
                         }
-                        xmlhttp.open("GET", "Request_SpecificRoom.php?var=" + currID, true);
+                        xmlhttp.open("GET", "Request_ExistingSpecificRoom.php?var=" + currID, true);
                         xmlhttp.send();
                         }
                         });

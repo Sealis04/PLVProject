@@ -26,9 +26,6 @@
     $isAdmin = 0;
     $isApproved = 2;
      if($_SERVER["REQUEST_METHOD"]=="POST"){
-      $fileTmpPath = $_FILES["fileUpload"]["tmp_name"];
-      $fileName = $_FILES["fileUpload"]["name"];
-      $targetDirectory ="C:/xampp/htdocs/practice/assets/".$fileName;
         if(empty(test_input($_POST["email"]))){
           $emailErr="* Required";
         }else{
@@ -107,17 +104,18 @@
         }
 
         if($_FILES["fileUpload"]["error"]>0){
-          // $uploadErr = "Please upload your valid PLV ID";
+           $uploadErr = "Please upload your valid PLV ID";
         }
+        $fileTmpPath = $_FILES["fileUpload"]["tmp_name"];
+        $fileName = $firstName . $lastName . 'ID';
         if(empty($emailErr) && empty($passwordErr) && empty($contactErr) && empty($firstNameErr) && empty($middleNameErr) && empty($lastNameErr && empty($uploadErr))){
           if(move_uploaded_file($fileTmpPath,"assets/".$fileName))
           {
-          
           $selectedCourse = $_POST["course"];
           $sql_code = "INSERT INTO tbl_user (user_email, user_password, user_firstName, user_middleName, user_lastName, user_contactNumber,user_course_ID,PLV_ID,isAdmin,isApproved,notificationID) VALUES (?, ?, ?, ?, ? , ? , ? , ?, ?, ?,?)";
           if($sql = $conn->prepare($sql_code)){
             $notifID =  notification(($conn->insert_id),2);
-            $sql->bind_param("sssssiisiii",$email,$password_hash,$firstName,$middleName,$lastName,$contact,$selectedCourse,$targetDirectory,$isAdmin,$isApproved,$notifID);
+            $sql->bind_param("sssssiisiii",$email,$password_hash,$firstName,$middleName,$lastName,$contact,$selectedCourse,$fileName,$isAdmin,$isApproved,$notifID);
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             if($sql->execute()){
               echo '<script>

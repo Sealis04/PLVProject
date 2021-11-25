@@ -33,7 +33,7 @@ else
 		$sql5->close();
        
 
-        $sql_code = "SELECT * from tbl_reservation WHERE r_endDateAndTime < CURRENT_DATE() ORDER BY r_ID DESC LIMIT $start,$limit ";
+        $sql_code = "SELECT * from tbl_reservation WHERE r_endDateAndTime < CURRENT_DATE() AND r_approved_ID = 1 AND r_reviewed =1 ORDER BY r_startDateAndTime DESC LIMIT $start,$limit ";
         if($sql=$conn->prepare($sql_code)){
                 if($sql->execute()){
                     $result = $sql->get_result();
