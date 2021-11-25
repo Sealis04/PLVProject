@@ -10,7 +10,7 @@ if ($page)
     $start = ($page - 1) * $limit;             //first item to display on this page
 else
     $start = 0;	
-    $query = "SELECT COUNT(*) as num FROM tbl_reservation WHERE r_approved_ID = 2 AND r_status = 0 AND r_startDateAndTime > CURRENT_DATE()";
+    $query = "SELECT COUNT(*) as num FROM tbl_reservation WHERE r_approved_ID = 2 AND r_status = 0 ";
 		$sql5=$conn->prepare($query);
 			$sql5->execute();
 			$result = $sql5->get_result();
@@ -18,7 +18,7 @@ else
 			$total_items = $user['num'];
 		$sql5->close();
        
-$sql_code = "SELECT * FROM tbl_reservation WHERE r_approved_ID = 2 AND r_status = 0 AND r_startDateAndTime > CURRENT_DATE() LIMIT $start,$limit";
+$sql_code = "SELECT * FROM tbl_reservation WHERE r_approved_ID = 2 AND r_status = 0 ORDER BY r_startDateAndTime LIMIT $start,$limit";
 if ($sql = $conn->prepare($sql_code)) {
     if ($sql->execute()) {
         $result = $sql->get_result();

@@ -8,8 +8,6 @@ function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1
 	if(!$limit) $limit = 5;
 	if(!$page) $page = 1;
 	if(!$targetpage) $targetpage = "/Window_Panel.php/";
-    
-
 	//other vars
 	$prev = $page - 1;									//previous page is page - 1
 	$next = $page + 1;									//next page is page + 1

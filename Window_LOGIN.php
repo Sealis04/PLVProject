@@ -63,6 +63,7 @@ $email = $password=$userID="";
                                     $_SESSION["isApproved"]=$isApproved;
                                     $_SESSION["password"]=$password_db;
                                     $_SESSION['isMarked'] = $isMarked;
+                                    $_SESSION['ID_img'] = $userIDImage;
                                     header("location: Window_HomePage.php");
                                 }else{
                                     $passwordErr="Invalid password";  
