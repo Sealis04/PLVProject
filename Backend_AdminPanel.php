@@ -113,7 +113,7 @@
 
           var img = document.createElement('img');
           img.className = "myImg";
-          img.src = "/Assets/" +pfp;
+          img.src = "/assets/profile.png/"/*+pfp */;
           var modal = document.createElement('div');
           modal.id = 'myModal';
           modal.className = 'modal';
