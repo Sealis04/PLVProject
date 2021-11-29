@@ -2,8 +2,7 @@
     var count = 0;
     var clicked = false;
     onload = getNotifications(1);
-    isAdmin = <?php
-                echo $_SESSION['isAdmin']; ?>;
+    isAdmin = <?php if(isset($_SESSION['isAdmin'])) echo $_SESSION['isAdmin']; ?>;
 
     function getNotifications(reset) {
         var xmlhttp = new XMLHttpRequest();

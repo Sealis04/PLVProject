@@ -1,6 +1,6 @@
   <script>
       //public form changes
-      var isAdmin = <?php echo $_SESSION['isAdmin'] ?>;
+      var isAdmin = <?php echo isset($_SESSION['isAdmin']) ? $_SESSION['isAdmin']: NULL ?>
       var equipBtn;
       var roomBtn;
       var policiesBtn;

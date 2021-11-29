@@ -1,17 +1,15 @@
 <?php
-$month = $_REQUEST['month'] + 1;
-$year = $_REQUEST['year'];
-$day = $_REQUEST['day'];
+$date = $_REQUEST['date'];
 $reservations = array();
 include "db_connection.php";
 $conn=OpenCon();
-$sql_code = "SELECT *,TIME(r_startDateAndTime) as 'start',TIME(r_endDateAndTime) as 'end' FROM tbl_reservation INNER JOIN tbl_room
+$sql_code = "SELECT *,TimeStart as 'start',TimeEnd as 'end' FROM tbl_reservation INNER JOIN tbl_room
 ON tbl_reservation.r_room_ID = tbl_room.room_ID
 INNER JOIN tbl_user
 ON tbl_reservation.r_user_ID = tbl_user.user_ID
-WHERE MONTH(r_startDateAndTime) = ? AND YEAR(r_startDateAndTime) = ? AND DAY(r_startDateAndTime) = ? AND r_approved_ID = 1";
+WHERE ? between tbl_reservation.DateStart AND tbl_reservation.DateEnd";
     if($sql=$conn->prepare($sql_code)){
-        $sql->bind_param("iii",$month,$year,$day);
+        $sql->bind_param("s",$date);
             if($sql->execute()){
                  $result = $sql->get_result();
                  while($row = $result->fetch_assoc()){
