@@ -1,6 +1,6 @@
   <script>
       //public form changes
-      var isAdmin = <?php echo isset($_SESSION['isAdmin']) ? $_SESSION['isAdmin']: NULL ?>
+      var isAdmin = <?php echo isset($_SESSION['isAdmin']) ? $_SESSION['isAdmin']: NULL ?>;
       var equipBtn;
       var roomBtn;
       var policiesBtn;
@@ -157,7 +157,7 @@
                       var page = document.createElement('div');
                       page.id = 'pages';
                       motherDiv.id = "currentUserReservation";
-                      console.log(myObj);
+
                       myObj.forEach(function(element, index) {
                           reservationContent(motherDiv, userID, page, element, index);
                       });
@@ -216,36 +216,12 @@
       //HTML PART THAT LISTS THE EQUIPMENT IN THE WINDOW
       function listEquipmentReserved(mainDiv, element, index) {
           mainDiv.innerHTML += '<h4>' + element.equipName + ' Qty: ' + element.qty + '</h4>';
-
-
       }
-      //HTML PART THAT LISTS THE RESERVATIONS IN THE WINDOW
-      function reservationContent(motherDiv, userID, page, element, index) {
-          var div = document.createElement('div')
-          div.id = "resContent";
-          div.className = "resContent";
-          div.innerHTML = '<h3 class="_edit"> Event:' + element.event + '</h3>';
-          div.innerHTML += '<h3>Date and Time: ' + element.start + " to " + element.end + " </h3><br>";
-          div.innerHTML += '<h3>Room:' + element.room + '</h3>';
-          var date = new Date();
-          var d1 = new Date(element.end);
-          if (d1 < date) {
-              status = 4;
-          } else {
-              status = element.approval;
-          }
-          reservedEquipment(element.reservationID, div, userID, true, element.status, status);
-          //div.innerHTML += '<input type="button" class="header-btn btn" value="Edit" onclick="cancelReservation('+element.eventID+')">';
-          //div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">';
-
-          if (typeof(element.pagination) != undefined && element.pagination != null) {
-              page.innerHTML = element.pagination;
-              motherDiv.appendChild(page);
-          }
-        //    modal img code
+      function loadImages(div,imgSrc){
+          //    modal img code
           var img = document.createElement('img');
           img.className = "myImg";
-          img.src = "/Assets/" +element.ImgLetter;
+          img.src = "/Assets/" +imgSrc;
           var modal = document.createElement('div');
           modal.id = 'myModal';
           modal.className = 'modal';
@@ -268,6 +244,30 @@
           span.addEventListener('click',function() {
               modal.style.display = "none";
           })
+      }
+      //HTML PART THAT LISTS THE RESERVATIONS IN THE WINDOW
+      function reservationContent(motherDiv, userID, page, element, index) {
+          var div = document.createElement('div')
+          div.id = "resContent";
+          div.className = "resContent";
+          div.innerHTML = '<h3 class="_edit"> Event:' + element.event + '</h3>';
+          div.innerHTML += '<h3>Date and Time: ' + element.start + " to " + element.end + " </h3><br>";
+          div.innerHTML += '<h3>Room:' + element.room + '</h3>';
+          var date = new Date();
+          var d1 = new Date(element.end);
+          if (d1 < date) {
+              status = 4;
+          } else {
+              status = element.approval;
+          }
+          reservedEquipment(element.reservationID, div, userID, true, element.status, status);
+          //div.innerHTML += '<input type="button" class="header-btn btn" value="Edit" onclick="cancelReservation('+element.eventID+')">';
+          //div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">';
+          if (typeof(element.pagination) != undefined && element.pagination != null) {
+              page.innerHTML = element.pagination;
+              motherDiv.appendChild(page);
+          }
+          loadImages(motherDiv,element.ImgLetter)
           document.getElementById("content").appendChild(motherDiv);
           motherDiv.appendChild(div);
       }
