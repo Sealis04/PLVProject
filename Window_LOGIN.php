@@ -69,7 +69,7 @@ $email = $password=$userID="";
                                     $passwordErr="Invalid password";  
                                 }
                             }else if ($isApproved == 2){ 
-                                echo '<script>alert("Account still pending, please wait")
+                                echo '<script>alert("Account still pending, please wait.")
                                      window.location.href="Window_HomePage.php"
                                      </script>';
                             }else if($isApproved==3){
@@ -102,7 +102,6 @@ $email = $password=$userID="";
         <!--CHANGES-->
         <nav id="head-container">
             <div class="navbar">
-           
             <div class="nav2">
               <?php
             require "Backend_CheckifLoggedIN.php";

@@ -6,28 +6,36 @@
         <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
         <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
         
-        <link rel="stylesheet" href="css/Form.css">
+        <link rel="stylesheet" href="/CSS/Form.css">
     </head>
     <body>
     
     <?php
     include "db_connection.php";
-    include "Backend_GetAllReservations.php";
     include "Request_storeNotification.php";
     include "Request_CheckUserDetails.php";
-    $allReservations = json_decode(getAll());
     session_start();
     $conn= OpenCon();
     $min = Date("Y-m-d", strtotime('+3 days'));
-    $max = $min.'T09:00';
-    $min .='T08:00';
+    $minTime = '08:00';
+    $maxTime = '17:00';
+    $initialTime = '08:00';
+    $initialTime_2='09:00';
     $uploadErr="";
     //determine if admin
-    if($_SESSION["isAdmin"]== 1){
-        $approveID = 1;
+    if(isset($_SESSION['userID'])){
+        if($_SESSION["isAdmin"]== 1){
+            $approveID = 1;
+        }else{
+            $approveID= 2;
+        }
     }else{
-        $approveID= 2;
+        echo '<script>
+        alert("Please Log in first.")
+        window.location.href = "Window_LOGIN.php"
+        </script>';
     }
+ 
     
     //form initialization
     if($_SERVER["REQUEST_METHOD"]=="POST"){
@@ -44,36 +52,31 @@
         }else{
             $toStore = [];
         }
-            $fileTmpPath = $_FILES["letterUpload"]["tmp_name"];
-            $fileName = $_FILES["letterUpload"]["name"];
-            $targetDirectory ="C:/xampp/htdocs/practice/assets/".$fileName;
+            $eventName = $_POST['event'];
             $userID = $_SESSION["userID"];
             $roomID = $_POST['room'];
             $today = date("Y-m-d h:i:s");
-            $start = $_POST["startTime"];
-            $end = $_POST["endTime"];
-            $today_dt = new DateTime($today);
-            $start_dt = new DateTime($start);
-            $end_dt = new DateTime($end);
-            $today_dt = $today_dt->format('Y-m-d h:i:s');
-            $start_dt = $start_dt->format('Y-m-d h:i:s');
-            $end_dt = $end_dt -> format('Y-m-d h:i:s');
-            //NOTE, REMEMBER TO ADD IF EQUIPID==0 IN CONDITIONS LATER
-
+            $startDate = $_POST['startDate'];
+            $startTime = $_POST['startTime'];
+            $endTime = $_POST['endTime'];
+            $duration = $_POST['duration'];
+            $days ='+ '. $duration - 1 .'days';
+            $endDate = Date('Y-m-d', strtotime($startDate.$days));
+        //NOTE, REMEMBER TO ADD IF EQUIPID==0 IN CONDITIONS LATER
         //check if file is uploaded
         if($_FILES["letterUpload"]["error"]>0){
             $uploadErr = "Please upload letter of approval/s.";
          }
-       
-         
-         
+           $fullName =  $_SESSION["fullName"];
+         $fileTmpPath = $_FILES["letterUpload"]["tmp_name"];
+         $fileName = $fullName. "ID";
            if(move_uploaded_file($fileTmpPath,"assets/".$fileName)){
             $notifID = notification($userID,2);
             $remarks = checkDetails($userID);
             if(!isset($remarks)){
-                $sql_code = "INSERT INTO tbl_reservation (r_user_ID,r_room_ID,r_approved_ID,r_letter_file,r_startDateAndTime, r_endDateAndTime,notificationID) VALUES (?,?,?,?,?,?,?);";
+                $sql_code = "INSERT INTO tbl_reservation (r_user_ID,r_event,r_room_ID,r_approved_ID,r_letter_file,notificationID,DateStart,DateEnd,TimeStart,TimeEnd) VALUES (?,?,?,?,?,?,?,?,?,?);";
                 if($sql = $conn->prepare($sql_code)){
-                    $sql->bind_param("iiisssi",$userID,$roomID,$approveID,$targetDirectory,$start,$end,$notifID);
+                    $sql->bind_param("isiisissss",$userID,$eventName,$roomID,$approveID,$fileName,$notifID,$startDate,$endDate,$startTime,$endTime);
                                         if($sql->execute()){
                                             $lastID = $conn->insert_id;
                                             if(!empty($toStore)){
@@ -138,16 +141,11 @@
         }
     }
             ?>
-        <nav id="head-container">
-            <div class="navbar">
-            
             <div class="nav2">
               <?php
-            // require "Backend_CheckifLoggedIN.php";
+             require "Backend_CheckifLoggedIN.php";
                 ?>        
             </div>
-            </div>
-        </nav>
         <div class="container">
             <div class="form-container">
                 <legend>FORM</legend>
@@ -156,17 +154,22 @@
                     <input type="text" id="name" disabled name="Name"><br><br>
                     <label for="Course" >Course:</label>
                     <input type="text" id="course" disabled name="Course"><br><br>
-                    <label for="Event">Event:</label>
-                    <input type="text" id="event" name="course"><br><br>
+                    <label for="Event" >Event:</label>
+                    <input type="text" id="event" name='event' required><br><br>
                     <!--date and time-->
                     <div id = "wrapper"> 
                     <label for="dateAndTime">Reservation Date and Time Start:</label>
-                    <input type="datetime-local" id="startTime" name="startTime" min="<?php echo $min; ?>" value="<?php echo $min; ?>"><br><br>
+                    <input type="date" id="startDate" name="startDate" min="<?php echo $min; ?>" value="<?php echo $min; ?>" required><br><br>
                     <span class="error" id="startErr"></span>
+                    <label for="Duration"> Duration: </label> <input id='durationDay' name='duration' type="text" placeholder="(In Days)" value = "1" required>
+                    <br> <br>
                     <label for="dateAndTime">Reservation Date and Time End:</label>
-                    <input type="datetime-local" id="endTime" name="endTime" min="<?php echo $max; ?>" value="<?php echo $max; ?>">
+                    <input type="time" id="startTime" name="startTime" min="<?php echo $minTime; ?>" max ="<?php echo $maxTime; ?>"  value ="<?php echo $initialTime; ?>"required>
+                    <span > to </span>
+                    <input type="time" id="endTime" name="endTime" min="<?php echo $minTime; ?>" max ="<?php echo $maxTime; ?>"  value ="<?php echo $initialTime_2; ?>"required><br>
+                    <!-- <span class="validity"></span> -->
+                    <span class="error" id="endTimeErr"></span>
                     <br>
-                    <span class="error" id="endErr"></span>
                     <br>
                     <br>
                         <!--dropdown list room query-->

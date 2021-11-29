@@ -157,6 +157,7 @@
 
     // opens scheduled reservations
     function openDate(currentMonth, currentYear, selectedDay) {
+       var date = currentYear + '-' + (currentMonth + 1) + '-' + selectedDay;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -164,7 +165,6 @@
                 var mainDiv = document.getElementById('listBody');
                 if (myObj.length != 0) {
                     mainDiv.innerHTML = "";
-                    console.log('works');
                     myObj.forEach(listEvents);
                 } else {
                     mainDiv.innerHTML = 'No Reservations scheduled';
@@ -172,7 +172,7 @@
 
             }
         }
-        xmlhttp.open("GET", "/Request_CheckReservations.php?month=" + currentMonth + '&year=' + currentYear + '&day=' + selectedDay, true);
+        xmlhttp.open("GET", "/Request_CheckReservations.php?date=" +  date, true);
         xmlhttp.send();
     }
 
