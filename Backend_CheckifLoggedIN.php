@@ -18,7 +18,7 @@
         echo'    <a href="/Window_RoomAndEquipment.php">Rooms and Equipment</a>';
         echo'    <a href="/Window_PoliciesPage.php">Policies</a>';;
         echo '<div id="notifDropdown" class="dropdown">';
-        echo'    <a id="notif">Notification<sup> 1 </sup></a>';
+        echo'    <a id="notif">Notification</a>';
         echo '<div id="notifList" class="dropdown-content">';
         echo '</div>';
         echo '</div>';
@@ -47,7 +47,7 @@
       echo'    <a href="/Window_RoomAndEquipment.php">Rooms and Equipment</a>';
       echo'    <a href="/Window_PoliciesPage.php">Policies</a>';;
       echo '<div id="notifDropdown" class="dropdown">';
-      echo'    <a id="notif">Notification<sup> 1 </sup></a>';
+      echo'    <a id="notif">Notification</a>';
       echo '<div id="notifList" class="dropdown-content">';
       echo '</div>';
       echo '</div>';

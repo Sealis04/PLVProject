@@ -6,7 +6,7 @@
 
     function getNotifications(reset) {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
+        xmlhttp.onreadystatechange = async function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
                 if (clicked == false) {
@@ -19,15 +19,13 @@
                             listNotif(myObj.length, element, index)
                         });
                         if (isAdmin != 1) {
+                            var notifCount = document.getElementById('notif');
+                            notifCount.innerHTML += '<sup> ' + count + '<sup>';
                             var button = document.createElement('input');
                             button.type = 'button';
                             button.value = 'Mark all as read';
                             div.appendChild(button);
-                            var dropdown = document.getElementById('notifDropdown');
-                            var notifCount = document.createElement('span');
-                            notifCount.textContent = count;
-                            dropdown.appendChild(notifCount);
-                            console.log(count);
+                           
                         }
                         clicked = true;
                     } else {
@@ -38,7 +36,6 @@
                     document.getElementsByClassName('notifs').remove
                     clicked == false;
                 }
-
             }
         }
         xmlhttp.open("GET", "/Request_Notifications.php?reset=" + reset, true);

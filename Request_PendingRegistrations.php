@@ -21,7 +21,7 @@ $total_items = $user['num'];
 
 $sql5->close();
 
-$sql_code = "SELECT `user_ID`, `user_firstName`, `user_middleName`, `user_lastName`, `course_name` FROM tbl_user
+$sql_code = "SELECT `user_ID`, `user_firstName`, `user_middleName`, `user_lastName`, `course_name`,`PLV_ID` FROM tbl_user
     LEFT JOIN tbl_course
     on tbl_course.course_ID = tbl_user.user_course_ID WHERE isApproved = '2' LIMIT $start,$limit";
 if ($sql = $conn->prepare($sql_code)) {
@@ -34,6 +34,7 @@ if ($sql = $conn->prepare($sql_code)) {
                 'middleName' => $row["user_middleName"],
                 'lastName' => $row["user_lastName"],
                 'course' => $row['course_name'],
+                'idImg'=> $row['PLV_ID']
             );
         }
     } else {

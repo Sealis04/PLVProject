@@ -49,8 +49,15 @@ $email = $password=$userID="";
                     if($sql->num_rows ==1){
                         $sql->bind_result($userID,$email,$password_db,$userfn,$usermn,$userln,$usercn,$usercourse,$userIDImage,$isAdmin,$isApproved,$isMarked,$notifID);
                         if($sql->fetch()){
-                            if($isApproved == 1){
+                            if($isApproved == 1 || $isApproved == 2){
                                 if(password_verify($password,$password_db)){
+                                    if($isApproved == 2){
+                                       echo '<script>alert("Account is still pending. User is unable to reserve until approved")
+                                            window.location.href="Window_HomePage.php"
+                                            </script>';
+                                        }else if($isApproved == 1){
+                                            header("location: Window_HomePage.php");
+                                        }
                                     //Stores user info
                                     session_regenerate_id();
                                     $_SESSION["loggedin"] = true;
@@ -64,14 +71,10 @@ $email = $password=$userID="";
                                     $_SESSION["password"]=$password_db;
                                     $_SESSION['isMarked'] = $isMarked;
                                     $_SESSION['ID_img'] = $userIDImage;
-                                    header("location: Window_HomePage.php");
+                                   
                                 }else{
                                     $passwordErr="Invalid password";  
                                 }
-                            }else if ($isApproved == 2){ 
-                                echo '<script>alert("Account still pending, please wait.")
-                                     window.location.href="Window_HomePage.php"
-                                     </script>';
                             }else if($isApproved==3){
                                 echo '<script>alert("Account has been rejected, please try again")
                                      window.location.href="Window_HomePage.php"
