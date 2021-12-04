@@ -217,7 +217,9 @@
       function listEquipmentReserved(mainDiv, element, index) {
           mainDiv.innerHTML += '<h4>' + element.equipName + ' Qty: ' + element.qty + '</h4>';
       }
-      function loadImages(div,imgSrc){
+      function loadImages(mainDiv,imgSrc){
+          var div = document.createElement('div');
+          div.className = 'modalImage';
           //    modal img code
           var img = document.createElement('img');
           img.className = "myImg";
@@ -244,6 +246,7 @@
           span.addEventListener('click',function() {
               modal.style.display = "none";
           })
+          mainDiv.appendChild(div);
       }
       //HTML PART THAT LISTS THE RESERVATIONS IN THE WINDOW
       function reservationContent(motherDiv, userID, page, element, index) {
@@ -267,6 +270,7 @@
               page.innerHTML = element.pagination;
               motherDiv.appendChild(page);
           }
+
           loadImages(motherDiv,element.ImgLetter)
           document.getElementById("content").appendChild(motherDiv);
           motherDiv.appendChild(div);
@@ -348,18 +352,18 @@
           var div = document.createElement('div')
           div.id = "userProfContent";
           div.className = "userProfContent";
-          div.innerHTML += '<img src="/assets/wew.png" alt="student image">';
           div.innerHTML += '<h3 class="_edit"> Name:' + element.firstName + '&nbsp' + element.middleName + '&nbsp' + element.lastName + '</h3>';
           div.innerHTML += '<h3> Course:' + element.course + '</h3>';
           div.innerHTML += '<input type="button" class="header-btn btn" value="Accept" onclick="AcceptRegistration(' + element.user + ')">';
           div.innerHTML += '<input type="button" class="decline header-btn btn" onclick="DeclineRegistration(' + element.user + ')" value="Decline">';
           document.getElementById("content").appendChild(motherDiv);
           motherDiv.appendChild(div);
-
+          loadImages(div,element.idImg)
           if (typeof(element.pagination) != undefined && element.pagination != null) {
               page.innerHTML = element.pagination;
               motherDiv.appendChild(page);
           }
+         
       }
 
       // Accept Reservation
@@ -449,7 +453,7 @@
                   } else {
 
                       document.getElementById('resList').remove();
-                      loadPendingReservation(div, null, page, page_number);
+                      loadPendingReservation(div, page, page_number);
                       check = true;
                       pending = true;
                       finished = false;
@@ -470,7 +474,7 @@
               }
           } else {
               if (div.id == 'bigPendingDiv') {
-                  loadPendingReservation(div, null, page, page_number);
+                  loadPendingReservation(div, page, page_number);
                   pending = true;
               } else if (div.id == 'bigFinishedDiv') {
                   loadFinishedReservation(div, page, page_number);
@@ -493,7 +497,7 @@
                       motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                   } else {
                       myObj.forEach(function(element, index) {
-                          userReservationContent(motherDiv, ...Array(1), page, element, index);
+                          userReservationContent(motherDiv, page, element, index);
                       });
                   }
               }
@@ -503,8 +507,7 @@
           bigDiv.appendChild(motherDiv);
       }
 
-      function loadPendingReservation(bigDiv, typePending, page, page_number) {
-          var typePending = true;
+      function loadPendingReservation(bigDiv, page, page_number) {
           var motherDiv = document.createElement('div');
           motherDiv.className = "userResContent";
           motherDiv.id = "resList";
@@ -516,9 +519,10 @@
                       motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                   } else {
                       myObj.forEach(function(element, index) {
-                          userReservationContent(motherDiv, typePending, page, element, index);
+                          userReservationContent(motherDiv, page, element, index);
                       });
                   }
+              
               }
           }
           xmlhttp.open("GET", "/Request_unapprovedReservation.php?page=" + page_number, true);
@@ -526,7 +530,7 @@
           bigDiv.appendChild(motherDiv);
       }
       //HTML PART THAT LISTS THE RESERVATION OF ITS USERS
-      function userReservationContent(div, typePending, page, element, index) {
+      function userReservationContent(div, page, element, index) {
           var label = document.createElement('h3');
           label.id = 'eventName';
           label.className = 'block';
@@ -546,8 +550,7 @@
           sideInput.type = 'image';
           sideInput.src = '/assets/side-arrow.png';
           sideInput.addEventListener('click', function() {
-              loadResContent(element.reservationID, fullName, element.roomID, element.userID, typePending);
-              // loadImage(element.imgLetter, mainDiv);
+              loadResContent(element.reservationID, fullName, element.roomID, element.userID,element.imgLetter);
           })
           sideDiv.appendChild(label);
           sideDiv.appendChild(space);
@@ -570,34 +573,27 @@
           // return element.reservationID;
       }
 
-      function loadImage(imgsrc) {
-          var mainDiv = document.getElementById('subContents');
-          var image = document.createElement('img');
-          image.src = imgsrc;
-          mainDiv.appendChild(image);
-      }
 
-      function loadResContent(resID, fullName, roomID, userID, typePending) {
-
+      function loadResContent(resID, fullName, roomID, userID,imgLetter) {
           if (userResClick) {
               if (activeID == resID) {
                   document.getElementById('subContents').remove();
                   userResClick = false;
               } else {
                   document.getElementById('subContents').remove();
-                  loadRestofResContent(resID, fullName, roomID, userID, typePending);
+                  loadRestofResContent(resID, fullName, roomID, userID,imgLetter);
                   activeID = resID;
                   userResClick = true;
 
               }
           } else {
-              loadRestofResContent(resID, fullName, roomID, userID, typePending);
+              loadRestofResContent(resID, fullName, roomID, userID,imgLetter);
               userResClick = true;
               activeID = resID;
           }
       }
 
-      function loadRestofResContent(resID, fullName, roomID, userID, typePending) {
+      function loadRestofResContent(resID, fullName, roomID, userID,imgLetter) {
           var sideDiv = document.getElementById('monitor' + resID);
           var mainDiv = document.createElement('div');
           mainDiv.id = 'subContents';
@@ -608,13 +604,14 @@
                   const myObj = await JSON.parse(this.responseText);
                   mainDiv.innerHTML = await '<h3> Full Name:' + fullName + '</h3>';
                   mainDiv.innerHTML += await '<h3> Room Name:' + myObj.roomName + '</h3>';
-                  reservedEquipment(resID, mainDiv, userID, ...Array(3), typePending);
+                  reservedEquipment(resID, mainDiv, userID, ...Array(3), true);
               }
-
           }
           xmlhttp.open("GET", "/Request_SpecificRoom.php?var=" + roomID, true);
           xmlhttp.send();
+          loadImages(sideDiv,imgLetter);
           sideDiv.appendChild(mainDiv);
+         
       }
       // Accept Reservations
       function AcceptReservation(eventID, userID) {
@@ -1651,7 +1648,7 @@
                   })
                   mainDiv.innerHTML += '<textarea id ="remarksArea">'
                   mainDiv.innerHTML += '<br><label>Mark User? <input type="checkbox" id="markUser">'
-                  mainDiv.innerHTML += '<br><input type="button" value="Submit" id = "' + ID + '" onclick = "submitRemark(this,' + userID + ')" >'
+                  mainDiv.innerHTML += '<br><input type="button" value="Submit" id = "' + ID + '" onclick="window.print()" >'
               }
           }
           xmlhttp.open("GET", "/Request_ReservationForUserEquipment.php?var=" + ID, true);

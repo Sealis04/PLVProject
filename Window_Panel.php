@@ -43,7 +43,6 @@
         </mainbody>
      
         <?php require "Backend_AdminPanel.php";?>
-        <?php require "Backend_Notification.php";?>
         <link rel="stylesheet" href="/css/side-nav.css">
     </body>
   

@@ -3,7 +3,7 @@
     $reservation = array();
     include "db_connection.php";
     $conn=OpenCon();
-    $sql_code = "SELECT * from tbl_equipment_reserved equip INNER JOIN tbl_reservation reserve ON equip.r_ID=reserve.r_ID WHERE reserve.DateStart > CURRENT_DATE() AND r_status = 0";
+    $sql_code = "SELECT * from tbl_equipment_reserved equip INNER JOIN tbl_reservation reserve ON equip.r_ID=reserve.r_ID WHERE reserve.DateEnd > CURRENT_DATE() AND r_status = 0";
         if($sql=$conn->prepare($sql_code)){
                 if($sql->execute()){
                     $result = $sql->get_result();

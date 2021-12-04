@@ -1,8 +1,10 @@
 <script>
     generateEquipmentList();
-    renderRestofForm();
     listRoom();
-    eventTrigger();
+    renderRestofForm();
+    (async () => {
+        const value = await eventTrigger()})();
+   
     // var btn = document.getElementById('addBtn'); 
     // btn.disabled=true;
     var counter = 0;
@@ -13,22 +15,26 @@
     var startTime = document.getElementById('startTime').value;
     var endTime = document.getElementById('endTime').value;
     var array = [];
+    var roomArray = [];
 
-    function listRoom() {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var myObj = JSON.parse(this.responseText);
-                // var noOption = document.createElement('option');
-                // noOption.appendChild(document.createTextNode('Please choose a room'));
-                // noOption.value = 0;
-                // noOption.id = 'options';
-                // document.getElementById("room").appendChild(noOption);
-                myObj.forEach(renderListRoom);
+    async function listRoom() {
+        return new Promise((resolve, reject) => {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    try{
+                    var myObj = JSON.parse(this.responseText);
+                    myObj.forEach(renderListRoom);
+                    resolve('success');
+                    }catch(exception){
+                        reject(exception);
+                    }
+                  
+                }
             }
-        }
-        xmlhttp.open("GET", "Request_RoomList.php", true);
-        xmlhttp.send();
+            xmlhttp.open("GET", "Request_RoomList.php", true);
+            xmlhttp.send();
+        })
     }
 
 
@@ -39,6 +45,8 @@
         option.value = element.roomID;
         option.id = "options";
         document.getElementById('room').appendChild(option);
+
+
     }
 
 
@@ -58,13 +66,10 @@
     }
     //Description:
     //Changes contents of Room And Equipment list based on date (Due to availability)
-    function eventTrigger() {
-        //var second = header.getElementsByTagName('div');
-        //var select = header.getElementsByTagName('select');
-        // var input = header.getElementsByTagName('input');
-        callActiveReservations(function(result) {
-            disable(result);
-            document.getElementById('wrapper').addEventListener('change', function(event) {
+     function eventTrigger() {
+        let callReservations = callActiveReservations(async function(result){
+            await disable(result);
+            document.getElementById('wrapper').addEventListener('change', async function(event) {
                 var elem = event.target;
                 if (elem.id == 'startDate') {
                     startDate = document.getElementById('startDate').value
@@ -78,131 +83,82 @@
                 if (elem.id == 'endTime') {
                     endTime = elem.value;
                 }
-                // if(elem.id == "startTime"){
-                //     start = new Date(elem.value).toISOString().split('T')[0]+' '+new Date(elem.value).toTimeString().split(' ')[0];
-                // }else if(typeof start == "undefined"){
-                //     var startTime= document.getElementById('startTime').value;
-                //     start =new Date(startTime).toISOString().split('T')[0]+' '+new Date(startTime).toTimeString().split(' ')[0];
-                // }
-                // if(elem.id == "endTime"){
-                // end = new Date(elem.value).toISOString().split('T')[0]+' '+new Date(elem.value).toTimeString().split(' ')[0];
-                // }else if(typeof end == "undefined"){
-                // var endTime = document.getElementById('endTime').value;
-                // end = new Date(endTime).toISOString().split('T')[0]+' '+new Date(endTime).toTimeString().split(' ')[0];
-                // }
                 if (elem.id == 'startDate' || elem.id == 'durationDay' || elem.id == 'startTime' || elem.id == "endTime") {
-                    disable(result);
+                    if(endTime > startTime){
+                    console.log('asd');
+                    resetRoomList();
+                    let x = await listRoom();
+                    let y = await disable(result);
                     removeTB(true);
+                    document.getElementById('endTimeErr').textContent = '';
+                    }else{
+                        document.getElementById('endTimeErr').textContent = 'End Time must be later than Start Time';
+                    }           
                 }
-
             })
-        });
+        })
     }
 
-    function disable(result) {
-        array = [];
+    async function disable(result) {
+        let promise = new Promise((resolve,reject)=>{
         var roomID = document.getElementById('room');
+        array = [];
+        roomArray = [];
         var counting = 0;
         var condition = true;
-        //  var totalDuration = endDateTime.getHours() - startDateTime.getHours();
-        //put loadDefaultQty here if no conflict schedules
-        for (var x = 0; x < result.length; x++) {
-            console.log(result[x]['qty']);
-            // var numberofloops = new Date(result[x]['dateEnd']) -  new Date(result[x]['dateStart']);
+        try{
+            resolve('success');
+            for (var x = 0; x < result.length; x++) {
             var diffTime = new Date(result[x]['dateEnd']) - new Date(result[x]['dateStart']);
             var numberofloops = (diffTime == 0) ? 0 : Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             for (var i = 0; i <= numberofloops; i++) {
-                var storedEnd = new Date(result[x]['dateStart'] + ' ' + result[x]['timeEnd']);//stored end B
-                var storedStart = new Date(result[x]['dateStart'] + ' ' + result[x]['timeStart']);//stored start A
+                var storedEnd = new Date(result[x]['dateStart'] + ' ' + result[x]['timeEnd']); //stored end B
+                var storedStart = new Date(result[x]['dateStart'] + ' ' + result[x]['timeStart']); //stored start A
+                storedEnd.setTime(storedEnd.getTime() + (3*60*60*1000));
                 storedEnd.setDate(storedEnd.getDate() + Number(i));
                 storedStart.setDate(storedStart.getDate() + Number(i));
-       
                 for (a = 0; a < duration; a++) {
-                    
                     var inputStart = new Date(startDate + ' ' + startTime); //input start C 
-                    var inputEnd = new Date(startDate + ' ' + endTime);//input End D 
+                    var inputEnd = new Date(startDate + ' ' + endTime); //input End D 
                     inputStart.setDate(inputStart.getDate() + Number(a));
                     inputEnd.setDate(inputEnd.getDate() + Number(a));
-                    // var max = (sE > sS? sE: sS);
-                    // var min = ( iST < iET? iST: iET);
-                    // console.log(max);
-                    // console.log(min);
-                    // if (!(inputEndTime <= storedStart || inputStartTime >= storedEnd)) {
-                    // if (iST <= sE && iET <= sS || iST >= sE && iET >=sS) {
-                        if((inputStart <= storedEnd)&&(storedStart<=inputEnd)){
-                        //     console.log('input start ' + inputStart);
-                        //     console.log('stored end ' + storedEnd);
-                        //     console.log('stored start ' + storedStart);
-                        //     console.log('inpput end ' + inputEnd);
+                    if ((inputStart <= storedEnd) && (storedStart <= inputEnd)) {
                         for (var s = 0; s < roomID.length; s++) {
                             if (roomID.options[s].value == result[x]['room']) {
                                 roomID.remove(s);
-                                roomID.options[s].value
                             }
                         }
                         array.push({
-                            equipID: result[x]['equipID'],
-                            qty: result[x]['qty']
-                        });
-                        condition = false;
-                        }
-                      
+                                equipID: result[x]['equipID'],
+                                qty: result[x]['qty'],
+                            });
+
                     }
 
                 }
-             }
-
-        
-        if (condition) {
-            console.log('workingv2');
-            roomID.options.length = 0;
-            listRoom();
+            }
         }
+        }catch(exception){
+            reject(exception);
+        }
+        })
+    }
 
-
-
-
-        // if(!(endDateTime <= storedStart || startDateTime >= storedEnd)){
-        // console.log('asdasd');
-        // }
-        // console.log(storedStart);
-        // console.log(storedEnd);
-        // console.log(endDateTime);
-        // console.log(startDateTime);
-
-
-
-        // if(startTime >= endTime){
-        //         document.getElementById('endTimeErr').textContent="End must be later than start time."
-        //         document.getElementById('submitBtn').disabled=true;
-        //     }else{
-        //         document.getElementById('submitBtn').disabled=false;
-        //         document.getElementById('endTimeErr').textContent="";
-
-        //         for(var i = 0; i< result.length;i++){             
-        //             if(!(end <= result[i]['start'] || start >= result[i]['end'])){
-        //                 for(var a = 0; a<roomID.length;a++){
-        //                     if(roomID.options[a].value == result[i]['room']){ 
-        //                     roomID.remove(a);
-        //                     }
-        //                 }
-        //                 array.push({equipID: result[i]['equipID'],qty:result[i]['qty']});
-
-        //                 }
-        //                //addEquipment is my callback.
-        //                 condition = false;
-        //             }
-        //             }
-        //             if(condition){
-        //                 roomID.options.length = 0;
-        //                 listRoom();
-        //             }
-
+    //Check if totalQty != 0
+    function checkValue(){
 
     }
 
     //default max qty for no conflicting schedules
 
+    async function resetRoomList() {
+        var roomID = document.getElementById('room');
+        var length = roomID.options.length - 1;
+        for (var i = length; i >= 0; i--) {
+            roomID.remove(i);
+        }
+        return;
+    }
 
     function callActiveReservations(callback) {
         var xmlhttp = new XMLHttpRequest();
@@ -341,9 +297,7 @@
             this.parentElement.remove();
             counter--;
         } else {
-
             removeTB();
-
         }
         checkIfSelectedIsAdded();
     }
@@ -374,14 +328,12 @@
         if (array.length != 0) {
             for (i = 0; i < array.length; i++) {
                 if (equip.value == element.equipID) {
+                    label.textContent = 'Max:' + currentQty;
                     if (equip.value == array[i]['equipID']) {
                         currentQty -= array[i]['qty'];
                         label.textContent = 'Max:' + currentQty;
-                    }else{
-                        currentQty = element.equipQty;
-                        label.textContent = 'Max:' + currentQty;
-                    }
-                } 
+                    } 
+                }
             }
         } else {
             if (equip.value == element.equipID) {
@@ -395,19 +347,26 @@
 
 
     function renderListEquip(select, element, index) {
-        var option = document.createElement('option');
-        option.appendChild(document.createTextNode(element.equipName));
-        option.value = element.equipID;
-        select.appendChild(option);
-        // document.getElementById(equipmentID).appendChild(option);
+        var currentQty = element.equipQty;
         if (array.length != 0) {
             for (i = 0; i < array.length; i++) {
                 if (element.equipID == array[i]['equipID']) {
-                    if (element.equipQty == array[i]['qty']) {
-                        option.remove(element.equipID);
-                    }
+                    console.log('asd1');
+                        currentQty -= array[i]['qty'];
+                        console.log(currentQty);
                 }
             }
+            if(currentQty != 0) {
+                var option = document.createElement('option');
+                option.appendChild(document.createTextNode(element.equipName));
+                option.value = element.equipID;
+                select.appendChild(option);
+            }
+        }else{
+            var option = document.createElement('option');
+                option.appendChild(document.createTextNode(element.equipName));
+                option.value = element.equipID;
+                select.appendChild(option);
         }
     }
 </script>

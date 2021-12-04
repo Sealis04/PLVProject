@@ -24,10 +24,17 @@
     $uploadErr="";
     //determine if admin
     if(isset($_SESSION['userID'])){
-        if($_SESSION["isAdmin"]== 1){
-            $approveID = 1;
-        }else{
-            $approveID= 2;
+        if($_SESSION["isApproved"] == 2){
+            echo '<script>
+        alert("User account is still pending, unable to create a reservation")
+        window.location.href = "Window_HomePage.php"
+        </script>';
+        }else if($_SESSION["isApproved"] == 1){
+            if($_SESSION["isAdmin"]== 1){
+                $approveID = 1;
+            }else{
+                $approveID= 2;
+            }
         }
     }else{
         echo '<script>
@@ -143,7 +150,7 @@
             ?>
             <div class="nav2">
               <?php
-             require "Backend_CheckifLoggedIN.php";
+            require "Backend_CheckifLoggedIN.php";
                 ?>        
             </div>
         <div class="container">
