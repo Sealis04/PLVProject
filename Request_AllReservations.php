@@ -24,7 +24,7 @@ if ($page)
     $start = ($page - 1) * $limit;             //first item to display on this page
 else
     $start = 0;	
-    $query = "SELECT COUNT(*) as num FROM tbl_reservation WHERE r_endDateAndTime < CURRENT_DATE()";
+    $query = "SELECT COUNT(*) as num FROM tbl_reservation WHERE DateEnd < CURRENT_DATE()";
 		$sql5=$conn->prepare($query);
 			$sql5->execute();
 			$result = $sql5->get_result();
@@ -33,7 +33,7 @@ else
 		$sql5->close();
        
 
-        $sql_code = "SELECT * from tbl_reservation WHERE r_endDateAndTime < CURRENT_DATE() AND r_approved_ID = 1 AND r_reviewed =1 ORDER BY r_startDateAndTime DESC LIMIT $start,$limit ";
+        $sql_code = "SELECT * from tbl_reservation WHERE DateEnd < CURRENT_DATE() AND r_approved_ID = 1 AND r_reviewed =1 ORDER BY r_startDateAndTime DESC LIMIT $start,$limit ";
         if($sql=$conn->prepare($sql_code)){
                 if($sql->execute()){
                     $result = $sql->get_result();
@@ -71,7 +71,8 @@ else
                  $sql->close();
             }
             $conn->close();
-$pagination = getPaginationString($page,$total_items,$limit,false,'/Window_Panel.php/',"?page=","&category=");
+            $type = 'finished';
+$pagination = getPaginationString($page,$total_items,$limit,false,'/Window_Panel.php/',"?page=","&category=",$type);
 if(count($reservation)!=0 ){
     $reservation [count($reservation)-1] += array(
         'pagination' => $pagination,

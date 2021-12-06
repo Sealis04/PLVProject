@@ -11,7 +11,7 @@
     if($_SESSION['isAdmin'] == 1){
       include 'Backend_Notification.php';
         echo'<!--Content-->';
-        echo'<div class="sidenav">';
+        echo'<div id="sidenav" class="sidenav">';
         echo'<img id="fb" src="assets/plv.png" alt="PLV Logo">';
         echo'<br>';
         echo'<a href="/Window_HomePage.php">Home</a>';
@@ -79,7 +79,5 @@
       //Include login button here
 }
 $conn->close();
-
-
 ?>
 

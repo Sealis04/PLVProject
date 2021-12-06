@@ -1,5 +1,6 @@
 <?php
 $sid = $_REQUEST["var"];
+$remarks = $_REQUEST['remarks'];
 session_start();
 include "db_connection.php";
 include 'Backend_SendEmail.php';
@@ -15,7 +16,7 @@ $sql_code = "UPDATE `tbl_user` SET `isApproved` = '1' WHERE `user_ID` = ?";
              $sql->close();
         }
     $conn->close();
-
-    getEmail($sid, null);
-    update($sid,1,);
+    $approval = 1;
+    getEmail($sid, null,$remarks,$approval);
+    update($sid,1);
 ?>
