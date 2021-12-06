@@ -21,7 +21,13 @@ if ($sql = $conn->prepare($sql_code)) {
                           'middleName'=> $row2['user_middleName'],
                           'lastName'=>$row2['user_lastName'],
                           'roomID'=>$row['r_room_ID'],
-                          'userID' =>$row2['user_ID']
+                          'userID' =>$row2['user_ID'],
+                          'eventName'=> $row['r_event'],
+                          'dateStart'=>$row['DateStart'],
+                          'dateEnd'=>$row['DateEnd'],
+                          'timeStart'=>$row['TimeStart'],
+                          'timeEnd'=>$row['TimeEnd'],
+                          'imgLetter'=>$row['r_letter_file'],
                       );
                   }
                }  

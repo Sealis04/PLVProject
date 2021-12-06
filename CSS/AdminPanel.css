@@ -267,7 +267,6 @@ background-color: red;
 }
 
 .userProfContent img{
-float: right;
 vertical-align: middle;
 }
 
@@ -313,7 +312,6 @@ color: white;
  font-size: 16px !important;
 }
 .resContent img{
- float: right;
  vertical-align: middle;
  }
 
@@ -519,4 +517,5 @@ div.pagination span.disabled {
   .modal-content {
     width: 100%;
   }
-
+}
+/* Removed float:right from .userResContent and .resContent */

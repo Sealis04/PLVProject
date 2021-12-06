@@ -1,5 +1,5 @@
 <?php
-    function getEmail($userID,$rid){
+    function getEmail($userID,$rid,$remarks,$approval){
     $conn=OpenCon();
        $sql_code = "SELECT * FROM `tbl_user` WHERE `user_ID` = ?";
        if($sql=$conn -> prepare($sql_code)){
@@ -11,13 +11,13 @@
                     $fn = $row['user_firstName'];
                
                 }
-
            }
            $sql->close();
        }
-       sendEmail($email,$rid,$fn);
+
+       sendEmail($email,$rid,$fn,$remarks,$approval);
     }
-    function sendEmail($email,$rid,$fn){
+    function sendEmail($email,$rid,$fn,$remarks,$approval){
         $subject = 'PLVRS Reservation Notification';
         if($rid != null){
             $conn=OpenCon();
@@ -42,10 +42,19 @@
                 $message = 'Hello'.$fn.'\r\n';
                 $message .= 'This is to inform you that your reservation for' . $event . ',which will be held at'.$room.'has been accepted, congratulations! \r\n';
                 $message .= 'The event starts at '.$start.'and ends at'.$end;
+              
+                
         }else{
-            $message = 'Hello'.$fn.'\r\n';
-            $message .= 'This is to inform you that your registration has been accepted, Congratulations! \r\n';
-            $message .= 'You can now start creating reservations for the facilities under the GSO!';
+            if($approval == 3){
+             
+            }else if($approval == 1){
+                $message = 'Hello'.$fn.'\r\n';
+                $message .= 'This is to inform you that your registration has been accepted, Congratulations! \r\n';
+                $message .= 'You can now start creating reservations for the facilities under the GSO!';
+            if($remarks != ' '){
+                $message .='Remarks from admin:' .$remarks;
+            }
+            }         
         }
      
         $fromEmail = $_SESSION["email"];
