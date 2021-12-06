@@ -62,6 +62,7 @@
             $eventName = $_POST['event'];
             $userID = $_SESSION["userID"];
             $roomID = $_POST['room'];
+            $adviser = $_POST['adviser'];
             $today = date("Y-m-d h:i:s");
             $startDate = $_POST['startDate'];
             $startTime = $_POST['startTime'];
@@ -81,9 +82,9 @@
             $notifID = notification($userID,2);
             $remarks = checkDetails($userID);
             if(!isset($remarks)){
-                $sql_code = "INSERT INTO tbl_reservation (r_user_ID,r_event,r_room_ID,r_approved_ID,r_letter_file,notificationID,DateStart,DateEnd,TimeStart,TimeEnd) VALUES (?,?,?,?,?,?,?,?,?,?);";
+                $sql_code = "INSERT INTO tbl_reservation (r_user_ID,r_event,r_eventAdviser,r_room_ID,r_approved_ID,r_letter_file,notificationID,DateStart,DateEnd,TimeStart,TimeEnd) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
                 if($sql = $conn->prepare($sql_code)){
-                    $sql->bind_param("isiisissss",$userID,$eventName,$roomID,$approveID,$fileName,$notifID,$startDate,$endDate,$startTime,$endTime);
+                    $sql->bind_param("issiisissss",$userID,$eventName,$adviser,$roomID,$approveID,$fileName,$notifID,$startDate,$endDate,$startTime,$endTime);
                                         if($sql->execute()){
                                             $lastID = $conn->insert_id;
                                             if(!empty($toStore)){
@@ -164,6 +165,8 @@
                     <label for="Event" >Event:</label>
                     <input type="text" id="event" name='event' required><br><br>
                     <!--date and time-->
+                    <label for="adviser" >Event Adviser:</label>
+                    <input type="text" id="adviser" name='adviser' required><br><br>
                     <div id = "wrapper"> 
                     <label for="dateAndTime">Reservation Date and Time Start:</label>
                     <input type="date" id="startDate" name="startDate" min="<?php echo $min; ?>" value="<?php echo $min; ?>" required><br><br>

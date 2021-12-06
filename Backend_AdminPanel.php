@@ -161,7 +161,6 @@
                       });
                   }
                   var printingPanel = "location.href ='/Backend_printingPanel.php?id=" + resID + "'";
-                  console.log(printingPanel);
                   if (forUser) {
                       if (status != 1) {
                           if (approval == 2) {
@@ -196,7 +195,10 @@
       }
       //HTML PART THAT LISTS THE EQUIPMENT IN THE WINDOW
       function listEquipmentReserved(mainDiv, element, index) {
-          mainDiv.innerHTML += '<h4>' + element.equipName + ' Qty: ' + element.qty + '</h4>';
+          var h4 = document.createElement('h4');
+          h4.innerHTML += element.equipName + " Qty: "  + element.qty;
+          mainDiv.appendChild(h4);
+        //   mainDiv.innerHTML += '<h4>' + element.equipName + ' Qty: ' + element.qty + '</h4>';
       }
 
       function loadImages(mainDiv, imgSrc) {
@@ -259,10 +261,10 @@
           var date = new Date(element.dateStart + ' ' + element.timeStart);
           var diffTime = new Date(element.dateEnd) - new Date(element.dateStart);
           var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-          console.log(numberofloops);
           div.id = "resContent";
           div.className = "resContent";
           div.innerHTML = '<h3 class="_edit"> Event:' + element.event + '</h3>';
+          div.innerHTML += '<h3> Event Adviser:' + element.event + '</h3>';
           div.innerHTML += '<h3>Starting Date: ' + element.dateStart + " </h3>";
           div.innerHTML += '<h3>Time:' + element.timeStart + ' to ' + element.timeEnd + " </h3>";
           div.innerHTML += '<h3>Duration:' + numberofloops + " (Ends at: " + element.dateEnd + ") </h3>";
@@ -421,80 +423,87 @@
           bigDiv.id = 'bigPendingDiv';
           var label = document.createElement('h2');
           label.textContent = 'Pending Reservations';
-          var sideInput = document.createElement('input');
-          sideInput.className = 'openBtn';
-          sideInput.id = 'pendingBtn';
-          sideInput.type = 'image';
-          sideInput.src = '/assets/side-arrow.png';
-          sideInput.addEventListener('click', function() {
-              buttonFunctions(bigDiv)
-          })
+        //   var sideInput = document.createElement('input');
+        //   sideInput.className = 'openBtn';
+        //   sideInput.id = 'pendingBtn';
+        //   sideInput.type = 'image';
+        //   sideInput.src = '/assets/side-arrow.png';
+        //   sideInput.addEventListener('click', function() {
+        //       buttonFunctions(bigDiv)
+        //   })
+
           bigDiv.appendChild(label);
-          bigDiv.appendChild(sideInput)
-          var bigDiv2 = document.createElement('div');
-          bigDiv2.className = 'finishedDiv';
-          bigDiv2.id = 'bigFinishedDiv';
-          var label2 = document.createElement('h2');
-          label2.textContent = 'Finished And Reviewed Reservations';
-          var sideInput2 = document.createElement('input');
-          sideInput2.className = 'openBtn';
-          sideInput2.type = 'image';
-          sideInput2.src = '/assets/side-arrow.png';
-          sideInput2.addEventListener('click', function() {
-              buttonFunctions(bigDiv2);
-          })
-          bigDiv2.appendChild(label2);
-          bigDiv2.appendChild(sideInput2)
+        //   bigDiv.appendChild(sideInput)
           biggestDiv.appendChild(bigDiv);
-          biggestDiv.appendChild(bigDiv2);
           bigcontent.appendChild(biggestDiv);
+            buttonFunctions(bigDiv);
+
+        //   var bigDiv2 = document.createElement('div');
+        //   bigDiv2.className = 'finishedDiv';
+        //   bigDiv2.id = 'bigFinishedDiv';
+        //   var label2 = document.createElement('h2');
+        //   label2.textContent = 'Finished And Reviewed Reservations';
+        //   var sideInput2 = document.createElement('input');
+        //   sideInput2.className = 'openBtn';
+        //   sideInput2.type = 'image';
+        //   sideInput2.src = '/assets/side-arrow.png';
+        //   sideInput2.addEventListener('click', function() {
+        //       buttonFunctions(bigDiv2);
+        //   })
+        //   bigDiv2.appendChild(label2);
+        //   bigDiv2.appendChild(sideInput2)
+          
+        //   biggestDiv.appendChild(bigDiv2);
+     
 
 
       }
 
       function buttonFunctions(div, page_number = 1) {
-          userResClick = false;
+          
+        //   userResClick = false;
           var page = document.createElement('div');
           page.id = 'pages';
-          if (check) {
-              if (div.id == 'bigPendingDiv') {
-                  if (pending) {
-                      document.getElementById('resList').remove();
-                      finished = false;
-                      check = false;
-                      finished = false;
-                  } else {
+          loadPendingReservation(div,page,page_number);
+        //   if (check) {
+        //       if (div.id == 'bigPendingDiv') {
+        //           if (pending) {
+        //               document.getElementById('resList').remove();
+        //               finished = false;
+        //               check = false;
+        //               finished = false;
+        //           } else {
 
-                      document.getElementById('resList').remove();
-                      loadPendingReservation(div, page, page_number);
-                      check = true;
-                      pending = true;
-                      finished = false;
-                  }
-              } else if (div.id == 'bigFinishedDiv') {
-                  if (finished) {
-                      document.getElementById('resList').remove();
-                      pending = false;
-                      check = false;
-                      finished = false;
-                  } else {
-                      document.getElementById('resList').remove();
-                      loadFinishedReservation(div, page, page_number);
-                      check = true;
-                      finished = true;
-                      pending = false;
-                  }
-              }
-          } else {
-              if (div.id == 'bigPendingDiv') {
-                  loadPendingReservation(div, page, page_number);
-                  pending = true;
-              } else if (div.id == 'bigFinishedDiv') {
-                  loadFinishedReservation(div, page, page_number);
-                  finished = true;
-              }
-              check = true;
-          }
+        //               document.getElementById('resList').remove();
+        //               loadPendingReservation(div, page, page_number);
+        //               check = true;
+        //               pending = true;
+        //               finished = false;
+        //           }
+        //       } else if (div.id == 'bigFinishedDiv') {
+        //           if (finished) {
+        //               document.getElementById('resList').remove();
+        //               pending = false;
+        //               check = false;
+        //               finished = false;
+        //           } else {
+        //               document.getElementById('resList').remove();
+        //               loadFinishedReservation(div, page, page_number);
+        //               check = true;
+        //               finished = true;
+        //               pending = false;
+        //           }
+        //       }
+        //   } else {
+        //       if (div.id == 'bigPendingDiv') {
+        //           loadPendingReservation(div, page, page_number);
+        //           pending = true;
+        //       } else if (div.id == 'bigFinishedDiv') {
+        //           loadFinishedReservation(div, page, page_number);
+        //           finished = true;
+        //       }
+        //       check = true;
+        //   }
 
       }
 
@@ -543,33 +552,49 @@
           bigDiv.appendChild(motherDiv);
       }
       //HTML PART THAT LISTS THE RESERVATION OF ITS USERS
-      function userReservationContent(div, page, element, index) {
-          var label = document.createElement('h3');
-          label.id = 'eventName';
-          label.className = 'block';
-          label.textContent = 'Event: ' + element.event;
-          label.className = "_edit"
-          var space = document.createElement('br');
-          var date = document.createElement('h3');
-          date.id = 'EventDate';
-          date.className = 'block';
-          date.textContent = 'From: ' + element.start + 'to' + element.end;
-          var fullName = element.firstName + ' ' + element.middleName + ' ' + element.lastName;
-          var sideDiv = document.createElement('div');
-          sideDiv.className = 'sidePanel';
-          sideDiv.id = 'monitor' + element.reservationID;
-          var sideInput = document.createElement('input');
-          sideInput.className = 'openBtn';
-          sideInput.type = 'image';
-          sideInput.src = '/assets/side-arrow.png';
-          sideInput.addEventListener('click', function() {
-              loadResContent(element.reservationID, fullName, element.roomID, element.userID, element.imgLetter);
-          })
-          sideDiv.appendChild(label);
-          sideDiv.appendChild(space);
-          sideDiv.appendChild(date);
-          sideDiv.appendChild(sideInput);
-          div.appendChild(sideDiv);
+     async function userReservationContent(div, page, element, index) {
+        //   var label = document.createElement('h3');
+        //   label.id = 'eventName';
+        //   label.className = 'block';
+        //   label.textContent = 'Event: ' + element.event;
+        //   label.className = "_edit"
+        //   var space = document.createElement('br');
+        //   var date = document.createElement('h3');
+        //   date.id = 'EventDate';
+        //   date.className = 'block';
+        //   date.textContent = 'From: ' + element.start + ' to ' + element.end;
+        //   var forName = document.createElement('h3');
+        //   var fullName = element.firstName + ' ' + element.middleName + ' ' + element.lastName;
+        //   forName.textContent = fullName;
+        // //   var sideDiv = document.createElement('div');
+        // //   sideDiv.className = 'sidePanel';
+        // //   sideDiv.id = 'monitor' + element.reservationID;
+        // //   var sideInput = document.createElement('input');
+        // //   sideInput.className = 'openBtn';
+        // //   sideInput.type = 'image';
+        // //   sideInput.src = '/assets/side-arrow.png';
+        // //   sideInput.addEventListener('click', function() {
+        // //      
+        // //   })
+        // console.log('wah');
+        // let x = await loadRestofResContent(element.roomID);
+        // div.appendChild(label);
+        // div.appendChild(space);
+        // div.appendChild(date);
+        // div.appendChild(forName);
+        // div.innerHTML += x;
+        var date = new Date(element.dateStart + ' ' + element.timeStart);
+        var diffTime = new Date(element.dateEnd) - new Date(element.dateStart);
+        var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        div.innerHTML += '<h3> Event Adviser:' + element.event + '</h3>';
+        div.innerHTML += '<h3>Starting Date: ' + element.dateStart + " </h3>";
+        div.innerHTML += '<h3>Time:' + element.timeStart + ' to ' + element.timeEnd + " </h3>";
+        div.innerHTML += '<h3>Duration:' + numberofloops + " (Ends at: " + element.dateEnd + ") </h3>";
+        reservedEquipment(element.reservationID,div,element.userID,false,...Array(2),true,element.imgLetter);
+    
+        //   sideDiv.appendChild(sideInput);
+        //   div.appendChild(sideDiv);
+        console.log('asd');
           if (typeof(element.pagination) != undefined && element.pagination != null) {
               page.innerHTML = element.pagination;
               div.appendChild(page);
@@ -585,61 +610,48 @@
           // div.appendChild(motherDiv);
           // return element.reservationID;
       }
+    //   async function loadResContent(resID, fullName, roomID, userID, imgLetter) {
+    //     let a = await loadRestofResContent(resID, fullName, roomID, userID, imgLetter);
+    //     //   if (userResClick) {
+    //     //       if (activeID == resID) {
+    //     //           deleteModalImage();
+    //     //           document.getElementById('subContents').remove();
+    //     //           userResClick = false;
+    //     //       } else {
+    //     //           document.getElementById('subContents').remove();
+    //     //         
+    //     //           activeID = resID;
+    //     //           userResClick = true;
+    //     //       }
+    //     //   } else {
+    //     //       let a = await loadRestofResContent(resID, fullName, roomID, userID, imgLetter)
+    //     //       userResClick = true;
+    //     //       activeID = resID;
 
-      function deleteModalImage() {
-          var x = document.getElementsByClassName('modalImage');
-          for (a = 0; a <= x.length; a++) {
-              x[a].remove();
-          }
-          console.log('12431241');
-      }
-
-      async function loadResContent(resID, fullName, roomID, userID, imgLetter) {
-
-          if (userResClick) {
-              if (activeID == resID) {
-                  deleteModalImage();
-                  document.getElementById('subContents').remove();
-                  userResClick = false;
-              } else {
-                  document.getElementById('subContents').remove();
-                  let a = await loadRestofResContent(resID, fullName, roomID, userID, imgLetter);
-                  activeID = resID;
-                  userResClick = true;
-              }
-          } else {
-              let a = await loadRestofResContent(resID, fullName, roomID, userID, imgLetter)
-              userResClick = true;
-              activeID = resID;
-
-          }
+    //     //   }
 
 
-      }
+    //   }
 
-      async function loadRestofResContent(resID, fullName, roomID, userID, imgLetter) {
-          var sideDiv = document.getElementById('monitor' + resID);
-          var mainDiv = document.createElement('div');
-          mainDiv.id = 'subContents';
-          mainDiv.className = 'subClassName';
-          let x = await new Promise(resolve => {
-              var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                      const myObj = JSON.parse(this.responseText);
-                      mainDiv.innerHTML = '<h3> Full Name:' + fullName + '</h3>';
-                      mainDiv.innerHTML += '<h3> Room Name:' + myObj.roomName + '</h3>';
-                      reservedEquipment(resID, mainDiv, userID, ...Array(3), true, imgLetter);
-                      resolve('done');
-                      console.log('asd');
-                      sideDiv.appendChild(mainDiv);
-                  }
-              }
-              xmlhttp.open("GET", "/Request_SpecificRoom.php?var=" + roomID, true);
-              xmlhttp.send();
-          })
+    //   async function loadRestofResContent(roomID) {
+    //       return new Promise((resolve,reject) => {
+    //           try{
+    //             var xmlhttp = new XMLHttpRequest();
+    //           xmlhttp.onreadystatechange = async function() {
+    //               if (this.readyState == 4 && this.status == 200) {
+    //                   const myObj = JSON.parse(this.responseText);
+    //                   resolve('<h3> Room Name:' + myObj.roomName + '</h3>');
+    //               }
+    //           }
+    //           xmlhttp.open("GET", "/Request_SpecificRoom.php?var=" + roomID, true);
+    //           xmlhttp.send();
+    //           }catch(e){
+    //               reject(e);
+    //           }
+            
+    //       })
 
-      }
+    //   }
       // Accept Reservations
       function AcceptReservation(eventID, userID) {
           var xmlhttp = new XMLHttpRequest();

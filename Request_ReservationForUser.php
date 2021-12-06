@@ -39,6 +39,7 @@ if ($sql = $conn->prepare($sql_code)) {
                 'room' => $row['room_name'],
                 'userID' => $row['r_user_ID'],
                 'ImgLetter' => $row['r_letter_file'],
+                'eventAdviser'=>$row['r_eventAdviser'],
             );
         }
     }
