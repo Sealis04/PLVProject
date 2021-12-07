@@ -4,34 +4,33 @@ $r_ID = $_REQUEST['r_ID'];
 $array2 = array();
 include "db_connection.php";
 $conn = OpenCon();
-$sql_code = "SELECT * FROM tbl_reservation WHERE r_approved_ID = 1 AND r_status = 0 AND r_endDateAndTime < CURRENT_DATE() AND r_ID = ?";
+$sql_code = "SELECT * FROM tbl_reservation 
+INNER JOIN tbl_user
+ON tbl_reservation.r_user_ID = tbl_user.user_ID
+WHERE tbl_reservation.r_approved_ID = 1 AND tbl_reservation.r_status = 0 
+AND tbl_reservation.r_reviewed = 0 
+AND r_ID = ?";
 if ($sql = $conn->prepare($sql_code)) {
-    $sql->bind_param('i',$r_ID);
+    $sql->bind_param('i', $r_ID);
     if ($sql->execute()) {
         $result = $sql->get_result();
-        while($row = $result->fetch_assoc()){
-           $sql_code2 = "SELECT * from tbl_user WHERE `user_ID`  = ?";
-           if($sql2 = $conn ->prepare($sql_code2)){
-               $sql2->bind_param('i',$row['r_user_ID']);
-               if($sql2->execute()){
-                  $result2 = $sql2->get_result();
-                  while($row2 = $result2->fetch_assoc()){
-                      $array2 = array(
-                          'firstName' => $row2['user_firstName'],
-                          'middleName'=> $row2['user_middleName'],
-                          'lastName'=>$row2['user_lastName'],
-                          'roomID'=>$row['r_room_ID'],
-                          'userID' =>$row2['user_ID'],
-                          'eventName'=> $row['r_event'],
-                          'dateStart'=>$row['DateStart'],
-                          'dateEnd'=>$row['DateEnd'],
-                          'timeStart'=>$row['TimeStart'],
-                          'timeEnd'=>$row['TimeEnd'],
-                          'imgLetter'=>$row['r_letter_file'],
-                      );
-                  }
-               }  
-           }
+        while ($row = $result->fetch_assoc()) {
+            $array2 = array(
+                'firstName' => $row['user_firstName'],
+                'middleName' => $row['user_middleName'],
+                'lastName' => $row['user_lastName'],
+                'roomID' => $row['r_room_ID'],
+                'userID' => $row['user_ID'],
+                'eventName' => $row['r_event'],
+                'imgLetter' => $row['r_letter_file'],
+                'eventAdviser' => $row['r_eventAdviser'],
+                'r_ID' => $row['r_ID'],
+                'dateStart' => $row["DateStart"],
+                'dateEnd' => $row["DateEnd"],
+                'timeStart' => $row['TimeStart'],
+                'timeEnd' => $row['TimeEnd'],
+
+            );
         }
     } else {
         echo $conn->error;

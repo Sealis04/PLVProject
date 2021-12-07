@@ -45,30 +45,30 @@ if($isAdmin != 1){
         $sql->close();
     }
 
-    $sql_code2 = 'SELECT * FROM `tbl_notification` as notif INNER JOIN tbl_user as user
-    ON notif.notificationID = user.notificationID WHERE notif.forUserID = ? AND `decision` != 2 ORDER BY `time` DESC LIMIT 10';
-    if($sql2=$conn->prepare($sql_code2)){
-        if($isAdmin != 1){
-            $sql2->bind_param('i',$userID);
-        }
-        if($sql2->execute()){ 
-            $result2 = $sql2->get_result();
-            while($row = $result2->fetch_assoc()){
-                $notifications[] = array(
-                    'regid' => $row['notificationID'],
-                    'regisRead'=> $row['isRead'],
-                    'regdecision' => $row['decision'],
-                    'reguserID'=>$row['forUserID']
-                );
-            }
-        }else{
-           echo $conn->error;
-        }
-        $sql2->close();
-    }
+    // $sql_code2 = 'SELECT * FROM `tbl_notification` as notif INNER JOIN tbl_user as user
+    // ON notif.notificationID = user.notificationID WHERE notif.forUserID = ? AND `decision` != 2 ORDER BY `time` DESC LIMIT 10';
+    // if($sql2=$conn->prepare($sql_code2)){
+    //     if($isAdmin != 1){
+    //         $sql2->bind_param('i',$userID);
+    //     }
+    //     if($sql2->execute()){ 
+    //         $result2 = $sql2->get_result();
+    //         while($row = $result2->fetch_assoc()){
+    //             $notifications[] = array(
+    //                 'regid' => $row['notificationID'],
+    //                 'regisRead'=> $row['isRead'],
+    //                 'regdecision' => $row['decision'],
+    //                 'reguserID'=>$row['forUserID']
+    //             );
+    //         }
+    //     }else{
+    //        echo $conn->error;
+    //     }
+    //     $sql2->close();
+    // }
 }else{
     $sql_code = 'SELECT COUNT(*) as num FROM tbl_notification INNER JOIN tbl_reservation ON tbl_notification.notificationID = tbl_reservation.notificationID WHERE tbl_reservation.r_approved_ID = 2 ';
-    $sql_code2 = 'SELECT COUNT(*) as num FROM tbl_notification INNER JOIN tbl_user ON tbl_notification.notificationID = tbl_user.notificationID WHERE tbl_user.isApproved = 2 ';
+    // $sql_code2 = 'SELECT COUNT(*) as num FROM tbl_notification INNER JOIN tbl_user ON tbl_notification.notificationID = tbl_user.notificationID WHERE tbl_user.isApproved = 2 ';
     $sql4=$conn->prepare($sql_code);
     $sql4->execute();
     $result = $sql4->get_result();
@@ -77,12 +77,12 @@ if($isAdmin != 1){
     $sql4->close();
 
 
-$sql5=$conn->prepare($sql_code2);
-$sql5->execute();
-$result = $sql5->get_result();
-$user = $result->fetch_array(MYSQLI_ASSOC);
-$reservCount = $user['num'];
-$sql5->close();
+// $sql5=$conn->prepare($sql_code2);
+// $sql5->execute();
+// $result = $sql5->get_result();
+// $user = $result->fetch_array(MYSQLI_ASSOC);
+// $reservCount = $user['num'];
+// $sql5->close();
 }
 
 

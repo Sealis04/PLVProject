@@ -30,57 +30,16 @@
         await onLoad(c)
         window.print();
     })();
-    function loadImages(mainDiv, imgSrc) {
-        return new Promise(resolve=>{
-//    modal img code
-var div = document.createElement('div');
+    function loadImages(mainDiv, path,count) {
+        return new Promise(resolve=>{ 
+          var i = 0;
+          var div = document.createElement('div');
           div.className = 'modalImage';
           var img = document.createElement('img');
           img.className = "myImg";
-          img.src = "/Assets/" + imgSrc;
-          var modal = document.createElement('div');
-          modal.id = 'myModal';
-          modal.className = 'modal';
-          var span = document.createElement('span');
-          span.className = 'close';
-          span.textContent = 'X';
-          var modalImg = document.createElement('img');
-          modalImg.className = 'modal-content';
-          modalImg.id = 'img01';
-          var boxClicked = false;
-          img.addEventListener('click', function(e) {
-              e.stopPropagation();
-              modal.style.display = "block";
-              modalImg.src = this.src;
-              if (!boxClicked) {
-                  document.addEventListener('click', function(event) {
-                      if (event.target == modal) {
-                          boxClicked = false;
-                          modal.style.display = 'none'
-                      };
-
-                  })
-              }
-              boxClicked = true;
-          });
-          //   var rotateLeft = document.createElement('span');
-          //   span.className = 'rotateLeft';
-          //   var rotateRight = document.createElement('span');
-          //   span.className = 'rotateRight';
-
-
-          // When the user clicks on <span> (x), close the modal
-          span.addEventListener('click', function() {
-              modal.style.display = "none";
-          })
-
-
-          modal.appendChild(span);
-          modal.appendChild(modalImg);
-          //   modal.appendChild(rotateLeft);
-          //   modal.appendChild(rotateRight);
+          img.src = path[count];
+          img.id = 'container';
           div.appendChild(img);
-          div.appendChild(modal);
           mainDiv.appendChild(div);
           resolve('success');
         })
@@ -105,19 +64,22 @@ var div = document.createElement('div');
                 const myObj = JSON.parse(this.responseText);
                 var div = document.createElement('div');
                 var fullName = myObj.firstName + ' ' + myObj.middleName + ' ' + myObj.lastName;
-                var course = await callUserDetails();
+                var array = await callUserDetails();
                 div.innerHTML += '<h4>Name: ' + fullName + '</h4>';
-                div.innerHTML += '<h4>Course: ' + course + '</h4>';
+                div.innerHTML += '<h4> Course and Section: ' + array.coursename + ' ' + array.sectionname + '<h4>';
                 div.innerHTML += '<h4>Event: ' + myObj.eventName + '</h4>';
+                div.innerHTML += '<h4>Adviser: ' + myObj.eventAdviser + '</h4>';
                 div.innerHTML += '<h4>Starting Date: ' + myObj.dateStart + '</h4>';
                 div.innerHTML += '<h4>Ending Date: ' + myObj.dateEnd + '</h4>';
+                console.log(myObj.timeStart);
                 var timeStart = tConvert(myObj.timeStart);
                 var timeEnd = tConvert(myObj.timeEnd);
                 div.innerHTML += '<h4>From: ' + timeStart + ' to ' + timeEnd + '</h4>';
                 document.getElementById('mainBody').appendChild(div);
                 var x = await loadRoomDetails(myObj.roomID, div, ID, myObj.userID)
                 div.innerHTML += '<h4>Original Letter: </h4>';
-                var a = await loadImages(div,myObj.imgLetter);
+             //   var a = await loadImages(div,myObj.imgLetter);+
+                var a = await callReservationImage(div,ID);
                 resolve('success');
             }
 
@@ -131,15 +93,17 @@ var div = document.createElement('div');
     async function callUserDetails() {
         return promise = await new Promise(resolve => {
             var asd = <?php echo $_SESSION["usercourse"]; ?>;
+            var section = <?php echo $_SESSION['userSection']; ?>;
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    resolve(this.responseText);
-                    console.log(this.responseText);
-                    return this.responseText;
+                    var myObj = JSON.parse(this.responseText);
+                    resolve(myObj);
+
+                    return myObj;
                 }
             }
-            xmlhttp.open("GET", "/Request_Course.php?var=" + asd, true);
+            xmlhttp.open("GET", "/Request_Course.php?var=" + asd + '&section=' + section, true);
             xmlhttp.send();
         })
 
@@ -190,6 +154,24 @@ var div = document.createElement('div');
         })
         
     }
+
+    function callReservationImage(mainDiv, r_ID) {
+          return new Promise(resolve => {
+              var xmlhttp = new XMLHttpRequest();
+              xmlhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      var myObj = JSON.parse(this.responseText);
+                      var imgArray = Object.values(myObj);
+                      for(a = 0; a<imgArray.length;a++){
+                        loadImages(mainDiv, imgArray,a);
+                      }
+                      resolve('success');
+                  }
+              }
+              xmlhttp.open("GET", "/Request_imgForReservation.php?r_ID=" + r_ID, true);
+              xmlhttp.send();
+          })
+      }
 </script>
 
 </html>
