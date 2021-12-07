@@ -184,7 +184,8 @@
         div.innerHTML += '<h4>' + element.event_name + '<h4>';
         div.innerHTML += '<h5>' + +'<h5>'
         div.innerHTML += '<h5>' + element.room_name + '<h5>';
-        div.innerHTML += '<h5> Reserved By:' + element.firstName + ' ' + element.middleName + ' ' + element.lastName + '<h5>'
+        div.innerHTML += '<h5> Reserved By:' + element.firstName + ' ' + element.middleName + ' ' + element.lastName + '<h5>';
+        div.innerHTML += '<hr class="hr">';
 
     }
 </script>

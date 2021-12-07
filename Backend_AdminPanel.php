@@ -232,22 +232,26 @@
                       if (status != 1) {
                           if (approval == 2) {
                               mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
-                              mainDiv.innerHTML += '<input type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
-                              mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">'
+                              mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
+                              mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">';
+                              mainDiv.innerHTML += '<hr class="hr">';
                           } else if (approval == 3) {
                               mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '</h4>';
-                              mainDiv.innerHTML += '<input type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
-                              mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>'
+                              mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
+                              mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
+                              mainDiv.innerHTML += '<hr class="hr">';
                           } else if (approval == 1) {
                               mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
-                              mainDiv.innerHTML += '<input type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
-                              mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>'
+                              mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
+                              mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
+                              mainDiv.innerHTML += '<hr class="hr">';
                           } else {
                               mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Reservation is Over" + '</h4>';
-                              mainDiv.innerHTML += '<input type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
+                              mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
                           }
                       } else {
                           mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '</h4>';
+                          mainDiv.innerHTML += '<hr class="hr">';
                       }
                   }
                   if (typePending) {
@@ -1010,15 +1014,15 @@
           var div = document.createElement('div');
           div.id = "divID";
           var table = document.createElement('table');
-          table.style = 'border:1px solid black';
+          table.style = 'border:1px solid #000099';
           var row1 = document.createElement('tr');
           var column1 = document.createElement('td');
           var column2 = document.createElement('td');
           var column3 = document.createElement('td');
           var column4 = document.createElement('td');
           var column5 = document.createElement('td');
-          row1.style = 'border:5px solid black';
-          column1.style = 'border:1px solid black';
+          row1.style = 'border:4px solid #000099';
+          column1.style = 'border:0.5px solid black';
           column2.style = 'border:1px solid black';
           column3.style = 'border:1px solid black';
           column4.style = 'border:1px solid black';
