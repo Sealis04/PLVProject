@@ -1,5 +1,6 @@
 <?php
 $courseID = $_REQUEST["var"];
+$sectionID = $_REQUEST['section'];
 // $conn=OpenCon();
 // $user_ID = $_REQUEST["var"];
 // $sql_code = "SELECT * from tbl_user WHERE user_ID = ?";
@@ -35,12 +36,31 @@ include "db_connection.php";
             if($sql->num_rows == 1){
                 $sql->bind_result($coursename);
                     if($sql->fetch()){
-                        echo $coursename;
+                        $details['coursename'] = $coursename;
                     }
             }
         } 
         $sql->close();
     }
+
+    $sql_code2 = "SELECT s_section from tbl_section WHERE s_ID =?";
+    if($sql2=$conn->prepare($sql_code2)){
+        $sql2->bind_param ("i",$sectionID);
+        if($sql2->execute()){
+            $sql2->store_result();
+            if($sql2->num_rows == 1){
+                $sql2->bind_result($sectionName);
+                    if($sql2->fetch()){
+                        $details['sectionname'] = $sectionName; 
+                    }
+            }
+        }
+        $sql2->close();
+    }
+    
+    $myJSON = json_encode($details);
+    echo $myJSON;
+
     $conn->close();
 
 ?>

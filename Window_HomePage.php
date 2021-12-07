@@ -75,20 +75,6 @@
             <h3> No Reservation</h3>
         </div> -->
         <div class="reservations" id='listBody'>
-            <h4>Culminating event</h4>
-
-            <h5>November 16,2021
-                9:00 AM to 12:00 PM
-            </h5>
-
-            <h5>Auditorium
-            </h5>
-
-            <h5>Culminating Activity
-            </h5>
-
-            <h5>Facilitated by: Mr. Mark Arcedas
-            </h5>
         </div>
     </mainBody>
 

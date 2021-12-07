@@ -47,7 +47,7 @@ $email = $password=$userID="";
                 if($sql ->execute()){
                     $sql->store_result();
                     if($sql->num_rows ==1){
-                        $sql->bind_result($userID,$email,$password_db,$userfn,$usermn,$userln,$usercn,$usercourse,$userIDImage,$isAdmin,$isApproved,$isMarked,$notifID,$usersection);
+                        $sql->bind_result($userID,$email,$password_db,$userfn,$usermn,$userln,$usercn,$usercourse,$userIDImage,$isAdmin,$isApproved,$isMarked,$section);
                         if($sql->fetch()){
                             if($isApproved == 1 || $isApproved == 2){
                                 if(password_verify($password,$password_db)){
@@ -66,11 +66,13 @@ $email = $password=$userID="";
                                     $_SESSION["email"] = $email;
                                     $_SESSION["usercontactnumber"]=$usercn;
                                     $_SESSION["usercourse"]=$usercourse;
+                                    $_SESSION['userSection']=$section;
                                     $_SESSION["isAdmin"]=$isAdmin;
                                     $_SESSION["isApproved"]=$isApproved;
                                     $_SESSION["password"]=$password_db;
                                     $_SESSION['isMarked'] = $isMarked;
                                     $_SESSION['ID_img'] = $userIDImage;
+                                    $_SESSION['user_ID'] = $userID;
                                    
                                 }else{
                                     $passwordErr="Invalid password";  

@@ -8,7 +8,9 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = async function() {
             if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
                 var myObj = JSON.parse(this.responseText);
+                
                 if (clicked == false) {
                     var list = document.getElementById('notifList');
                     var div = document.createElement('div');
@@ -25,7 +27,6 @@
                             button.type = 'button';
                             button.value = 'Mark all as read';
                             div.appendChild(button);
-                           
                         }
                         clicked = true;
                     } else {
