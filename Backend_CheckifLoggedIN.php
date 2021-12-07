@@ -29,6 +29,7 @@
         echo'    <a href="/Window_Panel.php?window=UserReservation">User Reservation</a>';
         echo'    <a href="/Window_Panel.php?window=ContentEdit">Edit Content</a>';
         echo'    <a href="/Window_Panel.php?window=Monitoring">Monitoring Form</a>';
+        echo'    <a href="/Window_Panel.php?window=Archives">Archived Reservations</a>';
         echo'    <hr>';
             
         echo'    <a id="logout" href="/Backend_LOGOUT.php" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
@@ -70,8 +71,8 @@
       echo'<img id="fb" src="assets/plv.png" alt="PLV Logo">';
       echo'<br>';
       echo'<a href="/Window_HomePage.php">Home</a>';
-      echo'    <a href="/Window_RoomAndEquipment.php">Rooms and Equipment</a>';
-      echo'    <a href="/Window_PoliciesPage.php">Policies</a>';;
+      echo'<a href="/Window_RoomAndEquipment.php">Rooms and Equipment</a>';
+      echo'<a href="/Window_PoliciesPage.php">Policies</a>';;
       echo '</div>';
       echo '</div>';
       echo ' </div>';
