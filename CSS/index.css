@@ -293,3 +293,12 @@ justify-items:end;
   font-weight: bold;
   margin-left: 10px;
 }
+
+.hr{
+  top: 20px;
+        border: none;
+        height: 2px;
+        background: black;
+        margin-bottom: 50px;
+        margin-left: 10px;
+}

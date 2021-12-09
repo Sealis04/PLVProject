@@ -33,9 +33,9 @@ function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1
 		$pagination .= ">";
 		//previous button
 		if ($page > 1) 
-			$pagination .= "<a href=\"$targetpage$pagestring$prev$category$type\"> < prev</a>";
+			$pagination .= "<a href=\"$targetpage$pagestring$prev$category$type\">&#8249; prev</a>";
 		else
-			$pagination .= "<span class=\"disabled\"> < prev</span>";	
+			$pagination .= "<span class=\"disabled\">&#8249; prev</span>";	
 		
 		//pages	
 		if ($lastpage < 7 + ($adjacents * 2))	//not enough pages to bother breaking it up
@@ -101,10 +101,10 @@ function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1
 		
 		//next button
 		if ($page < $counter - 1) 
-			$pagination .= "<a href=\"" . $targetpage . $pagestring . $next . $category . $type."\">next ></a>";
+			$pagination .= "<a href=\"" . $targetpage . $pagestring . $next . $category . $type."\">next &#8250;</a>";
 			// $pagination .= "<a href=".'google.com'.">next �</a>";
 		else
-			$pagination .= "<span class=\"disabled\">next ></span>";
+			$pagination .= "<span class=\"disabled\">next &#8250;</span>";
 		$pagination .= "</div>\n";
 	}
 	return $pagination;

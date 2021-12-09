@@ -9,6 +9,14 @@
   
 }
 
+.hr{
+  top: 20px;
+        border: none;
+        height: 2px;
+        background: black;
+        margin-bottom: 50px;
+}
+
 a {
   text-decoration: underline; 
   text-align: center;
@@ -297,7 +305,7 @@ table{
 .bottom input{
  float: right;
  margin-top: 8px;
- margin-right: 480px;
+ margin-right: 452px;
  background-color: #000099 !important;
  text-decoration: none;
 border-radius: 5px;
@@ -307,7 +315,13 @@ color: white;
 }
 
 #policiesID{
-  margin-right: 445px;
+  margin-right: 395px;
+  color: white;
+ font-size: 16px !important;
+}
+
+#addBtn{
+  margin-right: 509px;
   color: white;
  font-size: 16px !important;
 }
@@ -390,6 +404,7 @@ color: white;
 div.pagination {
 	padding: 3px;
 	margin: 3px;
+  font-size: 20px;
 }
 
 div.pagination a {
@@ -397,19 +412,18 @@ div.pagination a {
 	margin: 2px;
 	border: 1px solid #AAAADD;
 	zoom: 100%;
+
 	text-decoration: none; /* no underline */
 	color: #000099;
 }
 div.pagination a:hover, div.pagination a:active {
 	border: 1px solid #000099;
-
 	color: #000;
 }
 div.pagination span.current {
 	padding: 2px 5px 2px 5px;
 	margin: 2px;
 	border: 1px solid #000099;
-	
 	 zoom: 100%; 
 	
 	font-weight: bold;
@@ -441,10 +455,12 @@ div.pagination span.disabled {
   transition: 0.3s;
   float: right;
   vertical-align: middle;
-  margin: -10% 0 0 0 !important;
-  height: 80px;
-  width: 80px;
+  margin: -22% 10% 0 0 !important;
+  height: 110px;
+  width: 110px;
 }
+
+
 
 .myImg:hover {opacity: 0.7;}
 
@@ -518,21 +534,6 @@ div.pagination span.disabled {
     width: 100%;
   }
 }
-
-/* Left and Right scroll buttons */
-.left{
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  float:left;
-  margin: 5px;
-}
-
-.right{
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  float:right;
-  margin: 5px;
-}
 /* Removed float:right from .userResContent and .resContent */
+
+
