@@ -1,6 +1,7 @@
 <?php
 //returns array of reservation 
 $r_ID = $_REQUEST['r_ID'];
+$review = $_REQUEST['isReviewed'];
 $array2 = array();
 include "db_connection.php";
 $conn = OpenCon();
@@ -8,10 +9,10 @@ $sql_code = "SELECT * FROM tbl_reservation
 INNER JOIN tbl_user
 ON tbl_reservation.r_user_ID = tbl_user.user_ID
 WHERE tbl_reservation.r_approved_ID = 1 AND tbl_reservation.r_status = 0 
-AND tbl_reservation.r_reviewed = 0 
+AND tbl_reservation.r_reviewed = ? 
 AND r_ID = ?";
 if ($sql = $conn->prepare($sql_code)) {
-    $sql->bind_param('i', $r_ID);
+    $sql->bind_param('ii',$review,$r_ID);
     if ($sql->execute()) {
         $result = $sql->get_result();
         while ($row = $result->fetch_assoc()) {

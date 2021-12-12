@@ -69,11 +69,15 @@ $email = $password=$userID="";
                                     $_SESSION['userSection']=$section;
                                     $_SESSION["isAdmin"]=$isAdmin;
                                     $_SESSION["isApproved"]=$isApproved;
-                                    $_SESSION["password"]=$password_db;
+                                    $_SESSION["password"] = $password_db;
                                     $_SESSION['isMarked'] = $isMarked;
                                     $_SESSION['ID_img'] = $userIDImage;
                                     $_SESSION['user_ID'] = $userID;
-                                   
+                                    if ($_SESSION['isAdmin'] == 1) {
+                                        $_SESSION['approveID'] = 1;
+                                    } else {
+                                        $_SESSION['approveID'] = 1;
+                                    }
                                 }else{
                                     $passwordErr="Invalid password";  
                                 }

@@ -41,7 +41,7 @@
                 if($sql->num_rows==1){
                   $emailErr="* Email is already taken";
                 }else{
-                  $email = test_input($_POST["email"]);
+                  $email = test_input(strtolower($_POST["email"]));
                 }
               }else{
                 echo "Oops, something went wrong";
@@ -106,18 +106,18 @@
         if($_FILES["fileUpload"]["error"]>0){
            $uploadErr = "Please upload your valid PLV ID";
         }
-        $fileTmpPath = $_FILES["fileUpload"]["tmp_name"];
-        $fileName = $firstName . $lastName . 'ID';
+       
+        $fileCount = count(array_filter($_FILES["fileUpload"]["name"]));
+        $valid_ext = array('jpg','png','jpeg');
         if(empty($emailErr) && empty($passwordErr) && empty($contactErr) && empty($firstNameErr) && empty($middleNameErr) && empty($lastNameErr && empty($uploadErr))){
-          if(move_uploaded_file($fileTmpPath,"assets/".$fileName))
-          {
           $selectedCourse = $_POST["course"];
-          $sql_code = "INSERT INTO tbl_user (user_email, user_password, user_firstName, user_middleName, user_lastName, user_contactNumber,user_course_ID,PLV_ID,isAdmin,isApproved,notificationID) VALUES (?, ?, ?, ?, ? , ? , ? , ?, ?, ?,?)";
+          $selectedSection = $_POST['section'];
+          $sql_code = "INSERT INTO tbl_user (user_email, user_password, user_firstName, user_middleName, user_lastName, user_contactNumber,user_course_ID,PLV_ID,isAdmin,isApproved,user_s_ID) VALUES (?, ?, ?, ?, ? , ? , ? , ?, ?, ?,?)";
           if($sql = $conn->prepare($sql_code)){
-            $notifID =  notification(($conn->insert_id),2);
-            $sql->bind_param("sssssiisiii",$email,$password_hash,$firstName,$middleName,$lastName,$contact,$selectedCourse,$fileName,$isAdmin,$isApproved,$notifID);
+            $sql->bind_param("sssssiisiii",$email,$password_hash,$firstName,$middleName,$lastName,$contact,$selectedCourse,$fileName,$isAdmin,$isApproved,$selectedSection);
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             if($sql->execute()){
+              uploadImage($conn,$fileCount,$valid_ext,$sql->insert_id);
               echo '<script>
                     alert("Registration Successful!\n Status:Pending")
                     window.location.href = "Window_LOGIN.php"
@@ -128,13 +128,32 @@
             }
             $sql->close();
           }
-        }
+        
         //Upload part (under construction)
+
+        
         $message=$uploadErr="";
         }
         $conn->close();
     }
-
+    function uploadImage($conn,$fileCount,$valid_ext,$id){
+      for($i = 0; $i<$fileCount;$i++){
+        $fileTmpPath = $_FILES["fileUpload"]["tmp_name"][$i];
+        $fileName = $_FILES['fileUpload']['name'][$i];
+        $path = "assets/".$fileName;
+        $fileextension = pathinfo($path,PATHINFO_EXTENSION);
+        $fileextension = strtolower($fileextension);
+        if(in_array($fileextension,$valid_ext)){
+          if(move_uploaded_file($fileTmpPath,$path)){
+             $sql_code2 = "INSERT INTO tbl_letterforregistration (u_ID,letterPath) VALUES (?,?)";
+             if($sql2 = $conn->prepare($sql_code2)){
+               $sql2->bind_param('is', $id,$path);
+               $sql2->execute();
+             } 
+          } 
+        }
+      }
+    }
     function test_input($data){
         $data = trim($data);
         $data = stripslashes($data);
@@ -155,7 +174,7 @@
             -->
             <div class="nav2">
               <?php
-            require "Backend_CheckifLoggedIN.php";
+           require "Backend_CheckifLoggedIN.php";
                 ?>        
             </div>
             </div>
@@ -167,19 +186,19 @@
                 <img src="assets/plv.png" style="display: block; margin-left: auto; margin-right: auto; margin-bottom: 50; height: 100; width: 100; margin-top: 100;">
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="multipart/form-data"> 
                     <div class="md-form form-group">
-                        <input type="text" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="email" placeholder="Email" value="<?php echo(isset($email))?$email:''?>" >
+                        <input type="text"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="email" placeholder="Email" value="<?php echo(isset($email))?$email:''?>" >
                         <span class="error"><?php echo $emailErr;?></span>
                       </div>
                       <div class="md-form form-group">
-                        <input type="password" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="password" placeholder="Password">
+                        <input type="password"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="password" placeholder="Password">
                         <span class="error"><?php echo $passwordErr;?></span>
                       </div>
                       <div class="md-form form-group">
-                        <input type="text" maxlength="11" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="contact" placeholder="Contact" value="<?php echo(isset($contact))?$contact:''?>">
+                        <input type="text"  maxlength="11" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="contact" placeholder="Contact" value="<?php echo(isset($contact))?$contact:''?>">
                         <span class="error"><?php echo $contactErr;?></span>
                       </div>
                       <div class="md-form form-group">
-                        <input type="text" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="firstName" placeholder="First Name" value="<?php echo(isset($firstName))?$firstName:''?>">
+                        <input type="text"   style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="firstName" placeholder="First Name" value="<?php echo(isset($firstName))?$firstName:''?>">
                         <span class="error"><?php echo $firstNameErr;?></span>
                       </div>
                       <div class="md-form form-group">
@@ -187,7 +206,7 @@
                         <span class="error"><?php echo $middleNameErr;?></span>
                       </div>
                       <div class="md-form form-group">
-                        <input  type="text" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="lastName" placeholder="Last Name" value="<?php echo(isset($lastName))?$lastName:''?>">
+                        <input  type="text"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="lastName" placeholder="Last Name" value="<?php echo(isset($lastName))?$lastName:''?>">
                         <span class="error"><?php echo $lastNameErr;?></span>
                       </div>
                       <!--CHANGES-->
@@ -195,11 +214,14 @@
                           <label for="course">Course:</label>
                           <select id="course" name="course" >
                           </select>
+                          <label for="Section">Section:</label>
+                          <select id="section" name="section" >
+                          </select>
                       </div>
                       <!--END-->
                       <div class="md-form form-group">
                         <label class="form-label" for="customFile">Attach ID</label>
-                        <input type="file" class="form-control" id="File" name = "fileUpload" />
+                        <input type="file" multiple class="form-control" id="File" name = "fileUpload[]" />
                         <span class="error"><?php echo $uploadErr;?></span>
                       </div>
                       <button type="submit" class="sgn-btn btn" id="register" style="margin:auto;" name="registerBtn">Register</button>
