@@ -21,7 +21,7 @@ $info = array();
 // }
 if($isAdmin != 1){
     $sql_code = 'SELECT * FROM `tbl_notification` as notif INNER JOIN tbl_reservation as res
-    ON notif.notificationID = res.notificationID WHERE notif.forUserID = ? AND `decision` != 2 ORDER BY `time` DESC LIMIT 10';
+    ON notif.notificationID = res.notifID WHERE notif.forUserID = ? AND `decision` != 2 AND notif.forRegistration = 0 ORDER BY `time` DESC LIMIT 10';
     if($sql=$conn->prepare($sql_code)){
         if($isAdmin != 1){
             $sql->bind_param('i',$userID);
@@ -34,8 +34,10 @@ if($isAdmin != 1){
                     'resisRead'=> $row['isRead'],
                     'resdecision' => $row['decision'],
                     'resuserID'=>$row['forUserID'],
-                    'resStart' => $row['r_startDateAndTime'],
-                    'resEnd' => $row['r_endDateAndTime'],
+                    'dateStart' => $row['DateStart'],
+                    'dateEnd' => $row['DateEnd'],
+                    'timeStart'=>$row['TimeStart'],
+                    'timeEnd'=>$row['TimeEnd'],
                     'resName'=> $row['r_event']
                 );
             }
@@ -45,29 +47,29 @@ if($isAdmin != 1){
         $sql->close();
     }
 
-    // $sql_code2 = 'SELECT * FROM `tbl_notification` as notif INNER JOIN tbl_user as user
-    // ON notif.notificationID = user.notificationID WHERE notif.forUserID = ? AND `decision` != 2 ORDER BY `time` DESC LIMIT 10';
-    // if($sql2=$conn->prepare($sql_code2)){
-    //     if($isAdmin != 1){
-    //         $sql2->bind_param('i',$userID);
-    //     }
-    //     if($sql2->execute()){ 
-    //         $result2 = $sql2->get_result();
-    //         while($row = $result2->fetch_assoc()){
-    //             $notifications[] = array(
-    //                 'regid' => $row['notificationID'],
-    //                 'regisRead'=> $row['isRead'],
-    //                 'regdecision' => $row['decision'],
-    //                 'reguserID'=>$row['forUserID']
-    //             );
-    //         }
-    //     }else{
-    //        echo $conn->error;
-    //     }
-    //     $sql2->close();
-    // }
+    $sql_code2 = 'SELECT * FROM `tbl_notification`  WHERE forUserID = ? AND `decision` != 2 AND forRegistration  = 1 ORDER BY `time` DESC LIMIT 10';
+    if($sql2=$conn->prepare($sql_code2)){
+        if($isAdmin != 1){
+            $sql2->bind_param('i',$userID);
+        }
+        if($sql2->execute()){ 
+            $result2 = $sql2->get_result();
+            while($row = $result2->fetch_assoc()){
+                $notifications[] = array(
+                    'regid' => $row['notificationID'],
+                    'regisRead'=> $row['isRead'],
+                    'regdecision' => $row['decision'],
+                    'reguserID'=>$row['forUserID']
+                );
+            }
+        }else{
+           echo $conn->error;
+        }
+        $sql2->close();
+    }
 }else{
-    $sql_code = 'SELECT COUNT(*) as num FROM tbl_notification INNER JOIN tbl_reservation ON tbl_notification.notificationID = tbl_reservation.notificationID WHERE tbl_reservation.r_approved_ID = 2 ';
+    $sql_code = 'SELECT COUNT(*) as num FROM tbl_notification INNER JOIN tbl_reservation ON tbl_notification.notificationID = tbl_reservation.notifID WHERE tbl_reservation.r_approved_ID = 2 
+    AND tbl_reservation.r_status = 0';
     // $sql_code2 = 'SELECT COUNT(*) as num FROM tbl_notification INNER JOIN tbl_user ON tbl_notification.notificationID = tbl_user.notificationID WHERE tbl_user.isApproved = 2 ';
     $sql4=$conn->prepare($sql_code);
     $sql4->execute();
@@ -76,13 +78,13 @@ if($isAdmin != 1){
     $notifCount = $user['num'];
     $sql4->close();
 
-
-// $sql5=$conn->prepare($sql_code2);
-// $sql5->execute();
-// $result = $sql5->get_result();
-// $user = $result->fetch_array(MYSQLI_ASSOC);
-// $reservCount = $user['num'];
-// $sql5->close();
+$sql_code2 = 'SELECT COUNT(*) as num FROM tbl_user WHERE isApproved = 2';
+$sql5=$conn->prepare($sql_code2);
+$sql5->execute();
+$result = $sql5->get_result();
+$user = $result->fetch_array(MYSQLI_ASSOC);
+$reservCount = $user['num'];
+$sql5->close();
 }
 
 

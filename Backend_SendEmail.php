@@ -30,8 +30,10 @@
                         $result = $sql->get_result();
                             while($row = $result->fetch_assoc()){
                                 $event = $row['r_event'];
-                                $start = $row['r_startDateAndTime'];
-                                $end = $row['r_endDateAndTime'];
+                                $start = $row['DateStart'];
+                                $end = $row['DateEnd'];
+                                $startTime = $row['TimeStart'];
+                                $endTime = $row['TimeEnd'];
                                 $room = $row['r_room_ID'];
                             }
                         }else{
@@ -40,15 +42,15 @@
                      $sql->close();
                 }
                 if($approval == 1){
-                    $message = 'Hello'.$fn.'\r\n';
-                    $message .= 'This is to inform you that your reservation for' . $event . ',which will be held at'.$room.'has been accepted, congratulations! \r\n';
-                    $message .= 'The event starts at '.$start.'and ends at'.$end;
+                    $message = 'Hello '.$fn.'\r\n';
+                    $message .= 'This is to inform you that your reservation for ' .$event. ',which will be held at '.$room.' has been accepted, congratulations! \r\n';
+                    $message .= 'The event starts at '.$start.' and ends at '.$end. ' with the time being from '.$startTime.' to '.$endTime;
                     if($remarks != ' '){
-                      
+                        $message .='Remarks from admin:' .$remarks;
                     }
                 }else if($approval ==2){
                     $message = 'Hello'.$fn.'\r\n';
-                    $message .= 'This is to inform you that your reservation for' . $event . ',which will be held at'.$room.'has been rejected.\r\n';
+                    $message .= 'This is to inform you that your reservation for '.$event.', which will be held at '.$room.' has been rejected.\r\n';
                     if($remarks !=''){
                         $message .='Remarks from admin:' .$remarks;
                     }else{
@@ -59,9 +61,16 @@
 
         }else{
             if($approval == 3){
-             
+                $message = 'Hello '.$fn.'\r\n';
+                $message .= 'This is to inform you that your registration has been rejected \r\n';
+                $message .= 'You can now start creating reservations for the facilities under the GSO!';
+                if($remarks != ' '){
+                    $message .='Remarks from admin:' .$remarks;
+                }else{
+                    $message .='No remarks from admin, please contact/visit the GSO office to know the reason.';
+                }
             }else if($approval == 1){
-                $message = 'Hello'.$fn.'\r\n';
+                $message = 'Hello '.$fn.'\r\n';
                 $message .= 'This is to inform you that your registration has been accepted, Congratulations! \r\n';
                 $message .= 'You can now start creating reservations for the facilities under the GSO!';
             if($remarks != ' '){

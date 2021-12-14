@@ -2,7 +2,8 @@
 //returns array of reservation \
 $rid = $_REQUEST["var"];
 $userID = $_REQUEST['userID'];
-$remarks = $_REQUEST['textArea'];
+$remarks = $_REQUEST['remarks'];
+$notifID = $_REQUEST['notifID'];
 session_start();
 include "db_connection.php";
 include 'Backend_SendEmail.php';
@@ -19,5 +20,5 @@ $sql_code = "UPDATE `tbl_reservation` SET `r_approved_ID` = '1' WHERE r_ID = ?";
         }
     $conn->close();
      getEmail($userID,$rid,$remarks,1);
-     update($userID,1,$remarks);
+     update($userID,1,$remarks,0,$notifID);
     ?>

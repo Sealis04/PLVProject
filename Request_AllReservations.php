@@ -40,7 +40,7 @@ $sql_code = "SELECT * FROM `tbl_reservation`
         INNER JOIN tbl_user ON tbl_reservation.r_user_ID = tbl_user.user_ID 
         INNER JOIN tbl_room ON tbl_reservation.r_room_ID = tbl_room.room_ID 
         WHERE DateEnd < CURRENT_DATE AND tbl_reservation.r_approved_ID = 1 
-        AND tbl_reservation.r_reviewed = 1 AND tbl_reservation.isDeleted = 0  LIMIT $start,$limit ";
+        AND tbl_reservation.r_reviewed = 1 AND r_status = 0 AND tbl_reservation.isDeleted = 0  LIMIT $start,$limit ";
 if ($sql = $conn->prepare($sql_code)) {
     if ($sql->execute()) {
         $result = $sql->get_result();
@@ -59,7 +59,6 @@ if ($sql = $conn->prepare($sql_code)) {
                 'lastName' => $row['user_lastName'],
                 'userID' => $row['r_user_ID'],
                 'roomName' => $row['room_name'],
-                'imgLetter' => $row['r_letter_file'],
             );
         }
     } else {

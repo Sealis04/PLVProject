@@ -12,7 +12,7 @@ if ($page)
     $start = ($page - 1) * $limit;             //first item to display on this page
 else
     $start = 0;
-$query = "SELECT COUNT(*) as num FROM tbl_reservation WHERE r_user_ID = ? and r_status = 0 ";
+$query = "SELECT COUNT(*) as num FROM tbl_reservation WHERE r_user_ID = ?";
 $sql5 = $conn->prepare($query);
 $sql5->bind_param("i", $userID);
 $sql5->execute();
@@ -38,8 +38,8 @@ if ($sql = $conn->prepare($sql_code)) {
                 'status' => $row['r_status'],
                 'room' => $row['room_name'],
                 'userID' => $row['r_user_ID'],
-                'ImgLetter' => $row['r_letter_file'],
                 'eventAdviser'=>$row['r_eventAdviser'],
+                'notifID'=>$row['notifID'],
             );
         }
     }

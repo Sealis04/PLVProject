@@ -117,6 +117,8 @@
             $sql->bind_param("sssssiisiii",$email,$password_hash,$firstName,$middleName,$lastName,$contact,$selectedCourse,$fileName,$isAdmin,$isApproved,$selectedSection);
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             if($sql->execute()){
+              $lastID = $conn->insert_id;
+              $notifID = notification($lastID, 2,1);
               uploadImage($conn,$fileCount,$valid_ext,$sql->insert_id);
               echo '<script>
                     alert("Registration Successful!\n Status:Pending")

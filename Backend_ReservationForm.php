@@ -2,7 +2,10 @@
     var number = 0;
     (async () => {
         const value = await generateForm(number);
-        await document.getElementById('reservationForm').appendChild(value);
+        const valve = new Promise(resolve=>{
+            document.getElementById('reservationForm').appendChild(value);
+            resolve('success');
+        });
         const secondvalue = await addRestOfForm();
         await runRest();
     })();
@@ -50,11 +53,12 @@
         room.appendChild(option);
     }
 
-
-
     function renderRestofForm() {
         var x = <?php echo $_SESSION["usercourse"]; ?>;
         var section = <?php echo $_SESSION['userSection']; ?>;
+        var fullName = "<?php echo $_SESSION['fullName'];?>";
+        document.getElementById("fullName").value = fullName;
+        document.getElementById("contact").value = "0" + "<?php echo $_SESSION["usercontactnumber"]; ?>";
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -64,8 +68,6 @@
         }
         xmlhttp.open("GET", "Request_Course.php?var=" + x + '&section=' + section, true);
         xmlhttp.send();
-        document.getElementById("name").value = "<?php echo $_SESSION["fullName"]; ?>";
-        document.getElementById("contact").value = "0" + "<?php echo $_SESSION["usercontactnumber"]; ?>";
     }
 
     function callActiveReservations(callback) {
@@ -901,9 +903,6 @@
         var form = document.getElementById('reservationForm');
         profile = JSON.stringify(profile);
         var formData = new FormData(form);
-        for (var value of formData.values()) {
-   console.log(value);
-}
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
