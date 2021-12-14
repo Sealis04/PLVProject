@@ -66,7 +66,7 @@
                 document.getElementById("course").value = myObj.coursename + ' ' + myObj.sectionname;
             }
         }
-        xmlhttp.open("GET", "Request_Course.php?var=" + x + '&section=' + section, true);
+        xmlhttp.open("GET", "Request_Course.php?var=" + x + '&section=' + section +'&userID=' + null, true);
         xmlhttp.send();
     }
 

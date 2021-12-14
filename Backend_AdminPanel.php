@@ -231,27 +231,27 @@
                               var x = await listEquipmentReserved(mainDiv, element, index);
                           });
                       }
-                      var printingPanel = "location.href ='/Backend_printingPanel.php?id=" + resID + "'";
+                      var printingPanel = "'/Backend_printingPanel.php?id=" + resID + "'";
                       if (forUser) {
                           if (status != 1) {
                               if (approval == 2) {
                                   mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab('+printingPanel+')"> ';
                                   mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">';
                                   mainDiv.innerHTML += '<hr class="hr">';
                               } else if (approval == 3) {
                                   mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab('+printingPanel+')"> ';
                                   mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
                                   mainDiv.innerHTML += '<hr class="hr">';
                               } else if (approval == 1) {
                                   mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab('+printingPanel+')"> ';
                                   mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
                                   mainDiv.innerHTML += '<hr class="hr">';
                               } else {
                                   mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Reservation is Over" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab('+printingPanel+')"> ';
                               }
                           } else {
                               mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '</h4>';
@@ -273,6 +273,10 @@
               xmlhttp.open("GET", "/Request_ReservationForUserEquipment.php?var=" + resID, true);
               xmlhttp.send();
           })
+      }
+      
+      function openNewTab(url){
+        window.open(url,'_blank').focus();
       }
 
       function callRegistrationImage(mainDiv, userID) {
