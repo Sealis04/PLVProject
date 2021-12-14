@@ -264,10 +264,14 @@
                           }
                       }
                       if (typePending) {
-                          mainDiv.innerHTML += '<input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ')">'
-                          mainDiv.innerHTML += '<input type="button" class = "header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ')">'
+                        //   mainDiv.innerHTML += '<textarea id="remarks" placeholder="Remarks"></textarea><br><br>';
+                          var textarea = document.createElement('textarea');
+                          textarea.id = 'remarks';
+                          textarea.placeholder = "Remarks";
+                          mainDiv.appendChild(textarea);
+                          mainDiv.innerHTML += '<br><br><input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ',' + textarea.textContent + ')">'
+                          mainDiv.innerHTML += '<input type="button" class = "header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID +  ',' + textarea.textContent + ')">'
                       }
-                      //   callReservationImage(mainDiv, resID);
                       resolve('success');
                   }
               }
@@ -407,9 +411,6 @@
                       myObj.forEach((element, index) => {
                           finishedReservationContent(motherDiv, 1, element, index);
                       })
-                      //   myObj.forEach(function(element, index) {
-                      //       userReservationContent(motherDiv, page, element, index, 'finished');
-                      //   });
                   }
               }
           }
@@ -429,8 +430,10 @@
                   if (myObj[0] == null) {
                       motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                   } else {
-                      myObj.forEach(function(element, index) {
-                          userReservationContent(motherDiv, page, element, index, 'pending');
+                      myObj.forEach(async function(element, index) {
+                          var x = await userReservationContent(motherDiv, page, element, index, 'pending');
+                           motherDiv.appendChild(x[0]);
+                           callReservationImage(x[2],x[1]);
                       });
                   }
 
@@ -441,12 +444,11 @@
           bigDiv.appendChild(motherDiv);
       }
       // Accept Reservations
-      function AcceptReservation(eventID, userID) {
+      function AcceptReservation(eventID, userID,textArea) {
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   alert(this.responseText);
-                  
                   if (c == null) {
                       resList('pending');
                   } else {
@@ -455,12 +457,12 @@
 
               }
           }
-          xmlhttp.open("GET", "/Request_AcceptReservation.php?var=" + eventID + '&userID=' + userID, true);
+          xmlhttp.open("GET", "/Request_AcceptReservation.php?var=" + eventID + '&userID=' + userID + '&remarks=' + textArea, true);
           xmlhttp.send();
       }
 
       //Decline Reservation
-      function DeclineReservation(eventID, userID) {
+      function DeclineReservation(eventID, userID,textArea) {
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -473,7 +475,7 @@
                   }
               }
           }
-          xmlhttp.open("GET", "/Request_DeclineReservation.php?var=" + eventID + '&userID=' + userID, true);
+          xmlhttp.open("GET", "/Request_DeclineReservation.php?var=" + eventID + '&userID=' + userID + '&remarks=' + textArea, true);
           xmlhttp.send();
       }
 
@@ -724,7 +726,6 @@
                   mainDiv.innerHTML = '<h4>Adviser: ' + myObj.eventAdviser + '</h4>';
                   mainDiv.innerHTML += '<h4>Full Name: ' + fullName + '</h4>';
                   const first = await loadRoomDetails(myObj.roomID, mainDiv, ID, myObj.userID, review)
-                  //   callReservationImage(mainDiv,myObj.r_ID)
                   div.appendChild(mainDiv);
               }
 
@@ -791,7 +792,6 @@
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   alert(this.responseText)
-                  
                   monitoringContent();
               }
           }
@@ -921,7 +921,8 @@
 
       //HTML PART THAT LISTS THE RESERVATION OF ITS USERS
       async function userReservationContent(motherDiv, page, element, index, type) {
-          var div = document.createElement('div');
+          return new Promise(async resolve=>{
+            var div = document.createElement('div');
           div.id = 'pendingContent'
           var date = new Date(element.dateStart + ' ' + element.timeStart);
           var diffTime = new Date(element.dateEnd) - new Date(element.dateStart);
@@ -934,7 +935,7 @@
           div.innerHTML += '<h3>Time:' + startTime + ' to ' + endTime + " </h3>";
           div.innerHTML += '<h3>Duration:' + numberofloops + " day/s (Ends at: " + element.dateEnd + ") </h3>";
           if (type == 'pending') {
-              reservedEquipment(element.reservationID, div, element.userID, false, ...Array(2), true, element.imgLetter);
+             var x = await reservedEquipment(element.reservationID, div, element.userID, false, ...Array(2), true, element.imgLetter);
           } else if (type == 'finished') {
               reservedEquipment(element.reservationID, div, element.userID, false, ...Array(2), false, element.imgLetter);
           }
@@ -943,9 +944,10 @@
           //   div.appendChild(sideDiv);
           if (typeof(element.pagination) != undefined && element.pagination != null) {
               page.innerHTML = element.pagination;
-              div.appendChild(page);
           }
           motherDiv.appendChild(div);
+          resolve([page,element.reservationID,div]);
+          })
       }
 
       //HTML PART THAT LISTS THE TAB CONTENT FOR EDIT

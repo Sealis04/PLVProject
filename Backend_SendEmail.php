@@ -39,11 +39,24 @@
                         }
                      $sql->close();
                 }
-                $message = 'Hello'.$fn.'\r\n';
-                $message .= 'This is to inform you that your reservation for' . $event . ',which will be held at'.$room.'has been accepted, congratulations! \r\n';
-                $message .= 'The event starts at '.$start.'and ends at'.$end;
-              
-                
+                if($approval == 1){
+                    $message = 'Hello'.$fn.'\r\n';
+                    $message .= 'This is to inform you that your reservation for' . $event . ',which will be held at'.$room.'has been accepted, congratulations! \r\n';
+                    $message .= 'The event starts at '.$start.'and ends at'.$end;
+                    if($remarks != ' '){
+                      
+                    }
+                }else if($approval ==2){
+                    $message = 'Hello'.$fn.'\r\n';
+                    $message .= 'This is to inform you that your reservation for' . $event . ',which will be held at'.$room.'has been rejected.\r\n';
+                    if($remarks !=''){
+                        $message .='Remarks from admin:' .$remarks;
+                    }else{
+                        $message .='No remarks from admin, please contact/visit the GSO office to know the reason.';
+                    }
+                }
+            
+
         }else{
             if($approval == 3){
              

@@ -1,8 +1,6 @@
 <?php
 $infoArr = $_REQUEST['var'];
-$fileArr = $_REQUEST['fileName'];
 $profArr = json_decode($infoArr, true);
-$letterArr = json_decode($fileArr, true);
 // $myJSON = json_encode($letterArr);
 // echo $myJSON;
 $r_IDArray = array();
@@ -21,7 +19,7 @@ for ($count = 0; $count < count($profArr); $count++) {
     $r_IDArray[] = insertReservation($userID, $endDate, $conn, $profArr, $count);
     // echo $r_ID['r_ID'];
 }
-$letterArray = insertLetter($conn, $letterArr);
+$letterArray = insertLetter($conn);
 echo insertJoinTable($conn, $letterArray, $r_IDArray);
 function insertReservation($userID, $endDate, $conn, $profArr, $count)
 {
@@ -66,28 +64,41 @@ function insertReservation($userID, $endDate, $conn, $profArr, $count)
         echo '<script>alert("' . $remarks . '")</script>';
     }
 }
-function insertLetter($conn, $letterArr)
+function insertLetter($conn)
 {
     $sql_code = "INSERT INTO tbl_letterlist (letter_Path) VALUES (?);";
     $letter_ID = array();
-    foreach ($letterArr as $values) {
-        $fullName =  $values['fileSource'];
-        $fileTmpPath = $_FILES["letterUpload"]["tmp_name"];
-        $fileName = $fullName . "ID";
-        move_uploaded_file($fileTmpPath, "assets/" . $fileName);
-        if ($sql = $conn->prepare($sql_code)) {
-            $sql->bind_param('s', $values['fileSource']);
-            if ($sql->execute()) {
-                $lastletterID = $conn->insert_id;
-                $letter_ID[] = $lastletterID;
-                $condition = true;
-            } else {
-                $condition = false;
-                break;
+    $valid_ext = array('jpg', 'png', 'jpeg');
+    $fileCount =  count($_FILES['letterUpload']['name']);
+    for ($i = 0; $i < $fileCount; $i++) {
+        $fileTmpPath = $_FILES['letterUpload']['tmp_name'][$i];
+        $fileName = $_FILES['letterUpload']['name'][$i];
+        $path = "assets/" . $fileName;
+        $fileextension = pathinfo($path, PATHINFO_EXTENSION);
+        $fileextension = strtolower($fileextension);
+        if (in_array($fileextension, $valid_ext)) {
+            if (move_uploaded_file($fileTmpPath, $path)) {
+                if ($sql = $conn->prepare($sql_code)) {
+                    $sql->bind_param('s', $path);
+                    if ($sql->execute()) {
+                        $lastletterID = $conn->insert_id;
+                        $letter_ID[] = $lastletterID;
+                        $condition = true;
+                    } else {
+                        $condition = false;
+                        break;
+                    }
+                }
             }
         }
     }
-    return $letter_ID;
+    // move_uploaded_file($fileTmpPath, "assets/" . $fileName);
+    if ($condition) {
+        return $letter_ID;
+    } else {
+        return 'error';
+    }
+
 }
 
 function insertJoinTable($conn, $letterID, $rID)
