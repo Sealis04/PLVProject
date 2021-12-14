@@ -40,6 +40,7 @@ if ($sql = $conn->prepare($sql_code)) {
                             'lastName'=> $row['user_lastName'],
                             'userID'=>$row['r_user_ID'],
                             'roomID'=>$row['r_room_ID'],
+                            'notifID'=>$row['notifID'],
                         );
         }
     } else {

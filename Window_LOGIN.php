@@ -76,7 +76,7 @@ $email = $password=$userID="";
                                     if ($_SESSION['isAdmin'] == 1) {
                                         $_SESSION['approveID'] = 1;
                                     } else {
-                                        $_SESSION['approveID'] = 1;
+                                        $_SESSION['approveID'] = 2;
                                     }
                                 }else{
                                     $passwordErr="Invalid password";  

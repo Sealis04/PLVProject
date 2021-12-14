@@ -23,14 +23,12 @@ if ($sql = $conn->prepare($sql_code)) {
                 'roomID' => $row['r_room_ID'],
                 'userID' => $row['user_ID'],
                 'eventName' => $row['r_event'],
-                'imgLetter' => $row['r_letter_file'],
                 'eventAdviser' => $row['r_eventAdviser'],
                 'r_ID' => $row['r_ID'],
                 'dateStart' => $row["DateStart"],
                 'dateEnd' => $row["DateEnd"],
                 'timeStart' => $row['TimeStart'],
                 'timeEnd' => $row['TimeEnd'],
-
             );
         }
     } else {

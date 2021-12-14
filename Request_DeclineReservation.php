@@ -2,6 +2,8 @@
 //returns array of reservation \
 $rid = $_REQUEST["var"];
 $userID = $_REQUEST['userID'];
+$remarks = $_REQUEST['remarks'];
+$notifID = $_REQUEST['notifID'];
 $reservation = array();
 session_start();
 include "db_connection.php";
@@ -18,6 +20,6 @@ $sql_code = "UPDATE `tbl_reservation` SET `r_approved_ID` = '3' WHERE r_ID = ?";
              $sql->close();
         }
     $conn->close();
-    update($userID,3);
-getEmail($userID,$rid);
+    getEmail($userID,$rid,$remarks,1);
+    update($userID,1,$remarks,0,$notifID);
 ?>

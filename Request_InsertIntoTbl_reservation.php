@@ -23,23 +23,23 @@ $letterArray = insertLetter($conn);
 echo insertJoinTable($conn, $letterArray, $r_IDArray);
 function insertReservation($userID, $endDate, $conn, $profArr, $count)
 {
-    $notifID = notification($userID, 2);
+    $notifID = notification($userID, 2,0);
     $remarks = checkDetails($userID);
     if (!isset($remarks)) {
-        $sql_code = "INSERT INTO tbl_reservation (r_user_ID,r_event,r_eventAdviser,r_room_ID,r_approved_ID,notificationID,DateStart,DateEnd,TimeStart,TimeEnd) VALUES (?,?,?,?,?,?,?,?,?,?);";
+        $sql_code = "INSERT INTO tbl_reservation (r_user_ID,r_event,r_eventAdviser,r_room_ID,r_approved_ID,DateStart,DateEnd,TimeStart,TimeEnd,notifID) VALUES (?,?,?,?,?,?,?,?,?,?);";
         if ($sql = $conn->prepare($sql_code)) {
             $sql->bind_param(
-                "issiiissss",
+                "issiissssi",
                 $userID,
                 $profArr[$count]['event'],
                 $profArr[$count]['adviser'],
                 $profArr[$count]['room'],
                 $_SESSION['approveID'],
-                $notifID,
                 $profArr[$count]['startDate'],
                 $endDate,
                 $profArr[$count]['startTime'],
-                $profArr[$count]['endTime']
+                $profArr[$count]['endTime'],
+                $notifID
             );
             if ($sql->execute()) {
                 $lastID = $conn->insert_id;
@@ -64,6 +64,7 @@ function insertReservation($userID, $endDate, $conn, $profArr, $count)
         echo '<script>alert("' . $remarks . '")</script>';
     }
 }
+
 function insertLetter($conn)
 {
     $sql_code = "INSERT INTO tbl_letterlist (letter_Path) VALUES (?);";
@@ -93,14 +94,8 @@ function insertLetter($conn)
         }
     }
     // move_uploaded_file($fileTmpPath, "assets/" . $fileName);
-    if ($condition) {
         return $letter_ID;
-    } else {
-        return 'error';
-    }
-
 }
-
 function insertJoinTable($conn, $letterID, $rID)
 {
     $sql_code = "INSERT INTO tbl_jointable (r_ID,letter_ID) VALUES(?,?)";

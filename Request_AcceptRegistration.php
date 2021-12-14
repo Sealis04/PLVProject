@@ -18,5 +18,5 @@ $sql_code = "UPDATE `tbl_user` SET `isApproved` = '1' WHERE `user_ID` = ?";
     $conn->close();
     $approval = 1;
     getEmail($sid, null,$remarks,$approval);
-    update($sid,1);
+    update($sid,1,$remarks,1,null);
 ?>
