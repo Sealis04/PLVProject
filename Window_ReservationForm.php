@@ -44,8 +44,6 @@
         window.location.href = "Window_LOGIN.php"
         </script>';
     }
-
-
     //form initialization
     // if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //     if (isset($_POST['equipAdd'])) {
@@ -129,7 +127,7 @@
     ?>
     <div class="nav2">
         <?php
-          require "Backend_CheckifLoggedIN.php";
+        //   require "Backend_CheckifLoggedIN.php";
         ?>
     </div>
     <div class="container">

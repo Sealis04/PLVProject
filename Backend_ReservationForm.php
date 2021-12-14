@@ -86,8 +86,8 @@
         let callReservations = callActiveReservations(async function(result) {
             var count = document.querySelectorAll('.eventChanger');
             // var label = count.querySelectorAll('.error');
-           
-         
+
+
             var sample = count.length - 1;
             var room = count[sample].getElementsByTagName('select')[0];
             let response = await disable(startDate, duration, endDate, startTime, endTime, room, result);
@@ -687,7 +687,7 @@
             attachInput.type = 'file';
             attachInput.className = 'form-control';
             attachInput.id = 'File';
-            attachInput.name = 'letterUpload';
+            attachInput.name = 'letterUpload[]';
             attachInput.multiple = true;
 
             var spanErr = document.createElement('span');
@@ -724,18 +724,18 @@
         number++;
         var form = await generateForm(number);
         var removeBtn = document.createElement('input');
-        removeBtn.type='button';
+        removeBtn.type = 'button';
         removeBtn.className = 'removeBtn';
-        removeBtn.style='float:right';
-        removeBtn.addEventListener('click',removeThis);
-        removeBtn.value ='X';
+        removeBtn.style = 'float:right';
+        removeBtn.addEventListener('click', removeThis);
+        removeBtn.value = 'X';
         removeBtn.formParam = form;
         var inputList = form.querySelectorAll('input');
         var mainBody = document.getElementById('reservationForm');
         var before = document.getElementById('restofForm');
         var hr = document.createElement('hr');
         removeBtn.hrParam = hr;
-        form.insertBefore(removeBtn,form.firstChild);
+        form.insertBefore(removeBtn, form.firstChild);
         mainBody.insertBefore(form, before);
         mainBody.insertBefore(hr, form)
         var tempDate = new Date(inputList[2].value);
@@ -743,10 +743,12 @@
         var endDate = tempDate.setDate(tempDate.getDate() + Number(duration));
         eventTrigger(inputList[2].value, inputList[3].value, endDate, inputList[4].value, inputList[5].value);
     }
-    function removeThis(evt){
-    evt.currentTarget.formParam.remove();
-    evt.currentTarget.hrParam.remove();
+
+    function removeThis(evt) {
+        evt.currentTarget.formParam.remove();
+        evt.currentTarget.hrParam.remove();
     }
+
     function getAllValues(evt) {
         evt.preventDefault();
         var inputSuccess;
@@ -831,75 +833,77 @@
 
         if (fileUploadSuccess && success && roomSuccess) {
             var everythingOkay;
-            if(profile.length>1){
-            loop1:
-            for (var i = 0; i < profile.length; i++) {
-                var numberofloops = (profile[i]['duration'] == 1) ? 0 : profile[i]['duration'] - 1;
-                loop2:
-                    for (var firstCycle = 0; firstCycle <= numberofloops; firstCycle++) {
-                        var firstStart = new Date(profile[i]['startDate'] + ' ' + profile[i]['startTime']);
-                        var firstEnd = new Date(profile[i]['startDate'] + ' ' + profile[i]['endTime']);
-                        firstStart.setDate(firstStart.getDate() + Number(firstCycle));
-                        firstEnd.setDate(firstEnd.getDate() + Number(firstCycle));
-                    }
-                loop3:
-                    for (var iv2 = 0; iv2 < profile.length; iv2++) {
-                        var numberofloops2 = (profile[iv2]['duration'] == 1) ? 0 : profile[iv2]['duration'] - 1;
-                        if (i != iv2) {
-                            loop4: for (var secondCycle = 0; secondCycle <= numberofloops2; secondCycle++) {
-                                var secondStart = new Date(profile[iv2]['startDate'] + ' ' + profile[iv2]['startTime']);
-                                var secondEnd = new Date(profile[iv2]['startDate'] + ' ' + profile[iv2]['endTime']);
-                                secondStart.setDate(secondStart.getDate() + Number(secondCycle));
-                                secondEnd.setDate(secondEnd.getDate() + Number(secondCycle));
-                                if ((firstStart <= secondEnd) && (secondStart <= firstEnd)) {
-                                    console.log('conflict');
-                                    if (profile[iv2]['EquipmentStuff'].length >= 1) {
-                                        loop5:
-                                        for (equipCount1 = 0; equipCount1 < profile[iv2]['EquipmentStuff'].length; equipCount1++) {
-                                            if (profile[i]['EquipmentStuff'].length >= 1) {
-                                                loop6:
-                                                for (equipCount2 = 0; equipCount2 < profile[i]['EquipmentStuff'].length; equipCount2++) {
+            if (profile.length > 1) {
+                loop1: for (var i = 0; i < profile.length; i++) {
+                    var numberofloops = (profile[i]['duration'] == 1) ? 0 : profile[i]['duration'] - 1;
+                    loop2:
+                        for (var firstCycle = 0; firstCycle <= numberofloops; firstCycle++) {
+                            var firstStart = new Date(profile[i]['startDate'] + ' ' + profile[i]['startTime']);
+                            var firstEnd = new Date(profile[i]['startDate'] + ' ' + profile[i]['endTime']);
+                            firstStart.setDate(firstStart.getDate() + Number(firstCycle));
+                            firstEnd.setDate(firstEnd.getDate() + Number(firstCycle));
+                        }
+                    loop3:
+                        for (var iv2 = 0; iv2 < profile.length; iv2++) {
+                            var numberofloops2 = (profile[iv2]['duration'] == 1) ? 0 : profile[iv2]['duration'] - 1;
+                            if (i != iv2) {
+                                loop4: for (var secondCycle = 0; secondCycle <= numberofloops2; secondCycle++) {
+                                    var secondStart = new Date(profile[iv2]['startDate'] + ' ' + profile[iv2]['startTime']);
+                                    var secondEnd = new Date(profile[iv2]['startDate'] + ' ' + profile[iv2]['endTime']);
+                                    secondStart.setDate(secondStart.getDate() + Number(secondCycle));
+                                    secondEnd.setDate(secondEnd.getDate() + Number(secondCycle));
+                                    if ((firstStart <= secondEnd) && (secondStart <= firstEnd)) {
+                                        console.log('conflict');
+                                        if (profile[iv2]['EquipmentStuff'].length >= 1) {
+                                            loop5: for (equipCount1 = 0; equipCount1 < profile[iv2]['EquipmentStuff'].length; equipCount1++) {
+                                                if (profile[i]['EquipmentStuff'].length >= 1) {
+                                                    loop6: for (equipCount2 = 0; equipCount2 < profile[i]['EquipmentStuff'].length; equipCount2++) {
                                                         if (profile[iv2]['EquipmentStuff'][equipCount1]['ID'] == profile[i]['EquipmentStuff'][equipCount2]['ID']) {
-                                                                var currentQty = parseInt(profile[iv2]['EquipmentStuff'][equipCount1]['qty'])+ parseInt(profile[i]['EquipmentStuff'][equipCount2]['qty']);
-                                                                if(currentQty > parseInt(profile[iv2]['EquipmentStuff'][equipCount1]['max'])){
-                                                                   alert('Total quantity of equipment has exceeded the maximum capacity possible.\nPlease change before proceeding');
-                                                                   var everythingOkay = false;
-                                                                    break loop1;
-                                                                }else{
-                                                                    var everythingOkay = true;
-                                                                }
+                                                            var currentQty = parseInt(profile[iv2]['EquipmentStuff'][equipCount1]['qty']) + parseInt(profile[i]['EquipmentStuff'][equipCount2]['qty']);
+                                                            if (currentQty > parseInt(profile[iv2]['EquipmentStuff'][equipCount1]['max'])) {
+                                                                alert('Total quantity of equipment has exceeded the maximum capacity possible.\nPlease change before proceeding');
+                                                                var everythingOkay = false;
+                                                                break loop1;
+                                                            } else {
+                                                                var everythingOkay = true;
+                                                            }
                                                         }
+                                                    }
                                                 }
                                             }
                                         }
-                                    }
-                                    if (profile[i]['room'] == profile[iv2]['room']) {
-                                        alert("Conflicting schedule in rooms. \nPlease change one before proceeding.");
-                                        var everythingOkay = false;
-                                        break loop1;
-                                    }else{
+                                        if (profile[i]['room'] == profile[iv2]['room']) {
+                                            alert("Conflicting schedule in rooms. \nPlease change one before proceeding.");
+                                            var everythingOkay = false;
+                                            break loop1;
+                                        } else {
+                                            everythingOkay = true;
+                                        }
+                                    } else {
                                         everythingOkay = true;
                                     }
-                                }else{
-                                    everythingOkay = true;
                                 }
                             }
                         }
-                    }
+                }
             }
-        }else{
-            everythingOkay = true;
+            else {
+                everythingOkay = true;
+            }
         }
-        }
-        if(everythingOkay == true){
+        if (everythingOkay == true) {
             submitForm(profile, fileNames);
         }
     }
 
 
-    function submitForm(profile, fileNames) {
+    function submitForm(profile) {
+        var form = document.getElementById('reservationForm');
         profile = JSON.stringify(profile);
-        fileNames = JSON.stringify(fileNames);
+        var formData = new FormData(form);
+        for (var value of formData.values()) {
+   console.log(value);
+}
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -913,7 +917,7 @@
                 }
             }
         }
-        xmlhttp.open("GET", "Request_InsertIntoTbl_reservation.php?var=" + profile + '&fileName=' + fileNames, true);
-        xmlhttp.send();
+        xmlhttp.open("POST", "Request_InsertIntoTbl_reservation.php?var=" + profile , true);
+        xmlhttp.send(formData);
     }
 </script>

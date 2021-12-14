@@ -10,11 +10,11 @@ function notification($userID,$decision){
     }
     $conn ->close();
 }
-function update($userID,$decision){
+function update($userID,$decision,$remarks){
     $conn = OpenCon();    
-    $sql_code = 'UPDATE tbl_notification SET decision = ? WHERE forUserID = ?';
+    $sql_code = 'UPDATE tbl_notification SET decision = ?,remarks=? WHERE forUserID = ?';
     if($sql = $conn->prepare($sql_code)){
-        $sql->bind_param('ii',$decision,$userID);
+        $sql->bind_param('ii',$decision,$remarks,$userID);
        if($sql->execute()){
        }
     }
