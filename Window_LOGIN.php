@@ -11,10 +11,10 @@
     <?php
 session_start();
 //check if user is logged in
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: Window_HomePage.php");
-    exit;
-}
+    if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+        header("location: Window_HomePage.php");
+        exit;
+    }
 
 $count = 0;
 $emailErr = $passwordErr="";
