@@ -91,7 +91,8 @@
           div.className = 'modalImage';
           var img = document.createElement('img');
           img.className = "myImg";
-          img.src = path[0];
+          img.src = '/' + path;
+          console.log(img.src);
           img.id = 'container';
           var modal = document.createElement('div');
           modal.id = 'myModal';
@@ -103,25 +104,29 @@
           modalImg.className = 'modal-content';
           modalImg.id = 'img01';
           var boxClicked = false;
-          img.addEventListener('click', function(e) {
-              e.stopPropagation();
-              modal.style.display = "block";
-              modalImg.src = this.src;
-              if (!boxClicked) {
-                  document.addEventListener('click', function(event) {
-                      if (event.target == modal) {
-                          boxClicked = false;
-                          modal.style.display = 'none'
-                          var i = 0;
-                      };
+          document.addEventListener('click', function(e) {
+              console.log(e.target);
+              if (e.target && e.target == img) {
+                  e.stopPropagation();
+                  modal.style.display = "block";
+                  modalImg.src = e.target.src;
+                  if (!boxClicked) {
+                      document.addEventListener('click', function(event) {
+                          if (event.target == modal) {
+                              boxClicked = false;
+                              modal.style.display = 'none'
+                              var i = 0;
+                          };
 
-                  })
+                      })
+                  }
+                  boxClicked = true;
               }
-              boxClicked = true;
           });
           modal.appendChild(span);
           modal.appendChild(modalImg);
           //Previous/next image
+          console.log(path.length);
           if (path.length > 1) {
               var prev = document.createElement('span');
               prev.className = 'left';
@@ -176,7 +181,7 @@
                   console.log(this.responseText)
                   var myObj = JSON.parse(this.responseText);
                   profileContent(myObj.coursename, myObj.sectionname);
-     
+
               }
           }
           xmlhttp.open("GET", "/Request_Course.php?var=" + asd + '&section=' + section, true);
@@ -201,9 +206,10 @@
                       var page = document.createElement('div');
                       page.id = 'pages';
                       motherDiv.id = "currentUserReservation";
-
-                      myObj.forEach(function(element, index) {
-                          reservationContent(motherDiv, userID, page, element, index);
+                      myObj.forEach(async function(element, index) {
+                          let result = await reservationContent(motherDiv, userID, page, element, index);
+                          motherDiv.appendChild(result[2]);
+                          callReservationImage(result[1], result[0])
                       });
                       page.innerHTML = myObj[myObj.length - 1].pagination;
                       motherDiv.appendChild(page);
@@ -215,55 +221,59 @@
       }
 
       function reservedEquipment(resID, mainDiv, userID, forUser, status, approval, typePending, imgLetter) {
-          var xmlhttp = new XMLHttpRequest();
-          xmlhttp.onreadystatechange = async function() {
-              if (this.readyState == 4 && this.status == 200) {
-                  var myObj = JSON.parse(this.responseText);
-                  var list = document.createElement('div');
-                  if (myObj.length == 0) {
-                      mainDiv.innerHTML += '<h3> No Equipment Borrowed </h3>';
-                  } else {
-                      mainDiv.innerHTML += '<h3> Equipment Borrowed: </h3>';
-                      myObj.forEach(async function(element, index) {
-                          await listEquipmentReserved(mainDiv, element, index, imgLetter);
-                      });
-                  }
-                  var printingPanel = "location.href ='/Backend_printingPanel.php?id=" + resID + "'";
-                  if (forUser) {
-                      if (status != 1) {
-                          if (approval == 2) {
-                              mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
-                              mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
-                              mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">';
-                              mainDiv.innerHTML += '<hr class="hr">';
-                          } else if (approval == 3) {
-                              mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '</h4>';
-                              mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
-                              mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
-                              mainDiv.innerHTML += '<hr class="hr">';
-                          } else if (approval == 1) {
-                              mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
-                              mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
-                              mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
-                              mainDiv.innerHTML += '<hr class="hr">';
-                          } else {
-                              mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Reservation is Over" + '</h4>';
-                              mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
-                          }
+          return new Promise(resolve => {
+              var xmlhttp = new XMLHttpRequest();
+              xmlhttp.onreadystatechange = async function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      var myObj = JSON.parse(this.responseText);
+                      var list = document.createElement('div');
+                      if (myObj.length == 0) {
+                          mainDiv.innerHTML += '<h3> No Equipment Borrowed </h3>';
+
                       } else {
-                          mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '</h4>';
-                          mainDiv.innerHTML += '<hr class="hr">';
+                          mainDiv.innerHTML += '<h3> Equipment Borrowed: </h3>';
+                          myObj.forEach(async function(element, index) {
+                              var x = await listEquipmentReserved(mainDiv, element, index, imgLetter);
+                          });
                       }
+                      var printingPanel = "location.href ='/Backend_printingPanel.php?id=" + resID + "'";
+                      if (forUser) {
+                          if (status != 1) {
+                              if (approval == 2) {
+                                  mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
+                                  mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">';
+                                  mainDiv.innerHTML += '<hr class="hr">';
+                              } else if (approval == 3) {
+                                  mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '</h4>';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
+                                  mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
+                                  mainDiv.innerHTML += '<hr class="hr">';
+                              } else if (approval == 1) {
+                                  mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
+                                  mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
+                                  mainDiv.innerHTML += '<hr class="hr">';
+                              } else {
+                                  mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Reservation is Over" + '</h4>';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="location.href= ' + printingPanel + '"> ';
+                              }
+                          } else {
+                              mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '</h4>';
+                              mainDiv.innerHTML += '<hr class="hr">';
+                          }
+                      }
+                      if (typePending) {
+                          mainDiv.innerHTML += '<input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ')">'
+                          mainDiv.innerHTML += '<input type="button" class = "header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ')">'
+                      }
+                      //   callReservationImage(mainDiv, resID);
+                      resolve('success');
                   }
-                  if (typePending) {
-                      mainDiv.innerHTML += '<input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ')">'
-                      mainDiv.innerHTML += '<input type="button" class = "header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ')">'
-                  }
-                  callReservationImage(mainDiv, resID);
               }
-          }
-          xmlhttp.open("GET", "/Request_ReservationForUserEquipment.php?var=" + resID, true);
-          xmlhttp.send();
+              xmlhttp.open("GET", "/Request_ReservationForUserEquipment.php?var=" + resID, true);
+              xmlhttp.send();
+          })
       }
 
       function callRegistrationImage(mainDiv, userID) {
@@ -289,6 +299,7 @@
                   if (this.readyState == 4 && this.status == 200) {
                       var myObj = JSON.parse(this.responseText);
                       var imgArray = Object.values(myObj);
+                      console.log(imgArray);
                       loadImages(mainDiv, imgArray);
                       resolve(imgArray);
                   }
@@ -303,7 +314,7 @@
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   // alert(this.responseText);
-                  dropContent();
+                  
                   callReservationDetails();
               }
           }
@@ -316,7 +327,7 @@
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   alert(this.responseText);
-                  dropContent();
+                  
                   callReservationDetails();
               }
           }
@@ -359,7 +370,7 @@
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   alert(this.responseText);
-                  dropContent();
+                  
                   regList();
               }
           }
@@ -374,7 +385,7 @@
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   alert(this.responseText);
-                  dropContent();
+                  
                   regList();
               }
           }
@@ -393,12 +404,12 @@
                   if (myObj[0] == null) {
                       motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                   } else {
-                      myObj.forEach((element,index)=>{
-                        finishedReservationContent(motherDiv,1,element,index);
+                      myObj.forEach((element, index) => {
+                          finishedReservationContent(motherDiv, 1, element, index);
                       })
-                    //   myObj.forEach(function(element, index) {
-                    //       userReservationContent(motherDiv, page, element, index, 'finished');
-                    //   });
+                      //   myObj.forEach(function(element, index) {
+                      //       userReservationContent(motherDiv, page, element, index, 'finished');
+                      //   });
                   }
               }
           }
@@ -435,7 +446,7 @@
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   alert(this.responseText);
-                  dropContent();
+                  
                   if (c == null) {
                       resList('pending');
                   } else {
@@ -454,7 +465,7 @@
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   alert(userID);
-                  dropContent();
+                  
                   if (c == null) {
                       resList('pending');
                   } else {
@@ -564,7 +575,7 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                  dropContent();
+                  
                   editTabContent();
                   var poliDiv = document.getElementById('polPanel');
                   var poliBtn = document.getElementById('polBtn');
@@ -579,7 +590,7 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                  dropContent();
+                  
                   editTabContent();
                   var equipDiv = document.getElementById('equipPanel');
                   var equipBtn = document.getElementById('equipBtn');
@@ -595,7 +606,7 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                  dropContent();
+                  
                   editTabContent();
                   var roomDiv = document.getElementById('roomPanel');
                   var roomBtn = document.getElementById('roomBtn');
@@ -611,7 +622,7 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                  dropContent();
+                  
                   editTabContent();
                   var poliDiv = document.getElementById('polPanel');
                   var poliBtn = document.getElementById('polBtn');
@@ -690,7 +701,7 @@
                       div.innerHTML = '<h3> No user reservation </h3?>';
                   } else {
                       myObj.forEach(function(element, index) {
-                          finishedReservationContent(div,0, element, index);
+                          finishedReservationContent(div, 0, element, index);
                       });
                   }
               }
@@ -700,7 +711,7 @@
       }
 
 
-      function onLoad(ID,review) {
+      function onLoad(ID, review) {
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = async function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -710,10 +721,10 @@
                   mainDiv.className = 'subClassName';
                   const myObj = await JSON.parse(this.responseText);
                   var fullName = myObj.firstName + ' ' + myObj.middleName + ' ' + myObj.lastName;
-                  mainDiv.innerHTML =  '<h4>Adviser: ' + myObj.eventAdviser + '</h4>';
-                  mainDiv.innerHTML +=  '<h4>Full Name: ' + fullName + '</h4>';
-                  const first = await loadRoomDetails(myObj.roomID, mainDiv, ID, myObj.userID,review)
-                  callReservationImage(mainDiv,myObj.r_ID)
+                  mainDiv.innerHTML = '<h4>Adviser: ' + myObj.eventAdviser + '</h4>';
+                  mainDiv.innerHTML += '<h4>Full Name: ' + fullName + '</h4>';
+                  const first = await loadRoomDetails(myObj.roomID, mainDiv, ID, myObj.userID, review)
+                  //   callReservationImage(mainDiv,myObj.r_ID)
                   div.appendChild(mainDiv);
               }
 
@@ -722,48 +733,48 @@
           xmlhttp.send();
       }
 
-      function loadRoomDetails(roomID, mainDiv, ID, userID,review) {
-          return new Promise(resolve=>{
-            var xmlhttp = new XMLHttpRequest();
-          xmlhttp.onreadystatechange = async function() {
-              if (this.readyState == 4 && this.status == 200) {
-                  var myObj = JSON.parse(this.responseText);
-                  mainDiv.innerHTML += '<h4>Room Borrowed: ' + myObj.roomName + '</h4>';
-                  const second = await loadEquipDetails(ID, mainDiv, userID,review);
-                  resolve('success');
+      function loadRoomDetails(roomID, mainDiv, ID, userID, review) {
+          return new Promise(resolve => {
+              var xmlhttp = new XMLHttpRequest();
+              xmlhttp.onreadystatechange = async function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      var myObj = JSON.parse(this.responseText);
+                      mainDiv.innerHTML += '<h4>Room Borrowed: ' + myObj.roomName + '</h4>';
+                      const second = await loadEquipDetails(ID, mainDiv, userID, review);
+                      resolve('success');
+                  }
               }
-          }
-          xmlhttp.open("GET", "/Request_SpecificRoom.php?var=" + roomID, true);
-          xmlhttp.send();
+              xmlhttp.open("GET", "/Request_SpecificRoom.php?var=" + roomID, true);
+              xmlhttp.send();
           });
 
       }
 
-      function loadEquipDetails(ID, mainDiv, userID,review) {
-          return new Promise(resolve=>{
-            var xmlhttp = new XMLHttpRequest();
-          xmlhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                  var myObj = JSON.parse(this.responseText);
-                  if (myObj.length == 0) {
-                      mainDiv.innerHTML += '<h4>No Equipment Borrowed</h4>';
-                  } else {
-                      mainDiv.innerHTML += '<h4>Equipment Borrowed: </h4>';
+      function loadEquipDetails(ID, mainDiv, userID, review) {
+          return new Promise(resolve => {
+              var xmlhttp = new XMLHttpRequest();
+              xmlhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      var myObj = JSON.parse(this.responseText);
+                      if (myObj.length == 0) {
+                          mainDiv.innerHTML += '<h4>No Equipment Borrowed</h4>';
+                      } else {
+                          mainDiv.innerHTML += '<h4>Equipment Borrowed: </h4>';
+                      }
+                      myObj.forEach(function(element, index) {
+                          listEquipDetails(ID, mainDiv, element, index);
+                      })
+                      if (review == 0) {
+                          mainDiv.innerHTML += '<textarea id ="remarksArea">'
+                          mainDiv.innerHTML += '<br><label>Mark User? <input type="checkbox" id="markUser">'
+                          mainDiv.innerHTML += '<br><input type="button" value="Submit" id = "' + ID + '" onclick="submitRemark(' + ID + ',' + userID + ')" >'
+                      }
+
+                      resolve('success');
                   }
-                  myObj.forEach(function(element, index) {
-                      listEquipDetails(ID, mainDiv, element, index);
-                  })
-                  if(review == 0){
-                  mainDiv.innerHTML += '<textarea id ="remarksArea">'
-                  mainDiv.innerHTML += '<br><label>Mark User? <input type="checkbox" id="markUser">'
-                  mainDiv.innerHTML += '<br><input type="button" value="Submit" id = "' + ID + '" onclick="submitRemark(' + ID + ',' + userID + ')" >'
-                  }
-                 
-                  resolve('success');
               }
-          }
-          xmlhttp.open("GET", "/Request_ReservationForUserEquipment.php?var=" + ID, true);
-          xmlhttp.send();
+              xmlhttp.open("GET", "/Request_ReservationForUserEquipment.php?var=" + ID, true);
+              xmlhttp.send();
           })
       }
 
@@ -780,7 +791,7 @@
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   alert(this.responseText)
-                  dropContent();
+                  
                   monitoringContent();
               }
           }
@@ -804,44 +815,54 @@
       }
       //HTML PART THAT LISTS THE EQUIPMENT IN THE WINDOW
       function listEquipmentReserved(mainDiv, element, index) {
-          var h4 = document.createElement('h4');
-          h4.innerHTML += element.equipName + " Qty: " + element.qty;
-          mainDiv.appendChild(h4);
-          //   mainDiv.innerHTML += '<h4>' + element.equipName + ' Qty: ' + element.qty + '</h4>';
+          return new Promise(resolve => {
+              var h4 = document.createElement('h4');
+              h4.innerHTML += element.equipName + " Qty: " + element.qty;
+              mainDiv.appendChild(h4);
+              resolve('success');
+              //   mainDiv.innerHTML += '<h4>' + element.equipName + ' Qty: ' + element.qty + '</h4>';
+          })
       }
 
       //HTML PART THAT LISTS THE RESERVATIONS IN THE WINDOW
-      function reservationContent(motherDiv, userID, page, element, index) {
-          var div = document.createElement('div')
-          var date = new Date(element.dateStart + ' ' + element.timeStart);
-          var diffTime = new Date(element.dateEnd) - new Date(element.dateStart);
-          var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-           var startTime = tConvert(element.timeStart);
-           var endTime = tConvert(element.timeEnd)
-          div.id = "resContent";
-          div.className = "resContent";
-          div.innerHTML = '<h3 class="_edit"> Event:' + element.event + '</h3>';
-          div.innerHTML += '<h3> Event Adviser:' + element.event + '</h3>';
-          div.innerHTML += '<h3>Starting Date: ' + element.dateStart + " </h3>";
-          div.innerHTML += '<h3>Time:' + startTime + ' to ' + endTime + " </h3>";
-          div.innerHTML += '<h3>Duration:' + numberofloops + " day/s. (Ends at: " + element.dateEnd + ") </h3>";
-          div.innerHTML += '<h3>Room: ' + element.room + '</h3>';
-          var date = new Date();
-          var d1 = new Date(element.end);
-          if (d1 < date) {
-              status = 4;
-          } else {
-              status = element.approval;
-          }
-          reservedEquipment(element.reservationID, div, userID, true, element.status, status, ...Array(1), element.ImgLetter);
-          //div.innerHTML += '<input type="button" class="header-btn btn" value="Edit" onclick="cancelReservation('+element.eventID+')">';
-          //div.innerHTML += '<input type="button" class="header-btn btn" onclick="cancelReservation('+element.eventID+')" value="Cancel">';
-          if (typeof(element.pagination) != undefined && element.pagination != null) {
-              page.innerHTML = element.pagination;
-              motherDiv.appendChild(page);
-          }
-          document.getElementById("content").appendChild(motherDiv);
-          motherDiv.appendChild(div);
+      async function reservationContent(motherDiv, userID, page, element, index) {
+          return new Promise(async resolve => {
+              var div = document.createElement('div')
+              var date = new Date(element.dateStart + ' ' + element.timeStart);
+              var diffTime = new Date(element.dateEnd) - new Date(element.dateStart);
+              var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+              var startTime = tConvert(element.timeStart);
+              var endTime = tConvert(element.timeEnd)
+              div.id = "resContent";
+              div.className = "resContent";
+              div.innerHTML = '<h3 class="_edit"> Event:' + element.event + '</h3>';
+              div.innerHTML += '<h3> Event Adviser:' + element.event + '</h3>';
+              div.innerHTML += '<h3>Starting Date: ' + element.dateStart + " </h3>";
+              div.innerHTML += '<h3>Time:' + startTime + ' to ' + endTime + " </h3>";
+              div.innerHTML += '<h3>Duration:' + numberofloops + " day/s. (Ends at: " + element.dateEnd + ") </h3>";
+              div.innerHTML += '<h3>Room: ' + element.room + '</h3>';
+              var date = new Date();
+              var d1 = new Date(element.end);
+              if (d1 < date) {
+                  status = 4;
+              } else {
+                  status = element.approval;
+              }
+              var x = await reservedEquipment(element.reservationID, div, userID, true, element.status, status, ...Array(1), element.ImgLetter);
+              var a = await new Promise(resolve => {
+                  document.getElementById("content").appendChild(motherDiv)
+                  resolve('success')
+              });
+              var s = await new Promise(resolve => {
+                  motherDiv.appendChild(div);
+                  resolve('success');
+              });
+              if (typeof(element.pagination) != undefined && element.pagination != null) {
+                  page.innerHTML = element.pagination;
+
+              }
+              resolve([element.reservationID, div, page]);
+          })
       }
 
 
@@ -1530,7 +1551,7 @@
           }
           xmlhttp.open("GET", "/Request_AddRoom.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
           xmlhttp.send();
-          dropContent();
+          
           editTabContent();
           var roomDiv = document.getElementById('roomPanel');
           var roomBtn = document.getElementById('roomBtn');
@@ -1551,7 +1572,7 @@
           }
           xmlhttp.open("GET", "/Request_AddEquipment.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
           xmlhttp.send();
-          dropContent();
+          
           editTabContent();
           var equipDiv = document.getElementById('equipPanel');
           var equipBtn = document.getElementById('equipBtn');
@@ -1604,7 +1625,7 @@
           callFinishedReservations(motherDiv);
       }
 
-      function finishedReservationContent(div, review,element, index) {
+      function finishedReservationContent(div, review, element, index) {
           isClicked = false;
           var label = document.createElement('h3');
           label.id = 'eventName';
@@ -1625,7 +1646,7 @@
           sideInput.type = 'image';
           sideInput.src = '/assets/side-arrow.png';
           sideInput.addEventListener('click', function() {
-              loadContent(element.reservationID,review);
+              loadContent(element.reservationID, review);
           })
           sideDiv.appendChild(label);
           sideDiv.appendChild(space);
@@ -1634,24 +1655,25 @@
           div.appendChild(sideDiv);
       }
 
-      function loadContent(ID,review) {
+      function loadContent(ID, review) {
           if (isClicked) {
               if (activeID == ID) {
                   document.getElementById('subContents').remove();
                   isClicked = false;
               } else {
                   document.getElementById('subContents').remove();
-                  onLoad(ID,review);
+                  onLoad(ID, review);
                   activeID = ID;
                   isClicked = true;
               }
           } else {
-              onLoad(ID,review);
+              onLoad(ID, review);
               isClicked = true;
               activeID = ID;
           }
       }
+
       function listEquipDetails(ID, mainDiv, element, index) {
-          mainDiv.innerHTML += '<h4 class="equipID" placeholder = "EquipName">' + element.equipName + ':' + + element.qty+' </h4>'
+          mainDiv.innerHTML += '<h4 class="equipID" placeholder = "EquipName">' + element.equipName + ':' + +element.qty + ' </h4>'
       }
   </script>
