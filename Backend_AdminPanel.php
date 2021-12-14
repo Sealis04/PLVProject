@@ -91,7 +91,7 @@
           div.className = 'modalImage';
           var img = document.createElement('img');
           img.className = "myImg";
-          img.src = '/' + path;
+          img.src = '/' + path[0];
           img.id = 'container';
           var modal = document.createElement('div');
           modal.id = 'myModal';

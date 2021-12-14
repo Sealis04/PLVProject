@@ -88,8 +88,6 @@
         let callReservations = callActiveReservations(async function(result) {
             var count = document.querySelectorAll('.eventChanger');
             // var label = count.querySelectorAll('.error');
-
-
             var sample = count.length - 1;
             var room = count[sample].getElementsByTagName('select')[0];
             let response = await disable(startDate, duration, endDate, startTime, endTime, room, result);
@@ -247,7 +245,7 @@
         subDiv_1.appendChild(select);
         subDiv_1.appendChild(buttonAdd);
         document.getElementById(equipList.id).appendChild(subDiv_1)
-        listEquip(true, select);
+        listEquip(true, select,...Array(3),buttonAdd);
         //disableOnChange();
     }
 
@@ -393,15 +391,24 @@
         checkIfSelectedIsAdded(evt);
     }
 
-    function listEquip(generate, select, equipID, input, label) {
+    function listEquip(generate, select, equipID, input, label,buttonAdd) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
                 if (generate == true) {
-                    myObj.forEach(function(element, index) {
+                    if(myObj.length >0){
+                        myObj.forEach(function(element, index) {
                         renderListEquip(select, element, index)
                     });
+                    }else{
+                        buttonAdd.disabled = true;
+                        var option = document.createElement('option');
+                        option.appendChild(document.createTextNode('No Equipment Available'));
+                        option.value = null;
+                        select.appendChild(option);
+                    }
+                   
                 } else {
                     myObj.forEach(function(element, index) {
                         renderMaxQty(equipID, input, label, element, index)
@@ -758,7 +765,6 @@
         var roomSuccess;
         var facts = true;
         let profile = [];
-        let fileNames = [];
         var x = document.getElementById('restofForm').querySelectorAll('input');
         var uploadedCount = x[1].files.length
         document.querySelectorAll(".formparts").forEach(f => {
@@ -815,22 +821,8 @@
                 alert("Please upload your attachment letters");
             }
             fileUploadSuccess = false;
-        } else {
-            for (fileCount = 0; fileCount < uploadedCount; fileCount++) {
-                if (success) {
-                    if (!x[1].files[fileCount].name.match(/.(jpg|jpeg|png|gif)$/i)) {
-                        alert('Please upload a valid image format of the Letter \n (jpg|jpeg|png|gif)');
-                        x[1].value = '';
-                        break;
-                    } else {
-                        fileNames.push({
-                            'fileSource': 'assets/' + x[1].files[fileCount].name
-                        })
-                        fileUploadSuccess = true;
-                    }
-                }
-
-            }
+        }else{
+            fileUploadSuccess = true;
         }
 
         if (fileUploadSuccess && success && roomSuccess) {
@@ -894,7 +886,7 @@
             }
         }
         if (everythingOkay == true) {
-            submitForm(profile, fileNames);
+            submitForm(profile);
         }
     }
 
