@@ -82,9 +82,8 @@
                 var a = await callReservationImage(div,ID);
                 resolve('success');
             }
-
         }
-        xmlhttp.open("GET", "/Request_SpecificReservation.php?r_ID=" + ID, true);
+        xmlhttp.open("GET", "/Request_SpecificReservation.php?r_ID=" + ID +'&isReviewed=' + null, true);
         xmlhttp.send();
         })
        
@@ -103,7 +102,7 @@
                     return myObj;
                 }
             }
-            xmlhttp.open("GET", "/Request_Course.php?var=" + asd + '&section=' + section, true);
+            xmlhttp.open("GET", "/Request_Course.php?var=" + asd + '&section=' + section+ '&userID=' + null, true);
             xmlhttp.send();
         })
 
