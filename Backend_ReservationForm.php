@@ -889,8 +889,6 @@
             submitForm(profile);
         }
     }
-
-
     function submitForm(profile) {
         var form = document.getElementById('reservationForm');
         profile = JSON.stringify(profile);

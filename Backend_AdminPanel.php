@@ -170,15 +170,16 @@
       function callUserDetails() {
           var asd = <?php echo $_SESSION["usercourse"]; ?>;
           var section = <?php echo $_SESSION['userSection']; ?>;
+          var userID = <?php echo $_SESSION["userID"];?>;
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   var myObj = JSON.parse(this.responseText);
-                  profileContent(myObj.coursename, myObj.sectionname);
+                  profileContent(myObj.coursename, myObj.sectionname,myObj.isApproved);
 
               }
           }
-          xmlhttp.open("GET", "/Request_Course.php?var=" + asd + '&section=' + section, true);
+          xmlhttp.open("GET", "/Request_Course.php?var=" + asd + '&section=' + section + '&userID=' + userID, true);
           xmlhttp.send();
       }
 
@@ -799,16 +800,25 @@
           xmlhttp.send();
       }
       //ForEach Functions
-      function profileContent(course, section) {
+      function profileContent(course, section,isApproved) {
           var fn = "<?php echo $_SESSION["fullName"]; ?>";
           var cn = <?php echo $_SESSION["usercontactnumber"]; ?>;
           var email = "<?php echo $_SESSION["email"]; ?>";
           var pass = "<?php echo $_SESSION["password"]; ?>";
           var userID = "<?php echo $_SESSION['user_ID']; ?>";
+          var status;
           var div = document.createElement('div');
           div.id = "profContent";
           div.innerHTML = '<h3> Name: ' + fn + '</h3> <br> <h4> Course and Section: ' + course + ' ' + section + '<h4> <br>';
           div.innerHTML += '<h4> Email: ' + email + '<h4><br>';
+          if(isApproved == 1){
+            status = 'Accepted';
+          }else if(isApproved == 2){
+            status = 'Pending';
+          }else if(isApproved == 3){
+            status = 'Denied';
+          }
+          div.innerHTML += '<h4> Status: ' + status + '<h4><br>';
           // modal img code
           let x = callRegistrationImage(div, userID);
           document.getElementById("content").appendChild(div);
