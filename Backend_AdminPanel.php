@@ -701,7 +701,8 @@
               if (this.readyState == 4 && this.status == 200) {
                   var myObj = JSON.parse(this.responseText);
                   if (myObj[0] == null) {
-                      div.innerHTML = '<h3> No user reservation </h3?>';
+                      div.innerHTML += '<h3> Reservations to be monitored:  </h3?>'
+                      div.innerHTML += '<h3> No user reservation </h3>';
                   } else {
                       myObj.forEach(function(element, index) {
                           finishedReservationContent(div, 0, element, index);
@@ -922,7 +923,7 @@
               var bigDiv2 = document.createElement('div');
               bigDiv2.className = 'finishedDiv';
               bigDiv2.id = 'bigFinishedDiv';
-              var label2 = document.createElement('h2');
+              var label2 = document.createElement('h3');
               label2.textContent = 'Finished And Reviewed Reservations';
               bigDiv2.appendChild(label2);
               biggestDiv.appendChild(bigDiv2);
