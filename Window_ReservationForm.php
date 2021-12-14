@@ -129,19 +129,19 @@
     ?>
     <div class="nav2">
         <?php
-         require "Backend_CheckifLoggedIN.php";
+          require "Backend_CheckifLoggedIN.php";
         ?>
     </div>
     <div class="container">
         <div class="form-container">
             <legend>FORM</legend>
-            <input type='button' onclick="addReservation()" value='click me'>
+            <input type='button' onclick="addReservation()" value='Add' style='float:right' >
             <label for="Name">Name:</label>
             <input type="text" id="name" disabled name="Name"><br><br>
             <label for="Course">Course:</label>
             <input type="text" id="course" disabled name="Course"><br><br>
-            <div id='mainBody'>
-            </div>
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="multipart/form-data" id="reservationForm">
+            </form>
         </div>
     </div>
     <?php

@@ -534,6 +534,22 @@ div.pagination span.disabled {
     width: 100%;
   }
 }
+
+.left{
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  float:left;
+  margin: 5px;
+}
+
+.right{
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  float:right;
+  margin: 5px;
+}
 /* Removed float:right from .userResContent and .resContent */
 
 
