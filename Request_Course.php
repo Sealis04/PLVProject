@@ -1,6 +1,7 @@
 <?php
 $courseID = $_REQUEST["var"];
 $sectionID = $_REQUEST['section'];
+$userID = $_REQUEST['userID'];
 // $conn=OpenCon();
 // $user_ID = $_REQUEST["var"];
 // $sql_code = "SELECT * from tbl_user WHERE user_ID = ?";
@@ -57,6 +58,22 @@ include "db_connection.php";
         }
         $sql2->close();
     }
+
+    $sql_code3 = "SELECT isApproved from tbl_user WHERE `user_ID` =?";
+    if($sql3=$conn->prepare($sql_code3)){
+        $sql3->bind_param ("i",$userID);
+        if($sql3->execute()){
+            $sql3->store_result();
+            if($sql3->num_rows == 1){
+                $sql3->bind_result($isApproved);
+                    if($sql3->fetch()){
+                        $details['isApproved'] = $isApproved; 
+                    }
+            }
+        }
+        $sql3->close();
+    }
+    
     
     $myJSON = json_encode($details);
     echo $myJSON;
