@@ -171,6 +171,7 @@
           var asd = <?php echo $_SESSION["usercourse"]; ?>;
           var section = <?php echo $_SESSION['userSection']; ?>;
           var userID = <?php echo $_SESSION["userID"];?>;
+
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -811,8 +812,10 @@
           var email = "<?php echo $_SESSION["email"]; ?>";
           var pass = "<?php echo $_SESSION["password"]; ?>";
           var userID = "<?php echo $_SESSION['user_ID']; ?>";
-          var status;
+          var isAdmin = <?php echo $_SESSION['isAdmin'];?>;
           var div = document.createElement('div');
+          var status;
+          if(isAdmin != 1){
           div.id = "profContent";
           div.innerHTML = '<h3> Name: ' + fn + '</h3> <br> <h4> Course and Section: ' + course + ' ' + section + '<h4> <br>';
           div.innerHTML += '<h4> Email: ' + email + '<h4><br>';
@@ -824,6 +827,10 @@
             status = 'Denied';
           }
           div.innerHTML += '<h4> Status: ' + status + '<h4><br>';
+          }else{
+          div.innerHTML = '<h3> Name: ' + fn + '</h3> <br>';
+          div.innerHTML += '<h4> Email: ' + email + '<h4><br>';
+          }
           // modal img code
           let x = callRegistrationImage(div, userID);
           document.getElementById("content").appendChild(div);
@@ -844,8 +851,10 @@
           return new Promise(async resolve => {
               var div = document.createElement('div')
               var date = new Date(element.dateStart + ' ' + element.timeStart);
-              var diffTime = new Date(element.dateEnd) - new Date(element.dateStart);
-              var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+              var diffTime = Math.abs(new Date(element.dateEnd) - new Date(element.dateStart));
+              console.log(Math.ceil(diffTime/(1000*60*60*24)));
+              console.log(diffTime)
+              var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24) + 1);
               var startTime = tConvert(element.timeStart);
               var endTime = tConvert(element.timeEnd)
               div.id = "resContent";
@@ -944,7 +953,7 @@
               div.id = 'pendingContent'
               var date = new Date(element.dateStart + ' ' + element.timeStart);
               var diffTime = new Date(element.dateEnd) - new Date(element.dateStart);
-              var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+              var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24) + 1);
               endTime = tConvert(element.timeEnd)
               startTime = tConvert(element.timeStart)
               div.innerHTML += '<h3> Event Adviser:' + element.event + '</h3>';
