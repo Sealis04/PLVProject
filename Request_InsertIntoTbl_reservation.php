@@ -13,11 +13,8 @@ session_start();
 $conn = OpenCon();
 $userID = $_SESSION["userID"];
 for ($count = 0; $count < count($profArr); $count++) {
-    $duration = $profArr[$count]['duration'];
-    $days = '+ ' . $duration - 1 . 'days';
-    $endDate = Date('Y-m-d', strtotime($profArr[$count]['startDate'] . $days));
+    $endDate = $profArr[$count]['endDate'];
     $r_IDArray[] = insertReservation($userID, $endDate, $conn, $profArr, $count);
-    // echo $r_ID['r_ID'];
 }
 $letterArray = insertLetter($conn);
 echo insertJoinTable($conn, $letterArray, $r_IDArray);

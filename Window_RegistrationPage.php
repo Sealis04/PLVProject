@@ -213,11 +213,10 @@
                       </div>
                       <!--CHANGES-->
                       <div class="md-form form-group">
-                          <label for="course">Course:</label>
-                          <select id="course" name="course" >
-                          </select>
-                          <label for="Section">Section:</label>
-                          <select id="section" name="section" >
+                          <label for="Type">Register as:</label>
+                          <select id="Type" name="Type" >
+                            <option value='1'>Student</option>
+                            <option value='2'>Teacher</option>
                           </select>
                       </div>
                       <!--END-->
