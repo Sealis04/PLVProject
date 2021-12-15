@@ -73,6 +73,7 @@ a {
 
 
 body {
+  margin-left: 5% !important;
   margin: 0;
   padding: 0;
   background-color: white;
@@ -215,4 +216,9 @@ body {
   font-size: 18px;
   color: white;
   display: block;
+}
+
+legend{
+  margin-top: 50px;
+  font-weight: bold;
 }

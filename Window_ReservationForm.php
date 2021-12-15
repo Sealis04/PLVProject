@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
     <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
-
-    <link rel="stylesheet" href="/CSS/Form.css">
+    <link rel="stylesheet" href="/css/side-nav.css">
+    <link rel="stylesheet" href="/css/Form.css">
 </head>
 
 <body>

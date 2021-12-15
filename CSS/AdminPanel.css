@@ -38,7 +38,7 @@ a {
 
 .header-btn:active{
   color: white;
-  background-color: #00f500;
+ 
 }
 .header-btn:hover{
   color: white;
@@ -70,10 +70,6 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.container { 
-  padding: 0;
-  
-}
 
 .btn{
   margin-left: 10px;
@@ -222,6 +218,8 @@ ul input {
   margin-bottom: -10;
 }
 
+
+
 #resContent h3{
   margin: 0;
   padding: 0;
@@ -253,6 +251,8 @@ ul input {
   margin-left: auto;
   margin-right: 10px;
 }
+
+
 
 .accepted{
   color: green;
@@ -306,7 +306,7 @@ table{
  float: right;
  margin-top: 8px;
  margin-right: 452px;
- background-color: #000099 !important;
+ background-color: #0F1057 !important;
  text-decoration: none;
 border-radius: 5px;
 font-size: 16px !important;
@@ -314,8 +314,12 @@ color: white;
  
 }
 
+.bottom:hover{
+  background-color: #000099 !important;
+}
+
 #policiesID{
-  margin-right: 395px;
+  margin-right: 425px;
   color: white;
  font-size: 16px !important;
 }
@@ -379,6 +383,10 @@ color: white;
   font-size: 20;
   margin-left: 10px;
   margin-top: -10px;
+}
+
+#monitoringContent h3{
+  font-size: 24px;
 }
 
 /*Monitoring Form*/
@@ -454,8 +462,10 @@ div.pagination span.disabled {
   cursor: pointer;
   transition: 0.3s;
   float: right;
-  vertical-align: middle;
-  margin: -22% 10% 0 0 !important;
+  clear: right;
+  margin-top: -280px;
+  margin-left: 60%;
+  margin-right: 15%;
   height: 110px;
   width: 110px;
 }
@@ -553,3 +563,38 @@ div.pagination span.disabled {
 /* Removed float:right from .userResContent and .resContent */
 
 
+
+#pendingContent h3{
+  margin: 0;
+  padding: 0;
+}
+
+
+._profContent h3{
+  margin: 0;
+  padding: 0;
+}
+
+._profContent h4{
+  margin-top: 5;
+  margin-bottom: 1px;
+}
+
+._profContent input{
+  margin-top: 60px;
+  margin: 0;
+
+}
+
+._profContent img{
+ vertical-align: middle;
+ margin-top: -8%;
+ }
+
+ textarea{
+  font-size: 20px;
+}
+
+label{
+  font-size: 20px;
+}

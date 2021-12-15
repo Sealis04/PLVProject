@@ -264,22 +264,22 @@
                           if (status != 1) {
                               if (approval == 2) {
                                   mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab(' + printingPanel + ')"> ';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                                   mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">';
                                   mainDiv.innerHTML += '<hr class="hr">';
                               } else if (approval == 3) {
                                   mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab(' + printingPanel + ')"> ';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                                   mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
                                   mainDiv.innerHTML += '<hr class="hr">';
                               } else if (approval == 1) {
                                   mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab(' + printingPanel + ')"> ';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                                   mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
                                   mainDiv.innerHTML += '<hr class="hr">';
                               } else {
                                   mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Reservation is Over" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab(' + printingPanel + ')"> ';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                               }
                           } else {
                               mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '</h4>';
@@ -293,7 +293,7 @@
                           textarea.placeholder = "Remarks";
                           mainDiv.appendChild(textarea);
                           mainDiv.innerHTML += '<br><br><input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
-                          mainDiv.innerHTML += '<input type="button" class = "header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
+                          mainDiv.innerHTML += '<input type="button" class ="header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
                       }
                       resolve('success');
                   }
@@ -769,6 +769,7 @@
                   mainDiv.innerHTML += '<h4>Full Name: ' + fullName + '</h4>';
                   const first = await loadRoomDetails(myObj.roomID, mainDiv, ID, myObj.userID, review)
                   div.appendChild(mainDiv);
+                  mainDiv.innerHTML += '<hr class="hr">';
               }
 
           }
@@ -852,6 +853,7 @@
           var status;
           if (isAdmin != 1) {
               div.id = "profContent";
+              div.className = "_profContent";
               div.innerHTML = '<h3> Name: ' + fn + '</h3> <br> <h4> Course and Section: ' + course + ' ' + section + '<h4> <br>';
               div.innerHTML += '<h4> Email: ' + email + '<h4><br>';
               if (isApproved == 1) {
@@ -938,6 +940,7 @@
           //   div.innerHTML += '<textarea id = "remarks" placeholder="Remarks"></textarea><br>';
           div.innerHTML += '<br><br><input type="button" class="header-btn btn" value="Accept" onclick="AcceptRegistration(' + element.user + ',' + textarea.textContent + ')">';
           div.innerHTML += '<input type="button" class="decline header-btn btn" onclick="DeclineRegistration(' + element.user + ',' + textarea.textContent + ')" value="Decline">';
+          div.innerHTML += '<hr class="hr">';
           document.getElementById("content").appendChild(motherDiv);
           motherDiv.appendChild(div);
           callRegistrationImage(div, element.user)
@@ -1007,6 +1010,7 @@
               if (typeof(element.pagination) != undefined && element.pagination != null) {
                   page.innerHTML = element.pagination;
               }
+              div.innerHTML += '<hr class="hr">';
               motherDiv.appendChild(div);
               resolve([page, element.reservationID, div]);
           })

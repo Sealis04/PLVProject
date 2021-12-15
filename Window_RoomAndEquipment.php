@@ -27,9 +27,7 @@
 
         <!--body-->
         <div class="container">
-            <div id = "carousel">
-            <img class="image" src="assets/announcement.png"/>
-            </div>
+            
             <div class="row"> 
                     
                 <legend>Room And Equipment</legend>
