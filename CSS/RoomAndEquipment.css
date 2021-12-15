@@ -75,6 +75,7 @@ p{
 }
 
 body {
+  margin-left: 5% !important;
   margin: 0;
   padding: 0;
   background-color: white;
@@ -179,6 +180,10 @@ ul input {
   background-color: rgba(228, 228, 228, 0.904);
 }
 
+legend{
+  margin-top: 50px;
+  font-weight: bold;
+}
 
 
 .content{

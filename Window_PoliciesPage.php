@@ -28,9 +28,7 @@
     </nav>
     <div class="container">
         <legend>Policies</legend>
-        <div class="image">
-            <img src="assets/announcement.png" />
-        </div>
+        
     </div>
 
     <div class="container">
