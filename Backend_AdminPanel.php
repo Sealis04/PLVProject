@@ -16,34 +16,61 @@
       var url = window.location.href;
       var url_string = new URL(url);
       var c = url_string.searchParams.get('page');
-      var categ = url_string.searchParams.get('category');
+      var category = url_string.searchParams.get('category');
       var windowType = url_string.searchParams.get('window');
       var page_number;
-      if (c != null) {
-          if (categ == 'finished') {
-              resList('archives'.c);
-          } else if (categ == 'pending') {
-              resList('pending', c);
-          } else if (categ == 'user') {
-              callReservationDetails(c);
-          } else if (categ == 'registration') {
-              regList(c);
-          } else if (categ == 'equipment') {
-              editTabContent();
-              loadLists('1', document.getElementById('equipPanel'), c)
-          } else if (categ == 'room') {
-              editTabContent();
-              loadLists('2', document.getElementById('roomPanel'), c)
-          } else if (categ == 'policies') {
-              editTabContent();
-              loadLists('3', document.getElementById('polPanel'), c)
-          } else if (categ == 'userList') {
-              editTabContent();
-              loadLists('4', document.getElementById('userPanel'), c)
+      loadStuff(category)
+
+      function loadStuff(categ) {
+          if (c != null) {
+              if (categ == 'finished') {
+                  resList('archives', c);
+              } else if (categ == 'pending') {
+                  resList('pending', c);
+              } else if (categ == 'user') {
+                  callReservationDetails(c);
+              } else if (categ == 'registration') {
+                  regList(c);
+              } else if (categ == 'equipment') {
+                  editTabContent();
+                  loadLists('1', document.getElementById('equipPanel'), c)
+              } else if (categ == 'room') {
+                  editTabContent();
+                  loadLists('2', document.getElementById('roomPanel'), c)
+              } else if (categ == 'policies') {
+                  editTabContent();
+                  loadLists('3', document.getElementById('polPanel'), c)
+              } else if (categ == 'userList') {
+                  editTabContent();
+                  loadLists('4', document.getElementById('userPanel'), c)
+              }
+          } else if (categ == 'notifUser') {
+              callReservationDetails();
+          } else {
+              if (categ == 'finished') {
+                  resList('archives');
+              } else if (categ == 'pending') {
+                  resList('pending');
+              } else if (categ == 'user') {
+                  callReservationDetails();
+              } else if (categ == 'registration') {
+                  regList(c);
+              } else if (categ == 'equipment') {
+                  editTabContent();
+                  loadLists('1', document.getElementById('equipPanel'))
+              } else if (categ == 'room') {
+                  editTabContent();
+                  loadLists('2', document.getElementById('roomPanel'))
+              } else if (categ == 'policies') {
+                  editTabContent();
+                  loadLists('3', document.getElementById('polPanel'))
+              } else if (categ == 'userList') {
+                  editTabContent();
+                  loadLists('4', document.getElementById('userPanel'))
+              }
           }
-      } else if (categ == 'notifUser') {
-          callReservationDetails();
       }
+
 
 
 
@@ -170,13 +197,13 @@
       function callUserDetails() {
           var asd = <?php echo $_SESSION["usercourse"]; ?>;
           var section = <?php echo $_SESSION['userSection']; ?>;
-          var userID = <?php echo $_SESSION["userID"];?>;
+          var userID = <?php echo $_SESSION["userID"]; ?>;
 
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   var myObj = JSON.parse(this.responseText);
-                  profileContent(myObj.coursename, myObj.sectionname,myObj.isApproved);
+                  profileContent(myObj.coursename, myObj.sectionname, myObj.isApproved);
 
               }
           }
@@ -237,22 +264,22 @@
                           if (status != 1) {
                               if (approval == 2) {
                                   mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab('+printingPanel+')"> ';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab(' + printingPanel + ')"> ';
                                   mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">';
                                   mainDiv.innerHTML += '<hr class="hr">';
                               } else if (approval == 3) {
                                   mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab('+printingPanel+')"> ';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab(' + printingPanel + ')"> ';
                                   mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
                                   mainDiv.innerHTML += '<hr class="hr">';
                               } else if (approval == 1) {
                                   mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab('+printingPanel+')"> ';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab(' + printingPanel + ')"> ';
                                   mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
                                   mainDiv.innerHTML += '<hr class="hr">';
                               } else {
                                   mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Reservation is Over" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab('+printingPanel+')"> ';
+                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="print" onclick="openNewTab(' + printingPanel + ')"> ';
                               }
                           } else {
                               mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '</h4>';
@@ -275,9 +302,9 @@
               xmlhttp.send();
           })
       }
-      
-      function openNewTab(url){
-        window.open(url,'_blank').focus();
+
+      function openNewTab(url) {
+          window.open(url, '_blank').focus();
       }
 
       function callRegistrationImage(mainDiv, userID) {
@@ -452,7 +479,7 @@
           bigDiv.appendChild(motherDiv);
       }
       // Accept Reservations
-      function AcceptReservation(eventID, userID, notifID,textArea) {
+      function AcceptReservation(eventID, userID, notifID, textArea) {
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -583,11 +610,12 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-
-                  editTabContent();
-                  var poliDiv = document.getElementById('polPanel');
-                  var poliBtn = document.getElementById('polBtn');
-                  polBtn.click('3', poliDiv);
+                  document.getElementById('editList').remove();
+                  loadStuff('policies');
+                  //   editTabContent();
+                  //   var poliDiv = document.getElementById('polPanel');
+                  //   var poliBtn = document.getElementById('polBtn');
+                  //   polBtn.click('3', poliDiv);
               }
           }
           xmlhttp.open("GET", "/Request_RemovePolicies.php?var=" + ID, true);
@@ -598,11 +626,12 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-
-                  editTabContent();
-                  var equipDiv = document.getElementById('equipPanel');
-                  var equipBtn = document.getElementById('equipBtn');
-                  equipBtn.click('2', equipDiv);
+                  document.getElementById('editList').remove();
+                  //   editTabContent();
+                  //   var equipDiv = document.getElementById('equipPanel');
+                  //   var equipBtn = document.getElementById('equipBtn');
+                  loadStuff('equipment')
+                  //   equipBtn.click('2', equipDiv);
               }
           }
           xmlhttp.open("GET", "/Request_RemoveEquipment.php?var=" + ID, true);
@@ -614,11 +643,11 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-
-                  editTabContent();
-                  var roomDiv = document.getElementById('roomPanel');
-                  var roomBtn = document.getElementById('roomBtn');
-                  roomBtn.click('2', roomDiv);
+                  document.getElementById('editList').remove();
+                  loadStuff('room');
+                  //   var roomDiv = document.getElementById('roomPanel');
+                  //   var roomBtn = document.getElementById('roomBtn');
+                  //   roomBtn.click('2', roomDiv);
               }
           }
           xmlhttp.open("GET", "/Request_RemoveRoom.php?var=" + ID, true);
@@ -630,11 +659,12 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-
-                  editTabContent();
-                  var poliDiv = document.getElementById('polPanel');
-                  var poliBtn = document.getElementById('polBtn');
-                  polBtn.click('3', poliDiv);
+                  document.getElementById('editList').remove();
+                  loadStuff('policies');
+                  //   editTabContent();
+                  //   var poliDiv = document.getElementById('polPanel');
+                  //   var poliBtn = document.getElementById('polBtn');
+                  //   polBtn.click('3', poliDiv);
               }
           }
           xmlhttp.open("GET", "/Request_AddPolicies.php?name=" + name + '&desc=' + desc, true);
@@ -651,7 +681,7 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-
+                  loadStuff('userList');
               }
           }
           xmlhttp.open("GET", "/Request_EditUser.php?availability=" + eAvailability + '&ID=' + ID, true);
@@ -663,7 +693,7 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-
+                  loadStuff('policies');
               }
           }
           xmlhttp.open("GET", "/Request_EditPolicies.php?name=" + name + '&desc=' + desc + '&ID=' + ID, true);
@@ -679,13 +709,16 @@
           }
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {}
+              if (this.readyState == 4 && this.status == 200) {
+                  loadStuff('equipment');
+              }
           }
           xmlhttp.open("GET", "/Request_EditEquipList.php?name=" + name + '&quantity=' + quantity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
           xmlhttp.send();
       }
 
       function editRoomQuery(name, capacity, desc, availability, ID) {
+          console.log('asd');
           var eAvailability;
           if (availability) {
               eAvailability = 0;
@@ -694,7 +727,9 @@
           }
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {}
+              if (this.readyState == 4 && this.status == 200) {
+                  loadStuff('equipment');
+              }
           }
           xmlhttp.open("GET", "/Request_EditRoomList.php?name=" + name + '&cap=' + capacity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
           xmlhttp.send();
@@ -777,7 +812,7 @@
                           mainDiv.innerHTML += '<br><label>Mark User? <input type="checkbox" id="markUser">'
                           mainDiv.innerHTML += '<br><input type="button" value="Submit" id = "' + ID + '" onclick="submitRemark(' + ID + ',' + userID + ')" >'
                       }
-                      callReservationImage(mainDiv,ID)
+                      callReservationImage(mainDiv, ID)
                       resolve('success');
                   }
               }
@@ -806,30 +841,30 @@
           xmlhttp.send();
       }
       //ForEach Functions
-      function profileContent(course, section,isApproved) {
+      function profileContent(course, section, isApproved) {
           var fn = "<?php echo $_SESSION["fullName"]; ?>";
           var cn = <?php echo $_SESSION["usercontactnumber"]; ?>;
           var email = "<?php echo $_SESSION["email"]; ?>";
           var pass = "<?php echo $_SESSION["password"]; ?>";
           var userID = "<?php echo $_SESSION['user_ID']; ?>";
-          var isAdmin = <?php echo $_SESSION['isAdmin'];?>;
+          var isAdmin = <?php echo $_SESSION['isAdmin']; ?>;
           var div = document.createElement('div');
           var status;
-          if(isAdmin != 1){
-          div.id = "profContent";
-          div.innerHTML = '<h3> Name: ' + fn + '</h3> <br> <h4> Course and Section: ' + course + ' ' + section + '<h4> <br>';
-          div.innerHTML += '<h4> Email: ' + email + '<h4><br>';
-          if(isApproved == 1){
-            status = 'Accepted';
-          }else if(isApproved == 2){
-            status = 'Pending';
-          }else if(isApproved == 3){
-            status = 'Denied';
-          }
-          div.innerHTML += '<h4> Status: ' + status + '<h4><br>';
-          }else{
-          div.innerHTML = '<h3> Name: ' + fn + '</h3> <br>';
-          div.innerHTML += '<h4> Email: ' + email + '<h4><br>';
+          if (isAdmin != 1) {
+              div.id = "profContent";
+              div.innerHTML = '<h3> Name: ' + fn + '</h3> <br> <h4> Course and Section: ' + course + ' ' + section + '<h4> <br>';
+              div.innerHTML += '<h4> Email: ' + email + '<h4><br>';
+              if (isApproved == 1) {
+                  status = 'Accepted';
+              } else if (isApproved == 2) {
+                  status = 'Pending';
+              } else if (isApproved == 3) {
+                  status = 'Denied';
+              }
+              div.innerHTML += '<h4> Status: ' + status + '<h4><br>';
+          } else {
+              div.innerHTML = '<h3> Name: ' + fn + '</h3> <br>';
+              div.innerHTML += '<h4> Email: ' + email + '<h4><br>';
           }
           // modal img code
           let x = callRegistrationImage(div, userID);
@@ -852,7 +887,7 @@
               var div = document.createElement('div')
               var date = new Date(element.dateStart + ' ' + element.timeStart);
               var diffTime = Math.abs(new Date(element.dateEnd) - new Date(element.dateStart));
-              console.log(Math.ceil(diffTime/(1000*60*60*24)));
+              console.log(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
               console.log(diffTime)
               var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24) + 1);
               var startTime = tConvert(element.timeStart);
@@ -1273,10 +1308,14 @@
           editBtn.className = 'editButton';
 
           editBtn.src = "/Assets/c2.png";
-          editBtn.addEventListener('click', function() {
-              editContent(type, tr, this, element.userID);
-          })
-
+          //   editBtn.addEventListener('click', function() {
+          //       editContent(type, tr, this, element.userID);
+          //   })
+          editBtn.addEventListener('click', editContent);
+          editBtn.typeParam = type;
+          editBtn.addParam = false;
+          editBtn.cbParam = checkbox;
+          editBtn.IDParam = element.userID;
           tdRemove.appendChild(editBtn);
           tdName.appendChild(fullName);
           tdAvailability.appendChild(checkbox);
@@ -1314,7 +1353,7 @@
           removeBtn.type = 'image';
           if (add) {
               var input = document.createElement('input');
-              input.type = 'text';
+              e.type = 'text';
               input.setAttribute('list', 'policies');
               tdName.appendChild(input);
               var listName = document.createElement('datalist');
@@ -1322,9 +1361,14 @@
               listName.className = 'policyList'
               editBtn.src = '/assets/c2.png';
               editBtn.placeholder = "Apply";
-              editBtn.addEventListener('click', function() {
-                  editContent(type, tr, this, ...Array(1), add, btn)
-              })
+              //   editBtn.addEventListener('click', function() {
+              //       editContent(type, tr, this, ...Array(1), add, btn)
+              //   })
+              editBtn.addEventListener('click', editContent);
+              editBtn.typeParam = type;
+              editBtn.addParam = true;
+              editBtn.listParam = listName;
+              editBtn.descParam = inputDesc;
               removeBtn.addEventListener('click', function() {
                   tr.remove();
                   btn.disabled = false;
@@ -1342,9 +1386,15 @@
               listName.className = 'policyList';
               listName.id = element.p_ID;
               editBtn.src = "/assets/c2.png";
-              editBtn.addEventListener('click', function() {
-                  editContent(type, tr, this, element.p_ID);
-              })
+              //   editBtn.addEventListener('click', function() {
+              //       editContent(type, tr, this, element.p_ID);
+              //   })
+              editBtn.addEventListener('click', editContent);
+              editBtn.typeParam = type;
+              editBtn.addParam = false;
+              editBtn.listParam = listName;
+              editBtn.descParam = inputDesc;
+              editBtn.IDParam = element.p_ID;
               removeBtn.addEventListener('click', function() {
                   removePolicies(element.p_ID)
               });
@@ -1366,21 +1416,23 @@
       }
       //Called by function that lists all Equipment (should be a foreach kinda thing)
       function generateTabContent(mainDiv, type, element, index, add, btn, page) {
-
           var tr = document.createElement('tr');
           tr.id = index;
-
           var tdName = document.createElement('td');
           var inputName = document.createElement('input');
           inputName.id = 'contentName';
+          inputName.required = true;
           tdName.appendChild(inputName);
           var tdQuantity = document.createElement('td');
           var inputQuantity = document.createElement('input');
           inputQuantity.id = 'contentQuantity';
+          inputQuantity.required = true;
+          inputQuantity.type = 'number';
           tdQuantity.appendChild(inputQuantity);
           var tdDesc = document.createElement('td');
           var inputDesc = document.createElement('input');
           inputDesc.id = 'contentDesc';
+          inputDesc.required = true;
           tdDesc.appendChild(inputDesc);
           var tdAvailability = document.createElement('td');
           var checkbox = document.createElement('input');
@@ -1401,9 +1453,16 @@
               checker = false;
               checkbox.checked = true;
               disableButtons(this);
-              editBtn.addEventListener('click', function() {
-                  editContent(type, tr, this, ...Array(1), add, btn)
-              })
+              //   editBtn.addEventListener('click', function() {
+              //       editContent(type, tr, this, ...Array(1), add, btn);
+              //   })
+              editBtn.addEventListener('click', editContent);
+              editBtn.typeParam = type;
+              editBtn.addParam = true;
+              editBtn.nameParam = inputName;
+              editBtn.quantityParam = inputQuantity;
+              editBtn.descParam = inputDesc;
+              editBtn.cbParam = checkbox;
               removeBtn.addEventListener('click', function() {
                   tr.remove();
                   btn.disabled = false;
@@ -1422,9 +1481,17 @@
 
               switch (type) {
                   case 'roomID':
-                      editBtn.addEventListener('click', async function() {
-                          await editContent(type, tr, this, element.roomID);
-                      });
+                      //   editBtn.addEventListener('click', async function() {
+                      //       await editContent(type, tr, this, element.roomID);
+                      //   });
+                      editBtn.addEventListener('click', editContent);
+                      editBtn.typeParam = type;
+                      editBtn.addParam = false;
+                      editBtn.nameParam = inputName;
+                      editBtn.quantityParam = inputQuantity;
+                      editBtn.descParam = inputDesc;
+                      editBtn.cbParam = checkbox;
+                      editBtn.IDParam = element.roomID;
                       inputName.value = element.roomName;
                       inputDesc.value = element.roomDesc;
                       inputQuantity.value = element.roomCap;
@@ -1433,9 +1500,17 @@
                       });
                       break;
                   case 'equipID':
-                      editBtn.addEventListener('click', function() {
-                          editContent(type, tr, this, element.equipID);
-                      });
+                      //   editBtn.addEventListener('click', function() {
+                      //       editContent(type, tr, this, element.equipID);
+                      //   });
+                      editBtn.addEventListener('click', editContent);
+                      editBtn.typeParam = type;
+                      editBtn.addParam = false;
+                      editBtn.nameParam = inputName;
+                      editBtn.quantityParam = inputQuantity;
+                      editBtn.descParam = inputDesc;
+                      editBtn.cbParam = checkbox;
+                      editBtn.IDParam = element.equipID;
                       removeBtn.addEventListener('click', function() {
                           removeEquipment(element.equipID)
                       });
@@ -1469,89 +1544,161 @@
 
 
 
-      function editContent(type, rowID, value, ID, add, btn) {
-          if (type == 'policiesID') {
-              var name = rowID.children[0].firstChild;
-              var desc = rowID.children[1].firstChild;
-              if (checker == true) {
-                  name.disabled = false;
-                  desc.disabled = false;
-                  disableButtons(value);
-                  checker = false;
-              } else if (checker == false) {
-                  if (add) {
-                      btn.disabled = false;
-                  }
-                  name.disabled = true;
-                  desc.disabled = true;
-                  enableButtons(type, name, ...Array(1), desc, ...Array(1), ID, value, add);
-              }
-          } else if (type == 'userID') {
-              var mark = rowID.children[1].firstChild;
-              if (checker == true) {
-                  mark.disabled = false;
-                  disableButtons(value);
-                  checker = false;
-              } else if (checker == false) {
-                  mark.disabled = true;
-                  enableButtons(type, ...Array(2), mark, ...Array(1), ID, value, add);
-              }
+      //   function editContent(type, rowID, value, ID, add, btn) {
+      //       if (type == 'policiesID') {
+      //           var name = rowID.children[0].firstChild;
+      //           var desc = rowID.children[1].firstChild;
+      //           if (checker == true) {
+      //               name.disabled = false;
+      //               desc.disabled = false;
+      //               disableButtons(value);
+      //               checker = false;
+      //           } else if (checker == false) {
+      //               if (add) {
+      //                   btn.disabled = false;
+      //               }
+      //               name.disabled = true;
+      //               desc.disabled = true;
+      //               enableButtons(type, name, ...Array(1), desc, ...Array(1), ID, value, add);
+      //           }
+      //       } else if (type == 'userID') {
+      //           var mark = rowID.children[1].firstChild;
+      //           if (checker == true) {
+      //               mark.disabled = false;
+      //               disableButtons(value);
+      //               checker = false;
+      //           } else if (checker == false) {
+      //               mark.disabled = true;
+      //               enableButtons(type, ...Array(2), mark, ...Array(1), ID, value, add);
+      //           }
+      //       } else {
+      //           var name = rowID.children[0].firstChild;
+      //           var quantity = rowID.children[1].firstChild;
+      //           var desc = rowID.children[2].firstChild;
+      //           var availability = rowID.children[3].firstChild;
+      //           if (checker == true) {
+      //               name.disabled = false;
+      //               desc.disabled = false;
+      //               availability.disabled = false;
+      //               quantity.disabled = false;
+      //               disableButtons(value);
+      //               checker = false;
+      //           } else if (checker == false) {
+      //               if (add) {
+      //                   btn.disabled = false;
+      //               }
+      //               name.disabled = true;
+      //               desc.disabled = true;
+      //               availability.disabled = true;
+      //               quantity.disabled = true;
+      //               enableButtons(type, name, quantity, desc, availability, ID, value, add);
+      //           }
+      //       }
+
+      //   }
+
+      function editContent(e) {
+          if (checker == true) {
+              disableButtons(e.currentTarget);
+              name = (e.currentTarget.nameParam) ? e.currentTarget.nameParam.disabled = false : ' ';
+              qty = (e.currentTarget.quantityParam) ? e.currentTarget.quantityParam.disabled = false : ' ';
+              desc = (e.currentTarget.descParam) ? e.currentTarget.descParam.disabled = false : ' ';
+              availability = (e.currentTarget.cbParam) ? e.currentTarget.cbParam.disabled = false : ' ';
+              selectedList = (e.currentTarget.listParam) ? e.currentTarget.listParam.disabled = false : ' ';
+              checker = false;
           } else {
-              var name = rowID.children[0].firstChild;
-              var quantity = rowID.children[1].firstChild;
-              var desc = rowID.children[2].firstChild;
-              var availability = rowID.children[3].firstChild;
-              if (checker == true) {
-                  name.disabled = false;
-                  desc.disabled = false;
-                  availability.disabled = false;
-                  quantity.disabled = false;
-                  disableButtons(value);
-                  checker = false;
-              } else if (checker == false) {
-                  if (add) {
-                      btn.disabled = false;
-                  }
-                  name.disabled = true;
-                  desc.disabled = true;
-                  availability.disabled = true;
-                  quantity.disabled = true;
-                  enableButtons(type, name, quantity, desc, availability, ID, value, add);
-              }
+              checker = true;
+              //disabling part 
+              name = (e.currentTarget.nameParam) ? e.currentTarget.nameParam.disabled = true : ' ';
+              qty = (e.currentTarget.quantityParam) ? e.currentTarget.quantityParam.disabled = true : ' ';
+              desc = (e.currentTarget.descParam) ? e.currentTarget.descParam.disabled = true : ' ';
+              availability = (e.currentTarget.cbParam) ? e.currentTarget.cbParam.disabled = true : ' ';
+              selectedList = (e.currentTarget.listParam) ? e.currentTarget.listParam.disabled = true : ' ';
+
+              name = (e.currentTarget.nameParam) ? e.currentTarget.nameParam.value : ' ';
+              qty = (e.currentTarget.quantityParam) ? e.currentTarget.quantityParam.value : ' ';
+              desc = (e.currentTarget.descParam) ? e.currentTarget.descParam.value : ' ';
+              availability = (e.currentTarget.cbParam) ? e.currentTarget.cbParam.checked : ' ';
+              selectedList = (e.currentTarget.listParam) ? e.currentTarget.listParam.value : ' ';
+              type = (e.currentTarget.typeParam) ? e.currentTarget.typeParam : ' ';
+              userID = (e.currentTarget.IDParam) ? e.currentTarget.IDParam : ' ';
+              enableButtons(type, name, qty, desc, availability, userID, e.currentTarget, e.currentTarget.addParam);
           }
-
       }
-
 
       function enableButtons(type, name, quantity, desc, availability, ID, value, add) {
           var x = document.querySelectorAll('.editButton');
-          for (a = 0; a < x.length; a++) {
-              x[a].disabled = false;
-          }
+          console.log(type);
+          console.log(add);
           if (add) {
-              if (type == 'roomID') {
-                  addRoomQuery(name.value, quantity.value, desc.value, availability.checked);
-              } else if (type == 'equipID') {
-                  addEquipQuery(name.value, quantity.value, desc.value, availability.checked);
-              } else if (type == 'policiesID') {
-                  addPoliciesQuery(name.value, desc.value);
+              if (type == 'policiesID') {
+                  if (name == '' || desc == '') {
+                      alert('Input must not be empty/ or zero ');
+                      document.getElementById('editList').remove();
+                      loadStuff('policies');
+                  } else {
+                      editPoliciesQuery(name, desc);
+                  }
+
               }
+              if (name == '' || desc == '' || quantity == '' || quantity == 0) {
+                  alert('Input must not be empty/ or zero ');
+                  document.getElementById('editList').remove();
+                  if (type == 'roomID') {
+                      loadStuff('room');
+                  } else if (type == 'equipID') {
+                      loadStuff('equipment');
+                  }
+
+
+              } else {
+                  if (type == 'roomID') {
+                      addRoomQuery(name, quantity, desc, availability);
+                  } else if (type == 'equipID') {
+                      addEquipQuery(name, quantity, desc, availability);
+                  } else if (type == 'policiesID') {
+                      addPoliciesQuery(name, desc);
+                  }
+
+              }
+
           } else {
               if (typeof(document.getElementById('addBtn')) == undefined && document.getElementById('addBtn') != null) document.getElementById('addBtn').disabled = true;
-              if (type == 'roomID') {
-                  editRoomQuery(name.value, quantity.value, desc.value, availability.checked, ID);
-              } else if (type == 'equipID') {
-                  editEquipQuery(name.value, quantity.value, desc.value, availability.checked, ID);
-              } else if (type == 'policiesID') {
-                  editPoliciesQuery(name.value, desc.value, ID);
-              } else if (type == 'userID') {
-                  editUserQuery(desc.checked, ID);
+              if (type == 'policiesID') {
+                  if (name == '' || desc == '') {
+                      alert('Input must not be empty/ or zero ');
+                      document.getElementById('editList').remove();
+                      loadStuff('policies');
+                  } else {
+                      editPoliciesQuery(name, desc);
+                  }
               }
+              if (name == '' || desc == '' || quantity == '' || quantity == 0) {
+                  alert('Input must not be empty/ or zero ');
+                  document.getElementById('editList').remove();
+                  if (type == 'roomID') {
+                      loadStuff('room');
+                  } else if (type == 'equipID') {
+                      loadStuff('equipment');
+                  }
+              } else {
+                  if (type == 'roomID') {
+                      editRoomQuery(name, quantity, desc, availability);
+                  } else if (type == 'equipID') {
+                      editEquipQuery(name, quantity, desc, availability);
+                  }
+              }
+              if (type == 'userID') {
+                  editUserQuery(desc, ID);
+              }
+              for (a = 0; a < x.length; a++) {
+                  x[a].disabled = false;
+              }
+
               if (typeof(value) != undefined && value != null) {
                   value.value = "Edit";
               }
           }
-          checker = true;
       }
 
       function disableButtons(value) {
@@ -1576,15 +1723,17 @@
 
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {}
+              if (this.readyState == 4 && this.status == 200) {
+                  loadStuff('room');
+              }
           }
           xmlhttp.open("GET", "/Request_AddRoom.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
           xmlhttp.send();
-
-          editTabContent();
-          var roomDiv = document.getElementById('roomPanel');
-          var roomBtn = document.getElementById('roomBtn');
-          roomBtn.click('2', equipDiv);
+          document.getElementById('editList').remove();
+          //   editTabContent();
+          //   var roomDiv = document.getElementById('roomPanel');
+          //   var roomBtn = document.getElementById('roomBtn');
+          //   roomBtn.click('2', equipDiv);
       }
 
       function addEquipQuery(name, quantity, desc, availability) {
@@ -1597,21 +1746,23 @@
 
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {}
+              if (this.readyState == 4 && this.status == 200) {
+                  loadStuff('equipment')
+              }
           }
           xmlhttp.open("GET", "/Request_AddEquipment.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
           xmlhttp.send();
-
-          editTabContent();
-          var equipDiv = document.getElementById('equipPanel');
-          var equipBtn = document.getElementById('equipBtn');
-          equipBtn.click('2', equipDiv);
+          console.log(document.getElementById('editList'));
+          document.getElementById('editList').remove();
+          //   editTabContent();
+          //   var equipDiv = document.getElementById('equipPanel');
+          //   var equipBtn = document.getElementById('equipBtn');
+          //   equipBtn.click('2', equipDiv);
 
       }
 
       //Added at the end once everything is rendered
       function addButton(type) {
-
           var botDiv = document.createElement('div');
           botDiv.className = "bottom";
           var botInput = document.createElement('input');
