@@ -681,6 +681,7 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('editList').remove();
                   loadStuff('userList');
               }
           }
@@ -693,6 +694,7 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('editList').remove();
                   loadStuff('policies');
               }
           }
@@ -710,6 +712,7 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('editList').remove();
                   loadStuff('equipment');
               }
           }
@@ -728,6 +731,7 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('editList').remove();
                   loadStuff('equipment');
               }
           }
