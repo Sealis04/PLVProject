@@ -853,6 +853,7 @@
           var status;
           if (isAdmin != 1) {
               div.id = "profContent";
+              div.className = "_profContent";
               div.innerHTML = '<h3> Name: ' + fn + '</h3> <br> <h4> Course and Section: ' + course + ' ' + section + '<h4> <br>';
               div.innerHTML += '<h4> Email: ' + email + '<h4><br>';
               if (isApproved == 1) {
