@@ -565,28 +565,25 @@
       }
 
       function listCategPolicies(x, add, value) {
-          var xmlhttp = new XMLHttpRequest();
-          xmlhttp.onreadystatechange = async function() {
-              if (this.readyState == 4 && this.status == 200) {
-                  var myObj = JSON.parse(this.responseText);
-                  if (add) {
-                      await myObj.forEach(function(element, index) {
-                          categoryPolicyList(x, element, index, value)
-                      });
-                  } else {
-                      await myObj.forEach(function(element, index) {
-                          categoryPolicyList(x, element, index, value);
-                      });
-                      for (a = 0; a < x.options.length; a++) {
-                          if (value == x.options[a].innerHTML) {
-                              x.selectedIndex = a;
-                          }
-                      }
+          return new Promise(resolve => {
+              var xmlhttp = new XMLHttpRequest();
+              xmlhttp.onreadystatechange = async function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      var myObj = JSON.parse(this.responseText);
+                      // console.log(myObj[0].innerArray) 
+                      console.log(myObj);
+                      myObj[0].innerArray.forEach(result => {
+                          var option = document.createElement('option');
+                          option.textContent = result.ct_p_Name;
+                          option.value = result.ct_p_ID;
+                          x.appendChild(option);
+                      })
+                      resolve('success');
                   }
               }
-          }
-          xmlhttp.open("GET", "/Request_CategoryPolicies.php", true);
-          xmlhttp.send();
+              xmlhttp.open("GET", "/Request_CategoryPolicies.php", true);
+              xmlhttp.send();
+          })
       }
 
       function listRoom(mainDiv, type, page_number) {
@@ -681,7 +678,7 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                document.getElementById('editList').remove();
+                  document.getElementById('editList').remove();
                   loadStuff('userList');
               }
           }
@@ -694,7 +691,8 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                document.getElementById('editList').remove();
+
+                  document.getElementById('editList').remove();
                   loadStuff('policies');
               }
           }
@@ -712,7 +710,7 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                document.getElementById('editList').remove();
+                  document.getElementById('editList').remove();
                   loadStuff('equipment');
               }
           }
@@ -731,8 +729,8 @@
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                document.getElementById('editList').remove();
-                  loadStuff('equipment');
+                  document.getElementById('editList').remove();
+                  loadStuff('room');
               }
           }
           xmlhttp.open("GET", "/Request_EditRoomList.php?name=" + name + '&cap=' + capacity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
@@ -1042,7 +1040,9 @@
           equipInput.type = 'image';
           equipInput.src = '/Assets/side-arrow.png';
           equipInput.addEventListener('click', async function() {
-              await loadLists("1", equipDiv)
+              document.getElementById('editList').remove();
+              c = null;
+              await loadStuff('equipment')
           });
           motherDiv.appendChild(equipDiv);
           equipDiv.appendChild(equipLabel);
@@ -1059,7 +1059,9 @@
           roomInput.type = 'image';
           roomInput.src = '/Assets/side-arrow.png';
           roomInput.addEventListener('click', async function() {
-              await loadLists("2", roomDiv);
+              document.getElementById('editList').remove();
+              c = null;
+              await loadStuff('room');
           });
           motherDiv.appendChild(roomDiv);
           roomDiv.appendChild(roomLabel);
@@ -1077,7 +1079,9 @@
           polInput.type = 'image';
           polInput.src = '/Assets/side-arrow.png';
           polInput.addEventListener('click', async function() {
-              await loadLists("3", polDiv)
+              document.getElementById('editList').remove();
+              c = null;
+              await loadStuff('policies')
           })
           motherDiv.appendChild(polDiv);
           polDiv.appendChild(policiesList);
@@ -1095,7 +1099,9 @@
           userInput.type = 'image';
           userInput.src = '/Assets/side-arrow.png';
           userInput.addEventListener('click', async function() {
-              await loadLists("4", userDiv)
+              document.getElementById('editList').remove();
+              c = null;
+              await loadStuff('userList');
           })
           motherDiv.appendChild(userDiv);
           userDiv.appendChild(userList);
@@ -1279,14 +1285,6 @@
       }
 
 
-      //Call for policies instead of generateTabContent()
-      function categoryPolicyList(list, element, index, value) {
-          var option = document.createElement('option');
-          option.textContent = element.ct_Name;
-          option.value = element.ct_ID;
-          list.appendChild(option);
-      }
-
       function generateUserContent(mainDiv, type, element, index, page) {
           var tr = document.createElement('tr');
           tr.id = index;
@@ -1361,7 +1359,7 @@
           removeBtn.type = 'image';
           if (add) {
               var input = document.createElement('input');
-              e.type = 'text';
+              input.type = 'text';
               input.setAttribute('list', 'policies');
               tdName.appendChild(input);
               var listName = document.createElement('datalist');
@@ -1390,9 +1388,11 @@
               listCategPolicies(listName, add);
           } else {
               var listName = document.createElement('select');
-              listCategPolicies(listName, ...Array(1), element.p_category);
+              var x = await listCategPolicies(listName, ...Array(1), element.p_category);
               listName.className = 'policyList';
+              console.log('asd');
               listName.id = element.p_ID;
+              listName.value = element.p_ct_ID;
               editBtn.src = "/assets/c2.png";
               //   editBtn.addEventListener('click', function() {
               //       editContent(type, tr, this, element.p_ID);
@@ -1613,6 +1613,7 @@
               desc = (e.currentTarget.descParam) ? e.currentTarget.descParam.disabled = false : ' ';
               availability = (e.currentTarget.cbParam) ? e.currentTarget.cbParam.disabled = false : ' ';
               selectedList = (e.currentTarget.listParam) ? e.currentTarget.listParam.disabled = false : ' ';
+              listParam = (e.currentTarget.listParam) ? e.currentTarget.listParam.disabled = false : ' ';
               checker = false;
           } else {
               checker = true;
@@ -1622,6 +1623,7 @@
               desc = (e.currentTarget.descParam) ? e.currentTarget.descParam.disabled = true : ' ';
               availability = (e.currentTarget.cbParam) ? e.currentTarget.cbParam.disabled = true : ' ';
               selectedList = (e.currentTarget.listParam) ? e.currentTarget.listParam.disabled = true : ' ';
+              listParam = (e.currentTarget.listParam) ? e.currentTarget.listParam.disabled = true : ' ';
 
               name = (e.currentTarget.nameParam) ? e.currentTarget.nameParam.value : ' ';
               qty = (e.currentTarget.quantityParam) ? e.currentTarget.quantityParam.value : ' ';
@@ -1629,76 +1631,79 @@
               availability = (e.currentTarget.cbParam) ? e.currentTarget.cbParam.checked : ' ';
               selectedList = (e.currentTarget.listParam) ? e.currentTarget.listParam.value : ' ';
               type = (e.currentTarget.typeParam) ? e.currentTarget.typeParam : ' ';
-              userID = (e.currentTarget.IDParam) ? e.currentTarget.IDParam : ' ';
-              enableButtons(type, name, qty, desc, availability, userID, e.currentTarget, e.currentTarget.addParam);
+              ID = (e.currentTarget.IDParam) ? e.currentTarget.IDParam : ' ';
+              listParam = (e.currentTarget.listParam) ? e.currentTarget.listParam.value : ' ';
+              console.log(e.currentTarget.listParam)
+              enableButtons(type, name, qty, desc, availability, ID, e.currentTarget, e.currentTarget.addParam, listParam);
           }
       }
 
-      function enableButtons(type, name, quantity, desc, availability, ID, value, add) {
+      function enableButtons(type, name, quantity, desc, availability, ID, value, add, listParam) {
           var x = document.querySelectorAll('.editButton');
           console.log(type);
           console.log(add);
           if (add) {
               if (type == 'policiesID') {
-                  if (name == '' || desc == '') {
+                  if (listParam == '' || desc == '') {
                       alert('Input must not be empty/ or zero ');
                       document.getElementById('editList').remove();
                       loadStuff('policies');
                   } else {
-                      editPoliciesQuery(name, desc);
+                      addPoliciesQuery(listParam, desc);
                   }
-
-              }
-              if (name == '' || desc == '' || quantity == '' || quantity == 0) {
-                  alert('Input must not be empty/ or zero ');
-                  document.getElementById('editList').remove();
-                  if (type == 'roomID') {
-                      loadStuff('room');
-                  } else if (type == 'equipID') {
-                      loadStuff('equipment');
-                  }
-
 
               } else {
-                  if (type == 'roomID') {
-                      addRoomQuery(name, quantity, desc, availability);
-                  } else if (type == 'equipID') {
-                      addEquipQuery(name, quantity, desc, availability);
-                  } else if (type == 'policiesID') {
-                      addPoliciesQuery(name, desc);
-                  }
+                  if (name == '' || desc == '' || quantity == '' || quantity == 0) {
+                      alert('Input must not be empty/ or zero ');
+                      document.getElementById('editList').remove();
+                      if (type == 'roomID') {
+                          loadStuff('room');
+                      } else if (type == 'equipID') {
+                          loadStuff('equipment');
+                      }
+                  } else if (type == 'userID') {
+                      editUserQuery(desc, ID);
+                  } else {
+                      if (type == 'roomID') {
+                          addRoomQuery(name, quantity, desc, availability);
+                      } else if (type == 'equipID') {
+                          addEquipQuery(name, quantity, desc, availability);
+                      }
 
+                  }
               }
+
 
           } else {
               if (typeof(document.getElementById('addBtn')) == undefined && document.getElementById('addBtn') != null) document.getElementById('addBtn').disabled = true;
               if (type == 'policiesID') {
-                  if (name == '' || desc == '') {
+                  if (listParam == '' || desc == '') {
                       alert('Input must not be empty/ or zero ');
                       document.getElementById('editList').remove();
                       loadStuff('policies');
                   } else {
-                      editPoliciesQuery(name, desc);
+                      editPoliciesQuery(listParam, desc, ID);
                   }
-              }
-              if (name == '' || desc == '' || quantity == '' || quantity == 0) {
-                  alert('Input must not be empty/ or zero ');
-                  document.getElementById('editList').remove();
-                  if (type == 'roomID') {
-                      loadStuff('room');
-                  } else if (type == 'equipID') {
-                      loadStuff('equipment');
-                  }
-              } else {
-                  if (type == 'roomID') {
-                      editRoomQuery(name, quantity, desc, availability);
-                  } else if (type == 'equipID') {
-                      editEquipQuery(name, quantity, desc, availability);
-                  }
-              }
-              if (type == 'userID') {
+              } else if (type == 'userID') {
                   editUserQuery(desc, ID);
+              } else {
+                  if (name == '' || desc == '' || quantity == '' || quantity == 0) {
+                      alert('Input must not be empty/ or zero ');
+                      document.getElementById('editList').remove();
+                      if (type == 'roomID') {
+                          loadStuff('room');
+                      } else if (type == 'equipID') {
+                          loadStuff('equipment');
+                      }
+                  } else {
+                      if (type == 'roomID') {
+                          editRoomQuery(name, quantity, desc, availability, ID);
+                      } else if (type == 'equipID') {
+                          editEquipQuery(name, quantity, desc, availability, ID);
+                      }
+                  }
               }
+
               for (a = 0; a < x.length; a++) {
                   x[a].disabled = false;
               }
