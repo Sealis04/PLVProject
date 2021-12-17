@@ -74,6 +74,20 @@ include "db_connection.php";
         $sql3->close();
     }
     
+    $sql_code4 = "SELECT remarks FROM tbl_notification WHERE forUserID = ? AND forRegistration = 1";
+    if($sql4=$conn->prepare($sql_code4)){
+        $sql4->bind_param ("i",$userID);
+        if($sql4->execute()){
+            $sql4->store_result();
+            if($sql4->num_rows == 1){
+                $sql4->bind_result($remarks);
+                    if($sql4->fetch()){
+                        $details['remarks'] = $remarks; 
+                    }
+            }
+        }
+        $sql4->close();
+    }
     
     $myJSON = json_encode($details);
     echo $myJSON;
