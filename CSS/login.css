@@ -135,7 +135,7 @@ form {
 #login2{
     /* add */
     color: white;
-    background-color: #008F00;
+    background-color: #0F1057;
     text-shadow: black 1px 1px;
     font-size: 15px;
 
@@ -148,7 +148,7 @@ form {
 
 #login2:active {
     /* change */
-    background: #00f500;
+    background: #000099;
 
   outline: none;
   -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;

@@ -109,7 +109,7 @@ $email = $password=$userID="";
         }
         ?>
         <!--CHANGES-->
-        <nav id="head-container">
+        <nav>
             <div class="navbar">
             <div class="nav2">
               <?php

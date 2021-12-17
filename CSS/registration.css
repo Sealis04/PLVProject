@@ -109,10 +109,15 @@ form {
 }
 
 .sgn-btn{
-    width: 100%;
-    background-color: #0F1057;
-    text-shadow: black 1px 1px;
-    font-size: 15px;
+  width: 100%;
+  background-color: #0F1057;
+  text-shadow: black 1px 1px;
+  font-size: 15px;
+}
+
+.sgn-btn:active{
+background-color: #000099;
+
 }
 #register{
     color: white;
