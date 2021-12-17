@@ -742,6 +742,7 @@
           var userID = "<?php echo $_SESSION['user_ID']; ?>";
           var isAdmin = <?php echo $_SESSION['isAdmin']; ?>;
           var div = document.createElement('div');
+          div.className = "_profContent";
           var status;
           div.id = "profContent";
           div.className = "_profContent";
