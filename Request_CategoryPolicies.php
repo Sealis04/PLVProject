@@ -1,22 +1,27 @@
 <?php
 //returns array of equipment \
 $categories = array();
+$types = array();
 include "db_connection.php";
 $conn=OpenCon();
-$sql_code = "SELECT * from tbl_policies INNER JOIN tbl_category_policy ON tbl_policies.p_ct_ID = tbl_category_policy.ct_ID WHERE tbl_policies.isDeleted = 0 GROUP BY tbl_policies.p_ct_ID";
-    if($sql=$conn->prepare($sql_code)){
-            if($sql->execute()){
-                $result = $sql->get_result();
-                    while($row = $result->fetch_assoc()){
-                    $categories[]= array(
-                      'ct_ID'=> $row['ct_ID'],
-                      'ct_Name'=>$row['ct_category_name'],
-                    );
-                    }
+
+$sql_code2 = "SELECT * from tbl_category_policy";
+if($sql2=$conn->prepare($sql_code2)){
+        if($sql2->execute()){
+            $result2 = $sql2->get_result();
+                while($row2 = $result2->fetch_assoc()){
+                $types[] = array(
+                  'ct_p_ID'=> $row2['ct_ID'],
+                  'ct_p_Name'=>$row2['ct_category_name']
+                );
                 }
-             $sql->close();
-        }
-    $conn->close();
+            }
+         $sql2->close();
+    }
+
+    $categories [] = array(
+        'innerArray'=> $types,
+    );
     $myJSON = json_encode($categories);
     echo $myJSON;
 ?>
