@@ -11,6 +11,8 @@
 //  }
 //  echo $_REQUEST['filter'];
 //returns array of reservation
+$month = $_REQUEST['month'];
+$year = $_REQUEST['year'];
 $reservation = array();
 include "db_connection.php";
 $conn = OpenCon();
@@ -46,11 +48,13 @@ $sql5->close();
 
 
 $sql_code = "SELECT * FROM `tbl_reservation`
-        INNER JOIN tbl_user ON tbl_reservation.r_user_ID = tbl_user.user_ID 
-        INNER JOIN tbl_room ON tbl_reservation.r_room_ID = tbl_room.room_ID 
-        WHERE DateEnd < CURRENT_DATE AND tbl_reservation.r_approved_ID = 1 
-        AND tbl_reservation.r_reviewed = 1 AND r_status = 0 AND tbl_reservation.isDeleted = 0  LIMIT $start,$limit ";
+INNER JOIN tbl_user ON tbl_reservation.r_user_ID = tbl_user.user_ID 
+INNER JOIN tbl_room ON tbl_reservation.r_room_ID = tbl_room.room_ID 
+WHERE DateEnd < CURRENT_DATE AND tbl_reservation.r_approved_ID = 1 
+AND tbl_reservation.r_reviewed = 1 AND r_status = 0 AND tbl_reservation.isDeleted = 0 
+AND MONTH(tbl_reservation.DateStart) = ? AND YEAR(tbl_reservation.DateStart) = ?  LIMIT $start,$limit ";
 if ($sql = $conn->prepare($sql_code)) {
+    $sql->bind_param("ii",$month,$year);
     if ($sql->execute()) {
         $result = $sql->get_result();
         while ($row = $result->fetch_assoc()){
