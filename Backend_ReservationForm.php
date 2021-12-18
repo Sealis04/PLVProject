@@ -133,7 +133,8 @@
 
     async function loadWrapperEvents(evt) {
         var room = this.getElementsByTagName('select')[0];
-        var cb = this.getElementsByTagName('input')[4];
+        var cb = this.getElementsByTagName('input')[5];
+        console.log(cb);
         var inputElements = this.getElementsByTagName('input');
         var elem = event.target;
         if (elem == inputElements[0]) {
@@ -386,7 +387,8 @@
     }
 
     function removeTB(onChange, cb, subDiv) {
-        var firstDiv = subDiv.getElementsByTagName('div')[2];
+        var firstDiv = subDiv.getElementsByTagName('div')[3];
+        console.log(subDiv);
         var divsToRemove = subDiv.querySelectorAll('.removableDiv');
         if (firstDiv) {
             firstDiv.remove();
