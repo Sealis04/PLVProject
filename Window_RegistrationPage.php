@@ -110,6 +110,7 @@
         $fileCount = count(array_filter($_FILES["fileUpload"]["name"]));
         $valid_ext = array('jpg','png','jpeg');
         if(empty($emailErr) && empty($passwordErr) && empty($contactErr) && empty($firstNameErr) && empty($middleNameErr) && empty($lastNameErr && empty($uploadErr))){
+
           $selectedCourse = $_POST["course"];
           $selectedSection = $_POST['section'];
           $sql_code = "INSERT INTO tbl_user (user_email, user_password, user_firstName, user_middleName, user_lastName, user_contactNumber,user_course_ID,PLV_ID,isAdmin,isApproved,user_s_ID) VALUES (?, ?, ?, ?, ? , ? , ? , ?, ?, ?,?)";

@@ -562,7 +562,7 @@
                       var myObj = JSON.parse(this.responseText);
                       // console.log(myObj[0].innerArray) 
                       console.log(myObj);
-                      myObj[0].innerArray.forEach(result => {
+                      myObj.forEach(result => {
                           var option = document.createElement('option');
                           option.textContent = result.ct_p_Name;
                           option.value = result.ct_p_ID;
@@ -894,8 +894,9 @@
               var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24) + 1);
               endTime = tConvert(element.timeEnd)
               startTime = tConvert(element.timeStart)
+              div.innerHTML += '<h3> Requestor:' + element.firstName +' ' + element.middleName + ' ' + element.lastName + '</h3>';
               div.innerHTML += '<h3> Event Adviser:' + element.event + '</h3>';
-              div.innerHTML += '<h3> Room: ' + element.roomName + '</h3>';
+              div.innerHTML += '<h3> Room: ' + element.room_name + '</h3>';
               div.innerHTML += '<h3>Starting Date: ' + element.dateStart + " </h3>";
               div.innerHTML += '<h3>Time:' + startTime + ' to ' + endTime + " </h3>";
               div.innerHTML += '<h3>Duration:' + numberofloops + " day/s (Ends at: " + element.dateEnd + ") </h3>";
@@ -1561,8 +1562,6 @@
                       } else if (type == 'equipID') {
                           loadStuff('equipment');
                       }
-                  } else if (type == 'userID') {
-                      editUserQuery(desc, ID);
                   } else {
                       if (type == 'roomID') {
                           addRoomQuery(name, quantity, desc, availability);

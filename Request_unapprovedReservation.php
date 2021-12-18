@@ -44,7 +44,8 @@ if ($sql = $conn->prepare($sql_code)) {
                             'userID'=>$row['r_user_ID'],
                             'roomID'=>$row['r_room_ID'],
                             'notifID'=>$row['notifID'],
-                            'remarks'=>$row['remarks']
+                            'remarks'=>$row['remarks'],
+                            'room_name'=>$row['room_name'],
                         );
         }
     } else {

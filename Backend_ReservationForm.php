@@ -2,7 +2,7 @@
     var number = 0;
     (async () => {
         const value = await generateForm(number);
-        const valve = new Promise(resolve=>{
+        const valve = new Promise(resolve => {
             document.getElementById('reservationForm').appendChild(value);
             resolve('success');
         });
@@ -19,6 +19,8 @@
         var startTime = document.getElementById('startTime').value;
         var endTime = document.getElementById('endTime').value;
         eventTrigger(startDate, duration, endDate, startTime, endTime)
+        var x = document.getElementsByClassName('roomInfo');
+        loadMaxQty(x[0].querySelector('select'));
     }
     var array = [];
     async function listRoom(room, currentTarget) {
@@ -43,9 +45,32 @@
         })
     }
 
-
+    function loadMaxQty(select){
+        return new Promise((resolve, reject) => {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    try {
+                        var myObj = JSON.parse(this.responseText);
+                        myObj.forEach(result=>{
+                            if(select.value == result.roomID){
+                                select.parentElement.querySelectorAll('input')[0].max = result.roomCap;
+                                select.parentElement.querySelectorAll('label')[2].textContent='Cap: '+ result.roomCap +' people';
+                            }
+                        })
+                        resolve('success');
+                    } catch (exception) {
+                        reject(exception);
+                    }
+                }
+            }
+            xmlhttp.open("GET", "Request_RoomList.php", true);
+            xmlhttp.send();
+        })
+    }
 
     function renderListRoom(room, element, index) {
+
         var option = document.createElement('option');
         option.appendChild(document.createTextNode(element.roomName));
         option.value = element.roomID;
@@ -56,7 +81,7 @@
     function renderRestofForm() {
         var x = <?php echo $_SESSION["usercourse"]; ?>;
         var section = <?php echo $_SESSION['userSection']; ?>;
-        var fullName = "<?php echo $_SESSION['fullName'];?>";
+        var fullName = "<?php echo $_SESSION['fullName']; ?>";
         document.getElementById("fullName").value = fullName;
         document.getElementById("contact").value = "0" + "<?php echo $_SESSION["usercontactnumber"]; ?>";
         var xmlhttp = new XMLHttpRequest();
@@ -66,7 +91,7 @@
                 document.getElementById("course").value = myObj.coursename + ' ' + myObj.sectionname;
             }
         }
-        xmlhttp.open("GET", "Request_Course.php?var=" + x + '&section=' + section +'&userID=' + null, true);
+        xmlhttp.open("GET", "Request_Course.php?var=" + x + '&section=' + section + '&userID=' + null, true);
         xmlhttp.send();
     }
 
@@ -245,7 +270,7 @@
         subDiv_1.appendChild(select);
         subDiv_1.appendChild(buttonAdd);
         document.getElementById(equipList.id).appendChild(subDiv_1)
-        listEquip(true, select,...Array(3),buttonAdd);
+        listEquip(true, select, ...Array(3), buttonAdd);
         //disableOnChange();
     }
 
@@ -391,24 +416,24 @@
         checkIfSelectedIsAdded(evt);
     }
 
-    function listEquip(generate, select, equipID, input, label,buttonAdd) {
+    function listEquip(generate, select, equipID, input, label, buttonAdd) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
                 if (generate == true) {
-                    if(myObj.length >0){
+                    if (myObj.length > 0) {
                         myObj.forEach(function(element, index) {
-                        renderListEquip(select, element, index)
-                    });
-                    }else{
+                            renderListEquip(select, element, index)
+                        });
+                    } else {
                         buttonAdd.disabled = true;
                         var option = document.createElement('option');
                         option.appendChild(document.createTextNode('No Equipment Available'));
                         option.value = null;
                         select.appendChild(option);
                     }
-                   
+
                 } else {
                     myObj.forEach(function(element, index) {
                         renderMaxQty(equipID, input, label, element, index)
@@ -594,16 +619,36 @@
 
 
             //Room
-            var roomLabel = document.createElement('room');
+            var roomDiv = document.createElement('div');
+            roomDiv.className = 'roomInfo';
+
+            var roomLabel = document.createElement('label');
             roomLabel.setAttribute('for', 'room');
             roomLabel.textContent = 'Room: '
             var selectLabel = document.createElement('select');
             selectLabel.name = 'room';
             selectLabel.id = 'room' + number;
-            await listRoom(selectLabel);
-
-            wrapper.appendChild(roomLabel);
-            wrapper.appendChild(selectLabel);
+            await listRoom(selectLabel, ...Array(1), roomDiv);
+            var maxAttendees = document.createElement('input');
+            maxAttendees.placeHolder = '# of Attendees'
+            maxAttendees.type = 'number';
+            // input.max = element.roomCap;
+            var label = document.createElement('label');
+            label.textContent = '# of Attendees:';
+            var maxLabel = document.createElement('label');
+            document.addEventListener('change',async function (e){
+                if(e.target && e.target.id == selectLabel.id){
+                   var x = await loadMaxQty(e.target);
+                   console.log(maxAttendees);
+                }
+            });
+            roomDiv.appendChild(roomLabel);
+            roomDiv.appendChild(selectLabel);
+            roomDiv.innerHTML +='<br><br>';
+            roomDiv.appendChild(label);
+            roomDiv.appendChild(maxAttendees);
+            roomDiv.appendChild(maxLabel);
+            wrapper.appendChild(roomDiv);
             wrapper.innerHTML += '<br><br>';
 
             //Equipment
@@ -750,6 +795,7 @@
         var tempDate = new Date(inputList[2].value);
         var duration = inputList[3].value;
         var endDate = tempDate.setDate(tempDate.getDate() + Number(duration));
+        loadMaxQty(form.querySelector('select')[0].parentElement)
         eventTrigger(inputList[2].value, inputList[3].value, endDate, inputList[4].value, inputList[5].value);
     }
 
@@ -821,7 +867,7 @@
                 alert("Please upload your attachment letters");
             }
             fileUploadSuccess = false;
-        }else{
+        } else {
             fileUploadSuccess = true;
         }
 
@@ -889,6 +935,7 @@
             submitForm(profile);
         }
     }
+
     function submitForm(profile) {
         var form = document.getElementById('reservationForm');
         profile = JSON.stringify(profile);
@@ -906,7 +953,7 @@
                 }
             }
         }
-        xmlhttp.open("POST", "Request_InsertIntoTbl_reservation.php?var=" + profile , true);
+        xmlhttp.open("POST", "Request_InsertIntoTbl_reservation.php?var=" + profile, true);
         xmlhttp.send(formData);
     }
 </script>

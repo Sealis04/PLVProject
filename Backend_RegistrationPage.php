@@ -5,8 +5,10 @@
     function callifUser(e) {
         if(e.currentTarget.value == 1){
             var select2 = document.createElement('select');
+            select2.name ='course';
             select2.id = 'course';
             var select3 = document.createElement('select');
+            select3.name ='section';
             select3.id = 'section';
             var space = document.createElement('br');
             space.id ='spacing';
