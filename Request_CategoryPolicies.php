@@ -19,9 +19,9 @@ if($sql2=$conn->prepare($sql_code2)){
          $sql2->close();
     }
 
-    $categories [] = array(
-        'innerArray'=> $types,
-    );
-    $myJSON = json_encode($categories);
+    // $categories [] = array(
+    //     'innerArray'=> $types,
+    // );
+    $myJSON = json_encode($types);
     echo $myJSON;
 ?>

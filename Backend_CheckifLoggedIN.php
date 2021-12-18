@@ -65,7 +65,6 @@
       echo ' </div>';
     }
 }else{
-  include 'Backend_Notification.php';
       echo'<!--Content-->';
       echo'<div class="sidenav">';
       echo'<img id="fb" src="assets/plv.png" alt="PLV Logo">';
@@ -83,6 +82,9 @@
 
       //Include login button here
 }
+// require 'checkActiveClasses.php';
 $conn->close();
 ?>
+
+
 

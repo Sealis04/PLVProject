@@ -26,6 +26,7 @@
     var url = window.location.href;
     var url_string = new URL(url);
     var c = url_string.searchParams.get('id');
+    console.log(c);
     (async()=>{
         await onLoad(c)
         window.print();
