@@ -25,13 +25,9 @@ body {
 
 }
 
-.sidenav a:hover {
- background-color: #0F1057;
- width: 100%;
- height: 50px;
- padding-top: 15px;
- margin-bottom: -11px;
-}
+
+
+
 
 .sidenav p{
   text-align: center;

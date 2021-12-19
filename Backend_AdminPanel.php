@@ -872,7 +872,7 @@
               var bigDiv2 = document.createElement('div');
               bigDiv2.className = 'finishedDiv';
               bigDiv2.id = 'bigFinishedDiv';
-              //   filterPart(bigDiv2,page);
+              filterPart(bigDiv2,page);
               var label2 = document.createElement('h3');
               label2.textContent = 'Finished And Reviewed Reservations';
               bigDiv2.appendChild(label2);
@@ -1729,32 +1729,32 @@
       function filterPart(mainDiv, page) {
           var div = document.createElement('div');
           div.id = 'Filter';
-          var search = document.createElement('input');
-          search.type = 'text';
-          search.id = 'myInput';
+        //   var search = document.createElement('input');
+        //   search.type = 'text';
+        //   search.id = 'myInput';
           var button = document.createElement('button');
           button.id = 'myInput';
           button.textContent = 'Filter'
           var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
           var monthDropdown = document.createElement('select');
-          var defaultOption = document.createElement('option');
-          defaultOption.textContent = 'No filter'
-          defaultOption.selected = true;
-          defaultOption.disabled = true;
-          defaultOption.value = null;
-          defaultOption.hidden = true;
+        //   var defaultOption = document.createElement('option');
+        //   defaultOption.textContent = 'No filter'
+        //   defaultOption.selected = true;
+        //   defaultOption.disabled = true;
+        //   defaultOption.value = null;
+        //   defaultOption.hidden = true;
 
-          var defaultOption2 = document.createElement('option');
-          defaultOption2.textContent = 'No filter'
-          defaultOption2.selected = true;
-          defaultOption2.disabled = true;
-          defaultOption2.value = null;
-          defaultOption2.hidden = true;
+        //   var defaultOption2 = document.createElement('option');
+        //   defaultOption2.textContent = 'No filter'
+        //   defaultOption2.selected = true;
+        //   defaultOption2.disabled = true;
+        //   defaultOption2.value = null;
+        //   defaultOption2.hidden = true;
 
           for (a = 0; a < monthNames.length; a++) {
               var option = document.createElement('option');
               option.textContent = monthNames[a];
-              option.value = a;
+              option.value = a + 1;
               monthDropdown.appendChild(option);
           }
           var currentYear = new Date().getFullYear();
@@ -1765,19 +1765,38 @@
               option.value = i;
               yearDropdown.appendChild(option);
           }
-          monthDropdown.appendChild(defaultOption2);
-          yearDropdown.appendChild(defaultOption);
-          div.appendChild(search);
+          for (count = 0; count<monthDropdown.length;count++){
+              if(monthDropdown[count].value == new Date().getMonth() + 1){
+                  monthDropdown.options[count].selected = true;
+              }
+          }
+
+          for (count = 0; count<yearDropdown.length;count++){
+              if(yearDropdown[count].value == new Date().getFullYear()){
+                yearDropdown.options[count].selected = true;
+              }
+          }
+        //   monthDropdown.appendChild(defaultOption2);
+        //   yearDropdown.appendChild(defaultOption);
+        //   div.appendChild(search);
           div.appendChild(monthDropdown);
           div.appendChild(yearDropdown);
-          div.appendChild(button);
+        //   div.appendChild(button);
           mainDiv.appendChild(div);
-          button.addEventListener('click', filterSearchQuery);
-          button.searchParam = search;
-          button.monthParam = monthDropdown;
-          button.yearParam = yearDropdown;
-          button.pageParam = page;
-          button.mainDivParam = mainDiv;
+          monthDropdown.addEventListener('change',filterSearchQuery);
+          yearDropdown.addEventListener('change',filterSearchQuery)
+        //   button.addEventListener('click', filterSearchQuery);
+        // monthDropdown.searchParam = search;
+        monthDropdown.monthParam = monthDropdown;
+        monthDropdown.yearParam = yearDropdown;
+        monthDropdown.pageParam = page;
+        monthDropdown.mainDivParam = mainDiv;
+
+        // yearDropdown.searchParam = search;
+        yearDropdown.monthParam = monthDropdown;
+        yearDropdown.yearParam = yearDropdown;
+        yearDropdown.pageParam = page;
+        yearDropdown.mainDivParam = mainDiv;
           //   return [search.value,monthDropdown.value,yearDropdown.value];
           //   console.log(yearDropdown)
       }
@@ -1786,25 +1805,26 @@
         //   if (month == undefined && year == undefined) {
 
         //   }
+        document.getElementById('resList').remove();
           mainDiv = e.currentTarget.mainDivParam;
           page = e.currentTarget.pageParam;
-          keyword = e.currentTarget.searchParam.value;
+        //   keyword = e.currentTarget.searchParam.value;
           month = e.currentTarget.monthParam.value;
           year = e.currentTarget.yearParam.value;
-          loadFinishedReservation(mainDiv, page, ...Array(1), keyword, month, year);
+          loadFinishedReservation(mainDiv, page, ...Array(1), month, year);
       }
 
       //ALl functions related to archives and to be reviewed
       //Archived Query
-      function loadFinishedReservation(bigDiv, page, page_number = 1, keyword, month, year) {
+      function loadFinishedReservation(bigDiv, page, page_number = 1, month = new Date().getMonth() + 1, year = new Date().getFullYear()) {
           var motherDiv = document.createElement('div');
           motherDiv.className = "userResContent";
           motherDiv.id = "resList";
-          var params = "?page=" + page_number + "&keyword=" + keyword + "&month=" + month + "&year=" + year + '&filter=ON';
+          var params = "?page=" + page_number + "&month=" + month + "&year=" + year + '&filter=ON';
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                  console.log(this.responseText)
+                  console.log(month)
                   var myObj = JSON.parse(this.responseText);
                   if (myObj[0] == null) {
                       motherDiv.innerHTML = '<h3> No user reservation </h3?>';
