@@ -363,6 +363,7 @@
                               mainDiv.innerHTML += '<br><br><input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
                               mainDiv.innerHTML += '<input type="button" class ="header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
                           }
+                          mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                           //   mainDiv.innerHTML += '<textarea id="remarks" placeholder="Remarks"></textarea><br><br>';
                       }
                       resolve('success');
@@ -2125,6 +2126,8 @@
                           mainDiv.innerHTML += '<br><label>Mark User? <input type="checkbox" id="markUser">'
                           mainDiv.innerHTML += '<br><input class="header-btn btn submitMf" type="button" value="Submit" id = "' + ID + '" onclick="submitRemark(' + ID + ',' + userID + ')" >'
                       }
+                      var printingPanel = "'/Backend_printingPanel.php?id=" + ID + "'";
+                      mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                       callReservationImage(mainDiv, ID)
                       resolve('success');
                   }
