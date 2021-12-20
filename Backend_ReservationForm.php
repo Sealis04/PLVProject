@@ -45,17 +45,17 @@
         })
     }
 
-    function loadMaxQty(select){
+    function loadMaxQty(select) {
         return new Promise((resolve, reject) => {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     try {
                         var myObj = JSON.parse(this.responseText);
-                        myObj.forEach(result=>{
-                            if(select.value == result.roomID){
+                        myObj.forEach(result => {
+                            if (select.value == result.roomID) {
                                 select.parentElement.querySelectorAll('input')[0].max = result.roomCap;
-                                select.parentElement.querySelectorAll('label')[2].textContent='Cap: '+ result.roomCap +' people';
+                                select.parentElement.querySelectorAll('label')[2].textContent = 'Cap: ' + result.roomCap + ' people';
                             }
                         })
                         resolve('success');
@@ -70,12 +70,14 @@
     }
 
     function renderListRoom(room, element, index) {
+        if (element.roomCap != 0) {
+            var option = document.createElement('option');
+            option.appendChild(document.createTextNode(element.roomName));
+            option.value = element.roomID;
+            option.id = "options";
+            room.appendChild(option);
+        }
 
-        var option = document.createElement('option');
-        option.appendChild(document.createTextNode(element.roomName));
-        option.value = element.roomID;
-        option.id = "options";
-        room.appendChild(option);
     }
 
     function renderRestofForm() {
@@ -134,7 +136,6 @@
     async function loadWrapperEvents(evt) {
         var room = this.getElementsByTagName('select')[0];
         var cb = this.getElementsByTagName('input')[5];
-        console.log(cb);
         var inputElements = this.getElementsByTagName('input');
         var elem = event.target;
         if (elem == inputElements[0]) {
@@ -151,6 +152,7 @@
         }
         if (elem == inputElements[0] || elem == inputElements[1] || elem == inputElements[2] || elem == inputElements[3]) {
             if (evt.currentTarget.endTimeParam > evt.currentTarget.startTimeParam) {
+                document.getElementById('submitBtn').disabled = false;
                 resetRoomList(room);
                 removeTB(true, cb, evt.currentTarget.formParam);
                 evt.currentTarget.errorParam.textContent = '';
@@ -166,6 +168,7 @@
 
             } else {
                 evt.currentTarget.errorParam.textContent = 'End Time must be later than Start Time';
+                document.getElementById('submitBtn').disabled = true;
             }
         }
     }
@@ -572,7 +575,7 @@
             //Duration
             var durationLabel = document.createElement('label');
             durationLabel.setAttribute('for', 'Duration');
-            durationLabel.textContent = 'Duration: ';
+            durationLabel.textContent = 'Duration  (in Days): ';
             var durationInput = document.createElement('input');
             durationInput.type = 'number';
             durationInput.name = 'duration';
@@ -638,15 +641,15 @@
             var label = document.createElement('label');
             label.textContent = '# of Attendees:';
             var maxLabel = document.createElement('label');
-            document.addEventListener('change',async function (e){
-                if(e.target && e.target.id == selectLabel.id){
-                   var x = await loadMaxQty(e.target);
-                   console.log(maxAttendees);
+            document.addEventListener('change', async function(e) {
+                if (e.target && e.target.id == selectLabel.id) {
+                    var x = await loadMaxQty(e.target);
+                    console.log(maxAttendees);
                 }
             });
             roomDiv.appendChild(roomLabel);
             roomDiv.appendChild(selectLabel);
-            roomDiv.innerHTML +='<br><br>';
+            roomDiv.innerHTML += '<br><br>';
             roomDiv.appendChild(label);
             roomDiv.appendChild(maxAttendees);
             roomDiv.appendChild(maxLabel);
@@ -872,7 +875,13 @@
         } else {
             fileUploadSuccess = true;
         }
-
+        for(var fileCount = 0; fileCount< uploadedCount; fileCount++){
+            if(!x[1].files[fileCount].name.match(/.(jpg|jpeg|png)$/i)) {
+                alert('Invalid file format\n Accepts JPG|JPEG|PNG');
+                fileUploadSuccess = false;
+                break;
+            }
+        }
         if (fileUploadSuccess && success && roomSuccess) {
             var everythingOkay;
             if (profile.length > 1) {

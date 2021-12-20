@@ -21,9 +21,8 @@ $total_items = $user['num'];
 
 $sql5->close();
 
-$sql_code = "SELECT `user_ID`, `user_firstName`, `user_middleName`, `user_lastName`, `course_name`,`PLV_ID` FROM tbl_user
-    LEFT JOIN tbl_course
-    on tbl_course.course_ID = tbl_user.user_course_ID WHERE isApproved = '2' LIMIT $start,$limit";
+$sql_code = "SELECT * FROM tbl_user INNER JOIN tbl_course on tbl_course.course_ID = tbl_user.user_course_ID 
+INNER JOIN tbl_section ON tbl_section.s_id = tbl_user.user_s_ID WHERE isApproved = '2' LIMIT $start,$limit";
 if ($sql = $conn->prepare($sql_code)) {
     if ($sql->execute()) {
         $result = $sql->get_result();
@@ -34,7 +33,9 @@ if ($sql = $conn->prepare($sql_code)) {
                 'middleName' => $row["user_middleName"],
                 'lastName' => $row["user_lastName"],
                 'course' => $row['course_name'],
-                'idImg'=> $row['PLV_ID']
+                'idImg'=> $row['PLV_ID'],
+                'email'=>$row['user_email'],
+                'section'=>$row['s_section']
             );
         }
     } else {
@@ -42,7 +43,7 @@ if ($sql = $conn->prepare($sql_code)) {
     }
     $sql->close();
 }
-$url = '/Window_Panel.php?window=';
+$url = '/Window_Panel.php?window=UserRegistrations';
 $type = 'registration';
 $conn->close();
 $pagination = getPaginationString($page, $total_items, $limit, false, $url, "&page=", "&category=",$type);

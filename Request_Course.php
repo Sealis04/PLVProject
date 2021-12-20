@@ -88,6 +88,22 @@ include "db_connection.php";
         }
         $sql4->close();
     }
+
+
+    $sql_code5 = "SELECT r_marked FROM tbl_user WHERE tbl_user.user_ID = ?";
+    if($sql5=$conn->prepare($sql_code5)){
+        $sql5->bind_param ("i",$userID);
+        if($sql5->execute()){
+            $sql5->store_result();
+            if($sql5->num_rows == 1){
+                $sql5->bind_result($mark);
+                    if($sql5->fetch()){
+                        $details['isMarked'] = $mark; 
+                    }
+            }
+        }
+        $sql5->close();
+    }
     
     $myJSON = json_encode($details);
     echo $myJSON;

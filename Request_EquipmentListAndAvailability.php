@@ -39,7 +39,7 @@ $sql_code = "SELECT * FROM tbl_equipment WHERE isDeleted = 0 LIMIT $start,$limit
                 }
              $sql->close();
         }
-    $url = '/Window_Panel.php?window=';
+    $url = '/Window_Panel.php?window=ContentEdit';
     $conn->close();
     $pagination = getPaginationString($page,$total_items,$limit,false, $url,"&page=","&category=",'equipment');
     if(count($equip)!=0 ){

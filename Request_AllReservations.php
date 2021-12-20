@@ -38,8 +38,11 @@ else
 $query = "SELECT COUNT(*) as num FROM tbl_reservation WHERE DateEnd < CURRENT_DATE()
         AND tbl_reservation.r_approved_ID = 1 
         AND tbl_reservation.r_reviewed = 1 
-        AND tbl_reservation.isDeleted = 0";
+        AND tbl_reservation.isDeleted = 0 AND 
+        MONTH(tbl_reservation.DateStart) = ? AND 
+        YEAR(tbl_reservation.DateStart) = ?";
 $sql5 = $conn->prepare($query);
+$sql5->bind_param("ii",$month,$year);
 $sql5->execute();
 $result = $sql5->get_result();
 $user = $result->fetch_array(MYSQLI_ASSOC);
@@ -80,7 +83,7 @@ if ($sql = $conn->prepare($sql_code)) {
     $sql->close();
 }
 $conn->close();
-$url = '/Window_Panel.php?window=';
+$url = '/Window_Panel.php?window=Archives';
 $type = 'finished';
 $pagination = getPaginationString($page, $total_items, $limit, false, $url, "&page=", "&category=", $type);
 if (count($reservation) != 0) {

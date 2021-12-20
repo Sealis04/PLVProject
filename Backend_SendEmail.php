@@ -14,7 +14,6 @@
            }
            $sql->close();
        }
-
        sendEmail($email,$rid,$fn,$remarks,$approval);
     }
     function sendEmail($email,$rid,$fn,$remarks,$approval){

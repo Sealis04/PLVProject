@@ -32,7 +32,7 @@
           if(!filter_var(test_input($_POST["email"]), FILTER_VALIDATE_EMAIL)){
             $emailErr="* Invalid Email";
           }else{
-            $sql_code = "SELECT user_ID from tbl_user WHERE user_email = ?";
+            $sql_code = "SELECT user_ID from tbl_user WHERE user_email = ? AND isApproved != 3";
             if($sql=$conn->prepare($sql_code)){
               $sql->bind_param("s",$email_param);
               $email_param = test_input($_POST["email"]);
@@ -54,7 +54,7 @@
         if(empty(test_input($_POST["contact"]))){
         $contactErr="* Required";
       } else{
-        if(!preg_match("/^\d+$/",test_input($_POST["contact"]))){
+        if(!preg_match('/^[0-9]{11}+$/',test_input($_POST["contact"]))){
           $contactErr="Invalid Contact Number";
         }else{
           if(strlen(test_input($_POST["contact"]))<11){
@@ -62,7 +62,6 @@
           }else{
             $contact = test_input($_POST["contact"]);
           }
-          
         }
       }
 
@@ -103,16 +102,33 @@
           $password = test_input($_POST["password"]);
         }
 
-        if($_FILES["fileUpload"]["error"]>0){
+        if($_FILES["fileUpload"]["error"]<0){
            $uploadErr = "Please upload your valid PLV ID";
         }
-       
-        $fileCount = count(array_filter($_FILES["fileUpload"]["name"]));
-        $valid_ext = array('jpg','png','jpeg');
-        if(empty($emailErr) && empty($passwordErr) && empty($contactErr) && empty($firstNameErr) && empty($middleNameErr) && empty($lastNameErr && empty($uploadErr))){
-
-          $selectedCourse = $_POST["course"];
-          $selectedSection = $_POST['section'];
+        
+      $fileCount = count(array_filter($_FILES["fileUpload"]["name"]));
+      $valid_ext = array('jpg', 'png', 'jpeg');
+      for ($i = 0; $i < $fileCount; $i++) {
+        $fileName = $_FILES['fileUpload']['name'][$i];
+        $path = "assets/" . $fileName;
+        $fileextension = pathinfo($path, PATHINFO_EXTENSION);
+        $fileextension = strtolower($fileextension);
+        if (!in_array($fileextension, $valid_ext)) {
+          $uploadErr = "Invalid ID format";
+        }
+      }
+        
+   
+      
+        if(empty($emailErr) && empty($passwordErr) && empty($contactErr) && empty($firstNameErr) && empty($middleNameErr) && empty($lastNameErr) && empty($uploadErr)){
+          $selectedUserType = $_POST['Type'];
+          if($selectedUserType == 1){
+            $selectedCourse = $_POST["course"];
+            $selectedSection = $_POST['section'];
+          }else{
+            $selectedCourse = 5;
+            $selectedSection=null;
+          }
           $sql_code = "INSERT INTO tbl_user (user_email, user_password, user_firstName, user_middleName, user_lastName, user_contactNumber,user_course_ID,PLV_ID,isAdmin,isApproved,user_s_ID) VALUES (?, ?, ?, ?, ? , ? , ? , ?, ?, ?,?)";
           if($sql = $conn->prepare($sql_code)){
             $sql->bind_param("sssssiisiii",$email,$password_hash,$firstName,$middleName,$lastName,$contact,$selectedCourse,$fileName,$isAdmin,$isApproved,$selectedSection);
@@ -120,7 +136,7 @@
             if($sql->execute()){
               $lastID = $conn->insert_id;
               $notifID = notification($lastID, 2,1);
-              uploadImage($conn,$fileCount,$valid_ext,$sql->insert_id);
+              uploadImage($conn,$fileCount,$sql->insert_id);
               echo '<script>
                     alert("Registration Successful!\n Status:Pending")
                     window.location.href = "Window_LOGIN.php"
@@ -132,29 +148,24 @@
             $sql->close();
           }
         
-        //Upload part (under construction)
-
-        
-        $message=$uploadErr="";
+        // //Upload part (under construction)
         }
         $conn->close();
     }
-    function uploadImage($conn,$fileCount,$valid_ext,$id){
+    function uploadImage($conn,$fileCount,$id){
       for($i = 0; $i<$fileCount;$i++){
         $fileTmpPath = $_FILES["fileUpload"]["tmp_name"][$i];
         $fileName = $_FILES['fileUpload']['name'][$i];
         $path = "assets/".$fileName;
         $fileextension = pathinfo($path,PATHINFO_EXTENSION);
         $fileextension = strtolower($fileextension);
-        if(in_array($fileextension,$valid_ext)){
           if(move_uploaded_file($fileTmpPath,$path)){
-             $sql_code2 = "INSERT INTO tbl_letterforregistration (u_ID,letterPath) VALUES (?,?)";
-             if($sql2 = $conn->prepare($sql_code2)){
-               $sql2->bind_param('is', $id,$path);
+            $sql_code2 = "INSERT INTO tbl_letterforregistration (u_ID,letterPath) VALUES (?,?)";
+            if($sql2 = $conn->prepare($sql_code2)){
+              $sql2->bind_param('is', $id,$path);
                $sql2->execute();
              } 
           } 
-        }
       }
     }
     function test_input($data){
@@ -189,19 +200,19 @@
                 <img src="assets/plv.png" style="display: block; margin-left: auto; margin-right: auto; margin-bottom: 50; height: 100; width: 100; margin-top: 100;">
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="multipart/form-data"> 
                     <div class="md-form form-group">
-                        <input type="text"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="email" placeholder="Email" value="<?php echo(isset($email))?$email:''?>" >
+                        <input required type="text"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="email" placeholder="Email" value="<?php echo(isset($email))?$email:''?>" >
                         <span class="error"><?php echo $emailErr;?></span>
                       </div>
                       <div class="md-form form-group">
-                        <input type="password"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="password" placeholder="Password">
+                        <input required type="password"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="password" placeholder="Password">
                         <span class="error"><?php echo $passwordErr;?></span>
                       </div>
                       <div class="md-form form-group">
-                        <input type="text"  maxlength="11" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="contact" placeholder="Contact" value="<?php echo(isset($contact))?$contact:''?>">
+                        <input required type="text"  maxlength="11" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="contact" placeholder="Contact" value="<?php echo(isset($contact))?$contact:''?>">
                         <span class="error"><?php echo $contactErr;?></span>
                       </div>
                       <div class="md-form form-group">
-                        <input type="text"   style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="firstName" placeholder="First Name" value="<?php echo(isset($firstName))?$firstName:''?>">
+                        <input required type="text"   style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="firstName" placeholder="First Name" value="<?php echo(isset($firstName))?$firstName:''?>">
                         <span class="error"><?php echo $firstNameErr;?></span>
                       </div>
                       <div class="md-form form-group">
@@ -209,7 +220,7 @@
                         <span class="error"><?php echo $middleNameErr;?></span>
                       </div>
                       <div class="md-form form-group">
-                        <input  type="text"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="lastName" placeholder="Last Name" value="<?php echo(isset($lastName))?$lastName:''?>">
+                        <input  required type="text"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="lastName" placeholder="Last Name" value="<?php echo(isset($lastName))?$lastName:''?>">
                         <span class="error"><?php echo $lastNameErr;?></span>
                       </div>
                       <!--CHANGES-->
@@ -223,7 +234,7 @@
                       <!--END-->
                       <div class="md-form form-group">
                         <label class="form-label" for="customFile">Attach ID</label>
-                        <input type="file" multiple class="form-control" id="File" name = "fileUpload[]" />
+                        <input required  type="file" multiple class="form-control" id="File" name = "fileUpload[]" />
                         <span class="error"><?php echo $uploadErr;?></span>
                       </div>
                       <button type="submit" class="sgn-btn btn" id="register" style="margin:auto;" name="registerBtn">Register</button>

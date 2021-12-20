@@ -40,7 +40,7 @@ if ($sql = $conn->prepare($sql_code)) {
     }
     $sql->close();
 }
-$url = '/Window_Panel.php?window=';
+$url = '/Window_Panel.php?window=ContentEdit';
 $conn->close();
 $pagination = getPaginationString($page,$total_items,$limit,false,$url,"&page=","&category=",'policies');
 if(count($policies)!=0 ){

@@ -45,7 +45,7 @@ if ($sql = $conn->prepare($sql_code)) {
 }
 $conn->close();
 
-$url = '/Window_Panel.php?window=';
+$url = '/Window_Panel.php?window=Monitoring';
 $type = 'review';
 $pagination = getPaginationString($page, $total_items, $limit, false, $url, "&page=", "&category=", $type);
 if (count($reservation) != 0) {
