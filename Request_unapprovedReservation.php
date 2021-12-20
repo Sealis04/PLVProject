@@ -23,7 +23,7 @@ $sql_code = "SELECT * FROM `tbl_reservation`
 INNER JOIN tbl_user ON tbl_reservation.r_user_ID = tbl_user.user_ID 
 INNER JOIN tbl_room ON tbl_reservation.r_room_ID = tbl_room.room_ID 
 INNER JOIN tbl_notification ON tbl_notification.notificationID = tbl_reservation.notifID 
-WHERE tbl_reservation.r_approved_ID = 2 OR tbl_reservation.r_approved_ID = 1 AND tbl_reservation.r_status = 0 
+WHERE (tbl_reservation.r_approved_ID = 2 OR tbl_reservation.r_approved_ID = 1) AND tbl_reservation.r_status = 0 
 AND tbl_notification.forRegistration = 0 ORDER BY dateStart, r_approved_ID DESC LIMIT $start,$limit";
 if ($sql = $conn->prepare($sql_code)) {
     if ($sql->execute()) {
@@ -31,6 +31,7 @@ if ($sql = $conn->prepare($sql_code)) {
         while ($row = $result->fetch_assoc()) {
                         $reservation[] = array(
                             'event' => $row["r_event"],
+                            'eventAdviser' => $row["r_eventAdviser"],
                             'dateStart' => $row["DateStart"],
                             'dateEnd' => $row["DateEnd"],
                             'timeStart' => $row['TimeStart'],
@@ -53,7 +54,7 @@ if ($sql = $conn->prepare($sql_code)) {
     }
     $sql->close();
 }
-$url = '/Window_Panel.php?window=';
+$url = '/Window_Panel.php?window=UserReservation';
 $type = 'pending';
 $conn->close();
 $pagination = getPaginationString($page,$total_items,$limit,false,$url,"&page=","&category=",$type);

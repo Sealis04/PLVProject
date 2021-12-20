@@ -23,7 +23,7 @@ $sql5->close();
 $sql_code = "SELECT * FROM tbl_reservation 
 INNER JOIN tbl_room ON tbl_reservation.r_room_ID = tbl_room.room_ID 
 INNER JOIN tbl_notification ON tbl_reservation.notifID = tbl_notification.notificationID
-WHERE tbl_reservation.r_user_ID = ? AND tbl_notification.forRegistration = 0 ORDER BY tbl_reservation.DateStart  DESC LIMIT $start, $limit";
+WHERE tbl_reservation.r_user_ID = ? AND tbl_notification.forRegistration = 0 ORDER BY tbl_reservation.DateStart LIMIT $start, $limit";
 if ($sql = $conn->prepare($sql_code)) {
     $sql->bind_param('i', $r_user);
     $r_user = $userID;
@@ -32,6 +32,7 @@ if ($sql = $conn->prepare($sql_code)) {
         while ($row = $result->fetch_assoc()) {
             $reservation[] = array(
                 'event' => $row["r_event"],
+                'eventAdviser' => $row["r_eventAdviser"],
                 'dateStart' => $row["DateStart"],
                 'dateEnd' => $row["DateEnd"],
                 'timeStart' => $row['TimeStart'],
@@ -50,7 +51,7 @@ if ($sql = $conn->prepare($sql_code)) {
     $sql->close();
 }
 $type = 'user';
-$url = '/Window_Panel.php?window=';
+$url = '/Window_Panel.php?window=MyReservations';
 
 // $sql_code2 = "SELECT * FROM tbl_join";
 

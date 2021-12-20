@@ -21,10 +21,8 @@
         currentMonth = (currentMonth + 1) % 12;
         if(activeYear == currentYear){
             if(activeMonth == currentMonth){
-                console.log('maiin  moment');
                 calendar(currentMonth, currentYear,activeDay);
             }else{
-                console.log('else moment');
                 calendar(currentMonth, currentYear);
             }
         }else{
@@ -38,10 +36,8 @@
         currentMonth = (currentMonth == 0) ? 11 : currentMonth - 1;
         if(activeYear == currentYear){
             if(activeMonth == currentMonth){
-                console.log('maiin  moment');
                 calendar(currentMonth, currentYear,activeDay);
             }else{
-                console.log('else moment');
                 calendar(currentMonth, currentYear);
             }
         }else{
@@ -101,7 +97,6 @@
                             activeYear = currentYear;
                             activeMonth= currentMonth;
                             activeDay = id;
-                            alert(id + ' ' + currentMonth + ' ' + currentYear);
                             openDate(currentMonth, currentYear, id);
 
                         }
@@ -182,7 +177,7 @@
         // div.innerHTML += '<h3>Room Name:'+ element.room_name+'</h3>';
         // div.innerHTML += '<h3>Reserved By:'+ element.firstName+ ' ' + element.middleName + ' ' + element.lastName+'</h3>';
         div.innerHTML += '<h4>' + element.event_name + '<h4>';
-        div.innerHTML += '<h5>' + +'<h5>'
+        // div.innerHTML += '<h5>' + +'<h5>'
         div.innerHTML += '<h5>' + element.room_name + '<h5>';
         div.innerHTML += '<h5> Reserved By:' + element.firstName + ' ' + element.middleName + ' ' + element.lastName + '<h5>';
         div.innerHTML += '<hr class="hr">';
