@@ -326,6 +326,7 @@
                           if (status != 1) {
                               if (approval == 2) {
                                   mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
+                                  mainDiv.innerHTML += '<br>';
                                   mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                                   mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">';
                                   mainDiv.innerHTML += '<hr class="hr">';
@@ -2122,7 +2123,7 @@
                       if (review == 0) {
                           mainDiv.innerHTML += '<textarea id ="remarksArea">'
                           mainDiv.innerHTML += '<br><label>Mark User? <input type="checkbox" id="markUser">'
-                          mainDiv.innerHTML += '<br><input type="button" value="Submit" id = "' + ID + '" onclick="submitRemark(' + ID + ',' + userID + ')" >'
+                          mainDiv.innerHTML += '<br><input class="header-btn btn submitMf" type="button" value="Submit" id = "' + ID + '" onclick="submitRemark(' + ID + ',' + userID + ')" >'
                       }
                       callReservationImage(mainDiv, ID)
                       resolve('success');

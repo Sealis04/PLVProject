@@ -28,6 +28,7 @@
                             notifCount.innerHTML += '<sup id="sup"> ' + count + '<sup>';
                             var button = document.createElement('input');
                             button.id='markallasRead';
+                            button.className='header-btn btn';
                             button.type = 'button';
                             button.value = 'Mark all as read';
                             document.addEventListener('click',markallasread);
