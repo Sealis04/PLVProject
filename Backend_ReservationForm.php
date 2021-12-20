@@ -959,7 +959,7 @@
                     alert("Reservation success\nStatus: Pending")
                     window.location.href = "Window_LOGIN.php"
                 } else {
-                    alert("Something went wrong, please try again")
+                    alert(this.responseText)
                     location.reload();
                 }
             }
