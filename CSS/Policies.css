@@ -39,17 +39,18 @@ a {
 
 .header-btn{
   text-decoration: none;
-  background-color: #008F00;
+  background-color: none;
   color: white;
-  text-shadow: black 1px 1px;
-  padding: 10px;
+  background-color: #0F1057;
   font-size: 15px;
   margin-bottom: 30px;
-
+  margin-left: -10px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 .header-btn:active{
   color: white;
-  background-color: #00f500;
+  background-color: #000099 ;
 }
 .header-btn:hover{
   color: white;
