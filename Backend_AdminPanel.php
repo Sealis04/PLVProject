@@ -40,24 +40,24 @@
                       resList('pending');
                   } else if (windowType == "ContentEdit") {
                       console.log(categ);
-                    if(categ == null){
-                        editTabContent();
-                    }else{
-                        if (categ == 'equipment') {
+                      if (categ == null) {
                           editTabContent();
-                          loadLists('1', document.getElementById('equipPanel'))
-                      } else if (categ == 'room') {
-                          editTabContent();
-                          loadLists('2', document.getElementById('roomPanel'));
-                      } else if (categ == 'policies') {
-                          editTabContent();
-                          loadLists('3', document.getElementById('polPanel'))
-                      } else if (categ == 'userList') {
-                          editTabContent();
-                          loadLists('4', document.getElementById('userPanel'))
+                      } else {
+                          if (categ == 'equipment') {
+                              editTabContent();
+                              loadLists('1', document.getElementById('equipPanel'))
+                          } else if (categ == 'room') {
+                              editTabContent();
+                              loadLists('2', document.getElementById('roomPanel'));
+                          } else if (categ == 'policies') {
+                              editTabContent();
+                              loadLists('3', document.getElementById('polPanel'))
+                          } else if (categ == 'userList') {
+                              editTabContent();
+                              loadLists('4', document.getElementById('userPanel'))
+                          }
                       }
-                    }
-                    
+
                   } else if (windowType == "Monitoring") {
                       monitoringContent();
                   } else if (windowType == 'Archives') {
@@ -81,23 +81,23 @@
                   } else if (windowType == "UserReservation") {
                       resList('pending', c);
                   } else if (windowType == "ContentEdit") {
-                    if(categ == null){
-                        editTabContent();
-                    }else{
-                      if (categ == 'equipment') {
+                      if (categ == null) {
                           editTabContent();
-                          loadLists('1', document.getElementById('equipPanel'), c)
-                      } else if (categ == 'room') {
-                          editTabContent();
-                          loadLists('2', document.getElementById('roomPanel'), c)
-                      } else if (categ == 'policies') {
-                          editTabContent();
-                          loadLists('3', document.getElementById('polPanel'), c)
-                      } else if (categ == 'userList') {
-                          editTabContent();
-                          loadLists('4', document.getElementById('userPanel'), c)
+                      } else {
+                          if (categ == 'equipment') {
+                              editTabContent();
+                              loadLists('1', document.getElementById('equipPanel'), c)
+                          } else if (categ == 'room') {
+                              editTabContent();
+                              loadLists('2', document.getElementById('roomPanel'), c)
+                          } else if (categ == 'policies') {
+                              editTabContent();
+                              loadLists('3', document.getElementById('polPanel'), c)
+                          } else if (categ == 'userList') {
+                              editTabContent();
+                              loadLists('4', document.getElementById('userPanel'), c)
+                          }
                       }
-                    }
                   } else if (windowType == "Monitoring") {
                       monitoringContent(c);
                   } else if (windowType == 'Archives') {
@@ -173,6 +173,7 @@
       }
 
       function loadImages(mainDiv, path) {
+          var click = false;
           //    modal img code
           //    modal img code
           var i = 0;
@@ -189,9 +190,23 @@
           span.className = 'close';
           span.textContent = 'X';
           var modalImg = document.createElement('img');
-          modalImg.className = 'modal-content';
-          modalImg.id = 'img01';
+          modalImg.id = 'modal-content';
           var boxClicked = false;
+
+          var modalDiv = document.createElement('div');
+
+          var angle = 0;
+          var manipulateDiv = document.createElement('div');
+          manipulateDiv.className = 'moveModal';
+          //Manipulate modalImgelements
+          var rotate = document.createElement('span');
+          rotate.className = 'rotate modalEdit';
+          rotate.textContent = 'Rotate';
+          rotate.addEventListener('click', function(e) {
+              angle = (angle + 90) % 360;
+              modalImg.className = " rotate" + angle;
+              click = false;
+          });
           document.addEventListener('click', function(e) {
               if (e.target && e.target == img) {
                   e.stopPropagation();
@@ -204,14 +219,27 @@
                               modal.style.display = 'none'
                               var i = 0;
                           };
+                          if (event.target == modalImg) {
+                              if (!click) {
+                                  click = true;
+                                  modalImg.classList.remove('zoomedIn');
+                                  modalImg.className += ' zoomedOut';
+                              } else {
+                                  click = false;
+                                  modalImg.classList.remove('zoomedOut');
+                              }
 
+                          }
                       })
                   }
                   boxClicked = true;
               }
           });
-          modal.appendChild(span);
-          modal.appendChild(modalImg);
+          manipulateDiv.appendChild(span);
+          manipulateDiv.appendChild(rotate);
+          modalDiv.appendChild(modalImg);
+          modal.appendChild(modalDiv);
+          modal.appendChild(manipulateDiv)
           //Previous/next image
           if (path.length > 1) {
               var prev = document.createElement('span');
@@ -221,17 +249,21 @@
               prev.textContent = '<';
               next.textContent = '>';
               prev.addEventListener('click', function() {
+                  modalImg.className = '';
+                  angle = 0;
                   i--;
                   if (i < 0) i = path.length - 1;
                   modalImg.src = path[i];
               })
               next.addEventListener('click', function() {
+                  modalImg.className = '';
+                  angle = 0;
                   i++;
                   if (i == path.length) i = 0;
                   modalImg.src = path[i];
               })
-              modal.appendChild(prev);
-              modal.appendChild(next);
+              manipulateDiv.appendChild(prev);
+              manipulateDiv.appendChild(next);
           }
           //      rotation stuff
           //   var rotateLeft = document.createElement('span');
@@ -664,7 +696,7 @@
               xmlhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
                       document.getElementById('editList').remove();
-                      loadStuff('policies','ContentEdit');
+                      loadStuff('policies', 'ContentEdit');
                       //   editTabContent();
                       //   var poliDiv = document.getElementById('polPanel');
                       //   var poliBtn = document.getElementById('polBtn');
@@ -675,7 +707,7 @@
               xmlhttp.send();
           } else {
               document.getElementById('editList').remove();
-              loadStuff('policies','ContentEdit');
+              loadStuff('policies', 'ContentEdit');
           }
       }
 
@@ -688,7 +720,7 @@
                       //   editTabContent();
                       //   var equipDiv = document.getElementById('equipPanel');
                       //   var equipBtn = document.getElementById('equipBtn');
-                      loadStuff('equipment','ContentEdit')
+                      loadStuff('equipment', 'ContentEdit')
                       //   equipBtn.click('2', equipDiv);
                   }
               }
@@ -697,7 +729,7 @@
           } else {
               document.getElementById('editList').remove();
 
-              loadStuff('equipment','ContentEdit')
+              loadStuff('equipment', 'ContentEdit')
           }
       }
 
@@ -707,7 +739,7 @@
               xmlhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
                       document.getElementById('editList').remove();
-                      loadStuff('room','ContentEdit');
+                      loadStuff('room', 'ContentEdit');
                       //   var roomDiv = document.getElementById('roomPanel');
                       //   var roomBtn = document.getElementById('roomBtn');
                       //   roomBtn.click('2', roomDiv);
@@ -717,7 +749,7 @@
               xmlhttp.send();
           } else {
               document.getElementById('editList').remove();
-              loadStuff('room','ContentEdit');
+              loadStuff('room', 'ContentEdit');
           }
       }
 
@@ -727,7 +759,7 @@
               xmlhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
                       document.getElementById('editList').remove();
-                      loadStuff('policies','ContentEdit');
+                      loadStuff('policies', 'ContentEdit');
                       //   editTabContent();
                       //   var poliDiv = document.getElementById('polPanel');
                       //   var poliBtn = document.getElementById('polBtn');
@@ -738,7 +770,7 @@
               xmlhttp.send();
           } else {
               document.getElementById('editList').remove();
-              loadStuff('policies','ContentEdit');
+              loadStuff('policies', 'ContentEdit');
           }
       }
 
@@ -754,14 +786,14 @@
               xmlhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
                       document.getElementById('editList').remove();
-                      loadStuff('userList','ContentEdit');
+                      loadStuff('userList', 'ContentEdit');
                   }
               }
               xmlhttp.open("GET", "/Request_EditUser.php?availability=" + eAvailability + '&ID=' + ID, true);
               xmlhttp.send();
           } else {
               document.getElementById('editList').remove();
-              loadStuff('userList','ContentEdit');
+              loadStuff('userList', 'ContentEdit');
           }
       }
 
@@ -773,14 +805,14 @@
                   if (this.readyState == 4 && this.status == 200) {
 
                       document.getElementById('editList').remove();
-                      loadStuff('policies','ContentEdit');
+                      loadStuff('policies', 'ContentEdit');
                   }
               }
               xmlhttp.open("GET", "/Request_EditPolicies.php?name=" + name + '&desc=' + desc + '&ID=' + ID, true);
               xmlhttp.send();
           } else {
               document.getElementById('editList').remove();
-              loadStuff('policies','ContentEdit');
+              loadStuff('policies', 'ContentEdit');
           }
       }
 
@@ -796,14 +828,14 @@
               xmlhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
                       document.getElementById('editList').remove();
-                      loadStuff('equipment','ContentEdit');
+                      loadStuff('equipment', 'ContentEdit');
                   }
               }
               xmlhttp.open("GET", "/Request_EditEquipList.php?name=" + name + '&quantity=' + quantity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
               xmlhttp.send();
           } else {
               document.getElementById('editList').remove();
-              loadStuff('equipment','ContentEdit');
+              loadStuff('equipment', 'ContentEdit');
           }
       }
 
@@ -819,14 +851,14 @@
               xmlhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
                       document.getElementById('editList').remove();
-                      loadStuff('room','ContentEdit');
+                      loadStuff('room', 'ContentEdit');
                   }
               }
               xmlhttp.open("GET", "/Request_EditRoomList.php?name=" + name + '&cap=' + capacity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
               xmlhttp.send();
           } else {
               document.getElementById('editList').remove();
-              loadStuff('room','ContentEdit');
+              loadStuff('room', 'ContentEdit');
           }
       }
 
@@ -1059,7 +1091,7 @@
               if (equipBtn == true) {
                   document.getElementById('editList').remove();
                   c = null;
-                  await loadStuff('equipment','ContentEdit')
+                  await loadStuff('equipment', 'ContentEdit')
                   equipBtn = false;
               } else {
                   document.getElementById('equipID').remove();
@@ -1085,7 +1117,7 @@
               if (roomBtn == true) {
                   document.getElementById('editList').remove();
                   c = null;
-                  await loadStuff('room','ContentEdit');
+                  await loadStuff('room', 'ContentEdit');
                   roomBtn = false;
               } else {
                   document.getElementById('roomID').remove();
@@ -1111,7 +1143,7 @@
               if (policiesBtn == true) {
                   document.getElementById('editList').remove();
                   c = null;
-                  await loadStuff('policies','ContentEdit');
+                  await loadStuff('policies', 'ContentEdit');
                   polciiesBtn = false;
               } else {
                   document.getElementById('policiesID').remove();
@@ -1138,7 +1170,7 @@
               if (userBtn == true) {
                   document.getElementById('editList').remove();
                   c = null;
-                  await loadStuff('userList','ContentEdit');
+                  await loadStuff('userList', 'ContentEdit');
                   userBtn = false;
               } else {
                   document.getElementById('userID').remove();
@@ -1688,7 +1720,7 @@
                   if (listParam == '' || desc == '') {
                       alert('Input must not be empty/ or zero ');
                       document.getElementById('editList').remove();
-                      loadStuff('policies','ContentEdit');
+                      loadStuff('policies', 'ContentEdit');
                   } else {
                       addPoliciesQuery(listParam, desc);
                   }
@@ -1698,9 +1730,9 @@
                       alert('Input must not be empty/ or zero ');
                       document.getElementById('editList').remove();
                       if (type == 'roomID') {
-                          loadStuff('room','ContentEdit');
+                          loadStuff('room', 'ContentEdit');
                       } else if (type == 'equipID') {
-                          loadStuff('equipment','ContentEdit');
+                          loadStuff('equipment', 'ContentEdit');
                       }
                   } else {
                       if (type == 'roomID') {
@@ -1719,7 +1751,7 @@
                   if (listParam == '' || desc == '') {
                       alert('Input must not be empty/ or zero ');
                       document.getElementById('editList').remove();
-                      loadStuff('policies','ContentEdit');
+                      loadStuff('policies', 'ContentEdit');
                   } else {
                       editPoliciesQuery(listParam, desc, ID);
                   }
@@ -1730,9 +1762,9 @@
                       alert('Input must not be empty/ or zero ');
                       document.getElementById('editList').remove();
                       if (type == 'roomID') {
-                          loadStuff('room','ContentEdit');
+                          loadStuff('room', 'ContentEdit');
                       } else if (type == 'equipID') {
-                          loadStuff('equipment','ContentEdit');
+                          loadStuff('equipment', 'ContentEdit');
                       }
                   } else {
                       if (type == 'roomID') {
@@ -1778,7 +1810,7 @@
               xmlhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
                       document.getElementById('editList').remove();
-                      loadStuff('room','ContentEdit');
+                      loadStuff('room', 'ContentEdit');
                   }
               }
               xmlhttp.open("GET", "/Request_AddRoom.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
@@ -1786,7 +1818,7 @@
 
           } else {
               document.getElementById('editList').remove();
-              loadStuff('room','ContentEdit');
+              loadStuff('room', 'ContentEdit');
           }
 
           //   editTabContent();
@@ -1807,7 +1839,7 @@
               var xmlhttp = new XMLHttpRequest();
               xmlhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
-                      loadStuff('equipment','ContentEdit')
+                      loadStuff('equipment', 'ContentEdit')
                   }
               }
               xmlhttp.open("GET", "/Request_AddEquipment.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
@@ -1820,7 +1852,7 @@
               //   equipBtn.click('2', equipDiv);
           } else {
               document.getElementById('editList').remove();
-              loadStuff('room','ContentEdit');
+              loadStuff('room', 'ContentEdit');
           }
       }
 
@@ -2042,6 +2074,7 @@
           mainDiv.appendChild(label);
           mainDiv.appendChild(space);
           mainDiv.appendChild(date);
+
           div.appendChild(mainDiv)
 
           if (typeof(element.pagination) != undefined && element.pagination != null) {
@@ -2153,7 +2186,7 @@
               if (this.readyState == 4 && this.status == 200) {
                   alert(this.responseText)
                   document.getElementById('monitoringContent').remove();
-                  loadStuff(...Array(1),Monitoring);
+                  loadStuff(...Array(1), Monitoring);
                   //   monitoringContent(c);
               }
           }

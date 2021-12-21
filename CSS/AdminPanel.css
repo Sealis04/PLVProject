@@ -514,11 +514,71 @@ div.pagination span.disabled {
 }
 
 /* Modal Content (Image) */
-.modal-content {
+#modal-content {
   margin: auto;
   display: block;
   width: 80%;
   max-width: 700px;
+
+  transform-origin: top left; /* IE 10+, Firefox, etc. */
+  -webkit-transform-origin: top left; /* Chrome */
+  -ms-transform-origin: top left; /* IE 9 */
+
+  /* transition: transform 0.25s ease; */
+  cursor: zoom-in;
+
+}
+
+/* 
+#modal-content.rotate90,
+#modal-content.rotate270 {
+  width: 100px;
+  height: 820px
+} */
+#modal-content.zoomedOut{
+  transform: scale(2); 
+  /* transition: transform 0.25s ease; */
+  cursor: zoom-out;
+}
+#modal-content.rotate90.zoomedOut{
+  transform: rotate(90deg) translateY(-100%) scale(2);
+  -webkit-transform: rotate(90deg) translateY(-100%) scale(2);
+  -ms-transform: rotate(90deg) translateY(-100%) scale(2);
+  cursor: zoom-out;
+}
+#modal-content.rotate180.zoomedOut{
+  transform: rotate(180deg) translate(-100%, -100%) scale(2);
+  -webkit-transform: rotate(180deg) translate(-100%, -100%) scale(2);
+  -ms-transform: rotate(180deg) translateX(-100%, -100%) scale(2);
+  cursor: zoom-out;
+}
+#modal-content.rotate270.zoomedOut{
+  transform: rotate(270deg) translateX(-100%) scale(2);
+  -webkit-transform: rotate(270deg) translateX(-100%) scale(2);
+  -ms-transform: rotate(270deg) translateX(-100%) scale(2) ;
+  cursor: zoom-out;
+}
+
+/* #modal-content.rotate0{
+  transform: rotate(360deg) translateY(-100%);
+  -webkit-transform: rotate(360deg) translateY(-100%);
+  -ms-transform: rotate(360deg) translateY(-100%);
+} */
+
+#modal-content.rotate90{
+  transform: rotate(90deg) translateY(-100%);
+  -webkit-transform: rotate(90deg) translateY(-100%);
+  -ms-transform: rotate(90deg) translateY(-100%);
+}
+#modal-content.rotate180{
+  transform: rotate(180deg) translate(-100%, -100%);
+  -webkit-transform: rotate(180deg) translate(-100%, -100%);
+  -ms-transform: rotate(180deg) translateX(-100%, -100%);
+}
+#modal-content.rotate270{
+  transform: rotate(270deg) translateX(-100%);
+  -webkit-transform: rotate(270deg) translateX(-100%);
+  -ms-transform: rotate(270deg) translateX(-100%);
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
@@ -583,6 +643,16 @@ div.pagination span.disabled {
   font-weight: bold;
   float:right;
   margin: 5px;
+}
+
+.modalEdit{
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  z-index: 1;
+  /* position: fixed; */
+  top: 50%;
+  left: 50%;
 }
 /* Removed float:right from .userResContent and .resContent */
 

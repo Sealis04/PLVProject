@@ -26,18 +26,20 @@
     $uploadErr = "";
     //determine if admin
     if (isset($_SESSION['userID'])) {
-        if ($_SESSION["isApproved"] == 2) {
+        $remarks = checkDetails($_SESSION['userID']);
+        if (isset($remarks)) {
             echo '<script>
-        alert("User account is still pending, unable to create a reservation")
-        window.location.href = "Window_HomePage.php"
-        </script>';
-        } else if ($_SESSION["isApproved"] == 1) {
+            alert("'.$remarks.'.")
+            window.location.href = "Window_LOGIN.php"
+            </script>';
+        } else {
             if ($_SESSION["isAdmin"] == 1) {
                 $approveID = 1;
             } else {
                 $approveID = 2;
             }
         }
+       
     } else {
         echo '<script>
         alert("Please Log in first.")
