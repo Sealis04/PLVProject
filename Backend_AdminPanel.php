@@ -173,6 +173,7 @@
       }
 
       function loadImages(mainDiv, path) {
+          var click = false;
           //    modal img code
           //    modal img code
           var i = 0;
@@ -189,9 +190,23 @@
           span.className = 'close';
           span.textContent = 'X';
           var modalImg = document.createElement('img');
-          modalImg.className = 'modal-content';
-          modalImg.id = 'img01';
+          modalImg.id = 'modal-content';
           var boxClicked = false;
+
+          var modalDiv = document.createElement('div');
+
+          var angle = 0;
+          var manipulateDiv = document.createElement('div');
+          manipulateDiv.className = 'moveModal';
+          //Manipulate modalImgelements
+          var rotate = document.createElement('span');
+          rotate.className = 'rotate modalEdit';
+          rotate.textContent = 'Rotate';
+          rotate.addEventListener('click', function(e) {
+              angle = (angle + 90) % 360;
+              modalImg.className = " rotate" + angle;
+              click = false;
+          });
           document.addEventListener('click', function(e) {
               if (e.target && e.target == img) {
                   e.stopPropagation();
@@ -204,14 +219,27 @@
                               modal.style.display = 'none'
                               var i = 0;
                           };
+                          if (event.target == modalImg) {
+                              if (!click) {
+                                  click = true;
+                                  modalImg.classList.remove('zoomedIn');
+                                  modalImg.className += ' zoomedOut';
+                              } else {
+                                  click = false;
+                                  modalImg.classList.remove('zoomedOut');
+                              }
 
+                          }
                       })
                   }
                   boxClicked = true;
               }
           });
-          modal.appendChild(span);
-          modal.appendChild(modalImg);
+          manipulateDiv.appendChild(span);
+          manipulateDiv.appendChild(rotate);
+          modalDiv.appendChild(modalImg);
+          modal.appendChild(modalDiv);
+          modal.appendChild(manipulateDiv)
           //Previous/next image
           if (path.length > 1) {
               var prev = document.createElement('span');
@@ -221,17 +249,21 @@
               prev.textContent = '<';
               next.textContent = '>';
               prev.addEventListener('click', function() {
+                  modalImg.className = '';
+                  angle = 0;
                   i--;
                   if (i < 0) i = path.length - 1;
                   modalImg.src = path[i];
               })
               next.addEventListener('click', function() {
+                  modalImg.className = '';
+                  angle = 0;
                   i++;
                   if (i == path.length) i = 0;
                   modalImg.src = path[i];
               })
-              modal.appendChild(prev);
-              modal.appendChild(next);
+              manipulateDiv.appendChild(prev);
+              manipulateDiv.appendChild(next);
           }
           //      rotation stuff
           //   var rotateLeft = document.createElement('span');
