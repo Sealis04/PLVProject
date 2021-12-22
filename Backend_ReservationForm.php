@@ -824,7 +824,17 @@
             let equipID = [];
             f.querySelectorAll("input").forEach(ele => {
                 if (ele.value != '') {
-                    obj[ele.name] = ele.value || "";
+                    if (ele.id == 'durationDay') {
+                        if (ele.value <= 0) {
+                            facts = false;
+                            alert("Invalid value for Input:Duration");
+                        } else {
+                            obj[ele.name] = ele.value || "";
+                        }
+                    } else {
+                        obj[ele.name] = ele.value || "";
+                    }
+
                     if (facts) {
                         success = true;
                         // alert('blank values, please fill them up');
@@ -875,8 +885,8 @@
         } else {
             fileUploadSuccess = true;
         }
-        for(var fileCount = 0; fileCount< uploadedCount; fileCount++){
-            if(!x[1].files[fileCount].name.match(/.(jpg|jpeg|png)$/i)) {
+        for (var fileCount = 0; fileCount < uploadedCount; fileCount++) {
+            if (!x[1].files[fileCount].name.match(/.(jpg|jpeg|png)$/i)) {
                 alert('Invalid file format\n Accepts JPG|JPEG|PNG');
                 fileUploadSuccess = false;
                 break;

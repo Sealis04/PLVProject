@@ -5,12 +5,27 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
         <script src="/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="/CSS/AdminPanel.css">
+        <link rel="stylesheet" href="css/AdminPanel.css">
     </head>
     <body>
     <?php 
     include "db_connection.php";
     session_start();
+      if (isset($_SESSION['userID'])) {
+        if ($_SESSION["isAdmin"] != 1) {
+            if(!($_GET['window'] == 'Profile' || $_GET['window'] == 'MyReservations')){
+                echo '<script>
+                alert("Invalid User")
+                 window.location.href = "Window_HomePage.php"
+                </script>';
+        } 
+      } else {
+            echo '<script>
+            alert("Please Log in first.")
+            window.location.href = "Window_LOGIN.php"
+            </script>';
+        }
+      }
         ?>
             <sidenav>
               <?php

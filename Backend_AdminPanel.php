@@ -977,7 +977,9 @@
           div.innerHTML += '<h3 class="_edit"> Name:' + element.firstName + '&nbsp' + element.middleName + '&nbsp' + element.lastName + '</h3>';
           div.innerHTML += '<h3> Course:' + element.course + '</h3>';
           div.innerHTML += '<h3> Email:' + element.email + '</h3>';
-          div.innerHTML += '<h3> Section:' + element.section + '</h3>';
+          if(element.course.toLowerCase() != 'teacher'){
+            div.innerHTML += '<h3> Section:' + element.section + '</h3>';
+          }
           var textarea = document.createElement('textarea');
           textarea.id = 'remarks';
           textarea.placeholder = "Remarks";
@@ -2188,7 +2190,7 @@
               if (this.readyState == 4 && this.status == 200) {
                   alert(this.responseText)
                   document.getElementById('monitoringContent').remove();
-                  loadStuff(...Array(1), Monitoring);
+                  loadStuff(...Array(1), 'Monitoring');
                   //   monitoringContent(c);
               }
           }
