@@ -387,10 +387,12 @@
                           textarea.placeholder = "Remarks";
                           if (approval == 1) {
                               mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
+                              mainDiv.innerHTML += '<br>';
                               mainDiv.appendChild(textarea);
                               mainDiv.innerHTML += '<br><br><input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">';
                           } else {
                               mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
+                              mainDiv.innerHTML += '<br>';
                               mainDiv.appendChild(textarea);
                               mainDiv.innerHTML += '<br><br><input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
                               mainDiv.innerHTML += '<input type="button" class ="header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
