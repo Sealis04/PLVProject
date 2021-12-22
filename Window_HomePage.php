@@ -16,7 +16,15 @@
 
     <sidenav>
         <?php
-        require "Backend_CheckifLoggedIN.php";
+
+        if ($_SESSION['user_verified'] == 'not verified') {
+            echo '<script>
+            alert("Please confirm the OTP that was sent to your Email!")
+            window.location.href = "/Window_OTP.php?code="'.$_SESSION['user_code'].'
+            </script>';
+        } else {
+            require "Backend_CheckifLoggedIN.php";
+        }
         ?>
     </sidenav>
     <mainBody class='main'>
@@ -79,5 +87,8 @@
     </mainBody>
 
 </body>
-<?php require 'Backend_Homepage.php'?>
+<?php 
+require "Backend_HomePage.php";
+?>
+
 </html>

@@ -11,7 +11,7 @@ if ($page)
 else
     $start = 0;
 
-$query = "SELECT COUNT(*) as num FROM tbl_user WHERE isApproved = 2";
+$query = "SELECT COUNT(*) as num FROM tbl_user WHERE isApproved = 2 AND tbl_user.user_verified = 'verified'";
 $sql5 = $conn->prepare($query);
 $sql5->execute();
 $result = $sql5->get_result();
@@ -22,7 +22,7 @@ $total_items = $user['num'];
 $sql5->close();
 
 $sql_code = "SELECT * FROM tbl_user INNER JOIN tbl_course on tbl_course.course_ID = tbl_user.user_course_ID 
-INNER JOIN tbl_section ON tbl_section.s_id = tbl_user.user_s_ID WHERE isApproved = '2' LIMIT $start,$limit";
+INNER JOIN tbl_section ON tbl_section.s_id = tbl_user.user_s_ID WHERE isApproved = '2' AND tbl_user.user_verified = 'verified' LIMIT $start,$limit";
 if ($sql = $conn->prepare($sql_code)) {
     if ($sql->execute()) {
         $result = $sql->get_result();

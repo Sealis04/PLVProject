@@ -2,7 +2,7 @@
 //returns array of reservation
 $policies = array();
 include "db_connection.php";
-include "backend_Pagination.php";
+include "Backend_Pagination.php";
 $conn=OpenCon();
 
 

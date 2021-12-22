@@ -2,7 +2,7 @@
 //returns array of equipment \
 $userlist = array();
 include "db_connection.php";
-include "backend_Pagination.php";
+include "Backend_Pagination.php";
 $conn=OpenCon();
 
 $page = $_REQUEST['page'];

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
     <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/css/side-nav.css">
-    <link rel="stylesheet" href="/css/Form.css">
+    <link rel="stylesheet" href="css/Form.css">
 </head>
 
 <body>
@@ -30,7 +30,7 @@
         if (isset($remarks)) {
             echo '<script>
             alert("'.$remarks.'.")
-            window.location.href = "Window_LOGIN.php"
+            window.location.href = "Window_HomePage.php"
             </script>';
         } else {
             if ($_SESSION["isAdmin"] == 1) {

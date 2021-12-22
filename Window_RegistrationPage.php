@@ -117,9 +117,7 @@
           $uploadErr = "Invalid ID format";
         }
       }
-        
-   
-      
+
         if(empty($emailErr) && empty($passwordErr) && empty($contactErr) && empty($firstNameErr) && empty($middleNameErr) && empty($lastNameErr) && empty($uploadErr)){
           $selectedUserType = $_POST['Type'];
           if($selectedUserType == 1){
@@ -129,17 +127,25 @@
             $selectedCourse = 5;
             $selectedSection=null;
           }
-          $sql_code = "INSERT INTO tbl_user (user_email, user_password, user_firstName, user_middleName, user_lastName, user_contactNumber,user_course_ID,PLV_ID,isAdmin,isApproved,user_s_ID) VALUES (?, ?, ?, ?, ? , ? , ? , ?, ?, ?,?)";
+          $user_activationCode = getToken(12);
+          $userOTP = rand(100000,999999);
+          $notverified = 'not verified';
+          $sql_code = "INSERT INTO tbl_user 
+          (user_email, user_password, user_firstName, user_middleName, user_lastName,
+           user_contactNumber,user_course_ID,PLV_ID,isAdmin,isApproved,user_s_ID,user_verified,user_otp,user_activationcode) 
+           VALUES (?, ?, ?, ?, ? , ? , ? , ?, ?, ?,?,?,?,?)";
           if($sql = $conn->prepare($sql_code)){
-            $sql->bind_param("sssssiisiii",$email,$password_hash,$firstName,$middleName,$lastName,$contact,$selectedCourse,$fileName,$isAdmin,$isApproved,$selectedSection);
+            $sql->bind_param("sssssiisiiisis",$email,$password_hash,$firstName,$middleName,$lastName,$contact,
+            $selectedCourse,$fileName,$isAdmin,$isApproved,$selectedSection,$notverified,$userOTP,$user_activationCode);
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             if($sql->execute()){
               $lastID = $conn->insert_id;
               $notifID = notification($lastID, 2,1);
               uploadImage($conn,$fileCount,$sql->insert_id);
+              sendOTP($userOTP,$email);
               echo '<script>
-                    alert("Registration Successful!\n Status:Pending")
-                    window.location.href = "Window_LOGIN.php"
+                    alert("Please confirm the OTP that was sent to your Email!")
+                    window.location.href = "/Window_OTP.php?code='.$user_activationCode.'"
                     </script>';
             }else{
               echo "Something went wrong";
@@ -147,7 +153,6 @@
             }
             $sql->close();
           }
-        
         // //Upload part (under construction)
         }
         $conn->close();
@@ -174,23 +179,77 @@
         $data = htmlspecialchars($data);
         return $data;
     }
+
+    function sendOTP($OTP,$email){
+      $subject = 'PLVRS Registration Notification';
+      $message_body = '
+      <p>For verify your email address, enter this verification code when prompted: <b>'.$OTP.
+      '</b>.</p>
+      <p>Sincerely,</p>
+      <p>Webslesson.info</p>
+      ';
+      $fromEmail = 'plvrs.gso@gmail.com';
+      $headers = "MIME-Version: 1.0" . "\r\n";
+      $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+      $headers .= 'From: ' . $fromEmail . '<' . $fromEmail . '>' . "\r\n" . 'Reply-To: ' . $fromEmail . "\r\n" . 'X-Mailer: PHP/' . phpversion();
+      $message = '<!doctype html> <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+        <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">' . $message_body . '</span>
+            <div class="container">
+             ' . $message_body . '<br/>
+                Regards<br/>
+              ' . $fromEmail . '
+            </div>
+        </body>
+        </html>';
+      // $mail->Body = $message_body;
+      @mail($email, $subject, $message, $headers);
+    }
+
+    function crypto_rand_secure($min, $max)
+{
+    $range = $max - $min;
+    if ($range < 1) return $min; // not so random...
+    $log = ceil(log($range, 2));
+    $bytes = (int) ($log / 8) + 1; // length in bytes
+    $bits = (int) $log + 1; // length in bits
+    $filter = (int) (1 << $bits) - 1; // set all lower bits to 1
+    do {
+        $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
+        $rnd = $rnd & $filter; // discard irrelevant bits
+    } while ($rnd > $range);
+    return $min + $rnd;
+}
+
+function getToken($length)
+{
+    $token = "";
+    $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
+    $codeAlphabet.= "0123456789";
+    $max = strlen($codeAlphabet); // edited
+
+    for ($i=0; $i < $length; $i++) {
+        $token .= $codeAlphabet[crypto_rand_secure(0, $max-1)];
+    }
+
+    return $token;
+}
+
     ?>
       <!--CHANGES-->
       <nav>
-            <div class="navbar">
-              <!--
-            <div class="nav1">
-              <img id="fb" src="assets/plv.png" alt="PLV Logo">
-              <a href="Window_HomePage.php" type="button" class="header-btn btn ">Home</a>
-              <a href="Window_RoomAndEquipment.php" type="button" class="header-btn btn ">Rooms and Equipment</a>
-              <a href="Window_PoliciesPage.php" type="button" class="header-btn btn">Policies</a>
-            </div>
-            -->
             <div class="nav2">
               <?php
            require "Backend_CheckifLoggedIN.php";
                 ?>        
-            </div>
             </div>
     </nav>
     <!--END-->
@@ -208,7 +267,7 @@
                         <span class="error"><?php echo $passwordErr;?></span>
                       </div>
                       <div class="md-form form-group">
-                        <input required type="text"  maxlength="11" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="contact" placeholder="Contact" value="<?php echo(isset($contact))?$contact:''?>">
+                        <input required type="number"  maxlength="11" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="contact" placeholder="Contact" value="<?php echo(isset($contact))?$contact:''?>">
                         <span class="error"><?php echo $contactErr;?></span>
                       </div>
                       <div class="md-form form-group">

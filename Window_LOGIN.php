@@ -40,6 +40,7 @@ $email = $password=$userID="";
             $password = test_input($_POST["password"]);
         }
         //Email Password Match
+        $temp = null;
         if(empty($emailErr) && empty($passwordErr)){
             $sql_code = "SELECT * FROM tbl_user WHERE user_email= ?";
             if($sql = $conn->prepare($sql_code)){
@@ -47,15 +48,21 @@ $email = $password=$userID="";
                 if($sql ->execute()){
                     $sql->store_result();
                     if($sql->num_rows ==1){
-                        $sql->bind_result($userID,$email,$password_db,$userfn,$usermn,$userln,$usercn,$usercourse,$userIDImage,$isAdmin,$isApproved,$isMarked,$section);
+                        $sql->bind_result($userID,$email,$password_db,$userfn,$usermn,$userln,$usercn,$usercourse,$userIDImage,$isAdmin,$isApproved,$isMarked,$section,$userverified,$userOTP,$useractivation);
                         if($sql->fetch()){
                             if($isApproved == 1 || $isApproved == 2){
                                 if(password_verify($password,$password_db)){
                                     if($isApproved == 2){
-                                       echo '<script>alert("Account is still pending. User is unable to reserve until approved")
+                                        if ($userverified == 'not verified') {
+                                            echo '<script>alert("Please confirm the OTP that was sent to your Email!")
+                                            window.location.href="Window_OTP.php?code='.$useractivation.'"
+                                            </script>';
+                                        } else {
+                                            echo '<script>alert("Account is still pending. User is unable to reserve until approved")
                                             window.location.href="Window_HomePage.php"
                                             </script>';
-                                        }else if($isApproved == 1){
+                                        }
+                                    }else if($isApproved == 1){
                                             header("location: Window_HomePage.php");
                                         }
                                     //Stores user info
@@ -73,6 +80,8 @@ $email = $password=$userID="";
                                     $_SESSION['isMarked'] = $isMarked;
                                     $_SESSION['ID_img'] = $userIDImage;
                                     $_SESSION['user_ID'] = $userID;
+                                    $_SESSION['user_verified']= $userverified;
+                                    $_SESSION['user_code']=$useractivation;
                                     if ($_SESSION['isAdmin'] == 1) {
                                         $_SESSION['approveID'] = 1;
                                     } else {
@@ -132,7 +141,7 @@ $email = $password=$userID="";
                         <span class="error"><?php echo $passwordErr;?></span>
                       </div>
                       <button type="submit" id="login2">Login</button>
-                      <a id="signup" href="Window_Registrationpage.php">Sign up</a>
+                      <a id="signup" href="Window_RegistrationPage.php">Sign up</a>
                 </form>
             </div>
             <div class="col-xs-4"></div>
