@@ -19,13 +19,13 @@
                  window.location.href = "Window_HomePage.php"
                 </script>';
         } 
-      } else {
-            echo '<script>
-            alert("Please Log in first.")
-            window.location.href = "Window_LOGIN.php"
-            </script>';
-        }
-      }
+      } 
+      }else {
+        echo '<script>
+        alert("Please Log in first.")
+        window.location.href = "Window_LOGIN.php"
+        </script>';
+    }
         ?>
             <sidenav>
               <?php
