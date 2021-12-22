@@ -302,3 +302,8 @@ justify-items:end;
         margin-bottom: 50px;
         margin-left: 10px;
 }
+
+input[type="button"]{
+  background-color :#0F1057;
+  color: white;
+}
