@@ -34,6 +34,8 @@
                             renderListRoom(room, element, index)
                         });
                         resolve([room, currentTarget]);
+                        var x = document.getElementsByClassName('roomInfo');
+                        loadMaxQty(x[0].querySelector('select'));
                     } catch (exception) {
                         reject(exception);
                     }
