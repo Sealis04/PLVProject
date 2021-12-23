@@ -324,10 +324,11 @@
                       var page = document.createElement('div');
                       page.id = 'pages';
                       motherDiv.id = "currentUserReservation";
-                      myObj.forEach(async function(element, index) {
-                          let result = await reservationContent(motherDiv, userID, page, element, index);
+                      myObj.forEach( function(element, index) {
+                          let result = reservationContent(motherDiv, userID, page, element, index);
+                          reservedEquipment(element.reservationID, result[1], userID, true, element.status, status, ...Array(1), element.notifID, element.remark);
                           motherDiv.appendChild(result[2]);
-                          callReservationImage(result[1], result[0])
+                        
                       });
                       page.innerHTML = myObj[myObj.length - 1].pagination;
                       motherDiv.appendChild(page);
@@ -339,73 +340,72 @@
       }
 
       function reservedEquipment(resID, mainDiv, userID, forUser, status, approval, typePending, notifID, remarks) {
-          return new Promise(resolve => {
-              var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = async function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                      var myObj = JSON.parse(this.responseText);
-                      var list = document.createElement('div');
-                      if (myObj.length == 0) {
-                          mainDiv.innerHTML += '<h3> No Equipment Borrowed </h3>';
-                      } else {
-                          mainDiv.innerHTML += '<h3> Equipment Borrowed: </h3>';
-                          myObj.forEach(async function(element, index) {
-                              var x = await listEquipmentReserved(mainDiv, element, index);
-                          });
-                      }
-                      var printingPanel = "'/Backend_printingPanel.php?id=" + resID + "'";
-                      if (forUser) {
-                          if (status != 1) {
-                              if (approval == 2) {
-                                  mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
-                                  mainDiv.innerHTML += '<br>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
-                                  mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">';
-                                  mainDiv.innerHTML += '<hr class="hr">';
-                              } else if (approval == 3) {
-                                  mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '</h4>';
-                                  mainDiv.innerHTML += '<h4>Remarks: ' + remarks + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
-                                  mainDiv.innerHTML += '<hr class="hr">';
-                              } else if (approval == 1) {
-                                  mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
-                                  mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
-                                  mainDiv.innerHTML += '<hr class="hr">';
-                              } else {
-                                  mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Reservation is Over" + '</h4>';
-                                  mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
-                              }
-                          } else {
-                              mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '</h4>';
-                              mainDiv.innerHTML += '<hr class="hr">';
-                          }
-                      }
-                      if (typePending) {
-                          var textarea = document.createElement('textarea');
-                          textarea.className = 'remarks';
-                          textarea.placeholder = "Remarks";
-                          if (approval == 1) {
-                              mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
-                              mainDiv.innerHTML += '<br>';
-                              mainDiv.appendChild(textarea);
-                              mainDiv.innerHTML += '<br><br><input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">';
-                          } else {
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = async function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  var myObj = JSON.parse(this.responseText);
+                  var list = document.createElement('div');
+                  if (myObj.length == 0) {
+                      mainDiv.innerHTML += '<h3> No Equipment Borrowed </h3>';
+                  } else {
+                      mainDiv.innerHTML += '<h3> Equipment Borrowed: </h3>';
+                      myObj.forEach(function(element, index) {
+                          listEquipmentReserved(mainDiv, element, index);
+                      });
+                  }
+                  var printingPanel = "'/Backend_printingPanel.php?id=" + resID + "'";
+                  if (forUser) {
+                      if (status != 1) {
+                          if (approval == 2) {
                               mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
                               mainDiv.innerHTML += '<br>';
-                              mainDiv.appendChild(textarea);
-                              mainDiv.innerHTML += '<br><br><input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
-                              mainDiv.innerHTML += '<input type="button" class ="header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
+                              mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
+                              mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">';
+                              mainDiv.innerHTML += '<hr class="hr">';
+                          } else if (approval == 3) {
+                              mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '</h4>';
+                              mainDiv.innerHTML += '<h4>Remarks: ' + remarks + '</h4>';
+                              mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
+                              mainDiv.innerHTML += '<hr class="hr">';
+                          } else if (approval == 1) {
+                              mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
+                              mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
+                              mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel" disabled>';
+                              mainDiv.innerHTML += '<hr class="hr">';
+                          } else {
+                              mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Reservation is Over" + '</h4>';
+                              mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                           }
-                          mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
-                          //   mainDiv.innerHTML += '<textarea id="remarks" placeholder="Remarks"></textarea><br><br>';
+                      } else {
+                          mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '</h4>';
+                          mainDiv.innerHTML += '<hr class="hr">';
                       }
-                      resolve('success');
                   }
+                  if (typePending) {
+                      var textarea = document.createElement('textarea');
+                      textarea.className = 'remarks';
+                      textarea.placeholder = "Remarks";
+                      if (approval == 1) {
+                          mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
+                          mainDiv.innerHTML += '<br>';
+                          mainDiv.appendChild(textarea);
+                          mainDiv.innerHTML += '<br><br><input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ')" value="Cancel">';
+                      } else {
+                          mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
+                          mainDiv.innerHTML += '<br>';
+                          mainDiv.appendChild(textarea);
+                          mainDiv.innerHTML += '<br><br><input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
+                          mainDiv.innerHTML += '<input type="button" class ="header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
+                      }
+                      mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
+                      mainDiv.innerHTML += '<hr class="hr">'
+                      //   mainDiv.innerHTML += '<textarea id="remarks" placeholder="Remarks"></textarea><br><br>';
+                  }
+                  callReservationImage(mainDiv, resID);
               }
-              xmlhttp.open("GET", "/Request_ReservationForUserEquipment.php?var=" + resID, true);
-              xmlhttp.send();
-          })
+          }
+          xmlhttp.open("GET", "/Request_ReservationForUserEquipment.php?var=" + resID, true);
+          xmlhttp.send();
       }
 
       function openNewTab(url) {
@@ -553,11 +553,10 @@
                   if (myObj[0] == null) {
                       motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                   } else {
-                      myObj.forEach(async function(element, index) {
-                          console.log(myObj[index].event);
-                          var x = await userReservationContent(motherDiv, page, element, index, 'pending');
+                      myObj.forEach(function(element, index) {
+                          var x = userReservationContent(motherDiv, page, element, index, );
+                          reservedEquipment(element.reservationID, x[2], element.userID, false, ...Array(1), element.approval, true, element.notifID);
                           motherDiv.appendChild(x[0]);
-                          callReservationImage(x[2], x[1]);
                       });
                   }
 
@@ -755,20 +754,20 @@
           }
       }
 
-      function addPoliciesQuery(name, desc) {
+      function addPoliciesQuery(ID, desc) {
           if (confirm('Are you sure?') == true) {
               var xmlhttp = new XMLHttpRequest();
               xmlhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
                       document.getElementById('editList').remove();
                       loadStuff('policies', 'ContentEdit');
-                      //   editTabContent();
+                      // editTabContent();
                       //   var poliDiv = document.getElementById('polPanel');
                       //   var poliBtn = document.getElementById('polBtn');
                       //   polBtn.click('3', poliDiv);
                   }
               }
-              xmlhttp.open("GET", "/Request_AddPolicies.php?name=" + name + '&desc=' + desc, true);
+              xmlhttp.open("GET", "/Request_AddPolicies.php?ID=" + ID + '&desc=' + desc, true);
               xmlhttp.send();
           } else {
               document.getElementById('editList').remove();
@@ -917,55 +916,42 @@
       }
       //HTML PART THAT LISTS THE EQUIPMENT IN THE WINDOW
       function listEquipmentReserved(mainDiv, element, index) {
-          return new Promise(resolve => {
-              var h4 = document.createElement('h4');
-              h4.innerHTML += element.equipName + " Qty: " + element.qty;
-              mainDiv.appendChild(h4);
-              resolve('success');
-              //   mainDiv.innerHTML += '<h4>' + element.equipName + ' Qty: ' + element.qty + '</h4>';
-          })
+          var h4 = document.createElement('h4');
+          h4.innerHTML += element.equipName + " Qty: " + element.qty;
+          mainDiv.appendChild(h4);
       }
 
       //HTML PART THAT LISTS THE RESERVATIONS IN THE WINDOW
-      async function reservationContent(motherDiv, userID, page, element, index) {
-          return new Promise(async resolve => {
-              var div = document.createElement('div')
-              var date = new Date(element.dateStart + ' ' + element.timeStart);
-              var diffTime = Math.abs(new Date(element.dateEnd) - new Date(element.dateStart));
-              console.log(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
-              console.log(diffTime)
-              var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24) + 1);
-              var startTime = tConvert(element.timeStart);
-              var endTime = tConvert(element.timeEnd)
-              div.id = "resContent";
-              div.className = "resContent";
-              div.innerHTML = '<h3 class="_edit"> Event:' + element.event + '</h3>';
-              div.innerHTML += '<h3> Event Adviser:' + element.eventAdviser + '</h3>';
-              div.innerHTML += '<h3>Starting Date: ' + element.dateStart + " </h3>";
-              div.innerHTML += '<h3>Time:' + startTime + ' to ' + endTime + " </h3>";
-              div.innerHTML += '<h3>Duration:' + numberofloops + " day/s. (Ends at: " + element.dateEnd + ") </h3>";
-              div.innerHTML += '<h3>Room: ' + element.room + '</h3>';
-              var date = new Date();
-              var d1 = new Date(element.end);
-              if (d1 < date) {
-                  status = 4;
-              } else {
-                  status = element.approval;
-              }
-              var x = await reservedEquipment(element.reservationID, div, userID, true, element.status, status, ...Array(1), element.notifID, element.remark);
-              var a = await new Promise(resolve => {
-                  document.getElementById("content").appendChild(motherDiv)
-                  resolve('success')
-              });
-              var s = await new Promise(resolve => {
-                  motherDiv.appendChild(div);
-                  resolve('success');
-              });
-              if (typeof(element.pagination) != undefined && element.pagination != null) {
-                  page.innerHTML = element.pagination;
-              }
-              resolve([element.reservationID, div, page]);
-          })
+      function reservationContent(motherDiv, userID, page, element, index) {
+          var div = document.createElement('div')
+          var date = new Date(element.dateStart + ' ' + element.timeStart);
+          var diffTime = Math.abs(new Date(element.dateEnd) - new Date(element.dateStart));
+          console.log(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+          console.log(diffTime)
+          var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24) + 1);
+          var startTime = tConvert(element.timeStart);
+          var endTime = tConvert(element.timeEnd)
+          div.id = "resContent";
+          div.className = "resContent";
+          div.innerHTML = '<h3 class="_edit"> Event:' + element.event + '</h3>';
+          div.innerHTML += '<h3> Event Adviser:' + element.eventAdviser + '</h3>';
+          div.innerHTML += '<h3>Starting Date: ' + element.dateStart + " </h3>";
+          div.innerHTML += '<h3>Time:' + startTime + ' to ' + endTime + " </h3>";
+          div.innerHTML += '<h3>Duration:' + numberofloops + " day/s. (Ends at: " + element.dateEnd + ") </h3>";
+          div.innerHTML += '<h3>Room: ' + element.room + '</h3>';
+          var date = new Date();
+          var d1 = new Date(element.end);
+          if (d1 < date) {
+              status = 4;
+          } else {
+              status = element.approval;
+          }
+          document.getElementById("content").appendChild(motherDiv)
+          motherDiv.appendChild(div);
+          if (typeof(element.pagination) != undefined && element.pagination != null) {
+              page.innerHTML = element.pagination;
+          }
+          return [element.reservationID, div, page];
       }
 
 
@@ -977,8 +963,8 @@
           div.innerHTML += '<h3 class="_edit"> Name:' + element.firstName + '&nbsp' + element.middleName + '&nbsp' + element.lastName + '</h3>';
           div.innerHTML += '<h3> Course:' + element.course + '</h3>';
           div.innerHTML += '<h3> Email:' + element.email + '</h3>';
-          if(element.course.toLowerCase() != 'teacher'){
-            div.innerHTML += '<h3> Section:' + element.section + '</h3>';
+          if (element.course.toLowerCase() != 'teacher') {
+              div.innerHTML += '<h3> Section:' + element.section + '</h3>';
           }
           var textarea = document.createElement('textarea');
           textarea.id = 'remarks';
@@ -995,7 +981,6 @@
               page.innerHTML = element.pagination;
               motherDiv.appendChild(page);
           }
-
       }
 
 
@@ -1033,41 +1018,31 @@
 
 
       //HTML PART THAT LISTS THE RESERVATION OF ITS USERS
-      async function userReservationContent(motherDiv, page, element, index, type) {
-          return new Promise(async resolve => {
-              console.log(element.event);
-              var div = document.createElement('div');
-              div.id = 'pendingContent'
-              var date = new Date(element.dateStart + ' ' + element.timeStart);
-              var diffTime = new Date(element.dateEnd) - new Date(element.dateStart);
-              var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24) + 1);
-              endTime = tConvert(element.timeEnd)
-              startTime = tConvert(element.timeStart)
-              div.innerHTML += '<h3> Requestor:' + element.firstName + ' ' + element.middleName + ' ' + element.lastName + '</h3>';
-              div.innerHTML += '<h3> Event Name:' + element.event + '</h3>';
-              div.innerHTML += '<h3> Event Adviser:' + element.eventAdviser + '</h3>';
-              div.innerHTML += '<h3> Room: ' + element.room_name + '</h3>';
-              div.innerHTML += '<h3>Starting Date: ' + element.dateStart + " </h3>";
-              div.innerHTML += '<h3>Time:' + startTime + ' to ' + endTime + " </h3>";
-              div.innerHTML += '<h3>Duration:' + numberofloops + " day/s (Ends at: " + element.dateEnd + ") </h3>";
-              if (type == 'pending') {
-                  var x = await reservedEquipment(element.reservationID, div, element.userID, false, ...Array(1), element.approval, true, element.notifID);
-              } else if (type == 'finished') {
-                  var x = await reservedEquipment(element.reservationID, div, element.userID, false, ...Array(2), false, element.notifID);
-              }
-              //   sideDiv.appendChild(sideInput);
-              //   div.appendChild(sideDiv);
-              if (typeof(element.pagination) != undefined && element.pagination != null) {
-                  page.innerHTML = element.pagination;
-              }
-
-              div.innerHTML += '<hr class="hr">';
-              var x = new Promise(resolve => {
-                  motherDiv.appendChild(div);
-                  resolve('success')
-              });
-              resolve([page, element.reservationID, div]);
-          })
+      function userReservationContent(motherDiv, page, element, index) {
+          var div = document.createElement('div');
+          div.id = 'pendingContent'
+          var date = new Date(element.dateStart + ' ' + element.timeStart);
+          var diffTime = new Date(element.dateEnd) - new Date(element.dateStart);
+          var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24) + 1);
+          endTime = tConvert(element.timeEnd)
+          startTime = tConvert(element.timeStart)
+          div.innerHTML += '<h3> Requestor:' + element.firstName + ' ' + element.middleName + ' ' + element.lastName + '</h3>';
+          div.innerHTML += '<h3> Event Name:' + element.event + '</h3>';
+          div.innerHTML += '<h3> Event Adviser:' + element.eventAdviser + '</h3>';
+          div.innerHTML += '<h3> Room: ' + element.room_name + '</h3>';
+          div.innerHTML += '<h3>Starting Date: ' + element.dateStart + " </h3>";
+          div.innerHTML += '<h3>Time:' + startTime + ' to ' + endTime + " </h3>";
+          div.innerHTML += '<h3>Duration:' + numberofloops + " day/s (Ends at: " + element.dateEnd + ") </h3>";
+          //   if (type == 'pending') {
+          //       reservedEquipment(element.reservationID, div, element.userID, false, ...Array(1), element.approval, true, element.notifID);
+          //   } else if (type == 'finished') {
+          //       reservedEquipment(element.reservationID, div, element.userID, false, ...Array(2), false, element.notifID);
+          //   }
+          if (typeof(element.pagination) != undefined && element.pagination != null) {
+              page.innerHTML = element.pagination;
+          }
+          motherDiv.appendChild(div);
+          return [page, element.reservationID, div];
       }
 
       //HTML PART THAT LISTS THE TAB CONTENT FOR EDIT
@@ -1452,7 +1427,7 @@
               editBtn.addEventListener('click', editContent);
               editBtn.typeParam = type;
               editBtn.addParam = true;
-              editBtn.listParam = listName;
+              editBtn.listParam = input;
               editBtn.descParam = inputDesc;
               removeBtn.addEventListener('click', function() {
                   tr.remove();
@@ -1712,13 +1687,13 @@
               type = (e.currentTarget.typeParam) ? e.currentTarget.typeParam : ' ';
               ID = (e.currentTarget.IDParam) ? e.currentTarget.IDParam : ' ';
               listParam = (e.currentTarget.listParam) ? e.currentTarget.listParam.value : ' ';
-              console.log(e.currentTarget.listParam)
               enableButtons(type, name, qty, desc, availability, ID, e.currentTarget, e.currentTarget.addParam, listParam);
           }
       }
 
       function enableButtons(type, name, quantity, desc, availability, ID, value, add, listParam) {
           var x = document.querySelectorAll('.editButton');
+          console.log(listParam)
           if (add) {
               if (type == 'policiesID') {
                   if (listParam == '' || desc == '') {
@@ -1728,7 +1703,6 @@
                   } else {
                       addPoliciesQuery(listParam, desc);
                   }
-
               } else {
                   if (name == '' || desc == '' || quantity == '' || quantity == 0) {
                       alert('Input must not be empty/ or zero ');
