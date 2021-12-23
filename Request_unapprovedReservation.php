@@ -10,9 +10,12 @@ if ($page)
     $start = ($page - 1) * $limit;             //first item to display on this page
 else
     $start = 0;	
-    $query = "SELECT COUNT(*) as num FROM `tbl_reservation` 
-    WHERE (r_approved_ID = 2 OR 1) AND r_status = 0 
-    AND r_reviewed = 0 ORDER BY dateStart, r_approved_ID ";
+    $query = "SELECT COUNT(*) as num FROM `tbl_reservation` INNER JOIN tbl_user ON tbl_reservation.r_user_ID = tbl_user.user_ID 
+    INNER JOIN tbl_room ON tbl_reservation.r_room_ID = tbl_room.room_ID 
+    INNER JOIN tbl_notification ON tbl_notification.notificationID = tbl_reservation.notifID 
+    WHERE (tbl_reservation.r_approved_ID = 2 OR tbl_reservation.r_approved_ID = 1) 
+    AND tbl_reservation.r_status = 0 AND tbl_notification.forRegistration = 0 
+    AND r_reviewed = 0";
 		$sql5=$conn->prepare($query);
 			$sql5->execute();
 			$result = $sql5->get_result();
