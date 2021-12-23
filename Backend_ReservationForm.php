@@ -9,7 +9,6 @@
         const secondvalue = await addRestOfForm();
         await runRest();
     })();
-
     function runRest() {
         renderRestofForm();
         var startDate = document.getElementById('startDate').value;
