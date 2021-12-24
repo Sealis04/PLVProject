@@ -47,7 +47,7 @@
                     if($remarks != ' '){
                         $message .='Remarks from admin:' .$remarks;
                     }
-                }else if($approval ==2){
+                }else if($approval == 3){
                     $message = 'Hello'.$fn.'\r\n';
                     $message .= 'This is to inform you that your reservation for '.$event.', which will be held at '.$room.' has been rejected.\r\n';
                     if($remarks !=''){

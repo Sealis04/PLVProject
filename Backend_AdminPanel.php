@@ -320,7 +320,6 @@
                           page_number -=1;
                           callReservationDetails(page_number);
                       }
-                      
                   } else {
                       var x = [];
                       var motherDiv = document.createElement('div');
@@ -330,7 +329,7 @@
                       motherDiv.id = "currentUserReservation";
                       myObj.forEach(function(element, index) {
                           let result = reservationContent(motherDiv, userID, page, element, index);
-                          reservedEquipment(element.reservationID, result[1], userID, true, element.status, status, ...Array(1), element.notifID, element.remark,element.dateStart,element.timeStart);
+                          reservedEquipment(element.reservationID, result[1], userID, true, element.status, status, ...Array(1), element.notifID, element.notif_remark,element.dateStart,element.timeStart);
                           motherDiv.appendChild(result[2]);
 
                       });
@@ -394,6 +393,7 @@
                       var textarea = document.createElement('textarea');
                       textarea.className = 'remarks';
                       textarea.placeholder = "Remarks";
+                      textarea.id='remarks';
                       if (approval == 1) {
                           mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
                           mainDiv.innerHTML += '<br>';
@@ -403,8 +403,8 @@
                           mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
                           mainDiv.innerHTML += '<br>';
                           mainDiv.appendChild(textarea);
-                          mainDiv.innerHTML += '<br><br><input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
-                          mainDiv.innerHTML += '<input type="button" class ="header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ',' + notifID + ',' + textarea.textContent + ')">'
+                          mainDiv.innerHTML += '<br><br><input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ',' + notifID + ',this)">'
+                          mainDiv.innerHTML += '<input type="button" class ="header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ',' + notifID + ',this)">'
                       }
                       mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                       mainDiv.innerHTML += '<hr class="hr">'
@@ -531,7 +531,7 @@
 
       //Decline Reservation
       function DeclineRegistration(user, remarks) {
-          var remarks = document.getElementById('remarks').value;
+        //   var remarks = document.getElementById('remarks').value;
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -581,6 +581,7 @@
       }
       // Accept Reservations
       function AcceptReservation(eventID, userID, notifID, textArea) {
+        textArea = textArea.parentElement.getElementsByTagName('textArea')[0].value
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -597,7 +598,8 @@
       }
 
       //Decline Reservation
-      function DeclineReservation(eventID, userID, textArea, notifID) {
+      function DeclineReservation(eventID, userID, notifID, textArea) {
+          textArea = textArea.parentElement.getElementsByTagName('textArea')[0].value
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -2063,10 +2065,6 @@
           var endTime = tConvert(element.timeEnd);
           label.textContent = 'Event: ' + element.event;
           var space = document.createElement('br');
-          var date = document.createElement('h3');
-          date.id = 'EventDate';
-          date.className = 'block';
-          date.textContent = 'From: ' + startTime + ' to ' + endTime;
           //   var sideDiv = document.createElement('div');
           //   sideDiv.className = 'sidePanel';
           //   sideDiv.id = 'monitor' + element.reservationID;
@@ -2079,9 +2077,8 @@
           // //   })
           onLoad(element.reservationID, review, mainDiv);
           mainDiv.appendChild(label);
-          mainDiv.appendChild(space);
-          mainDiv.appendChild(date);
-
+          mainDiv.innerHTML += '<h3>Event Date: ' +element.dateStart +' to '+ element.dateEnd  +'</h3>';
+          mainDiv.innerHTML += '<h3>From: ' +startTime +' to '+ endTime  +'</h3>';
           div.appendChild(mainDiv)
 
           if (typeof(element.pagination) != undefined && element.pagination != null) {

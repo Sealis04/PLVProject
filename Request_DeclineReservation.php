@@ -4,7 +4,6 @@ $rid = $_REQUEST["var"];
 $userID = $_REQUEST['userID'];
 $remarks = $_REQUEST['remarks'];
 $notifID = $_REQUEST['notifID'];
-$reservation = array();
 session_start();
 include "db_connection.php";
 include 'Request_storeNotification.php';
@@ -20,6 +19,6 @@ $sql_code = "UPDATE `tbl_reservation` SET `r_approved_ID` = '3' WHERE r_ID = ?";
              $sql->close();
         }
     $conn->close();
-    getEmail($userID,$rid,$remarks,1);
-    update($userID,1,$remarks,0,$notifID);
+    getEmail($userID,$rid,$remarks,3);
+    update($userID,3,$remarks,0,$notifID);
 ?>

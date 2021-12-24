@@ -76,7 +76,9 @@
                     var decision;
                     if (element.resdecision == 1) {
                         decision = 'accepted';
-                    } else {
+                    } else if(element.resdecision == 4){
+                        decision = 'cancelled';
+                    }else{
                         decision = 'declined';
                     }
                     var div = document.createElement('a');
@@ -84,19 +86,11 @@
                         notifRead(element.resid);
                         window.location.href = "/Window_Panel.php?window=MyReservations "
                     })
-                    // div.innerHTML += '<div id = "imgNotif" class="column">';
-                    // div.innerHTML += '<img id="_notif" src = "">';
-                    // div.innerHTML += '</div>';
                     div.innerHTML += '<div id="'+element.resid+'" class = "detNotif">';
                     div.innerHTML += '<p id="name"> Your reservation has been ' + decision + '</p>';
                     if (element.resisRead == 0) {
                         count++;
                     }
-                    // var start = new Date(element.resStart).toISOString().split('T')[0] + ' ' + new Date(element.resStart).toTimeString().split(' ')[0] + ' to ' + new Date(element.resEnd).toTimeString().split(' ')[0]
-                    // var start = new Date(element.dateStart).toISOString().split('T')[0];
-                    // var end = new Date(element.dateEnd).toISOString().split('T')[0];
-                    //     div.innerHTML += '<p>Schedule: ' + start+' to '+end + '</p>'
-                    //     div.innerHTML +='<p>Time: '+element.timeStart+' to '+element.timeEnd +'</p>';
                     div.innerHTML += '<p>Event: ' + element.resName; + '</p>';
                     div.innerHTML += '</div>';
                     mainDiv.appendChild(div);
@@ -126,12 +120,6 @@
                 }
             }
         }
-        // list.appendChild(div);
-        // }
-
-
-        // } 
-
     } else {
         var list = document.getElementById('notifList');
         var div = document.createElement('div');
@@ -141,24 +129,6 @@
         div.innerHTML += '<p id="name">' + element.adminRegistration + '</p>';
         list.appendChild(div);
     }
-
-    // var notifDiv = document.createElement('div');
-    // notifDiv.id = 'class';
-    // var href = document.createElement('a');
-    // //href.href = 'Window_AdminPanel.php/my'+ element.userID;
-    // href.addEventListener('click',function(){
-    //     notifRead(element.id);
-    // })
-    // var paraText = document.createElement('label');
-    // paraText.type = 'text';
-    // paraText.textContent = element.text;
-    // if (element.isRead == 0) {
-    //     count++;
-    //     notifDiv.className = 'notRead';
-    // }
-    // href.appendChild(paraText);
-    // notifDiv.appendChild(href);
-    // list.appendChild(notifDiv);
     }
 
     function notifRead(id) {
