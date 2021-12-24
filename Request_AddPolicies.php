@@ -18,18 +18,29 @@ if($sql=$conn->prepare($sql_code)){
     }
 }
 
-foreach($categories as $value){
-    if($pcateg_ID == $value['ct_ID']){
+foreach ($categories as $value) {
+    if ($pcateg_ID == $value['ct_ID']) {
         $sql_code4 = "INSERT INTO `tbl_policies`(`p_description`, `p_ct_ID`) VALUES (?,?)";
-        if($sql4=$conn->prepare($sql_code4)){
-            $sql4->bind_param('si',$pdesc,$pcateg_ID);
-            if($sql4->execute()){
+        if ($sql4 = $conn->prepare($sql_code4)) {
+            $sql4->bind_param('si', $pdesc, $pcateg_ID);
+            if ($sql4->execute()) {
                 $var = true;
             }
-             $sql4->close();
+            $sql4->close();
+        }
+    } else if (strtolower($pcateg_ID) == strtolower($value['ct_name'])) {
+        $sql_code4 = "INSERT INTO `tbl_policies`(`p_description`, `p_ct_ID`) VALUES (?,?)";
+        if ($sql4 = $conn->prepare($sql_code4)) {
+            $sql4->bind_param('si', $pdesc, $value['ct_ID']);
+            if ($sql4->execute()) {
+                $var = true;
+            }
+            $sql4->close();
         }
     }
 }
+
+
 
 if($var == false){
     $sql_code3 = "INSERT INTO tbl_category_policy (ct_category_name) VALUES (?)";
@@ -76,5 +87,3 @@ if($var == false){
 
 // }
 $conn->close();
-
-?>

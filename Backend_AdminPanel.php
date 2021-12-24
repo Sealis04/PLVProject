@@ -296,7 +296,6 @@
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   var myObj = JSON.parse(this.responseText);
-                  console.log(myObj);
                   profileContent(myObj.coursename, myObj.sectionname, myObj.isApproved, myObj.remarks, myObj.isMarked);
 
               }
@@ -377,7 +376,6 @@
                               mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
                               mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                               if(new Date() >= new Date(recordedDate.setDate(recordedDate.getDate() - 1))){
-                                  console.log('asd');
                                 mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ',' + "'MyReservations'" + ')" value="Cancel" disabled>';
                               }else{
                                 mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ',' + "'MyReservations'" + ')" value="Cancel">';
@@ -694,8 +692,6 @@
               xmlhttp.onreadystatechange = async function() {
                   if (this.readyState == 4 && this.status == 200) {
                       var myObj = JSON.parse(this.responseText);
-                      // console.log(myObj[0].innerArray) 
-                      console.log(myObj);
                       myObj.forEach(result => {
                           var option = document.createElement('option');
                           option.textContent = result.ct_p_Name;
@@ -969,7 +965,6 @@
           var div = document.createElement('div')
           var date = new Date(element.dateStart + ' ' + element.timeStart);
           var diffTime = Math.abs(new Date(element.dateEnd) - new Date(element.dateStart));
-          console.log(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
           console.log(diffTime)
           var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24) + 1);
           var startTime = tConvert(element.timeStart);
@@ -1482,7 +1477,6 @@
               var listName = document.createElement('select');
               var x = await listCategPolicies(listName, ...Array(1), element.p_category);
               listName.className = 'policyList';
-              console.log('asd');
               listName.id = element.p_ID;
               listName.value = element.p_ct_ID;
               editBtn.src = "/assets/c2.png";
@@ -1731,7 +1725,6 @@
 
       function enableButtons(type, name, quantity, desc, availability, ID, value, add, listParam) {
           var x = document.querySelectorAll('.editButton');
-          console.log(listParam)
           if (add) {
               if (type == 'policiesID') {
                   if (listParam == '' || desc == '') {
@@ -1860,7 +1853,6 @@
               }
               xmlhttp.open("GET", "/Request_AddEquipment.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
               xmlhttp.send();
-              console.log(document.getElementById('editList'));
               document.getElementById('editList').remove();
               //   editTabContent();
               //   var equipDiv = document.getElementById('equipPanel');
@@ -1997,7 +1989,6 @@
           yearDropdown.pageParam = page;
           yearDropdown.mainDivParam = mainDiv;
           //   return [search.value,monthDropdown.value,yearDropdown.value];
-          //   console.log(yearDropdown)
       }
 
       function filterSearchQuery(e) {
