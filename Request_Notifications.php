@@ -78,7 +78,7 @@ if($isAdmin != 1){
     $notifCount = $user['num'];
     $sql4->close();
 
-$sql_code2 = 'SELECT COUNT(*) as num FROM tbl_user WHERE isApproved = 2';
+$sql_code2 = 'SELECT COUNT(*) as num FROM tbl_user WHERE isApproved = 2 AND user_verified = "verified"';
 $sql5=$conn->prepare($sql_code2);
 $sql5->execute();
 $result = $sql5->get_result();

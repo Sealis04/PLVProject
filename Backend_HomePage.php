@@ -19,30 +19,33 @@
     function nextMonth() {    
         currentYear = (currentMonth == 11) ? currentYear + 1 : currentYear;
         currentMonth = (currentMonth + 1) % 12;
-        if(activeYear == currentYear){
-            if(activeMonth == currentMonth){
-                calendar(currentMonth, currentYear,activeDay);
-            }else{
-                calendar(currentMonth, currentYear);
-            }
-        }else{
-            calendar(currentMonth, currentYear);
-        }
-        
+        activeDay = '1';
+        // if(activeYear == currentYear){
+        //     if(activeMonth == currentMonth){
+        //         calendar(currentMonth, currentYear,activeDay);
+        //     }else{
+        //         calendar(currentMonth, currentYear);
+        //     }
+        // }else{
+            calendar(currentMonth, currentYear,activeDay);
+        // }
+        openDate(currentMonth,currentYear,activeDay);
     }
 
     function prevMonth() {
         currentYear = (currentMonth == 0) ? currentYear - 1 : currentYear;
         currentMonth = (currentMonth == 0) ? 11 : currentMonth - 1;
-        if(activeYear == currentYear){
-            if(activeMonth == currentMonth){
-                calendar(currentMonth, currentYear,activeDay);
-            }else{
-                calendar(currentMonth, currentYear);
-            }
-        }else{
-            calendar(currentMonth, currentYear);
-        }
+        activeDay = '1';
+        // if(activeYear == currentYear){
+        //     if(activeMonth == currentMonth){
+        //         calendar(currentMonth, currentYear,activeDay);
+        //     }else{
+        //         calendar(currentMonth, currentYear);
+        //     }
+        // }else{
+            calendar(currentMonth, currentYear,activeDay);
+            openDate(currentMonth,currentYear,activeDay);
+        // }
 
     }
     // Jumping code
@@ -96,9 +99,8 @@
                             var id = row.innerHTML;
                             activeYear = currentYear;
                             activeMonth= currentMonth;
-                            activeDay = id;
+                            // activeDay = id;
                             openDate(currentMonth, currentYear, id);
-
                         }
                     }
                 currentValue.onclick = createClickHandler(currentValue);
@@ -111,12 +113,12 @@
         var firstDay = (new Date(year, month)).getDay();
         let daysInMonth = 32 - new Date(year, 2, 32).getDate();
         let tbl_body = document.getElementById('calendar-body');
-
         tbl_body.innerHTML = "";
         monthAndYear.innerHTML = months[month] + " " + year;
         // selectYear.value = year;
         // selectMonth.value = month;
         let date = 1;
+        let activeDate;
         for (let i = 0; i < 6; i++) {
             let row = document.createElement('tr');
             for (let j = 0; j < 7; j++) {
@@ -146,8 +148,6 @@
             tbl_body.appendChild(row);
         }
         addRowHandlers();
-
-
     }
 
     // opens scheduled reservations
