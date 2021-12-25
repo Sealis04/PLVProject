@@ -73,10 +73,18 @@
     </div>
 
     <body>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
-            <input name='OTPVal'>
-            <input name='OTP' type='submit'>
-        </form>
+    <div class="OTP">
+                <h3>Security verification</h3>
+                <p>To secure your account, please complete the following verification.</p>
+                <p>Email verification code</p>
+                    <div id="otpForm">
+                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
+                        <input id="tACode" name='OTPVal'>
+                        <input  id="Resend" name='Resend' type='submit' value="Resend">
+                        <input  class="header-btn btn" id="submit" name='OTP' type='submit'>
+                        </form>
+                    </div>
+            </div>
     </body>
     <?php
     require 'Backend_OTPCheck.php';
