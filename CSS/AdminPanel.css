@@ -515,93 +515,129 @@ div.pagination span.disabled {
   background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
 }
 
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-}
-
 /* Modal Content (Image) */
 #modal-content {
  
-  display: block;
-  width: 80%;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  /*
-  transform-origin: top left; /* IE 10+, Firefox, etc.
-  -webkit-transform-origin: top left; /* Chrome
-  -ms-transform-origin: top left; /* IE 9 
-
-  /* transition: transform 0.25s ease; */
-  cursor: zoom-in;
-
-}
-
-/* 
-#modal-content.rotate90,
-#modal-content.rotate270 {
-  width: 100px;
-  height: 820px
-} */
-#modal-content.zoomedOut{
-  transform: scale(2,2);
-transition: transform 0.25s ease;
-  cursor: zoom-out;
-}
-#modal-content.rotate90.zoomedOut{
-  transform: rotate(90deg) translateY(0%) scale(2,2);
-  -webkit-transform: rotate(90deg) translateY(0%) scale(2,2);
-  -ms-transform: rotate(90deg) translateY(0%) scale(2,2);
-  cursor: zoom-out;
-}
-#modal-content.rotate180.zoomedOut{
-  transform: rotate(180deg) translate(0%, 0%) scale(2,2);
-  -webkit-transform: rotate(180deg) translate(0%, 0%) scale(2,2);
-  -ms-transform: rotate(180deg) translateX(0%, 0%) scale(2,2);
-  cursor: zoom-out;
-}
-#modal-content.rotate270.zoomedOut{
-  transform: rotate(270deg) translateX(0) scale(2,2);
-  -webkit-transform: rotate(270deg) translateX(0) scale(2,2);
-  -ms-transform: rotate(270deg) translateX(0) scale(2,2);
-  cursor: zoom-out;
-}
-
-/* #modal-content.rotate0{
-  transform: rotate(360deg) translateY(-100%);
-  -webkit-transform: rotate(360deg) translateY(-100%);
-  -ms-transform: rotate(360deg) translateY(-100%);
-} */
-
-#modal-content.rotate90{
-  transform: rotate(90deg) translateY(0%);
-  -webkit-transform: rotate(90deg) translateY(0%);
-  -ms-transform: rotate(90deg) translateY(0%);
-}
-#modal-content.rotate180{
-  transform: rotate(180deg) translate(0%, 0%);
-  -webkit-transform: rotate(180deg) translate(0%, 0%);
-  -ms-transform: rotate(180deg) translateX(0%, 0%);
-
-
-}
-#modal-content.rotate270{
-  transform: rotate(270deg) translateX(0%);
-  -webkit-transform: rotate(270deg) translateX(0%)  translateY(0%);
-  -ms-transform: rotate(270deg) translateX(0%);
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    /*
+    transform-origin: top left; /* IE 10+, Firefox, etc.
+    -webkit-transform-origin: top left; /* Chrome
+    -ms-transform-origin: top left; /* IE 9 
   
-}
+    /* transition: transform 0.25s ease; */
+    cursor: zoom-in;
+  
+  }
+  
+  /* 
+  #modal-content.rotate90,
+  #modal-content.rotate270 {
+    width: 100px;
+    height: 820px
+  } */
+  #modal-content.flipped{
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+  #modal-content.zoomedOut{
+    transform: scale(2,2);
+  transition: transform 0.25s ease;
+    cursor: zoom-out;
+  }
+  /* rotate + flipped */
+  #modal-content.rotate90.flipped{
+    transform: rotate(90deg) translateY(0%) scaleX(-1);
+    -webkit-transform: rotate(90deg) translateY(0%) scaleX(-1);
+    -ms-transform: rotate(90deg) translateY(0%) scaleX(-1);
+  
+  }
+  #modal-content.rotate180.flipped{
+    transform: rotate(180deg) translate(0%, 0%) scaleX(-1);
+    -webkit-transform: rotate(180deg) translate(0%, 0%)  scaleX(-1);
+    -ms-transform: rotate(180deg) translateX(0%, 0%) scaleX(-1);
+  
+  }
+  
+  
+  #modal-content.rotate270.flipped{
+    transform: rotate(270deg) translateX(0) scaleX(-1);
+    -webkit-transform: rotate(270deg) translateX(0)  scaleX(-1);
+    -ms-transform: rotate(270deg) translateX(0) scaleX(-1);
+  
+  }
+  /* flip + zoomed out */
+  #modal-content.zoomedOut.flipped{
+    -webkit-transform: scale(-2,2);  
+    transform: scale(-2,2);
+  transition: transform 0.25s ease;
+    cursor: zoom-out;
+  }
+  /* rotate + zoomed Out  */
+  #modal-content.rotate90.zoomedOut{
+    transform: rotate(90deg) translateY(0%) scale(2,2);
+    -webkit-transform: rotate(90deg) translateY(0%) scale(2,2);
+    -ms-transform: rotate(90deg) translateY(0%) scale(2,2);
+    cursor: zoom-out;
+  }
+  #modal-content.rotate180.zoomedOut{
+    transform: rotate(180deg) translate(0%, 0%) scale(2,2);
+    -webkit-transform: rotate(180deg) translate(0%, 0%) scale(2,2);
+    -ms-transform: rotate(180deg) translateX(0%, 0%) scale(2,2);
+    cursor: zoom-out;
+  }
+  
+  
+  #modal-content.rotate270.zoomedOut{
+    transform: rotate(270deg) translateX(0) scale(2,2);
+    -webkit-transform: rotate(270deg) translateX(0) scale(2,2);
+    -ms-transform: rotate(270deg) translateX(0) scale(2,2);
+    cursor: zoom-out;
+  }
+  /* Zoomed + rotate + flip */
+  #modal-content.rotate90.zoomedOut.flipped{
+    transform: rotate(90deg) translateY(0%) scale(-2,2);
+    -webkit-transform: rotate(90deg) translateY(0%) scale(-2,2);
+    -ms-transform: rotate(90deg) translateY(0%) scale(-2,2);
+    cursor: zoom-out;
+  }
+  #modal-content.rotate180.zoomedOut.flipped{
+    transform: rotate(180deg) translate(0%, 0%) scale(-2,2);
+    -webkit-transform: rotate(180deg) translate(0%, 0%) scale(-2,2);
+    -ms-transform: rotate(180deg) translateX(0%, 0%) scale(-2,2);
+    cursor: zoom-out;
+  }
+  
+  
+  #modal-content.rotate270.zoomedOut.flipped{
+    transform: rotate(270deg) translateX(0) scale(-2,2);
+    -webkit-transform: rotate(270deg) translateX(0) scale(-2,2);
+    -ms-transform: rotate(270deg) translateX(0) scale(-2,2);
+    cursor: zoom-out;
+  }
+  
+  #modal-content.rotate90{
+    transform: rotate(90deg) translateY(0%);
+    -webkit-transform: rotate(90deg) translateY(0%);
+    -ms-transform: rotate(90deg) translateY(0%);
+  }
+  #modal-content.rotate180{
+    transform: rotate(180deg) translate(0%, 0%);
+    -webkit-transform: rotate(180deg) translate(0%, 0%);
+    -ms-transform: rotate(180deg) translateX(0%, 0%);
+  
+  
+  }
+  #modal-content.rotate270{
+    transform: rotate(270deg) translateX(0%);
+    -webkit-transform: rotate(270deg) translateX(0%)  translateY(0%);
+    -ms-transform: rotate(270deg) translateX(0%);
+    
+  }
+  
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
 .caption {
