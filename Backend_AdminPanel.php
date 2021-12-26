@@ -27,13 +27,13 @@
                   if (windowType == "Profile") {
                       callUserDetails();
                   } else if (windowType == "MyReservations") {
-                      callReservationDetails();
+                      userReservationDetails();
                   }
               } else {
                   if (windowType == "Profile") {
                       callUserDetails();
                   } else if (windowType == "MyReservations") {
-                      callReservationDetails();
+                      userReservationDetails();
                   } else if (windowType == "UserRegistrations") {
                       regList();
                   } else if (windowType == "UserReservation") {
@@ -68,13 +68,13 @@
                   if (windowType == "Profile") {
                       callUserDetails();
                   } else if (windowType == "MyReservations") {
-                      callReservationDetails(c);
+                      userReservationDetails(c);
                   }
               } else {
                   if (windowType == "Profile") {
                       callUserDetails();
                   } else if (windowType == "MyReservations") {
-                      callReservationDetails(c);
+                      userReservationDetails(c);
                   } else if (windowType == "UserRegistrations") {
                       regList(c);
                   } else if (windowType == "UserReservation") {
@@ -173,6 +173,7 @@
 
       function loadImages(mainDiv, path) {
           var click = false;
+          var flipped = false;
           //    modal img code
           //    modal img code
           var i = 0;
@@ -205,6 +206,19 @@
               angle = (angle + 90) % 360;
               modalImg.className = " rotate" + angle;
               click = false;
+              flipped = false;
+          });
+          var flip = document.createElement('span');
+          flip.className = 'rotate modalEdit';
+          flip.textContent = 'Flip';
+          flip.addEventListener('click', function(e) {
+              if (flipped == false) {
+                  modalImg.className += ' flipped';
+                  flipped = true;
+              } else {
+                  modalImg.classList.remove('flipped');
+                  flipped = false;
+              }
           });
           document.addEventListener('click', function(e) {
               if (e.target && e.target == img) {
@@ -216,6 +230,9 @@
                           if (event.target == modal) {
                               boxClicked = false;
                               modal.style.display = 'none'
+                              modalImg.classname = ' ';
+                              click = false;
+                              flipped = false;
                               var i = 0;
                           };
                           if (event.target == modalImg) {
@@ -227,7 +244,6 @@
                                   click = false;
                                   modalImg.classList.remove('zoomedOut');
                               }
-
                           }
                       })
                   }
@@ -236,6 +252,7 @@
           });
           manipulateDiv.appendChild(span);
           manipulateDiv.appendChild(rotate);
+          manipulateDiv.appendChild(flip)
           modalDiv.appendChild(modalImg);
           modal.appendChild(modalDiv);
           modal.appendChild(manipulateDiv)
@@ -274,6 +291,9 @@
           // When the user clicks on <span> (x), close the modal3
           span.addEventListener('click', function() {
               modal.style.display = "none";
+              modalImg.classname = ' ';
+              click = false;
+              flipped = false;
           })
           div.appendChild(img);
           div.appendChild(modal);
@@ -304,45 +324,50 @@
           xmlhttp.send();
       }
 
-      function callReservationDetails(page_number = 1) {
+      function userReservationDetails(page_number = 1) {
+          var mainDiv = document.createElement('div');
+          mainDiv.id = 'parentDiv';
+          var page = document.createElement('div');
+          page.id = 'pages';
+          filterPart(mainDiv, page, 'userres');
+          callReservationDetails(mainDiv, page, page_number);
+          document.getElementById('content').appendChild(mainDiv);
+      }
+
+      function callReservationDetails(mainDiv, page, page_number = 1, month = new Date().getMonth() + 1, year = new Date().getFullYear()) {
           userID = <?php echo $_SESSION["userID"] ?>;
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   var myObj = JSON.parse(this.responseText);
+                  var motherDiv = document.createElement('div');
+                  motherDiv.id = "currentUserReservation";
                   if (myObj[0] == null) {
-                      if(page_number == 1){
-                       var motherDiv = document.createElement('div');
-                      motherDiv.id = "currentUserReservation";
-                      motherDiv.innerHTML = '<h3> No reservations </h3?>';
-                      document.getElementById("content").appendChild(motherDiv);
-                      }else{
-                          page_number -=1;
-                          callReservationDetails(page_number);
+                      if (page_number == 1) {
+                          motherDiv.innerHTML += '<h3> No reservations </h3?>';
+                      } else {
+                          page_number -= 1;
+                          callReservationDetails(page_number, month, year);
                       }
                   } else {
                       var x = [];
-                      var motherDiv = document.createElement('div');
                       var list = document.createElement('li');
-                      var page = document.createElement('div');
-                      page.id = 'pages';
-                      motherDiv.id = "currentUserReservation";
                       myObj.forEach(function(element, index) {
                           let result = reservationContent(motherDiv, userID, page, element, index);
-                          reservedEquipment(element.reservationID, result[1], userID, true, element.status, status, ...Array(1), element.notifID, element.notif_remark,element.dateStart,element.timeStart);
+                          reservedEquipment(element.reservationID, result[1], userID, true, element.status, status, ...Array(1), element.notifID, element.notif_remark, element.dateStart, element.timeStart);
                           motherDiv.appendChild(result[2]);
-
                       });
                       page.innerHTML = myObj[myObj.length - 1].pagination;
                       motherDiv.appendChild(page);
                   }
+                  mainDiv.appendChild(motherDiv);
               }
           }
-          xmlhttp.open("GET", "/Request_ReservationForUser.php?var=" + userID + '&page=' + page_number + '&window=' + windowType, true);
+          xmlhttp.open("GET", "/Request_ReservationForUser.php?var=" + userID + '&page=' + page_number + '&window=' + windowType + '&month=' + month + '&year=' + year, true);
           xmlhttp.send();
       }
 
-      function reservedEquipment(resID, mainDiv, userID, forUser, status, approval, typePending, notifID, remarks,date,time) {
+      function reservedEquipment(resID, mainDiv, userID, forUser, status, approval, typePending, notifID, remarks, date, time) {
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = async function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -374,10 +399,10 @@
                           } else if (approval == 1) {
                               mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
                               mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
-                              if(new Date() >= new Date(recordedDate.setDate(recordedDate.getDate() - 1))){
-                                mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ',' + "'MyReservations'" + ')" value="Cancel" disabled>';
-                              }else{
-                                mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ',' + "'MyReservations'" + ')" value="Cancel">';
+                              if (new Date() >= new Date(recordedDate.setDate(recordedDate.getDate() - 1))) {
+                                  mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ',' + "'MyReservations'" + ')" value="Cancel" disabled>';
+                              } else {
+                                  mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ',' + "'MyReservations'" + ')" value="Cancel">';
                               }
                               mainDiv.innerHTML += '<hr class="hr">';
                           } else {
@@ -393,7 +418,7 @@
                       var textarea = document.createElement('textarea');
                       textarea.className = 'remarks';
                       textarea.placeholder = "Remarks";
-                      textarea.id='remarks';
+                      textarea.id = 'remarks';
                       if (approval == 1) {
                           mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
                           mainDiv.innerHTML += '<br>';
@@ -453,11 +478,11 @@
           })
       }
 
-      function cancelReservation(eventID,type) {
+      function cancelReservation(eventID, type) {
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                alert(this.responseText);
+                  alert(this.responseText);
                   if (c == null) {
                       window.location.href = '/Window_Panel.php?window=' + type;
                   } else {
@@ -531,7 +556,7 @@
 
       //Decline Reservation
       function DeclineRegistration(user, remarks) {
-        //   var remarks = document.getElementById('remarks').value;
+          //   var remarks = document.getElementById('remarks').value;
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -559,10 +584,10 @@
               if (this.readyState == 4 && this.status == 200) {
                   var myObj = JSON.parse(this.responseText);
                   if (myObj[0] == null) {
-                      if(page_number == 1){
-                        motherDiv.innerHTML = '<h3> No user reservation </h3?>';
-                      }else{
-                          page_number -=1;
+                      if (page_number == 1) {
+                          motherDiv.innerHTML = '<h3> No user reservation </h3?>';
+                      } else {
+                          page_number -= 1;
                           resList('pending', page_number);
                       }
                   } else {
@@ -581,7 +606,7 @@
       }
       // Accept Reservations
       function AcceptReservation(eventID, userID, notifID, textArea) {
-        textArea = textArea.parentElement.getElementsByTagName('textArea')[0].value
+          textArea = textArea.parentElement.getElementsByTagName('textArea')[0].value
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -967,7 +992,6 @@
           var div = document.createElement('div')
           var date = new Date(element.dateStart + ' ' + element.timeStart);
           var diffTime = Math.abs(new Date(element.dateEnd) - new Date(element.dateStart));
-          console.log(diffTime)
           var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24) + 1);
           var startTime = tConvert(element.timeStart);
           var endTime = tConvert(element.timeEnd)
@@ -1046,7 +1070,7 @@
               var bigDiv2 = document.createElement('div');
               bigDiv2.className = 'finishedDiv';
               bigDiv2.id = 'bigFinishedDiv';
-              filterPart(bigDiv2, page);
+              filterPart(bigDiv2, page, 'archive');
               var label2 = document.createElement('h3');
               label2.textContent = 'Finished And Reviewed Reservations';
               bigDiv2.appendChild(label2);
@@ -1919,7 +1943,7 @@
       }
 
 
-      function filterPart(mainDiv, page) {
+      function filterPart(mainDiv, page, type) {
           var div = document.createElement('div');
           div.id = 'Filter';
           //   var search = document.createElement('input');
@@ -1930,19 +1954,6 @@
           button.textContent = 'Filter'
           var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
           var monthDropdown = document.createElement('select');
-          //   var defaultOption = document.createElement('option');
-          //   defaultOption.textContent = 'No filter'
-          //   defaultOption.selected = true;
-          //   defaultOption.disabled = true;
-          //   defaultOption.value = null;
-          //   defaultOption.hidden = true;
-
-          //   var defaultOption2 = document.createElement('option');
-          //   defaultOption2.textContent = 'No filter'
-          //   defaultOption2.selected = true;
-          //   defaultOption2.disabled = true;
-          //   defaultOption2.value = null;
-          //   defaultOption2.hidden = true;
 
           for (a = 0; a < monthNames.length; a++) {
               var option = document.createElement('option');
@@ -1952,12 +1963,25 @@
           }
           var currentYear = new Date().getFullYear();
           var yearDropdown = document.createElement('select');
-          for (var i = 2000; i < currentYear + 5; i++) {
+          for (var i = currentYear; i < currentYear + 5; i++) {
               var option = document.createElement('option');
               option.textContent = i;
               option.value = i;
               yearDropdown.appendChild(option);
           }
+
+          for (var x = currentYear; x > currentYear - 5; x--) {
+              if (x != currentYear) {
+                  var option = document.createElement('option');
+                  option.textContent = x;
+                  option.value = x;
+                  var i, L = yearDropdown.options.length - 1;
+                  for (i = L; i >= 0; i--) {
+                      yearDropdown.insertBefore(option, yearDropdown.options[i])
+                  }
+              }
+          }
+
           for (count = 0; count < monthDropdown.length; count++) {
               if (monthDropdown[count].value == new Date().getMonth() + 1) {
                   monthDropdown.options[count].selected = true;
@@ -1984,26 +2008,64 @@
           monthDropdown.yearParam = yearDropdown;
           monthDropdown.pageParam = page;
           monthDropdown.mainDivParam = mainDiv;
-
+          monthDropdown.typeParam = type;
           // yearDropdown.searchParam = search;
           yearDropdown.monthParam = monthDropdown;
           yearDropdown.yearParam = yearDropdown;
           yearDropdown.pageParam = page;
           yearDropdown.mainDivParam = mainDiv;
+          yearDropdown.typeParam = type;
           //   return [search.value,monthDropdown.value,yearDropdown.value];
       }
 
-      function filterSearchQuery(e) {
-          //   if (month == undefined && year == undefined) {
+      function removeOptions(selectElement, exception) {
+          var i, L = selectElement.options.length - 1;
+          for (i = L; i >= 0; i--) {
+              if (exception != selectElement.options[i].value) {
+                  selectElement.remove(i);
+              }
+          }
+      }
 
-          //   }
-          document.getElementById('resList').remove();
+      function filterSearchQuery(e) {
+          if (e.currentTarget == e.currentTarget.yearParam) {
+              let value = e.currentTarget.yearParam.value;
+              let date = new Date(e.currentTarget.yearParam.value).getFullYear();
+              removeOptions(e.currentTarget.yearParam, value)
+              for (var a = value; a < date + 5; a++) {
+                  if (a != value) {
+                      var option = document.createElement('option');
+                      option.textContent = a;
+                      option.value = a;
+                      e.currentTarget.appendChild(option);
+                  }
+              }
+              for (var x = value; x > date - 5; x--) {
+                  if (x != value) {
+                      var option = document.createElement('option');
+                      option.textContent = x;
+                      option.value = x;
+                      var i, L = e.currentTarget.options.length - 1;
+                      for (i = L; i >= 0; i--) {
+                          e.currentTarget.yearParam.insertBefore(option, e.currentTarget.options[i])
+                      }
+                  }
+              }
+          }
+
           mainDiv = e.currentTarget.mainDivParam;
           page = e.currentTarget.pageParam;
           //   keyword = e.currentTarget.searchParam.value;
           month = e.currentTarget.monthParam.value;
           year = e.currentTarget.yearParam.value;
-          loadFinishedReservation(mainDiv, page, ...Array(1), month, year);
+          if (e.currentTarget.typeParam == 'archive') {
+              document.getElementById('resList').remove();
+              loadFinishedReservation(mainDiv, page, c, month, year);
+          } else if (e.currentTarget.typeParam = 'userres') {
+              document.getElementById('currentUserReservation').remove();
+              callReservationDetails(mainDiv, page, c = 1, month, year);
+          }
+
       }
 
       //ALl functions related to archives and to be reviewed
@@ -2077,8 +2139,8 @@
           // //   })
           onLoad(element.reservationID, review, mainDiv);
           mainDiv.appendChild(label);
-          mainDiv.innerHTML += '<h3>Event Date: ' +element.dateStart +' to '+ element.dateEnd  +'</h3>';
-          mainDiv.innerHTML += '<h3>From: ' +startTime +' to '+ endTime  +'</h3>';
+          mainDiv.innerHTML += '<h3>Event Date: ' + element.dateStart + ' to ' + element.dateEnd + '</h3>';
+          mainDiv.innerHTML += '<h3>From: ' + startTime + ' to ' + endTime + '</h3>';
           div.appendChild(mainDiv)
 
           if (typeof(element.pagination) != undefined && element.pagination != null) {
