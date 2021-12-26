@@ -7,16 +7,16 @@
     <link rel="stylesheet" href="css/registration.css">
     <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
     <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/registration.css">
+    <link rel="stylesheet" href="css/otp.css">
 </head>
 
 <body>
     <?php
     session_start();
-    // if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    //     header("location: Window_HomePage.php");
-    //     exit;
-    // }
+    if ( isset($_SESSION['user_verified']) && $_SESSION['user_verified']=='verified') {
+        header("location: Window_HomePage.php");
+        exit;
+    }
     include "db_connection.php";
     $conn = OpenCon();
     if (isset($_GET['code'])) {
@@ -40,7 +40,7 @@
                                 if ($sql2->execute()) {
                                     echo '<script>
                                     alert("Registration Successful! \n Status:Pending")
-                                    window.location.href = "/Window_LOGIN.php"
+                                    window.location.href = "/index.php"
                                     </script>';
                                 } else {
                                     echo $conn->error;
@@ -59,8 +59,7 @@
                     $sql->close();
                 }
             }
-        }
-        else if(isset($_POST['resend'])){
+        }else if(isset($_POST['resend'])){
             $userOTP = rand(100000,999999);
             $sql_code = "SELECT * FROM tbl_user WHERE user_activationcode = ?";
             if ($sql = $conn->prepare($sql_code)) {
@@ -83,7 +82,7 @@
     } else {
         echo 'invalid URL';
     }
-    function sendOTP($OTP,$email){
+ function sendOTP($OTP,$email){
         $subject = 'PLVRS Registration Notification';
         $message_body = '
         <p>For verify your email address, enter this verification code when prompted: <b>'.$OTP.
@@ -119,16 +118,24 @@
     <!--CHANGES-->
     <div class="nav2">
         <?php
-        // require "Backend_CheckifLoggedIN.php";
+        require "Backend_CheckifLoggedIN.php";
         ?>
     </div>
 
     <body>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
-            <input name='OTPVal'>
-            <input name='OTP' type='submit'>
-            <input id = 'resend' name='resend' type='submit' ><label id='timer'></label>
-        </form>
+          <div class="OTP">
+                <h3>Security verification</h3>
+                <p>To secure your account, please complete the following verification.</p>
+                <p>Email verification code</p>
+                    <div id="otpForm">
+                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
+                        <input id="tACode" name='OTPVal'>
+                        <input  id="Resend" name='resend' type='submit' value="Resend"><label id="timer"></label>
+                        <input  class="header-btn btn" id="submit" name='OTP' type='submit'>
+                        </form>
+                    </div>
+            </div>
     </body>
-      <?php require 'Backend_OTP.php' ?>;
+    </body>
+    <?php require "Backend_OTP.php";?>;
 </html>
