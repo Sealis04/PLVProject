@@ -1,0 +1,36 @@
+.OTP{
+    margin-left: 40%;
+    margin-right: 30%;
+}
+form{
+     display:inline-block;
+    margin:0;
+}
+
+input#submit {
+    margin-top: 13px;
+    width: 100%;
+    margin-left: 0;
+    background-color: #1C1D91;
+    
+}
+#tACode{
+    width: 75%;
+}
+#Resend {
+    width: auto;
+    margin-left: 5px;
+    border: none;
+    background-color: none;
+    background: none;
+    color: #1C1D91;
+    font-weight: bold;
+}
+
+#Resend:focus{
+    color: #c3c4f8;
+}
+
+h3{
+    font-weight: bold;
+}
