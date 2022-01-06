@@ -61,7 +61,6 @@
                     </div>
                         <div class="big-contents" >
                             <ul id="contentDiv"> 
-                            <img id='roomImg'></img>
                             <h1 id="h1"></h1>
                             <h3 id="h2"></h3>
                             <h2 id="h2"><h2>
