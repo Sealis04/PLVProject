@@ -17,6 +17,7 @@
                         //Calls current values of roomname,desc,cap by returning roomIDvalue
                         var id = document.getElementById("equipment").id;
                         if(currID === id && document.getElementById("h1").textContent != "Equipment List"){
+                        document.getElementById('roomImg').style='display:none';
                         document.getElementById("h1").textContent="Equipment List";
                         document.getElementById("p1").textContent="";
                         callList(true);
@@ -25,8 +26,10 @@
                         var  xmlhttp = new XMLHttpRequest();
                         xmlhttp.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status==200){
+                               
                                 var myObj = JSON.parse(this.responseText);
-                                document.getElementById("roomImg").src = '/' + myObj.imgPath;
+                                document.getElementById('roomImg').style='';
+                                document.getElementById('roomImg').src = myObj.imgPath;
                                 document.getElementById("h1").textContent=myObj.roomName;
                                 document.getElementById("h2").textContent="Capacity: " + myObj.room_capacity;
                                 document.getElementById("p1").textContent=myObj.roomDesc;
@@ -43,8 +46,11 @@
                     var  xmlhttp = new XMLHttpRequest();
                         xmlhttp.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status==200){
+                                var img = document.createElement('img');
+                                img.id = 'roomImg';
+                                document.getElementById('contentDiv').insertBefore(img,document.getElementById('h1'));                      
                                 var myObj = JSON.parse(this.responseText);
-                                document.getElementById("roomImg").src = '/' + myObj.imgPath;
+                                img.src = '/' + myObj.imgPath;
                                 document.getElementById("h1").textContent=myObj.roomName;
                                 document.getElementById("h2").textContent="Capacity: " + myObj.room_capacity;
                                 document.getElementById("p1").textContent=myObj.roomDesc;
@@ -52,7 +58,6 @@
                         }
                         xmlhttp.open("GET", "Request_SpecificRoom.php?var=" + x, true);
                         xmlhttp.send();
-
                     function callList(result){
                         var  xmlhttp = new XMLHttpRequest();
                         xmlhttp.onreadystatechange = function(){
