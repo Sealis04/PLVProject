@@ -82,7 +82,9 @@ body {
 }
 
 .container { 
-  padding: 0;
+      padding: 0;
+    margin-left: 250px !important;
+    margin: 5px;
 }
 
 .btn{
@@ -223,3 +225,4 @@ legend{
   margin-top: 50px;
   font-weight: bold;
 }
+

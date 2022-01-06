@@ -4,6 +4,7 @@ $rid = $_REQUEST["var"];
 $userID = $_REQUEST['userID'];
 $remarks = $_REQUEST['remarks'];
 $notifID = $_REQUEST['notifID'];
+$reservation = array();
 session_start();
 include "db_connection.php";
 include 'Request_storeNotification.php';

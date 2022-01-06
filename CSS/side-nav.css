@@ -30,8 +30,7 @@ body {
 
 
 .sidenav p{
-  text-align: left;
-  width: 120px;
+  text-align: center;
   display: block;
   margin: 0;
   padding: 0;
@@ -141,7 +140,7 @@ hr{
   color: black !important;
   text-decoration: none !important;
   background-color: none !important;
-  font-size: 14px !important;
+  font-size: 15px !important;
 }
 
 .active1, .btns:hover:not(.active1) {

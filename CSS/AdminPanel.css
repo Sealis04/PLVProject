@@ -215,16 +215,16 @@ ul input {
   background-color: #444;
 }
 
-.big-contents{
-  margin-left: 14%;
-  margin-right: 5%;
-  border-radius: 10px;
-  margin-top: 20px;
-  padding-bottom: 60px;
-  padding-right: 15px;
-  background-color: #f8f8ff;
-  border: black solid 1px;
-  padding-left: 100px;
+.big-contents {
+    margin-left: 269px;
+    margin-right: 5%;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding-bottom: 60px;
+    padding-right: 15px;
+    background-color: #f8f8ff;
+    border: black solid 1px;
+    padding-left: 100px;
 }
 
 #profContent h4{
@@ -355,9 +355,10 @@ color: white;
 }
 
 #addBtn{
-  margin-right: 515px;
+  margin-right: 15px;
   color: white;
  font-size: 16px !important;
+ position:absolute;
 }
 .resContent img{
  vertical-align: middle;
@@ -442,7 +443,7 @@ div.pagination {
 }
 
 div.pagination a {
-	padding: 2px 5px 2px 5px;
+	padding: 0px 0px 2px 5px;
 	margin: 2px;
 	border: 1px solid #AAAADD;
 	zoom: 100%;
@@ -455,7 +456,7 @@ div.pagination a:hover, div.pagination a:active {
 	color: #000;
 }
 div.pagination span.current {
-	padding: 2px 5px 2px 5px;
+	padding: 0px 0px 2px 5px;
 	margin: 2px;
 	border: 1px solid #000099;
 	 zoom: 100%; 
@@ -465,7 +466,7 @@ div.pagination span.current {
 	color: #FFF;
 }
 div.pagination span.disabled {
-	padding: 2px 5px 2px 5px;
+	padding: 0px 5px 2px 5px;
 	margin: 2px;
 	border: 1px solid #EEE;
 	
@@ -489,7 +490,8 @@ div.pagination span.disabled {
   transition: 0.3s;
   float: right;
   vertical-align: middle;
-  margin: -20% 10% 0 0;
+  margin-top: -250px;
+  margin-right: 20px;
   height: 110px;
   width: 110px;
 
@@ -789,4 +791,46 @@ button#myInput{
 .filter{
   margin-top: 10px;
 
+}
+
+table#equipmentTbl {
+    width:100%;
+    margin-top:40px;
+    overflow-x:auto !important;
+}
+
+table#roomTbl {
+    width: 100%;
+    margin-top: 40px;
+}
+
+table#policiesTbl {
+    margin-top: 40px;
+    width: 100%;
+}
+
+
+/*Mobile responsiveness*/
+div#equipID{
+    overflow-x:auto;
+}
+
+div#roomID {
+    overflow-x: auto;
+}
+
+img.rotate.modalEdit {
+    margin-left: 30%;
+    margin-right: auto;
+    /* width: 15%; */
+}
+
+.resetPW{
+    margin:0;
+}
+
+/*Wrap content*/
+div#content {
+    word-wrap: break-word;
+    width: 80%;
 }

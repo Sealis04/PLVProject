@@ -123,3 +123,16 @@ background-color: #000099;
     color: white;
 }
 
+select#course {
+    max-width: 190px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}

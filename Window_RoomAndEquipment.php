@@ -7,6 +7,7 @@
         <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
 
         <link rel="stylesheet" href="css/RoomAndEquipment.css">
+      
     </head>
     <body>
             <?php 
@@ -14,16 +15,19 @@
             session_start();
             
                 ?>
-        <nav id="head-container">
-            <div class="navbar">
-            
-            <div class="nav2">
+        <sidenav>
               <?php
-           require "Backend_CheckifLoggedIN.php";
+              if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+                    if ($_SESSION['user_verified'] == 'not verified') {
+                        echo '<script>
+                        alert("Please confirm the OTP that was sent to your Email!")
+                        window.location.href = "Window_OTP.php?code='.$_SESSION['user_code'].'"
+                        </script>';
+                    }
+              }
+               require "Backend_CheckifLoggedIN.php";
                 ?>        
-            </div>
-            </div>
-        </nav>
+        </sidenav>
 
         <!--body-->
         <div class="container">
@@ -35,6 +39,7 @@
                     <div class="side-nav" id="list">
                         <ul method="post">
                         <?php
+                      
                     //creates entire list of rooms. 
                         $conn=OpenCon();
                         $sql_code = "SELECT * FROM tbl_room WHERE isDeleted = 0 and room_availability = 0";
@@ -56,7 +61,9 @@
                     </div>
                         <div class="big-contents" >
                             <ul id="contentDiv"> 
+                            <img id='roomImg'></img>
                             <h1 id="h1"></h1>
+                            <h3 id="h2"></h3>
                             <h2 id="h2"><h2>
                             <p id="p1"></p>
                             </ul>   

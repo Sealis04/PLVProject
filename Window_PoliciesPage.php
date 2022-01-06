@@ -19,11 +19,16 @@
     <nav id="head-container">
         <div class="navbar">
 
-            <div class="nav2">
                 <?php
-                require "Backend_CheckifLoggedIN.php";
+                  if ($_SESSION['user_verified'] == 'not verified') {
+            echo '<script>
+            alert("Please confirm the OTP that was sent to your Email!")
+            window.location.href = "Window_OTP.php?code='.$_SESSION['user_code'].'"
+            </script>';
+        } else {
+            require "Backend_CheckifLoggedIN.php";
+        }
                 ?>
-            </div>
         </div>
     </nav>
     <div class="container">
@@ -31,7 +36,7 @@
         
     </div>
 
-    <div class="container">
+    <div class="container col-sm-9 col-lg-8">
         <div id = 'policies' class="policy">
         </div>
         <?php require 'Backend_PoliciesPage.php' ?>

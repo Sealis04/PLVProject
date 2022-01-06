@@ -75,6 +75,7 @@ if ($sql = $conn->prepare($sql_code)) {
                 'lastName' => $row['user_lastName'],
                 'userID' => $row['r_user_ID'],
                 'roomName' => $row['room_name'],
+                'remarks'=>$row['r_Remarks'],
             );
         }
     } else {

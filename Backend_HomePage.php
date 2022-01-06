@@ -6,6 +6,7 @@
     //let selectYear = document.getElementById('year');
     //let selectMonth = document.getElementById('month');
     let months = ['Jan', 'Feb', 'Mar', "Apr", 'May', 'Jun', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+      let fullmonths = ['January', 'Februaru', 'March', "April", 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     let monthAndYear = document.getElementById('monthAndYear');
     // loopYear(currentYear);
     calendar(currentMonth, currentYear);
@@ -109,14 +110,11 @@
     }
 
     function calendar(month, year,activeDay) {
-
         var firstDay = (new Date(year, month)).getDay();
-        let daysInMonth = 32 - new Date(year, 2, 32).getDate();
+        let daysInMonth = new Date(year, month + 1, 0).getDate();
         let tbl_body = document.getElementById('calendar-body');
         tbl_body.innerHTML = "";
         monthAndYear.innerHTML = months[month] + " " + year;
-        // selectYear.value = year;
-        // selectMonth.value = month;
         let date = 1;
         let activeDate;
         for (let i = 0; i < 6; i++) {
@@ -158,9 +156,14 @@
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
                 var mainDiv = document.getElementById('listBody');
+                var x = fullmonths[currentMonth];
+                currentDate = x + ' ' + selectedDay + ', ' + currentYear;
+                console.log(currentDate);
                 if (myObj.length != 0) {
                     mainDiv.innerHTML = "";
-                    myObj.forEach(listEvents);
+                    myObj.forEach(function(element,index){
+                        listEvents(currentDate,element,index)
+                    });
                 } else {
                     mainDiv.innerHTML = 'No Reservations scheduled';
                 }
@@ -171,16 +174,33 @@
         xmlhttp.send();
     }
 
-    function listEvents(element, index) {
+    function listEvents(currDate,element, index) {
         var div = document.getElementById('listBody');
         // div.innerHTML = ' <h3>Event Name: '+ element.event_name+' ['+element.start +' - ' + element.end +']</h3>';
         // div.innerHTML += '<h3>Room Name:'+ element.room_name+'</h3>';
         // div.innerHTML += '<h3>Reserved By:'+ element.firstName+ ' ' + element.middleName + ' ' + element.lastName+'</h3>';
         div.innerHTML += '<h4>' + element.event_name + '<h4>';
         // div.innerHTML += '<h5>' + +'<h5>'
+        let start = tConvert(element.start);
+        let end = tConvert (element.end);
+        div.innerHTML += '<h5>' + currDate + '<h5> <br>';
+        div.innerHTML += '<h5>' + start + ' to ' + end +'<h5> <br>';
         div.innerHTML += '<h5>' + element.room_name + '<h5>';
         div.innerHTML += '<h5> Reserved By:' + element.firstName + ' ' + element.middleName + ' ' + element.lastName + '<h5>';
+         div.innerHTML += '<h5> Facilitated by:' + element.facilitator + '<h5>';
         div.innerHTML += '<hr class="hr">';
 
+    }
+    
+    function tConvert(time) {
+        // Check correct time format and split into components
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+        if (time.length > 1) { // If time format correct
+            time = time.slice(1); // Remove full string match value
+            time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+            time[0] = +time[0] % 12 || 12; // Adjust hours
+        }
+        return time.join(''); // return adjusted time or original string
     }
 </script>

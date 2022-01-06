@@ -8,7 +8,6 @@ session_start();
 include "db_connection.php";
 include 'Request_storeNotification.php';
 include 'Backend_SendEmail.php';
-include "db_connection.php";
 $conn=OpenCon();
 $sql_code = "UPDATE `tbl_reservation` SET `r_status` = 1 WHERE r_ID = ?";
     if($sql=$conn->prepare($sql_code)){
@@ -20,6 +19,6 @@ $sql_code = "UPDATE `tbl_reservation` SET `r_status` = 1 WHERE r_ID = ?";
              $sql->close();
         }
     $conn->close();
-    // getEmail($userID,$rid,$remarks,4);
+    getEmail($userID,$rid,$remarks,4);
     update($userID,4,$remarks,0,$notifID);
 ?>

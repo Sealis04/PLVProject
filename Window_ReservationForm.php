@@ -23,10 +23,21 @@
     $maxTime = '17:00';
     $initialTime = '08:00';
     $initialTime_2 = '09:00';
-    $uploadErr = "";
+    $uploadErr = ""; 
     //determine if admin
-    if (isset($_SESSION['userID'])) {
-        $remarks = checkDetails($_SESSION['userID']);
+  
+    ?>
+    <sidenav>
+        <?php
+         if (isset($_SESSION['userID'])) {
+         if ($_SESSION['user_verified'] == 'not verified') {
+            echo '<script>
+            alert("Please confirm the OTP that was sent to your Email!")
+            window.location.href = "Window_OTP.php?code='.$_SESSION['user_code'].'"
+            </script>';
+        } else {
+            require "Backend_CheckifLoggedIN.php";
+             $remarks = checkDetails($_SESSION['userID']);
         if (isset($remarks)) {
             echo '<script>
             alert("'.$remarks.'.")
@@ -39,101 +50,17 @@
                 $approveID = 2;
             }
         }
-       
+        }
     } else {
         echo '<script>
         alert("Please Log in first.")
-        window.location.href = "Window_LOGIN.php"
+        window.location.href = "index.php"
         </script>';
     }
-    //form initialization
-    // if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //     if (isset($_POST['equipAdd'])) {
-    //         if (isset($_POST['qty']) && isset($_POST['equipment'])) {
-    //             $equipID = $_POST['equipment'];
-    //             $qty = $_POST['qty'];
-    //             $toStore = array_map(null, $equipID, $qty);
-    //             $keys = array("ID", "qty");
-    //             $toStore = array_map(function ($e) use ($keys) {
-    //                 return array_combine($keys, $e);
-    //             }, $toStore);
-    //         } else {
-    //             $toStore = [];
-    //         }
-    //     } else {
-    //         $toStore = [];
-    //     }
-    //     $eventName = $_POST['event'];
-    //     $userID = $_SESSION["userID"];
-    //     $roomID = $_POST['room'];
-    //     $adviser = $_POST['adviser'];
-    //     $today = date("Y-m-d h:i:s");
-    //     $startDate = $_POST['startDate'];
-    //     $startTime = $_POST['startTime'];
-    //     $endTime = $_POST['endTime'];
-    //     $duration = $_POST['duration'];
-    //     $days = '+ ' . $duration - 1 . 'days';
-    //     $endDate = Date('Y-m-d', strtotime($startDate . $days));
-    //     //NOTE, REMEMBER TO ADD IF EQUIPID==0 IN CONDITIONS LATER
-    //     //check if file is uploaded
-    //         if($_FILES["letterUpload"]["error"]>0){
-    //             $uploadErr = "Please upload letter of approval/s.";
-    //          }
-    //            $fullName =  $_SESSION["fullName"];
-    //          $fileTmpPath = $_FILES["letterUpload"]["tmp_name"];
-    //          $fileName = $fullName. "ID";
-    //            if(move_uploaded_file($fileTmpPath,"assets/".$fileName)){
-              
-                 
-    //         }
-    // }
-
-    // $conn->close();
-
-    // if($_SERVER["REQUEST_METHOD"]=="POST"){
-    //     date_default_timezone_set('Asia/Manila');
-
-    //     $today = date("Y-m-d h:i:s");
-    //     $start = $_POST["startTime"];
-    //     $today_dt = new DateTime($today);
-    //     $start_dt = new DateTime($start);
-    //     $today_dt = $today_dt->format('Y-m-d h:i:s');
-    //     $start_dt = $start_dt->format('Y-m-d h:i:s');
-    //     $min = Date("Y-m-d", strtotime('+3 days'));
-    //     $max = $min.'T09:00';
-    //     $min .='T08:00';
-    //     if($start_dt < $today_dt){
-    //         echo '<script>alert("FUCK")</script>';
-    //     }else{
-    //         echo '<script>alert("Nice")</script>';
-    //     }
-    // }
-
-    // function insertEquipment($lastID, $conn, $eID, $qtyVal)
-    // {
-
-    //     $sql_code_2 = "INSERT INTO tbl_equipment_reserved(r_ID,equipment_ID,Qty) VALUES (?,?,?)";
-    //     if ($sql2 = $conn->prepare($sql_code_2)) {
-    //         $sql2->bind_param("sii", $lastID, $eID, $qtyVal);
-    //         if ($sql2->execute()) {
-    //             echo '<script>
-    //             alert("Reservation success\nStatus: Pending")
-    //             window.location.href = "Window_LOGIN.php"
-    //             </script>';
-    //         } else {
-    //             echo '<script>alert("' . $conn->error . '")</script>';
-    //         }
-    //         $sql2->close();
-    //     }
-    // }
-    ?>
-    <div class="nav2">
-        <?php
-          require "Backend_CheckifLoggedIN.php";
         ?>
-    </div>
+    </sidenav>
     <div class="container">
-        <div class="form-container">
+        <div class="form-container col-sm-11 col-lg-10">
             <legend>FORM</legend>
             <input type='button' onclick="addReservation()" value='Add' style='float:right' >
             <label for="Name">Name:</label>

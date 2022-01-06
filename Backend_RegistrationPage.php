@@ -55,12 +55,9 @@
 
     function listOptions(selectID, element, index) {
         var options = document.createElement("option");
-        if(element.courseName.toLowerCase() != 'teacher'){
         options.text = element.courseName;
         options.value = element.courseID;
         selectID.add(options);
-        }
-        
     }
 
     function listSection(selectID,element, index) {

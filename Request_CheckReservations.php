@@ -7,7 +7,7 @@ $sql_code = "SELECT *,TimeStart as 'start',TimeEnd as 'end' FROM tbl_reservation
 ON tbl_reservation.r_room_ID = tbl_room.room_ID
 INNER JOIN tbl_user
 ON tbl_reservation.r_user_ID = tbl_user.user_ID
-WHERE (? between tbl_reservation.DateStart AND tbl_reservation.DateEnd) AND r_status = 0 AND r_approved_ID = 1 ";
+WHERE (? between tbl_reservation.DateStart AND tbl_reservation.DateEnd) AND r_status = 0 AND r_approved_ID = 1";
     if($sql=$conn->prepare($sql_code)){
         $sql->bind_param("s",$date);
             if($sql->execute()){
@@ -21,6 +21,7 @@ WHERE (? between tbl_reservation.DateStart AND tbl_reservation.DateEnd) AND r_st
                     'middleName'=>$row['user_middleName'],
                     'lastName'=>$row['user_lastName'],
                     'room_name'=>$row['room_name'],
+                    'facilitator' =>$row['r_eventAdviser']
                     );
                  }
                 }else{
