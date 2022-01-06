@@ -81,9 +81,7 @@ function insertLetter($conn)
                     if ($sql->execute()) {
                         $lastletterID = $conn->insert_id;
                         $letter_ID[] = $lastletterID;
-                        $condition = true;
                     } else {
-                        $condition = false;
                         break;
                     }
                 }

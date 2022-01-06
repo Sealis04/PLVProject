@@ -563,11 +563,14 @@
             dateInput.id = 'startDate';
             dateInput.name = 'startDate';
             currentDate.setDate(currentDate.getDate() + 3);
-            var minDate = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
+            currentMonth = currentDate.getMonth() + 1;
+            currentDay = currentDate.getDate();
+            if (currentMonth < 10) { currentMonth = '0' + currentMonth;}
+            if (currentDay <10) {currentDay = '0' + currentDay};
+            var minDate = currentDate.getFullYear() + '-' + (currentMonth) + '-' + currentDay;
             dateInput.setAttribute('value', minDate);
             dateInput.min = minDate;
             dateInput.required = true;
-
 
             wrapper.appendChild(dateLabel);
             wrapper.appendChild(dateInput);
@@ -953,22 +956,23 @@
                 everythingOkay = true;
             }
         }
+        let submitBtn = evt.currentTarget.submitBtn;
         if (everythingOkay == true) {
-            submitForm(profile);
+            submitForm(profile,submitBtn);
         }
     }
 
-    function submitForm(profile) {
+    function submitForm(profile,submitBtn) {
         var form = document.getElementById('reservationForm');
         profile = JSON.stringify(profile);
         var formData = new FormData(form);
         var xmlhttp = new XMLHttpRequest();
+        submitBtn.disabled = true;
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
                 if (this.responseText == 'success') {
-                    alert("Reservation success\nStatus: Pending")
-                    window.location.href = "Window_LOGIN.php"
+                    alert("Reservation success\nStatus: Pending");
+                    window.location.href = "Window_HomePage.php"
                 } else {
                     alert(this.responseText)
                     location.reload();

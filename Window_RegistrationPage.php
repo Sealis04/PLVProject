@@ -21,6 +21,12 @@
     //include "Request_storeNotification";
     $conn = OpenCon();
     //Form part
+    function setTimezone($conn){
+        $sql_timezonecode = "set time_zone = '+08:00'";
+         if($sql=$conn->prepare($sql_timezonecode)){
+             $sql->execute();
+         }
+        }
     $emailErr = $passwordErr = $contactErr = $firstNameErr = $middleNameErr = $lastNameErr=$uploadErr="";
     $email = $password = $contact = $firstName = $middleName = $lastName="";
     $isAdmin = 0;
@@ -68,10 +74,11 @@
       if(empty(test_input($_POST["firstName"]))){
           $firstNameErr="* Required";
         }else{
-          if(!preg_match("/^[a-zA-Z-' ]*$/",test_input($_POST["firstName"]))){
+          if(!preg_match("/^[a-zA-ZñÑ' ]*$/",test_input($_POST["firstName"]))){
             $firstNameErr="Only letters and white space allowed";
           } else{
             $firstName=test_input($_POST["firstName"]);
+            $firstName = ucwords(strtolower($firstName));
           }
         }
 
@@ -79,17 +86,19 @@
         $lastNameErr="* Required";
       }
       else{
-        if(!preg_match("/^[a-zA-Z-' ]*$/",test_input($_POST["lastName"]))){
+        if(!preg_match("/^[a-zA-ZñÑ' ]*$/",test_input($_POST["lastName"]))){
           $lastNameErr="Only letters and white space allowed";
         }else{
           $lastName = test_input($_POST["lastName"]);
+          $lastName = ucwords(strtolower($lastName));
         }
       }
 
-      if(!preg_match("/^[a-zA-Z-' ]*$/",test_input($_POST["middleName"]))){
+      if(!preg_match("/^[a-zA-ZñÑ' ]*$/",test_input($_POST["middleName"]))){
             $middleNameErr="Only letters and white space allowed";
           }else{
             $middleName = test_input($_POST["middleName"]);
+             $middleName = ucwords(strtolower($middleName));
           }
 
           
@@ -117,26 +126,26 @@
           $uploadErr = "Invalid ID format";
         }
       }
-
         if(empty($emailErr) && empty($passwordErr) && empty($contactErr) && empty($firstNameErr) && empty($middleNameErr) && empty($lastNameErr) && empty($uploadErr)){
-          $selectedUserType = $_POST['Type'];
+        $selectedUserType = $_POST['Type'];
           if($selectedUserType == 1){
             $selectedCourse = $_POST["course"];
             $selectedSection = $_POST['section'];
           }else{
-            $selectedCourse = 5;
-            $selectedSection=null;
+            $selectedCourse = 18;
+            $selectedSection= 1;
           }
+        setTimezone($conn);
           $user_activationCode = getToken(12);
           $userOTP = rand(100000,999999);
           $notverified = 'not verified';
           $sql_code = "INSERT INTO tbl_user 
           (user_email, user_password, user_firstName, user_middleName, user_lastName,
-           user_contactNumber,user_course_ID,PLV_ID,isAdmin,isApproved,user_s_ID,user_verified,user_otp,user_activationcode) 
-           VALUES (?, ?, ?, ?, ? , ? , ? , ?, ?, ?,?,?,?,?)";
+           user_contactNumber,user_course_ID,isAdmin,isApproved,user_s_ID,user_verified,user_otp,user_activationcode) 
+           VALUES (?, ?, ?, ?, ? , ? , ? , ?, ?,?,?,?,?)";
           if($sql = $conn->prepare($sql_code)){
-            $sql->bind_param("sssssiisiiisis",$email,$password_hash,$firstName,$middleName,$lastName,$contact,
-            $selectedCourse,$fileName,$isAdmin,$isApproved,$selectedSection,$notverified,$userOTP,$user_activationCode);
+            $sql->bind_param("sssssiiiiisis",$email,$password_hash,$firstName,$middleName,$lastName,$contact,
+            $selectedCourse,$isAdmin,$isApproved,$selectedSection,$notverified,$userOTP,$user_activationCode);
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             if($sql->execute()){
               $lastID = $conn->insert_id;
@@ -145,7 +154,7 @@
               sendOTP($userOTP,$email);
               echo '<script>
                     alert("Please confirm the OTP that was sent to your Email!")
-                    window.location.href = "/Window_OTP.php?code='.$user_activationCode.'"
+                    window.location.href = "/Window_OTP.php?code='.$user_activationCode.'&userID='.$lastID.'"
                     </script>';
             }else{
               echo "Something went wrong";
@@ -179,40 +188,37 @@
         $data = htmlspecialchars($data);
         return $data;
     }
-
-    function sendOTP($OTP,$email){
-      $subject = 'PLVRS Registration Notification';
-      $message_body = '
-      <p>For verify your email address, enter this verification code when prompted: <b>'.$OTP.
-      '</b>.</p>
-      <p>Sincerely,</p>
-      <p>Webslesson.info</p>
-      ';
-      $fromEmail = 'plvrs.gso@gmail.com';
-      $headers = "MIME-Version: 1.0" . "\r\n";
-      $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-      $headers .= 'From: ' . $fromEmail . '<' . $fromEmail . '>' . "\r\n" . 'Reply-To: ' . $fromEmail . "\r\n" . 'X-Mailer: PHP/' . phpversion();
-      $message = '<!doctype html> <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport"
-                  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-            <meta http-equiv="X-UA-Compatible" content="ie=edge">
-            <title>Document</title>
-        </head>
-        <body>
-        <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">' . $message_body . '</span>
-            <div class="container">
-             ' . $message_body . '<br/>
-                Regards<br/>
-              ' . $fromEmail . '
-            </div>
-        </body>
-        </html>';
-      // $mail->Body = $message_body;
-      @mail($email, $subject, $message, $headers);
-    }
-
+function sendOTP($OTP,$email){
+    $subject = 'PLVRS Registration Notification';
+    $message_body = '
+    <p>[PLVRS]Email Verification Code: <b>'.$OTP.
+    '</b>.</p>
+    <p>Valid for 5 minutes. Do not share this code with anyone.</p>
+    ';
+    $fromEmail = 'plvrs.gso@gmail.com';
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= 'From: ' . $fromEmail . '<' . $fromEmail . '>' . "\r\n" . 'Reply-To: ' . $fromEmail . "\r\n" . 'X-Mailer: PHP/' . phpversion();
+    $message = '<!doctype html> <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport"
+                content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+          <meta http-equiv="X-UA-Compatible" content="ie=edge">
+          <title>Document</title>
+      </head>
+      <body>
+      <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">' . $message_body . '</span>
+          <div class="container">
+           ' . $message_body . '<br/>
+              Regards<br/>
+            ' . $fromEmail . '
+          </div>
+      </body>
+      </html>';
+    // $mail->Body = $message_body;
+    @mail($email, $subject, $message, $headers);
+  }
     function crypto_rand_secure($min, $max)
 {
     $range = $max - $min;
@@ -254,8 +260,8 @@ function getToken($length)
     </nav>
     <!--END-->
         <div class="container">
-            <div class="col-xs-4"></div>
-            <div class="loginForm col-xs-4">
+            <div class="col-sm-6 col-lg-4"></div>
+            <div class="loginForm col-sm-6 col-lg-4">
                 <img src="assets/plv.png" style="display: block; margin-left: auto; margin-right: auto; margin-bottom: 50; height: 100; width: 100; margin-top: 100;">
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="multipart/form-data"> 
                     <div class="md-form form-group">
@@ -267,7 +273,7 @@ function getToken($length)
                         <span class="error"><?php echo $passwordErr;?></span>
                       </div>
                       <div class="md-form form-group">
-                        <input required type="number"  maxlength="11" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="contact" placeholder="Contact" value="<?php echo(isset($contact))?$contact:''?>">
+                        <input required type="number"  maxlength="11" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="contact" placeholder="Contact Number" value="<?php echo(isset($contact))?$contact:''?>">
                         <span class="error"><?php echo $contactErr;?></span>
                       </div>
                       <div class="md-form form-group">
@@ -297,10 +303,10 @@ function getToken($length)
                         <span class="error"><?php echo $uploadErr;?></span>
                       </div>
                       <button type="submit" class="sgn-btn btn" id="register" style="margin:auto;" name="registerBtn">Register</button>
-                      <a href="Window_LOGIN.php" style="text-decoration: underline; text-align: center;display: block; margin-top: 30px;">Log in</a>
+                      <a href="index.php" style="text-decoration: underline; text-align: center;display: block; margin-top: 30px;">Log in</a>
                 </form>
             </div>
-            <div class="col-xs-4"></div>
+            <div class="col-sm-6 col-lg-4"></div>
         </div>
         <?php require "Backend_RegistrationPage.php"?>
     </body>

@@ -33,7 +33,6 @@ if ($sql = $conn->prepare($sql_code)) {
                 'middleName' => $row["user_middleName"],
                 'lastName' => $row["user_lastName"],
                 'course' => $row['course_name'],
-                'idImg'=> $row['PLV_ID'],
                 'email'=>$row['user_email'],
                 'section'=>$row['s_section']
             );

@@ -26,7 +26,9 @@
                         xmlhttp.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status==200){
                                 var myObj = JSON.parse(this.responseText);
+                                document.getElementById("roomImg").src = '/' + myObj.imgPath;
                                 document.getElementById("h1").textContent=myObj.roomName;
+                                document.getElementById("h2").textContent="Capacity: " + myObj.room_capacity;
                                 document.getElementById("p1").textContent=myObj.roomDesc;
                             }
                         }
@@ -42,7 +44,9 @@
                         xmlhttp.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status==200){
                                 var myObj = JSON.parse(this.responseText);
+                                document.getElementById("roomImg").src = '/' + myObj.imgPath;
                                 document.getElementById("h1").textContent=myObj.roomName;
+                                document.getElementById("h2").textContent="Capacity: " + myObj.room_capacity;
                                 document.getElementById("p1").textContent=myObj.roomDesc;
                             }
                         }

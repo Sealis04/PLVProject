@@ -14,14 +14,15 @@ if ($page)
     $start = ($page - 1) * $limit;             //first item to display on this page
 else
     $start = 0;
-$query = "SELECT COUNT(*) as num FROM tbl_reservation WHERE r_user_ID = ?";
+$query = "SELECT COUNT(*) as num FROM tbl_reservation WHERE r_user_ID = ? AND MONTH(tbl_reservation.DateStart) = ? AND YEAR(tbl_reservation.DateStart) = ?  ";
 $sql5 = $conn->prepare($query);
-$sql5->bind_param("i", $userID);
+$sql5->bind_param("iii", $userID, $month,$year);
 $sql5->execute();
 $result2 = $sql5->get_result();
 $user = $result2->fetch_array(MYSQLI_ASSOC);
 $total_items = $user['num'];
 $sql5->close();
+
 $sql_code = "SELECT * FROM tbl_reservation 
 INNER JOIN tbl_room ON tbl_reservation.r_room_ID = tbl_room.room_ID 
 INNER JOIN tbl_notification ON tbl_reservation.notifID = tbl_notification.notificationID
@@ -48,7 +49,8 @@ if ($sql = $conn->prepare($sql_code)) {
                 'eventAdviser'=>$row['r_eventAdviser'],
                 'notifID'=>$row['notifID'],
                 'remark'=>$row['r_Remarks'],
-                'notif_remark'=>$row['remarks']
+                'notif_remark'=>$row['remarks'],
+                'decision'=>$row['decision'],
             );
         }
     }
@@ -66,5 +68,6 @@ if (count($reservation) != 0) {
         'pagination' => $pagination
     );
 }
+
 $myJSON = json_encode($reservation);
 echo $myJSON;

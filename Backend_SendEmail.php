@@ -41,37 +41,43 @@
                      $sql->close();
                 }
                 if($approval == 1){
-                    $message = 'Hello '.$fn.'\r\n';
-                    $message .= 'This is to inform you that your reservation for ' .$event. ',which will be held at '.$room.' has been accepted, congratulations! \r\n';
-                    $message .= 'The event starts at '.$start.' and ends at '.$end. ' with the time being from '.$startTime.' to '.$endTime;
+                    $message = 'Hello, '.$fn. "<br>";
+                    $message .= 'This is to inform you that your reservation for ' .$event. ',which will be held at '.$room.' has been accepted, Congratulations!'."<br>";
+                    $message .= 'The event starts at '.$start.' and ends at '.$end. ' with the time being from '.$startTime.' to '.$endTime."<br>";
                     if($remarks != ' '){
                         $message .='Remarks from admin:' .$remarks;
                     }
                 }else if($approval == 3){
-                    $message = 'Hello'.$fn.'\r\n';
-                    $message .= 'This is to inform you that your reservation for '.$event.', which will be held at '.$room.' has been rejected.\r\n';
+                    $message = 'Hello, '.$fn."<br>";
+                    $message .= 'This is to inform you that your reservation for '.$event.', which will be held at '.$room.' has been rejected.'."<br>";
                     if($remarks !=''){
                         $message .='Remarks from admin:' .$remarks;
                     }else{
                         $message .='No remarks from admin, please contact/visit the GSO office to know the reason.';
                     }
+                }else if($approval == 4){
+                    $message = 'Hello, '.$fn."<br>";
+                    $message .= 'This is to inform you that your reservation for '.$event.', which will be held at '.$room.' has been cancelled by an adminstrator. Please read the details as remarked by the admin below.'."<br>";
+                    if($remarks !=''){
+                        $message .='Remarks from admin:' .$remarks;
+                    } 
                 }
             
 
         }else{
             if($approval == 3){
-                $message = 'Hello '.$fn.'\r\n';
-                $message .= 'This is to inform you that your registration has been rejected \r\n';
-                $message .= 'You can now start creating reservations for the facilities under the GSO!';
+                $message = 'Hello, '.$fn."<br>";
+                $message .= 'This is to inform you that your registration has been rejected';
+                $message .= 'You can now start creating reservations for the facilities under the GSO!'."<br>";
                 if($remarks != ' '){
                     $message .='Remarks from admin:' .$remarks;
                 }else{
                     $message .='No remarks from admin, please contact/visit the GSO office to know the reason.';
                 }
             }else if($approval == 1){
-                $message = 'Hello '.$fn.'\r\n';
-                $message .= 'This is to inform you that your registration has been accepted, Congratulations! \r\n';
-                $message .= 'You can now start creating reservations for the facilities under the GSO!';
+                $message = 'Hello, '.$fn."<br>";
+                $message .= 'This is to inform you that your registration has been accepted, Congratulations!'."<br>";
+                $message .= 'You can now start creating reservations for the facilities under the GSO!'."<br>";
             if($remarks != ' '){
                 $message .='Remarks from admin:' .$remarks;
             }
@@ -94,8 +100,8 @@
                 <body>
                 <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">'.$message.'</span>
                     <div class="container">
-                     '.$message.'<br/>
-                        Regards<br/>
+                     '.$message.'<br><br>
+                        Regards<br>
                       '.$fromEmail.'
                     </div>
                 </body>

@@ -138,7 +138,7 @@ body {
 }
 
 .active, .btns:hover:not(.active) {
- background-color: green;
+ background-color: #000099;
   color: white;
 }
 
@@ -169,7 +169,7 @@ ul{list-style-type:none;}
     padding: 1vh;
     border-radius: 10px;
     width: 85% !important;
-    margin-left: 13.5%;
+    margin-left: 5%;
     color: black;
 }
 
@@ -259,13 +259,14 @@ justify-items:end;
 
 /*Reservations*/
 .reservations{
-  margin-left: 13.5vw !important;
+  margin-left: 5vw !important;
   color: black;
   border: 2px black solid;
   width: 85% !important;
   margin-top: 20px;
   border-radius: 7px;
-  
+  font-size: 25px;
+  font-weight: bold;
 }
 
 .reservations h3{
@@ -275,7 +276,7 @@ justify-items:end;
 
 /*Create reservation*/
 .create-reservation{
-  margin-left: 87.2vw !important;
+  margin-left: 67.5vw !important;
   margin: 10px;
   margin-top: 20px;
   border-radius: 7px;
@@ -287,6 +288,10 @@ justify-items:end;
   display: inline-flex;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+h5{
+    font-size: 20px;
 }
 
 .reservations h4{
@@ -306,4 +311,10 @@ justify-items:end;
 input[type="button"]{
   background-color :#0F1057;
   color: white;
+}
+
+.main{
+  margin: 0;
+  padding: 0;
+  margin-left: 250px !important;
 }

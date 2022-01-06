@@ -2,10 +2,10 @@
     <title>PLVRS</title>
     <link rel="icon" href="assets/plv.png">
     <meta charset="UTF-8">
-
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" href="/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
     <script src="/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 
 <body>
@@ -16,18 +16,18 @@
 
     <sidenav>
         <?php
-
-        if ($_SESSION['user_verified'] == 'not verified') {
-            echo '<script>
-            alert("Please confirm the OTP that was sent to your Email!")
-            window.location.href = "/Window_OTP.php?code="'.$_SESSION['user_code'].'
-            </script>';
-        } else {
-            require "Backend_CheckifLoggedIN.php";
+        if(isset($_SESSION['user_ID'])){
+             if ($_SESSION['user_verified'] == 'not verified') {
+                echo '<script>
+                    alert("Please confirm the OTP that was sent to your Email!")
+                    window.location.href = "/Window_OTP.php?code='.$_SESSION['user_code'].'&userID='.$_SESSION['user_ID'].'"
+                    </script>';
+            }
         }
+        require "Backend_CheckifLoggedIN.php";
         ?>
     </sidenav>
-    <mainBody class='main'>
+    <mainBody class='main col-sm-12 col-lg-11'>
         <div style="text-align:center">
             <input value='<' onclick='prevMonth()' type='button' style="display:inline-block;   ">
             <h3 id="monthAndYear" style="display:inline-block; "></h3>
@@ -82,7 +82,7 @@
         <!-- <div class="reservations">
             <h3> No Reservation</h3>
         </div> -->
-        <div class="reservations" id='listBody'>
+        <div class="reservations col-sm-12 col-lg-10" id='listBody'>
         </div>
     </mainBody>
 

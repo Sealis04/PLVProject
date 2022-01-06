@@ -12,7 +12,13 @@
     include "db_connection.php";
     session_start();
       if (isset($_SESSION['userID'])) {
-        if ($_SESSION["isAdmin"] != 1) {
+             if ($_SESSION['user_verified'] == 'not verified') {
+            echo '<script>
+            alert("Please confirm the OTP that was sent to your Email!")
+            window.location.href = "Window_OTP.php?code='.$_SESSION['user_code'].'"
+            </script>';
+        } else {
+             if ($_SESSION["isAdmin"] != 1) {
             if(!($_GET['window'] == 'Profile' || $_GET['window'] == 'MyReservations')){
                 echo '<script>
                 alert("Invalid User")
@@ -20,40 +26,23 @@
                 </script>';
         } 
       } 
+        }
+       
       }else {
-        echo '<script>
-        alert("Please Log in first.")
-        window.location.href = "Window_LOGIN.php"
-        </script>';
-    }
+            echo '<script>
+            alert("Please Log in first.")
+            window.location.href = "index.php"
+            </script>';
+        }
         ?>
             <sidenav>
-              <?php
-            require "Backend_CheckifLoggedIN.php";
-                ?>        
+                 <?php 
+                 if ($_SESSION['user_verified'] == 'verified') {
+                    require "Backend_CheckifLoggedIN.php";
+                    } ?>
             </sidenav>
-
-        <!-- <div class="container">
-            <div id = "list" class="side-nav">
-                <ul >
-                <li><input type="button" id="myProfile" class="btns tab " value = "My Profile"></li>
-                <li><input type="button" id="myReservation" class="btns tab" value="My Reservation"></li>
-                <?php
-                if($_SESSION['isAdmin'] == 1){
-                ?>
-                <li><input type="button" id="userProfile" class="btns tab" value="User Registrations"></li>
-                <li><input type="button" id="userReservations" class="btns tab" value = "User Reservations"></li>
-                <li><input type = "button" id = "editContents" class="btns tab" value = "Edit Content"></li>
-                <li><input type = "button" id = "monitoringForm" class="btns tab" value = "Monitoring Form"></li>
-
-                <?php }
-                ?>
-                  </ul>
-            </div>
-           
-        </div> -->
         <mainbody class='main'>
-        <div class="content big-contents" id='content'>
+        <div class="content big-contents col-sm-10" id='content'>
             </div>
         </mainbody>
      

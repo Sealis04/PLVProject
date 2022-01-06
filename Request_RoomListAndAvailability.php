@@ -32,7 +32,8 @@ $sql_code = "SELECT * FROM tbl_room WHERE isDeleted = 0 LIMIT $start,$limit";
                         'roomName' => $row["room_name"],
                         'roomCap' => $row["room_capacity"],
                         'roomDesc' => $row["room_description"],
-                        'roomAvailability' => $row['room_availability']
+                        'roomAvailability' => $row['room_availability'],
+                        'imgPath' =>$row['imgPath']
                     );
                     }
                 }

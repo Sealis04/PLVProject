@@ -28,7 +28,7 @@ INNER JOIN tbl_room ON tbl_reservation.r_room_ID = tbl_room.room_ID
 INNER JOIN tbl_notification ON tbl_notification.notificationID = tbl_reservation.notifID 
 WHERE (tbl_reservation.r_approved_ID = 2 OR tbl_reservation.r_approved_ID = 1) 
 AND tbl_reservation.r_status = 0 AND tbl_notification.forRegistration = 0 
-AND r_reviewed = 0 ORDER BY r_approved_ID DESC, DateStart DESC LIMIT $start,$limit";
+AND r_reviewed = 0 AND DateEnd > CURDATE() ORDER BY r_approved_ID DESC, DateStart LIMIT $start,$limit";
 if ($sql = $conn->prepare($sql_code)) {
     if ($sql->execute()) {
         $result = $sql->get_result();

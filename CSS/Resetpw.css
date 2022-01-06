@@ -1,0 +1,37 @@
+.OTP{
+    margin-left: 40%;
+    margin-right: auto;
+}
+form{
+     display:inline-block;
+    margin:0;
+}
+
+input#submit {
+    margin-top: 13px;
+    width: 100%;
+    margin-left: 0;
+    background-color: #1C1D91;
+    color: white;
+}
+
+
+h3{
+    font-weight: bold;
+}
+
+input#oldPassword {
+    /* max-width: 647px; */
+  
+    width: 100%;
+}
+
+input#newPassword {
+ 
+    width: 100%;
+}
+
+input#reTypePassword {
+   
+    width: 100%;
+}

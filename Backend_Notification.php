@@ -1,31 +1,30 @@
 <script>
-    var count = 0;
+    var notifCounter = 0;
     var clicked = false;
     onload = getNotifications(1);
     isAdmin = <?php if (isset($_SESSION['isAdmin'])) echo $_SESSION['isAdmin']; ?>;
 
     function getNotifications(reset) {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = async function() {
+        xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
-                console.log(clicked);
                 if (clicked == false) {
                     var list = document.getElementById('notifList');
                     var div = document.createElement('div');
                     div.className = "row";
                     list.appendChild(div);
                     if (myObj.length > 0) {
-                        var mainDiv = document.createElement('div');
+                       var mainDiv = document.createElement('div');
                         mainDiv.className='mainDiv';
                         list.appendChild(mainDiv);
                         myObj.forEach(function(element, index) {
                             listNotif(myObj.length, element, index, mainDiv)
                         });
                         if (isAdmin != 1) {
-                            if(count !=0){
+                            if(notifCounter !=0){
                             var notifCount = document.getElementById('notif');
-                            notifCount.innerHTML += '<sup id="sup"> ' + count + '<sup>';
+                            notifCount.innerHTML += '<sup id="sup"> ' + notifCounter + '<sup>';
                             var button = document.createElement('input');
                             button.id='markallasRead';
                             button.className='header-btn btn';
@@ -33,6 +32,7 @@
                             button.value = 'Mark all as read';
                             document.addEventListener('click',markallasread);
                             div.appendChild(button);
+                                 console.log(list)
                             }else{
                                div.innerHTML += '<p>No New Notifications</p>'; 
                             }
@@ -51,10 +51,10 @@
         xmlhttp.open("GET", "/Request_Notifications.php?reset=" + reset, true);
         xmlhttp.send();
     }
+    
     function markallasread(e){
         if(e.target && e.target.id == 'markallasRead'){
             e.target.parentElement.parentElement.querySelectorAll('.detNotif').forEach(async e=>{
-                console.log(e.id);
                 var x = await notifRead(e.id)
             })
           document.querySelectorAll('.row').forEach(e=>{
@@ -64,11 +64,12 @@
               e.remove();
           })
           document.getElementById('sup').remove();
-          count = 0;
+          notifCounter = 0;
           clicked = false;
           getNotifications(1);
         }
     }
+    
     function listNotif(length, element, index, mainDiv) {
         if (isAdmin != 1) {
             if (element.resisRead == 0) {
@@ -89,7 +90,7 @@
                     div.innerHTML += '<div id="'+element.resid+'" class = "detNotif">';
                     div.innerHTML += '<p id="name"> Your reservation has been ' + decision + '</p>';
                     if (element.resisRead == 0) {
-                        count++;
+                        notifCounter++;
                     }
                     div.innerHTML += '<p>Event: ' + element.resName; + '</p>';
                     div.innerHTML += '</div>';
@@ -116,7 +117,7 @@
                 div.innerHTML += '<p id="name"> Your registration has been ' + decision + '</p>';
                 mainDiv.appendChild(div);
                 if (element.regisRead == 0) {
-                    count++;
+                    notifCounter++;
                 }
             }
         }
