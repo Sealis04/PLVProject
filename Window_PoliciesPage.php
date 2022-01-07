@@ -20,7 +20,7 @@
         <div class="navbar">
 
                 <?php
-                  if ($_SESSION['user_verified'] == 'not verified') {
+        if ($_SESSION['user_verified'] == 'not verified') {
             echo '<script>
             alert("Please confirm the OTP that was sent to your Email!")
             window.location.href = "Window_OTP.php?code='.$_SESSION['user_code'].'"

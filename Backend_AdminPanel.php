@@ -870,7 +870,7 @@
           }
       }
 
-      function editRoomQuery(name, capacity, desc, availability, ID,inputParam) {
+      function editRoomQuery(name, capacity, desc, availability, ID, inputParam) {
           if (confirm('Are you sure?') == true) {
               var eAvailability;
               if (availability) {
@@ -880,7 +880,7 @@
               }
               var formData = new FormData();
               var file = inputParam.files[0];
-              formData.append('sample',file);
+              formData.append('sample', file);
               var xmlhttp = new XMLHttpRequest();
               xmlhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
@@ -897,16 +897,40 @@
       }
       //ForEach Functions
       function sendEmail(userID) {
-          var xmlhttp = new XMLHttpRequest();
-          xmlhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                  //   console.log(this.responseText);
-                  alert('A link was sent to your email \nPlease Check');
-                  document.location.reload();
+          var x = localStorage.getItem('resetpass');
+          const date1 = new Date(x);
+          const date2 = new Date();
+          const diffTime = Math.abs(date2 - date1);
+          if(x){
+              console.log(diffTime);
+            if (diffTime / 1000 >= 300) {
+              var xmlhttp = new XMLHttpRequest();
+              xmlhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      alert('A link was sent to your email \nPlease Check');
+                      localStorage.setItem("resetpass", new Date());
+                      document.location.reload();
+                  }
               }
+              xmlhttp.open("GET", "/sendEmailLink.php?var=" + userID + '&type=resetpassword', true);
+              xmlhttp.send();
+          }else{
+            alert('You can only reset your password once every 5 minutes, please wait.');  
           }
-          xmlhttp.open("GET", "/sendEmailLink.php?var=" + userID + '&type=resetpassword', true);
-          xmlhttp.send();
+          }else{
+            var xmlhttp = new XMLHttpRequest();
+              xmlhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      alert('A link was sent to your email \nPlease Check');
+                      localStorage.setItem("resetpass", new Date());
+                      document.location.reload();
+                  }
+              }
+              xmlhttp.open("GET", "/sendEmailLink.php?var=" + userID + '&type=resetpassword', true);
+              xmlhttp.send();
+          }
+      
+
       }
 
       //ForEach Functions
@@ -1575,7 +1599,7 @@
                   tr.appendChild(img);
                   var input = document.createElement('input');
                   input.type = 'file';
-                  input.setAttribute('name','roomImg');
+                  input.setAttribute('name', 'roomImg');
                   tr.appendChild(input);
                   input.onchange = evt => {
                       const [file] = input.files;
@@ -1633,7 +1657,7 @@
                       img.src = element.imgPath;
                       tr.appendChild(img);
                       var input = document.createElement('input');
-                      input.setAttribute('name','roomImg');
+                      input.setAttribute('name', 'roomImg');
                       input.type = 'file';
                       input.style = 'display:none';
                       img.addEventListener('click', function() {
@@ -1776,11 +1800,11 @@
 
               inputParam = (e.currentTarget.imageUploadParam) ? e.currentTarget.imageUploadParam.disabled = true : ' ';
               inputParam = (e.currentTarget.imageUploadParam) ? e.currentTarget.imageUploadParam : ' ';
-              enableButtons(type, name, qty, desc, availability, ID, e.currentTarget, e.currentTarget.addParam, listParam,inputParam);
+              enableButtons(type, name, qty, desc, availability, ID, e.currentTarget, e.currentTarget.addParam, listParam, inputParam);
           }
       }
 
-      function enableButtons(type, name, quantity, desc, availability, ID, value, add, listParam,inputParam) {
+      function enableButtons(type, name, quantity, desc, availability, ID, value, add, listParam, inputParam) {
           var x = document.querySelectorAll('.editButton');
           if (add) {
               if (type == 'policiesID') {
@@ -1802,7 +1826,7 @@
                       }
                   } else {
                       if (type == 'roomID') {
-                          addRoomQuery(name, quantity, desc, availability,inputParam);
+                          addRoomQuery(name, quantity, desc, availability, inputParam);
                       } else if (type == 'equipID') {
                           addEquipQuery(name, quantity, desc, availability);
                       }
@@ -1834,7 +1858,7 @@
                       }
                   } else {
                       if (type == 'roomID') {
-                          editRoomQuery(name, quantity, desc, availability, ID,inputParam);
+                          editRoomQuery(name, quantity, desc, availability, ID, inputParam);
                       } else if (type == 'equipID') {
                           editEquipQuery(name, quantity, desc, availability, ID);
                       }
@@ -1863,7 +1887,7 @@
           }
       }
 
-      function addRoomQuery(name, quantity, desc, availability,inputParam) {
+      function addRoomQuery(name, quantity, desc, availability, inputParam) {
           if (confirm('Are you sure?') == true) {
               var eAvailability;
               if (availability) {
@@ -1873,7 +1897,7 @@
               }
               var formData = new FormData();
               var file = inputParam.files[0];
-              formData.append('sample',file);
+              formData.append('sample', file);
               var xmlhttp = new XMLHttpRequest();
               xmlhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {

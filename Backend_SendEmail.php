@@ -16,6 +16,8 @@
        }
        sendEmail($email,$rid,$fn,$remarks,$approval);
     }
+
+    
     function sendEmail($email,$rid,$fn,$remarks,$approval){
         $subject = 'PLVRS Reservation Notification';
         if($rid != null){
@@ -40,10 +42,14 @@
                         }
                      $sql->close();
                 }
+                $startTime = strtotime($startTime);
+                $endTime = strtotime($endTime);
+                $formattedStartTime = date('h:i:s A',$startTime);
+                $formattedEndTime = date('h:i:s A',$endTime);
                 if($approval == 1){
                     $message = 'Hello, '.$fn. "<br>";
                     $message .= 'This is to inform you that your reservation for ' .$event. ',which will be held at '.$room.' has been accepted, Congratulations!'."<br>";
-                    $message .= 'The event starts at '.$start.' and ends at '.$end. ' with the time being from '.$startTime.' to '.$endTime."<br>";
+                    $message .= 'The event starts at '.$start.' and ends at '.$end. ' with the time being from '.$formattedStartTime.' to '.$formattedEndTime."<br>";
                     if($remarks != ' '){
                         $message .='Remarks from admin:' .$remarks;
                     }

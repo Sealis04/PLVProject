@@ -91,7 +91,7 @@ include "sendEmailLink.php";
                                         }
                                 
                                 }else{
-                                    $passwordErr="Invalid password";  
+                                    $passwordErr="Invalid email and/or password";  
                                 }
                             }else if($isApproved==3){
                                 echo '<script>alert("Account has been rejected, please try again")
@@ -101,7 +101,7 @@ include "sendEmailLink.php";
                             
                         }
                 }else{
-                    $emailErr="Invalid Email";
+                    $emailErr="Invalid email and/or password";
                     $email="";
                 }
             }else {

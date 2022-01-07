@@ -27,8 +27,8 @@
              $sql->execute();
          }
         }
-    $emailErr = $passwordErr = $contactErr = $firstNameErr = $middleNameErr = $lastNameErr=$uploadErr="";
-    $email = $password = $contact = $firstName = $middleName = $lastName="";
+    $emailErr = $passwordErr = $contactErr = $firstNameErr = $middleNameErr = $lastNameErr=$uploadErr=$userIDErr = "";
+    $email = $password = $contact = $firstName = $middleName = $lastName=$userID = "";
     $isAdmin = 0;
     $isApproved = 2;
      if($_SERVER["REQUEST_METHOD"]=="POST"){
@@ -57,6 +57,31 @@
           }
         }
 
+        //userID
+        if(empty(test_input($_POST["userID"]))){
+          $userIDErr="* Required";
+        }else{
+         if(!preg_match('/^[0-9-]*$/',test_input($_POST['userID']))){
+           $userIDErr= "Invalid user ID";
+         }else{
+          $sql_code2 = "SELECT user_ID from tbl_user WHERE userIDNumber = ? AND isApproved !=3";
+          if($sql2=$conn->prepare($sql_code2)){
+            $sql2->bind_param("s",$userIDPARAM);
+            $userIDPARAM = test_input($_POST['userID']);
+            if($sql2->execute()){
+              $sql2->store_result();
+              if($sql2->num_rows == 1){
+                $userIDErr="* User has already been registered";
+              }else{
+                $userIdParam = test_input($_POST['userID']);
+              }
+            }else{
+              echo "Something went wrong";
+            }
+            $sql2->close();
+          }
+         }
+        }
         if(empty(test_input($_POST["contact"]))){
         $contactErr="* Required";
       } else{
@@ -126,8 +151,8 @@
           $uploadErr = "Invalid ID format";
         }
       }
-        if(empty($emailErr) && empty($passwordErr) && empty($contactErr) && empty($firstNameErr) && empty($middleNameErr) && empty($lastNameErr) && empty($uploadErr)){
-        $selectedUserType = $_POST['Type'];
+        if(empty($emailErr) && empty($userIDErr) && empty($passwordErr) && empty($contactErr) && empty($firstNameErr) && empty($middleNameErr) && empty($lastNameErr) && empty($uploadErr)){
+          $selectedUserType = $_POST['Type'];
           if($selectedUserType == 1){
             $selectedCourse = $_POST["course"];
             $selectedSection = $_POST['section'];
@@ -140,11 +165,11 @@
           $userOTP = rand(100000,999999);
           $notverified = 'not verified';
           $sql_code = "INSERT INTO tbl_user 
-          (user_email, user_password, user_firstName, user_middleName, user_lastName,
+          (userIDNumber,user_email, user_password, user_firstName, user_middleName, user_lastName,
            user_contactNumber,user_course_ID,isAdmin,isApproved,user_s_ID,user_verified,user_otp,user_activationcode) 
-           VALUES (?, ?, ?, ?, ? , ? , ? , ?, ?,?,?,?,?)";
+           VALUES (?, ?, ?, ?, ?, ? , ? , ? , ?, ?,?,?,?,?)";
           if($sql = $conn->prepare($sql_code)){
-            $sql->bind_param("sssssiiiiisis",$email,$password_hash,$firstName,$middleName,$lastName,$contact,
+            $sql->bind_param("ssssssiiiiisis",$userIdParam,$email,$password_hash,$firstName,$middleName,$lastName,$contact,
             $selectedCourse,$isAdmin,$isApproved,$selectedSection,$notverified,$userOTP,$user_activationCode);
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             if($sql->execute()){
@@ -264,6 +289,10 @@ function getToken($length)
             <div class="loginForm col-sm-6 col-lg-4">
                 <img src="assets/plv.png" style="display: block; margin-left: auto; margin-right: auto; margin-bottom: 50; height: 100; width: 100; margin-top: 100;">
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="multipart/form-data"> 
+                <div class="md-form form-group">
+                        <input required type="text"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="userID" placeholder="ID #" value="<?php echo(isset($userID))?$userID:''?>" >
+                        <span class="error"><?php echo $userIDErr;?></span>
+                      </div>
                     <div class="md-form form-group">
                         <input required type="text"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="email" placeholder="Email" value="<?php echo(isset($email))?$email:''?>" >
                         <span class="error"><?php echo $emailErr;?></span>
