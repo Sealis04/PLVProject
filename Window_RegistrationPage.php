@@ -133,9 +133,14 @@
         else if(strlen(test_input($_POST["password"])) < 7){
           $passwordErr="Password must at least have 7 characters";
         }else{
-          $password = test_input($_POST["password"]);
+          if(empty(test_input($_POST["retypePassword"]))){
+            $passwordErr='Input cannot be empty';
+          }else if($_POST["retypePassword"] != $_POST["password"]){
+            $passwordErr="Passwords do not match";
+          }else{
+            $password = test_input($_POST["password"]);
+          }
         }
-
         if($_FILES["fileUpload"]["error"]<0){
            $uploadErr = "Please upload your valid PLV ID";
         }
@@ -300,6 +305,9 @@ function getToken($length)
                       <div class="md-form form-group">
                         <input required type="password"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="password" placeholder="Password">
                         <span class="error"><?php echo $passwordErr;?></span>
+                      </div>
+                      <div class="md-form form-group">
+                        <input required type="password"  style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="retypePassword" placeholder="Re-type password">
                       </div>
                       <div class="md-form form-group">
                         <input required type="number"  maxlength="11" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="contact" placeholder="Contact Number" value="<?php echo(isset($contact))?$contact:''?>">

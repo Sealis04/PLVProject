@@ -21,6 +21,32 @@
       var page_number;
       loadStuff(category, windowType)
 
+      function createModal(text, func) {
+          modalBody = document.createElement('div');
+          modalBody.className = 'modalConfirm'
+          modalMessage = document.createElement('h4');
+          modalMessage.textContent = text;
+          modalConfirm = document.createElement('input');
+          modalConfirm.type = 'button';
+          modalConfirm.value = "Confirm";
+          modalCancel = document.createElement('input');
+          modalCancel.type = 'button';
+          modalCancel.value = "Cancel";
+          modalBody.appendChild(modalMessage);
+          modalBody.appendChild(modalConfirm);
+          modalBody.appendChild(modalCancel);
+          modalConfirm.addEventListener('click', function(e) {
+              func();
+              modalBody.remove();
+          });
+          modalCancel.addEventListener('click', function(e) {
+              modalBody.remove();
+              return true;
+          });
+          document.body.appendChild(modalBody);
+
+      }
+
       function loadStuff(categ, windowType) {
           if (c == null) {
               if (isAdmin == 0) {
@@ -302,7 +328,7 @@
                       var list = document.createElement('li');
                       myObj.forEach(function(element, index) {
                           let result = reservationContent(motherDiv, userID, page, element, index);
-                          reservedEquipment(element.reservationID, result[1], userID, true, element.status, status, ...Array(1), element.notifID, element.notif_remark, element.dateStart, element.timeStart, element.decision);
+                          reservedEquipment(element.reservationID, result[1], userID, true, element.status, status, ...Array(1), element.notifID, element.notif_remark, element.dateStart, element.timeStart, element.decision,element.event);
                           motherDiv.appendChild(result[2]);
                       });
                       page.innerHTML = myObj[myObj.length - 1].pagination;
@@ -315,7 +341,7 @@
           xmlhttp.send();
       }
 
-      function reservedEquipment(resID, mainDiv, userID, forUser, status, approval, typePending, notifID, remarks, date, time, decision) {
+      function reservedEquipment(resID, mainDiv, userID, forUser, status, approval, typePending, notifID, remarks, date, time, decision,eventName) {
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = async function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -337,7 +363,7 @@
                               mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
                               mainDiv.innerHTML += '<br>';
                               mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
-                              mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ',' + "'MyReservations'" + ')" value="Cancel">';
+                        mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="' + 'createModal('+ "'Confirm cancellation of "+ eventName + "?'" + ', function(){cancelReservation(' + resID + ',' + "'MyReservations'" + ')})' + '"' +'value="Cancel">';
                               mainDiv.innerHTML += '<hr class="hr">';
                           } else if (approval == 3) {
                               mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '</h4>';
@@ -348,9 +374,9 @@
                               mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
                               mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                               if (new Date() >= new Date(recordedDate.setDate(recordedDate.getDate() - 1))) {
-                                  mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ',' + "'MyReservations'" + ')" value="Cancel" disabled>';
+                                mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="' + 'createModal('+ "'Confirm cancellation of "+ eventName + "?'" + ', function(){cancelReservation(' + resID + ',' + "'MyReservations'" + ')})' + '"' +'value="Cancel" disabled>';
                               } else {
-                                  mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="cancelReservation(' + resID + ',' + "'MyReservations'" + ')" value="Cancel">';
+                                mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="' + 'createModal('+ "'Confirm cancellation of "+ eventName + "?'" + ', function(){cancelReservation(' + resID + ',' + "'MyReservations'" + ')})' + '"' +'value="Cancel">';
                               }
                               mainDiv.innerHTML += '<hr class="hr">';
                           } else {
@@ -372,22 +398,22 @@
                       var textarea = document.createElement('textarea');
                       textarea.className = 'remarks';
                       textarea.placeholder = "Remarks";
-                      textarea.id = 'remarks';
+                      textarea.id = 'remarks' + resID;
                       if (approval == 1) {
                           mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
                           mainDiv.innerHTML += '<br>';
                           mainDiv.appendChild(textarea);
-                          mainDiv.innerHTML += '<br><br><input type="button" class="decline header-btn btn" onclick="cancelreservationforadmin(' + resID + ',' + userID + ',' + notifID + ',this)" value="Cancel">';
+                          mainDiv.innerHTML += '<br><br><input type="button" class="decline header-btn btn" onclick="' + 'createModal('+ "'Confirm cancellation of "+ eventName + "?'" + ', function(){cancelreservationforadmin(' + resID + ',' + userID + ',' + notifID + ')})" value="Cancel">';
                       } else {
                           mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
                           mainDiv.innerHTML += '<br>';
                           mainDiv.appendChild(textarea);
-                          mainDiv.innerHTML += '<br><br><input type="button" class = "header-btn btn" value = "Accept" onclick = "AcceptReservation(' + resID + ',' + userID + ',' + notifID + ',this)">'
-                          mainDiv.innerHTML += '<input type="button" class ="header-btn btn decline" value = "Decline" onclick = "DeclineReservation(' + resID + ',' + userID + ',' + notifID + ',this)">'
+                          mainDiv.innerHTML += '<br><br><input type="button" class = "header-btn btn" value = "Accept" onclick="' + 'createModal('+ "'Confirm Accept of "+ eventName + "?'" + ', function(){AcceptReservation(' + resID + ',' + userID + ',' + notifID + ')})">'
+                          mainDiv.innerHTML += '<input type="button" class ="header-btn btn decline" value = "Decline" onclick="' + 'createModal('+ "'Confirm Decline of "+ eventName + "?'" + ', function(){DeclineReservation(' + resID + ',' + userID + ',' + notifID + ')})"">'
+
                       }
                       mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                       mainDiv.innerHTML += '<hr class="hr">'
-                      //   mainDiv.innerHTML += '<textarea id="remarks" placeholder="Remarks"></textarea><br><br>';
                   }
                   callReservationImage(mainDiv, resID);
               }
@@ -547,7 +573,7 @@
                   } else {
                       myObj.forEach(function(element, index) {
                           var x = userReservationContent(motherDiv, page, element, index, );
-                          reservedEquipment(element.reservationID, x[2], element.userID, false, ...Array(1), element.approval, true, element.notifID);
+                          reservedEquipment(element.reservationID, x[2], element.userID, false, ...Array(1), element.approval, true, element.notifID, ...Array(4),element.event);
                           motherDiv.appendChild(x[0]);
                       });
                   }
@@ -560,7 +586,7 @@
       }
       // Accept Reservations
       function AcceptReservation(eventID, userID, notifID, textArea) {
-          textArea = textArea.parentElement.getElementsByTagName('textArea')[0].value
+        var textArea = document.getElementById('remarks' + eventID).value;
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -578,7 +604,7 @@
 
       //Decline Reservation
       function DeclineReservation(eventID, userID, notifID, textArea) {
-          textArea = textArea.parentElement.getElementsByTagName('textArea')[0].value
+        var textArea = document.getElementById('remarks' + eventID).value;
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -595,7 +621,7 @@
       }
 
       function cancelreservationforadmin(eventID, userID, notifID, textArea) {
-          textArea = textArea.parentElement.getElementsByTagName('textArea')[0].value;
+        var textArea = document.getElementById('remarks' + eventID).value;
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -729,171 +755,171 @@
       }
 
       function removePolicies(ID) {
-          if (confirm('Are you sure?') == true) {
-              var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                      document.getElementById('editList').remove();
-                      loadStuff('policies', 'ContentEdit');
-                      //   editTabContent();
-                      //   var poliDiv = document.getElementById('polPanel');
-                      //   var poliBtn = document.getElementById('polBtn');
-                      //   polBtn.click('3', poliDiv);
-                  }
+          //   if (confirm('Are you sure?') == true) {
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  document.getElementById('editList').remove();
+                  loadStuff('policies', 'ContentEdit');
+                  //   editTabContent();
+                  //   var poliDiv = document.getElementById('polPanel');
+                  //   var poliBtn = document.getElementById('polBtn');
+                  //   polBtn.click('3', poliDiv);
               }
-              xmlhttp.open("GET", "/Request_RemovePolicies.php?var=" + ID, true);
-              xmlhttp.send();
-          } else {
-              document.getElementById('editList').remove();
-              loadStuff('policies', 'ContentEdit');
           }
+          xmlhttp.open("GET", "/Request_RemovePolicies.php?var=" + ID, true);
+          xmlhttp.send();
+          //   } else {
+          //       document.getElementById('editList').remove();
+          //       loadStuff('policies', 'ContentEdit');
+          //   }
       }
 
       function removeEquipment(ID) {
-          if (confirm('Are you sure?') == true) {
-              var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                      document.getElementById('editList').remove();
-                      //   editTabContent();
-                      //   var equipDiv = document.getElementById('equipPanel');
-                      //   var equipBtn = document.getElementById('equipBtn');
-                      loadStuff('equipment', 'ContentEdit')
-                      //   equipBtn.click('2', equipDiv);
-                  }
+          //   if (confirm('Are you sure?') == true) {
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  document.getElementById('editList').remove();
+                  //   editTabContent();
+                  //   var equipDiv = document.getElementById('equipPanel');
+                  //   var equipBtn = document.getElementById('equipBtn');
+                  loadStuff('equipment', 'ContentEdit')
+                  //   equipBtn.click('2', equipDiv);
               }
-              xmlhttp.open("GET", "/Request_RemoveEquipment.php?var=" + ID, true);
-              xmlhttp.send();
-          } else {
-              document.getElementById('editList').remove();
-
-              loadStuff('equipment', 'ContentEdit')
           }
+          xmlhttp.open("GET", "/Request_RemoveEquipment.php?var=" + ID, true);
+          xmlhttp.send();
+          //   } else {
+          //       document.getElementById('editList').remove();
+
+          //       loadStuff('equipment', 'ContentEdit')
+          //   }
       }
 
       function removeRoom(ID) {
-          if (confirm('Are you sure?') == true) {
-              var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                      document.getElementById('editList').remove();
-                      loadStuff('room', 'ContentEdit');
-                  }
+          //   if (confirm('Are you sure?') == true) {
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  document.getElementById('editList').remove();
+                  loadStuff('room', 'ContentEdit');
               }
-              xmlhttp.open("GET", "/Request_RemoveRoom.php?var=" + ID, true);
-              xmlhttp.send();
-          } else {
-              document.getElementById('editList').remove();
-              loadStuff('room', 'ContentEdit');
           }
+          xmlhttp.open("GET", "/Request_RemoveRoom.php?var=" + ID, true);
+          xmlhttp.send();
+          //   } else {
+          //       document.getElementById('editList').remove();
+          //       loadStuff('room', 'ContentEdit');
+          //   }
       }
 
       function addPoliciesQuery(ID, desc) {
-          if (confirm('Are you sure?') == true) {
-              var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                      document.getElementById('editList').remove();
-                      loadStuff('policies', 'ContentEdit');
-                  }
+          //   if (confirm('Are you sure?') == true) {
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  document.getElementById('editList').remove();
+                  loadStuff('policies', 'ContentEdit');
               }
-              xmlhttp.open("GET", "/Request_AddPolicies.php?ID=" + ID + '&desc=' + desc, true);
-              xmlhttp.send();
-          } else {
-              document.getElementById('editList').remove();
-              loadStuff('policies', 'ContentEdit');
           }
+          xmlhttp.open("GET", "/Request_AddPolicies.php?ID=" + ID + '&desc=' + desc, true);
+          xmlhttp.send();
+          //   } else {
+          //       document.getElementById('editList').remove();
+          //       loadStuff('policies', 'ContentEdit');
+          //   }
       }
 
       function editUserQuery(availability, ID) {
-          if (confirm('Are you sure?') == true) {
-              var eAvailability;
-              if (availability) {
-                  eAvailability = 1;
-              } else if (!availability) {
-                  eAvailability = 0;
-              }
-              var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                      document.getElementById('editList').remove();
-                      loadStuff('userList', 'ContentEdit');
-                  }
-              }
-              xmlhttp.open("GET", "/Request_EditUser.php?availability=" + eAvailability + '&ID=' + ID, true);
-              xmlhttp.send();
-          } else {
-              document.getElementById('editList').remove();
-              loadStuff('userList', 'ContentEdit');
+          //   if (confirm('Are you sure?') == true) {
+          var eAvailability;
+          if (availability) {
+              eAvailability = 1;
+          } else if (!availability) {
+              eAvailability = 0;
           }
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  document.getElementById('editList').remove();
+                  loadStuff('userList', 'ContentEdit');
+              }
+          }
+          xmlhttp.open("GET", "/Request_EditUser.php?availability=" + eAvailability + '&ID=' + ID, true);
+          xmlhttp.send();
+          //   } else {
+          //       document.getElementById('editList').remove();
+          //       loadStuff('userList', 'ContentEdit');
+          //   }
       }
 
       function editPoliciesQuery(name, desc, ID) {
           //editPolicies
-          if (confirm('Are you sure?') == true) {
-              var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
+          //   if (confirm('Are you sure?') == true) {
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
 
-                      document.getElementById('editList').remove();
-                      loadStuff('policies', 'ContentEdit');
-                  }
+                  document.getElementById('editList').remove();
+                  loadStuff('policies', 'ContentEdit');
               }
-              xmlhttp.open("GET", "/Request_EditPolicies.php?name=" + name + '&desc=' + desc + '&ID=' + ID, true);
-              xmlhttp.send();
-          } else {
-              document.getElementById('editList').remove();
-              loadStuff('policies', 'ContentEdit');
           }
+          xmlhttp.open("GET", "/Request_EditPolicies.php?name=" + name + '&desc=' + desc + '&ID=' + ID, true);
+          xmlhttp.send();
+          //   } else {
+          //       document.getElementById('editList').remove();
+          //       loadStuff('policies', 'ContentEdit');
+          //   }
       }
 
       function editEquipQuery(name, quantity, desc, availability, ID) {
-          if (confirm('Are you sure?') == true) {
-              var eAvailability;
-              if (availability) {
-                  eAvailability = 0;
-              } else if (!availability) {
-                  eAvailability = 1;
-              }
-              var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                      document.getElementById('editList').remove();
-                      loadStuff('equipment', 'ContentEdit');
-                  }
-              }
-              xmlhttp.open("GET", "/Request_EditEquipList.php?name=" + name + '&quantity=' + quantity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
-              xmlhttp.send();
-          } else {
-              document.getElementById('editList').remove();
-              loadStuff('equipment', 'ContentEdit');
+          //   if (confirm('Are you sure?') == true) {
+          var eAvailability;
+          if (availability) {
+              eAvailability = 0;
+          } else if (!availability) {
+              eAvailability = 1;
           }
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  document.getElementById('editList').remove();
+                  loadStuff('equipment', 'ContentEdit');
+              }
+          }
+          xmlhttp.open("GET", "/Request_EditEquipList.php?name=" + name + '&quantity=' + quantity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
+          xmlhttp.send();
+          //   } else {
+          //       document.getElementById('editList').remove();
+          //       loadStuff('equipment', 'ContentEdit');
+          //   }
       }
 
       function editRoomQuery(name, capacity, desc, availability, ID, inputParam) {
-          if (confirm('Are you sure?') == true) {
-              var eAvailability;
-              if (availability) {
-                  eAvailability = 0;
-              } else if (!availability) {
-                  eAvailability = 1;
-              }
-              var formData = new FormData();
-              var file = inputParam.files[0];
-              formData.append('sample', file);
-              var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                      document.getElementById('editList').remove();
-                      loadStuff('room', 'ContentEdit');
-                  }
-              }
-              xmlhttp.open("POST", "/Request_EditRoomList.php?name=" + name + '&cap=' + capacity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
-              xmlhttp.send(formData);
-          } else {
-              document.getElementById('editList').remove();
-              loadStuff('room', 'ContentEdit');
+          //   if (confirm('Are you sure?') == true) {
+          var eAvailability;
+          if (availability) {
+              eAvailability = 0;
+          } else if (!availability) {
+              eAvailability = 1;
           }
+          var formData = new FormData();
+          var file = inputParam.files[0];
+          formData.append('sample', file);
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  document.getElementById('editList').remove();
+                  loadStuff('room', 'ContentEdit');
+              }
+          }
+          xmlhttp.open("POST", "/Request_EditRoomList.php?name=" + name + '&cap=' + capacity + '&desc=' + desc + '&availability=' + eAvailability + '&id=' + ID, true);
+          xmlhttp.send(formData);
+          //   } else {
+          //       document.getElementById('editList').remove();
+          //       loadStuff('room', 'ContentEdit');
+          //   }
       }
       //ForEach Functions
       function sendEmail(userID) {
@@ -901,9 +927,23 @@
           const date1 = new Date(x);
           const date2 = new Date();
           const diffTime = Math.abs(date2 - date1);
-          if(x){
+          if (x) {
               console.log(diffTime);
-            if (diffTime / 1000 >= 300) {
+              if (diffTime / 1000 >= 300) {
+                  var xmlhttp = new XMLHttpRequest();
+                  xmlhttp.onreadystatechange = function() {
+                      if (this.readyState == 4 && this.status == 200) {
+                          alert('A link was sent to your email \nPlease Check');
+                          localStorage.setItem("resetpass", new Date());
+                          document.location.reload();
+                      }
+                  }
+                  xmlhttp.open("GET", "/sendEmailLink.php?var=" + userID + '&type=resetpassword', true);
+                  xmlhttp.send();
+              } else {
+                  alert('You can only reset your password once every 5 minutes, please wait.');
+              }
+          } else {
               var xmlhttp = new XMLHttpRequest();
               xmlhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
@@ -914,22 +954,8 @@
               }
               xmlhttp.open("GET", "/sendEmailLink.php?var=" + userID + '&type=resetpassword', true);
               xmlhttp.send();
-          }else{
-            alert('You can only reset your password once every 5 minutes, please wait.');  
           }
-          }else{
-            var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                      alert('A link was sent to your email \nPlease Check');
-                      localStorage.setItem("resetpass", new Date());
-                      document.location.reload();
-                  }
-              }
-              xmlhttp.open("GET", "/sendEmailLink.php?var=" + userID + '&type=resetpassword', true);
-              xmlhttp.send();
-          }
-      
+
 
       }
 
@@ -1036,13 +1062,14 @@
           if (element.course.toLowerCase() != 'teacher') {
               div.innerHTML += '<h3> Section:' + element.section + '</h3>';
           }
+          var fn = element.firstName + ' ' + element.middleName + ' ' + element.lastName
           var textarea = document.createElement('textarea');
           textarea.id = 'remarks';
           textarea.placeholder = "Remarks";
           div.appendChild(textarea);
           //   div.innerHTML += '<textarea id = "remarks" placeholder="Remarks"></textarea><br>';
-          div.innerHTML += '<br><br><input type="button" class="header-btn btn" value="Accept" onclick="AcceptRegistration(' + element.user + ',' + textarea.textContent + ')">';
-          div.innerHTML += '<input type="button" class="decline header-btn btn" onclick="DeclineRegistration(' + element.user + ',' + textarea.textContent + ')" value="Decline">';
+          div.innerHTML += '<br><br><input type="button" class="header-btn btn" value="Accept" onclick="' + 'createModal('+ "'Confirm Registration of "+ fn + "?'" + ', function(){AcceptRegistration(' + element.user + ',' + textarea.textContent + ')})">';
+          div.innerHTML += '<input type="button" class="decline header-btn btn" value ="Decline" onclick="' + 'createModal('+ "'Decline Registration of user  "+ fn + "?'" + ', function(){DeclineRegistration(' + element.user + ',' + textarea.textContent + ')})">';
           div.innerHTML += '<hr class="hr">';
           document.getElementById("content").appendChild(motherDiv);
           motherDiv.appendChild(div);
@@ -1430,16 +1457,11 @@
           } else {
               checkbox.checked = true;
           }
-
           var tdRemove = document.createElement('td');
           var editBtn = document.createElement('input');
           editBtn.type = 'image';
           editBtn.className = 'editButton';
-
           editBtn.src = "assets/c2.png";
-          //   editBtn.addEventListener('click', function() {
-          //       editContent(type, tr, this, element.userID);
-          //   })
           editBtn.addEventListener('click', editContent);
           editBtn.typeParam = type;
           editBtn.addParam = false;
@@ -1480,6 +1502,7 @@
           editBtn.className = 'editButton';
           var removeBtn = document.createElement('input');
           removeBtn.type = 'image';
+          removeBtn.className = 'removeButton';
           if (add) {
               var input = document.createElement('input');
               input.type = 'text';
@@ -1490,14 +1513,12 @@
               listName.className = 'policyList'
               editBtn.src = 'assets/c2.png';
               editBtn.placeholder = "Apply";
-              //   editBtn.addEventListener('click', function() {
-              //       editContent(type, tr, this, ...Array(1), add, btn)
-              //   })
               editBtn.addEventListener('click', editContent);
               editBtn.typeParam = type;
               editBtn.addParam = true;
               editBtn.listParam = input;
               editBtn.descParam = inputDesc;
+              editBtn.removeButton = removeBtn;
               removeBtn.addEventListener('click', function() {
                   tr.remove();
                   btn.disabled = false;
@@ -1516,17 +1537,17 @@
               listName.id = element.p_ID;
               listName.value = element.p_ct_ID;
               editBtn.src = "assets/c2.png";
-              //   editBtn.addEventListener('click', function() {
-              //       editContent(type, tr, this, element.p_ID);
-              //   })
               editBtn.addEventListener('click', editContent);
               editBtn.typeParam = type;
               editBtn.addParam = false;
               editBtn.listParam = listName;
               editBtn.descParam = inputDesc;
+              editBtn.removeButton = removeBtn;
               editBtn.IDParam = element.p_ID;
               removeBtn.addEventListener('click', function() {
-                  removePolicies(element.p_ID)
+                  createModal("Remove Policy?", function() {
+                      return removePolicies(element.p_ID)
+                  })
               });
               removeBtn.src = "assets/c1.png";
               inputDesc.disabled = true;
@@ -1574,6 +1595,7 @@
           editBtn.className = 'editButton';
           var removeBtn = document.createElement('input');
           removeBtn.type = 'image';
+          removeBtn.className = 'removeButton';
           tdAvailability.appendChild(checkbox);
           tdRemove.appendChild(editBtn);
           tdRemove.appendChild(removeBtn);
@@ -1582,7 +1604,6 @@
           tr.appendChild(tdDesc);
           tr.appendChild(tdAvailability);
           if (add) {
-
               btn.disabled = true;
               checkbox.disabled = false;
               editBtn.src = "assets/c2.png";
@@ -1590,9 +1611,6 @@
               checker = false;
               checkbox.checked = true;
               disableButtons(this);
-              //   editBtn.addEventListener('click', function() {
-              //       editContent(type, tr, this, ...Array(1), add, btn);
-              //   })
               if (type == 'roomID') {
                   var img = document.createElement('input');
                   img.type = 'image';
@@ -1617,6 +1635,7 @@
               editBtn.cbParam = checkbox;
               editBtn.imageParam = img;
               editBtn.imageUploadParam = input;
+              editBtn.removeButton = removeBtn;
               removeBtn.addEventListener('click', function() {
                   tr.remove();
                   btn.disabled = false;
@@ -1634,9 +1653,6 @@
               }
               switch (type) {
                   case 'roomID':
-                      //   editBtn.addEventListener('click', async function() {
-                      //       await editContent(type, tr, this, element.roomID);
-                      //   });
                       editBtn.addEventListener('click', editContent);
                       editBtn.typeParam = type;
                       editBtn.addParam = false;
@@ -1645,12 +1661,15 @@
                       editBtn.descParam = inputDesc;
                       editBtn.cbParam = checkbox;
                       editBtn.IDParam = element.roomID;
-
+                      editBtn.removeButton = removeBtn;
                       inputName.value = element.roomName;
                       inputDesc.value = element.roomDesc;
                       inputQuantity.value = element.roomCap;
                       removeBtn.addEventListener('click', function() {
-                          removeRoom(element.roomID)
+                          createModal("Remove Room?", function() {
+                              return removeRoom(element.roomID)
+                          })
+
                       });
                       var img = document.createElement('input');
                       img.type = 'image';
@@ -1678,9 +1697,6 @@
                       editBtn.imageUploadParam = input;
                       break;
                   case 'equipID':
-                      //   editBtn.addEventListener('click', function() {
-                      //       editContent(type, tr, this, element.equipID);
-                      //   });
                       editBtn.addEventListener('click', editContent);
                       editBtn.typeParam = type;
                       editBtn.addParam = false;
@@ -1689,8 +1705,11 @@
                       editBtn.descParam = inputDesc;
                       editBtn.cbParam = checkbox;
                       editBtn.IDParam = element.equipID;
+                      editBtn.removeButton = removeBtn;
                       removeBtn.addEventListener('click', function() {
-                          removeEquipment(element.equipID)
+                          createModal('Remove Equipment?', function() {
+                              return removeEquipment(element.equipID);
+                          })
                       });
                       inputQuantity.value = element.equipQty;
                       inputName.value = element.equipName;
@@ -1714,64 +1733,10 @@
           //appending of element
       }
 
-
-
-      //   function editContent(type, rowID, value, ID, add, btn) {
-      //       if (type == 'policiesID') {
-      //           var name = rowID.children[0].firstChild;
-      //           var desc = rowID.children[1].firstChild;
-      //           if (checker == true) {
-      //               name.disabled = false;
-      //               desc.disabled = false;
-      //               disableButtons(value);
-      //               checker = false;
-      //           } else if (checker == false) {
-      //               if (add) {
-      //                   btn.disabled = false;
-      //               }
-      //               name.disabled = true;
-      //               desc.disabled = true;
-      //               enableButtons(type, name, ...Array(1), desc, ...Array(1), ID, value, add);
-      //           }
-      //       } else if (type == 'userID') {
-      //           var mark = rowID.children[1].firstChild;
-      //           if (checker == true) {
-      //               mark.disabled = false;
-      //               disableButtons(value);
-      //               checker = false;
-      //           } else if (checker == false) {
-      //               mark.disabled = true;
-      //               enableButtons(type, ...Array(2), mark, ...Array(1), ID, value, add);
-      //           }
-      //       } else {
-      //           var name = rowID.children[0].firstChild;
-      //           var quantity = rowID.children[1].firstChild;
-      //           var desc = rowID.children[2].firstChild;
-      //           var availability = rowID.children[3].firstChild;
-      //           if (checker == true) {
-      //               name.disabled = false;
-      //               desc.disabled = false;
-      //               availability.disabled = false;
-      //               quantity.disabled = false;
-      //               disableButtons(value);
-      //               checker = false;
-      //           } else if (checker == false) {
-      //               if (add) {
-      //                   btn.disabled = false;
-      //               }
-      //               name.disabled = true;
-      //               desc.disabled = true;
-      //               availability.disabled = true;
-      //               quantity.disabled = true;
-      //               enableButtons(type, name, quantity, desc, availability, ID, value, add);
-      //           }
-      //       }
-
-      //   }
-
       function editContent(e) {
           if (checker == true) {
-              disableButtons(e.currentTarget);
+              disableButtons(e.currentTarget, e.currentTarget.removeButton);
+              console.log(e.currentTarget.removeButton);
               name = (e.currentTarget.nameParam) ? e.currentTarget.nameParam.disabled = false : ' ';
               qty = (e.currentTarget.quantityParam) ? e.currentTarget.quantityParam.disabled = false : ' ';
               desc = (e.currentTarget.descParam) ? e.currentTarget.descParam.disabled = false : ' ';
@@ -1781,14 +1746,9 @@
               inputParam = (e.currentTarget.imageUploadParam) ? e.currentTarget.imageUploadParam.disabled = false : ' ';
               checker = false;
           } else {
-              checker = true;
+
               //disabling part 
-              name = (e.currentTarget.nameParam) ? e.currentTarget.nameParam.disabled = true : ' ';
-              qty = (e.currentTarget.quantityParam) ? e.currentTarget.quantityParam.disabled = true : ' ';
-              desc = (e.currentTarget.descParam) ? e.currentTarget.descParam.disabled = true : ' ';
-              availability = (e.currentTarget.cbParam) ? e.currentTarget.cbParam.disabled = true : ' ';
-              selectedList = (e.currentTarget.listParam) ? e.currentTarget.listParam.disabled = true : ' ';
-              listParam = (e.currentTarget.listParam) ? e.currentTarget.listParam.disabled = true : ' ';
+
               name = (e.currentTarget.nameParam) ? e.currentTarget.nameParam.value : ' ';
               qty = (e.currentTarget.quantityParam) ? e.currentTarget.quantityParam.value : ' ';
               desc = (e.currentTarget.descParam) ? e.currentTarget.descParam.value : ' ';
@@ -1797,15 +1757,48 @@
               type = (e.currentTarget.typeParam) ? e.currentTarget.typeParam : ' ';
               ID = (e.currentTarget.IDParam) ? e.currentTarget.IDParam : ' ';
               listParam = (e.currentTarget.listParam) ? e.currentTarget.listParam.value : ' ';
-
-              inputParam = (e.currentTarget.imageUploadParam) ? e.currentTarget.imageUploadParam.disabled = true : ' ';
               inputParam = (e.currentTarget.imageUploadParam) ? e.currentTarget.imageUploadParam : ' ';
-              enableButtons(type, name, qty, desc, availability, ID, e.currentTarget, e.currentTarget.addParam, listParam, inputParam);
+              addParam = (e.currentTarget.addParam) ? e.currentTarget.addParam : '';
+              var target = e.currentTarget;
+
+              var text;
+              if (addParam) {
+                  if (type == 'policiesID') {
+                      text = 'Confirm addition of Policy?';
+                  } else if (type == 'roomID') {
+                      text = 'Confirm addition of Room?';
+                  } else if (type == 'equipID') {
+                      text = 'Confirm addition of Equipment?';
+                  }
+              } else {
+                  if (type == 'policiesID') {
+                      text = 'Confirm change of Policy?';
+                  } else if (type == 'roomID') {
+                      text = 'Confirm change of Room?';
+                  } else if (type == 'equipID') {
+                      text = 'Confirm change of Equipment?';
+                  } else if (type = 'userID') {
+                      text = 'Confirm mark of user? \n *Note: Marking users means they are not able to create a reservation (They are still able to access the site)';
+                  }
+              }
+
+              createModal(text, function() {
+                  checker = true;
+                  name = (target.nameParam) ? target.nameParam.disabled = true : ' ';
+                  qty = (target.quantityParam) ? target.quantityParam.disabled = true : ' ';
+                  desc = (target.descParam) ? target.descParam.disabled = true : ' ';
+                  availability = (target.cbParam) ? target.cbParam.disabled = true : ' ';
+                  selectedList = (target.listParam) ? target.listParam.disabled = true : ' ';
+                  listParam = (target.listParam) ? target.listParam.disabled = true : ' ';
+                  inputParam = (target.imageUploadParam) ? target.imageUploadParam.disabled = true : ' ';
+                  enableButtons(type, name, qty, desc, availability, ID, e.currentTarget,addParam, listParam, inputParam);
+              });
           }
       }
 
       function enableButtons(type, name, quantity, desc, availability, ID, value, add, listParam, inputParam) {
-          var x = document.querySelectorAll('.editButton');
+          const x = document.querySelectorAll('.editButton');
+          const y = document.querySelectorAll('.removeButton');
           if (add) {
               if (type == 'policiesID') {
                   if (listParam == '' || desc == '') {
@@ -1813,7 +1806,7 @@
                       document.getElementById('editList').remove();
                       loadStuff('policies', 'ContentEdit');
                   } else {
-                      addPoliciesQuery(listParam, desc);
+                      return addPoliciesQuery(listParam, desc);
                   }
               } else {
                   if (name == '' || desc == '' || quantity == '' || quantity == 0) {
@@ -1826,9 +1819,9 @@
                       }
                   } else {
                       if (type == 'roomID') {
-                          addRoomQuery(name, quantity, desc, availability, inputParam);
+                          return addRoomQuery(name, quantity, desc, availability, inputParam);
                       } else if (type == 'equipID') {
-                          addEquipQuery(name, quantity, desc, availability);
+                          return addEquipQuery(name, quantity, desc, availability);
                       }
 
                   }
@@ -1843,10 +1836,11 @@
                       document.getElementById('editList').remove();
                       loadStuff('policies', 'ContentEdit');
                   } else {
-                      editPoliciesQuery(listParam, desc, ID);
+                      return editPoliciesQuery(listParam, desc, ID);
                   }
               } else if (type == 'userID') {
-                  editUserQuery(availability, ID);
+                  return editUserQuery(availability, ID);
+
               } else {
                   if (name == '' || desc == '' || quantity == '' || quantity == 0) {
                       alert('Input must not be empty/ or zero ');
@@ -1858,15 +1852,18 @@
                       }
                   } else {
                       if (type == 'roomID') {
-                          editRoomQuery(name, quantity, desc, availability, ID, inputParam);
+                          return editRoomQuery(name, quantity, desc, availability, ID, inputParam);
                       } else if (type == 'equipID') {
-                          editEquipQuery(name, quantity, desc, availability, ID);
+                          return editEquipQuery(name, quantity, desc, availability, ID);
                       }
                   }
               }
 
               for (a = 0; a < x.length; a++) {
                   x[a].disabled = false;
+              }
+              for (a = 0; a < y.length; a++) {
+                  y[a].disabled = false;
               }
 
               if (typeof(value) != undefined && value != null) {
@@ -1875,43 +1872,50 @@
           }
       }
 
-      function disableButtons(value) {
+      function disableButtons(value, value2) {
           var x = document.querySelectorAll('.editButton');
+          var y = document.querySelectorAll('.removeButton');
           if (typeof(document.getElementById('addBtn')) == undefined && document.getElementById('addBtn') != null) document.getElementById('addBtn').disabled = true;
           for (a = 0; a < x.length; a++) {
               if (value != x[a]) {
                   x[a].disabled = true;
-                  //changeimg of edit to apply
-                  // value.value = 'Apply';
               }
           }
+          for (a = 0; a < y.length; a++) {
+              if (value2 != y[a]) {
+                  y[a].disabled = true;
+              }
+          }
+          //to change edit and cancel icons
+          //   value.src = 'assets/Huwao.jpg';
+          //   value2.src = 'assets/Huwao.jpg';
       }
 
       function addRoomQuery(name, quantity, desc, availability, inputParam) {
-          if (confirm('Are you sure?') == true) {
-              var eAvailability;
-              if (availability) {
-                  eAvailability = 0;
-              } else if (!availability) {
-                  eAvailability = 1;
-              }
-              var formData = new FormData();
-              var file = inputParam.files[0];
-              formData.append('sample', file);
-              var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                      document.getElementById('editList').remove();
-                      loadStuff('room', 'ContentEdit');
-                  }
-              }
-              xmlhttp.open("POST", "/Request_AddRoom.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
-              xmlhttp.send(formData);
-
-          } else {
-              document.getElementById('editList').remove();
-              loadStuff('room', 'ContentEdit');
+          //   if (confirm('Are you sure?') == true) {
+          var eAvailability;
+          if (availability) {
+              eAvailability = 0;
+          } else if (!availability) {
+              eAvailability = 1;
           }
+          var formData = new FormData();
+          var file = inputParam.files[0];
+          formData.append('sample', file);
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  document.getElementById('editList').remove();
+                  loadStuff('room', 'ContentEdit');
+              }
+          }
+          xmlhttp.open("POST", "/Request_AddRoom.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
+          xmlhttp.send(formData);
+
+          //   } else {
+          //       document.getElementById('editList').remove();
+          //       loadStuff('room', 'ContentEdit');
+          //   }
 
           //   editTabContent();
           //   var roomDiv = document.getElementById('roomPanel');
@@ -1920,31 +1924,31 @@
       }
 
       function addEquipQuery(name, quantity, desc, availability) {
-          if (confirm('Are you sure?') == true) {
-              var eAvailability;
-              if (availability) {
-                  eAvailability = 0;
-              } else if (!availability) {
-                  eAvailability = 1;
-              }
-
-              var xmlhttp = new XMLHttpRequest();
-              xmlhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                      loadStuff('equipment', 'ContentEdit')
-                  }
-              }
-              xmlhttp.open("GET", "/Request_AddEquipment.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
-              xmlhttp.send();
-              document.getElementById('editList').remove();
-              //   editTabContent();
-              //   var equipDiv = document.getElementById('equipPanel');
-              //   var equipBtn = document.getElementById('equipBtn');
-              //   equipBtn.click('2', equipDiv);
-          } else {
-              document.getElementById('editList').remove();
-              loadStuff('room', 'ContentEdit');
+          //   if (confirm('Are you sure?') == true) {
+          var eAvailability;
+          if (availability) {
+              eAvailability = 0;
+          } else if (!availability) {
+              eAvailability = 1;
           }
+
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  loadStuff('equipment', 'ContentEdit')
+              }
+          }
+          xmlhttp.open("GET", "/Request_AddEquipment.php?name=" + name + '&desc=' + desc + '&quantity=' + quantity + '&avail=' + eAvailability, true);
+          xmlhttp.send();
+          document.getElementById('editList').remove();
+          //   editTabContent();
+          //   var equipDiv = document.getElementById('equipPanel');
+          //   var equipBtn = document.getElementById('equipBtn');
+          //   equipBtn.click('2', equipDiv);
+          //   } else {
+          //       document.getElementById('editList').remove();
+          //       loadStuff('room', 'ContentEdit');
+          //   }
       }
 
       //Added at the end once everything is rendered

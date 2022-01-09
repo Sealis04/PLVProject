@@ -519,7 +519,6 @@ div.pagination span.disabled {
 
 /* Modal Content (Image) */
 #modal-content {
- 
     display: block;
     width: 80%;
     max-width: 700px;
@@ -532,7 +531,6 @@ div.pagination span.disabled {
   
     /* transition: transform 0.25s ease; */
     cursor: zoom-in;
-  
   }
   
   /* 
@@ -833,4 +831,16 @@ img.rotate.modalEdit {
 div#content {
     word-wrap: break-word;
     width: 80%;
+}
+
+.modalConfirm{
+  /* display: block; Hidden by default */
+  position: fixed; /* Stay in place */
+  top:0;
+  left:0;
+  z-index: 10; /* Sit on top */
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  place-items:center;
 }
