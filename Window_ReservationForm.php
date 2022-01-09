@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
     <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/css/side-nav.css">
+            <link rel="stylesheet" href="/bootstrap-4.1.3-dist/css/bootstrap.min.css">
+    <script src="/bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/Form.css">
 </head>
 
@@ -59,15 +61,26 @@
     }
         ?>
     </sidenav>
+    <nav>
+            <div class="navbar">
+            <div class="nav2">
+                  
+            </div>
+            </div>
+        </nav>
     <div class="container">
-        <div class="form-container col-sm-11 col-lg-10">
-            <legend>FORM</legend>
-            <input type='button' onclick="addReservation()" value='Add' style='float:right' >
-            <label for="Name">Name:</label>
-            <input type="text" id="fullName" disabled name="Name" ><br><br>
-            <label for="Course">Course:</label>
-            <input type="text" id="course" disabled name="Course"><br><br>
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="multipart/form-data" id="reservationForm">
+        <div class="form-container shadow-lg p-3 mb-5 bg-white rounded">
+        <form>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="fullName" readOnly class="form-control" name="Name">
+        </div>
+        <div class="form-group">
+                <label for="Course">Course:</label>
+                <input type="text" class="form-control" readOnly name="Course">
+                </div>
+        </form>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="multipart/form-data" id="reservationForm">
             </form>
         </div>
     </div>

@@ -30,6 +30,13 @@
         </sidenav>
 
         <!--body-->
+        <nav>
+            <div class="navbar">
+            <div class="nav2">
+                  
+            </div>
+            </div>
+        </nav>
         <div class="container">
             
             <div class="row"> 

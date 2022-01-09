@@ -30,7 +30,8 @@ body {
 
 
 .sidenav p{
-  text-align: center;
+  text-align: left;
+  width: 120px;
   display: block;
   margin: 0;
   padding: 0;
@@ -42,16 +43,8 @@ a {
   padding-left: 27px;
 }
 
-.main {
-  margin-left: 160px; /* Same as the width of the sidenav */
-  font-size: 28px; /* Increased text to enable scrolling */
-  padding: 0px 10px;
-}
 
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
+
 
 
 .logout{
@@ -82,8 +75,8 @@ margin-left: 10px;
   }
 
 #logout{
-  margin-top: 50px;
-  color: red !important;
+
+  color: white !important;
 
 }
 
@@ -116,10 +109,12 @@ hr{
  
  #notif{
    width: 100%;
+   color: white;
  }
  
  #notifDropdown{
    width: 100%;
+  
  }
  
  
@@ -130,6 +125,12 @@ hr{
    margin-left: 60px;
  }
 
+ svg:not(:root) {
+  overflow: hidden;
+  /* margin: 1px; */
+  margin-bottom: 5px;
+  margin-right: 6;
+}
 
  input#markallasRead {
   font-size: 10px;
@@ -140,11 +141,143 @@ hr{
   color: black !important;
   text-decoration: none !important;
   background-color: none !important;
-  font-size: 15px !important;
+  font-size: 14px !important;
 }
 
 .active1, .btns:hover:not(.active1) {
-  background-color: #000099;
-  color: Black;
+  background-color: white;
+  color: Black !important;
 
 }
+
+.active1:active{
+    color: #000099;
+}
+.sidenav1 {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #1C1D91;;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  overflow: hidden;
+}
+
+.sidenav1 a {
+
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-decoration: none;
+  font-size: 18px;
+  border-radius: 25px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.sidenav1 a:active{
+  color: #000099;
+}
+
+.sidenav1 a:hover {
+  color: black;
+}
+
+.sidenav1 .closebtn {
+  position: absolute;
+  top: -40;
+  right: 20px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.sidenav1 p{
+  text-align: left;
+  width: 120px;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width : 300px) {
+  .sidenav1 {padding-top: 15px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .sidenav1 {width: 0;}
+  .hamburger {
+    color: white;
+    visibility: visible !important;
+}
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (min-width : 480px) {
+  .sidenav1 {padding-top: 15px;
+    overflow-y: scroll;
+    overflow-x: hidden;}
+  .sidenav1 {width: 0;}
+  .hamburger {
+    color: white;
+    
+ 
+}
+.hamburger{visibility: visible !important;}
+.sidenav1 {width: 250px;}
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+  .sidenav1 {padding-top: 15px;
+    overflow-y: scroll;
+    overflow-x: hidden;}
+  .sidenav1 {width: 0;}
+  .hamburger{
+    visibility: hidden !important;
+  }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+  .sidenav1 {padding-top: 15px;
+    overflow-y: hidden;
+    overflow-x: hidden;}
+  .sidenav1 {width: 0;}
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1000) {
+  .sidenav1 {width: 250px;
+    overflow-y: hidden;
+    overflow-x: hidden;}
+  .sidenav1 .closebtn {visibility: hidden;}
+  .hamburger{ visibility: hidden;}
+  
+}
+
+
+@media only screen and (min-width : 1900px) {
+  .sidenav1 {width: 250px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+  .sidenav1 .closebtn {visibility: hidden;}
+  .hamburger{ visibility: hidden;}
+}
+
+.hamburger{
+  color: black;
+ 
+}
+
+
