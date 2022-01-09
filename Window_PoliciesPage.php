@@ -20,14 +20,15 @@
         <div class="navbar">
 
                 <?php
-        if ($_SESSION['user_verified'] == 'not verified') {
-            echo '<script>
-            alert("Please confirm the OTP that was sent to your Email!")
-            window.location.href = "Window_OTP.php?code='.$_SESSION['user_code'].'"
-            </script>';
-        } else {
-            require "Backend_CheckifLoggedIN.php";
-        }
+          if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+            if ($_SESSION['user_verified'] == 'not verified') {
+                echo '<script>
+                alert("Please confirm the OTP that was sent to your Email!")
+                window.location.href = "Window_OTP.php?code='.$_SESSION['user_code'].'"
+                </script>';
+            }
+      }
+       require "Backend_CheckifLoggedIN.php";
                 ?>
         </div>
     </nav>

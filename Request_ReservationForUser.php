@@ -27,7 +27,10 @@ $sql_code = "SELECT * FROM tbl_reservation
 INNER JOIN tbl_room ON tbl_reservation.r_room_ID = tbl_room.room_ID 
 INNER JOIN tbl_notification ON tbl_reservation.notifID = tbl_notification.notificationID
 WHERE tbl_reservation.r_user_ID = ? AND tbl_notification.forRegistration = 0 AND MONTH(tbl_reservation.DateStart) = ? AND YEAR(tbl_reservation.DateStart) = ?
-ORDER BY tbl_reservation.r_status, FIELD(r_approved_ID,'1') DESC, tbl_reservation.DateStart  LIMIT $start, $limit";
+ORDER BY tbl_reservation.r_status, FIELD(r_approved_ID,'1') DESC, (CASE WHEN DATE(NOW()) < DATE(tbl_reservation.DateStart)
+     THEN 1
+     ELSE 0
+     END) DESC , tbl_reservation.DateStart LIMIT $start, $limit";
 if ($sql = $conn->prepare($sql_code)) {
     $sql->bind_param('iii', $r_user,$month,$year);
     $r_user = $userID;
