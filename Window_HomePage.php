@@ -3,8 +3,10 @@
     <link rel="icon" href="assets/plv.png">
     <meta charset="UTF-8">
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="stylesheet" href="/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
-    <script src="/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
+    <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="bootstrap-4.1.3-dist/css/bootstrap.min.css">
+    <script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/index.css">
 </head>
 
@@ -27,14 +29,21 @@
         require "Backend_CheckifLoggedIN.php";
         ?>
     </sidenav>
-    <mainBody class='main col-sm-12 col-lg-11'>
+     <nav>
+            <div class="navbar">
+            <div class="nav2">
+                  
+            </div>
+            </div>
+        </nav>
+    <mainBody class='main'>
         <div style="text-align:center">
             <input value='<' onclick='prevMonth()' type='button' style="display:inline-block;   ">
             <h3 id="monthAndYear" style="display:inline-block; "></h3>
             <input value='>' onclick='nextMonth()' type='button' style="display:inline-block; ">
         </div>
 
-        <table id="calendar" style="table-layout:fixed; width:90%">
+        <table id="calendar" class="shadow-lg p-3 mb-5 bg-white rounded"  style="table-layout:fixed; width:90%">
             <thead>
                 <tr>
                     <th>Sun</th>
@@ -82,7 +91,7 @@
         <!-- <div class="reservations">
             <h3> No Reservation</h3>
         </div> -->
-        <div class="reservations col-sm-12 col-lg-10" id='listBody'>
+        <div class="reservations shadow-lg p-3 mb-5 bg-white rounded" id='listBody'>
         </div>
     </mainBody>
 

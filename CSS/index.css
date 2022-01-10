@@ -330,9 +330,10 @@ h5{
   top: 20px;
         border: none;
         height: 2px;
-        background: black;
+        background: white;
         margin-bottom: 50px;
         margin-left: 10px;
+        color: white;
 }
 
 input[type="button"]{
@@ -360,7 +361,6 @@ input[type="button"]{
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
   .navbar{
-    
     margin-left: -90%;
     visibility: visible;
   }
@@ -378,6 +378,9 @@ input[type="button"]{
   }
   .create-reservation{
     margin-left: 15vw !important;
+  }
+  .hamburger{
+    visibility: hidden !important;
   }
 
 }
@@ -399,6 +402,9 @@ input[type="button"]{
   .navbar{
     background-color:transparent !important;
   }
+  .hamburger{
+    visibility: hidden !important;
+  }
 }
 
 /* Large Devices, Wide Screens */
@@ -416,5 +422,8 @@ input[type="button"]{
   }
   .navbar{
     background-color:transparent !important;
+  }
+  .hamburger{
+    visibility: hidden !important;
   }
 }

@@ -304,9 +304,6 @@ padding:1vh 0 5vh 0 ;
 
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
-  .navbar{
-    background-color:transparent !important;
-  }
 }
 
 /* Medium Devices, Desktops */

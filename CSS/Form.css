@@ -137,6 +137,7 @@ a {
     padding: 35px;
     border-radius: 10px;;
     margin-left: 155px;
+    height: 145%;
   }
 
   /*ITEMS LIST*/
@@ -305,7 +306,7 @@ input[type='time']:invalid+.validity:after {
 
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
-  .form-container{margin-left: 46px; margin-right: 46px;}
+  .form-container{margin-left: 46px; margin-right: 46px;height: 95% !important;}
   #room0{margin-left: 1px;max-width: 100%; width: 99%;}
   input#File {padding-bottom: 25px !important;}
   .navbar {width: 5vm;display: flex;margin-left: 0px;
@@ -355,6 +356,7 @@ input[type='time']:invalid+.validity:after {
   input#File {
     padding-bottom: 40 !important;}
     .form-control{padding: 1.375rem 0.75rem;}
+    .form-container{height: 145% !important;}
 }
 
 /* Large Devices, Wide Screens */
@@ -363,4 +365,5 @@ input[type='time']:invalid+.validity:after {
   input#File {
     padding-bottom: 40 !important;}
     .form-control{padding: 1.375rem 0.75rem;}
+    .form-container{height: 145% !important;}
 }

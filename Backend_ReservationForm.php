@@ -254,6 +254,7 @@
         var buttonAdd = document.createElement('input');
         //buttonAdd properties
         buttonAdd.name = 'buttonAdd';
+        buttonAdd.className = 'buttonAdd';
         buttonAdd.type = 'button';
         buttonAdd.value = 'Add';
         buttonAdd.id = 'buttonAdd' + number;
@@ -523,26 +524,30 @@
             var eventLabel = document.createElement('label');
             eventLabel.setAttribute('for', "Event");
             eventLabel.textContent = 'Event Name: '
+            eventLabel.className = 'col-sm-5 col-form-label';
             var eventInput = document.createElement('input');
             eventInput.type = 'text';
+            eventInput.className = 'form-control';
             eventInput.id = 'event';
             eventInput.name = 'event';
             eventInput.required = true;
 
             var adviserLabel = document.createElement('label');
             adviserLabel.textContent = 'Event Adviser: '
+            adviserLabel.className = 'col-sm-5 col-form-label';
             var adviserInput = document.createElement('input');
             adviserInput.text = 'text';
+            adviserInput.className = 'form-control';
             adviserInput.id = 'adviser';
             adviserInput.name = 'adviser';
 
 
             div.appendChild(eventLabel);
             div.appendChild(eventInput);
-            div.innerHTML += '<br><br>';
+            div.innerHTML += '<br>';
             div.appendChild(adviserLabel);
             div.appendChild(adviserInput);
-            div.innerHTML += '<br><br>';
+            div.innerHTML += '<br>';
 
             var wrapper = document.createElement('div');
             wrapper.id = 'wrapper';
@@ -552,9 +557,11 @@
             var currentDate = new Date();
             var dateLabel = document.createElement('label');
             dateLabel.setAttribute('for', 'dateAndTime');
+            dateLabel.className = 'col-sm-5 col-form-label';
             dateLabel.textContent = 'Start Date: '
             var dateInput = document.createElement('input');
             dateInput.type = 'date';
+            dateInput.className = 'form-control';
             dateInput.id = 'startDate';
             dateInput.name = 'startDate';
             currentDate.setDate(currentDate.getDate() + 3);
@@ -573,14 +580,16 @@
 
             wrapper.appendChild(dateLabel);
             wrapper.appendChild(dateInput);
-            wrapper.innerHTML += '<br><br>';
+            wrapper.innerHTML += '<br>';
 
             //Duration
             var durationLabel = document.createElement('label');
             durationLabel.setAttribute('for', 'Duration');
+            durationLabel.className = 'col-sm-5 col-form-label';
             durationLabel.textContent = 'Duration  (in Days): ';
             var durationInput = document.createElement('input');
             durationInput.type = 'number';
+            durationInput.className = 'form-control';
             durationInput.name = 'duration';
             durationInput.id = 'durationDay';
             durationInput.setAttribute('placeholder', '(In Days)');
@@ -596,7 +605,9 @@
             timeLabel.setAttribute('for', 'dateAndTime');
             timeLabel.textContent = 'Start to End Time: ';
             var startInput = document.createElement('input');
+            startInput.className = 'form-control';
             startInput.id = 'startTime';
+
             startInput.name = 'startTime';
             startInput.type = 'time';
             startInput.min = "08:00";
@@ -609,6 +620,7 @@
             endTimeErr.className = 'error';
             endTimeErr.id = 'endTimeErr';
             var endInput = document.createElement('input');
+            endInput.className = 'form-control';
             endInput.id = 'endTime';
             endInput.name = 'endTime';
             endInput.type = 'time';
@@ -623,26 +635,29 @@
             wrapper.appendChild(endInput);
             wrapper.innerHTML += '<br>';
             wrapper.appendChild(endTimeErr);
-            wrapper.innerHTML += '<br><br><br>';
+            wrapper.innerHTML += '<br>';
 
 
             //Room
             var roomDiv = document.createElement('div');
             roomDiv.className = 'roomInfo';
-
             var roomLabel = document.createElement('label');
+            roomLabel.className = 'col-sm-1 col-form-select';
             roomLabel.setAttribute('for', 'room');
             roomLabel.textContent = 'Room: '
             var selectLabel = document.createElement('select');
+
             selectLabel.name = 'room';
             selectLabel.id = 'room' + number;
             await listRoom(selectLabel, ...Array(1), roomDiv);
             var maxAttendees = document.createElement('input');
             maxAttendees.placeHolder = '# of Attendees'
+            maxAttendees.className = 'form-control';
             maxAttendees.type = 'number';
             maxAttendees.name = 'attendees';
             // input.max = element.roomCap;
             var label = document.createElement('label');
+            label.className = 'col-sm-5 col-form-select';
             label.textContent = '# of Attendees:';
             var maxLabel = document.createElement('label');
             document.addEventListener('change', async function(e) {
@@ -658,7 +673,7 @@
             roomDiv.appendChild(maxAttendees);
             roomDiv.appendChild(maxLabel);
             wrapper.appendChild(roomDiv);
-            wrapper.innerHTML += '<br><br>';
+            wrapper.innerHTML += '<br>';
 
             //Equipment
             var equipDiv = document.createElement('div');
@@ -670,11 +685,13 @@
             var equipLabel = document.createElement('label');
             equipLabel.setAttribute('for', 'Equipment');
             equipLabel.className = 'labelName';
+            equipLabel.className = 'col-sm-5 col-form-select';
             equipLabel.textContent = 'Add Equipment?';
 
             var switchLabel = document.createElement('label');
+            switchLabel.className = 'col-sm-5 col-form-select';
             switchLabel.className = 'switch';
-            equipDiv.innerHTML += '<br><br>';
+            equipDiv.innerHTML += '<br>';
 
             equipDiv.appendChild(equipLabel);
             equipDiv.appendChild(switchLabel);
@@ -683,6 +700,7 @@
             //append to switchLabel
             var CBinput = document.createElement('input');
             CBinput.id = 'equipmentCB' + number;
+            
             CBinput.type = 'checkbox';
             CBinput.name = 'equipAdd';
             CBinput.checked = true;
@@ -701,7 +719,7 @@
             switchLabel.appendChild(CBinput);
             switchLabel.appendChild(CBspan);
 
-            div.innerHTML += '<br><br>';
+            div.innerHTML += '<br>';
             resolve(div);
         })
         // var style = document.createElement('style');
@@ -734,10 +752,11 @@
             var contactLabel = document.createElement('label');
             contactLabel.setAttribute('for', 'Contact');
             contactLabel.textContent = 'Contact Details: ';
-
+            contactLabel.className = 'col-sm-5 col-form-select';
             var contactInput = document.createElement('input');
             contactInput.type = 'text';
             contactInput.id = 'contact';
+            contactInput.className = 'form-control';
             contactInput.disabled = true;
             contactInput.name = 'contact';
 
@@ -769,10 +788,10 @@
             // document.submitParam = submitBtn
             div.appendChild(contactLabel);
             div.appendChild(contactInput);
-            div.innerHTML += '<br><br>';
+            div.innerHTML += '<br>';
             div.appendChild(attachLetter);
             div.appendChild(attachInput);
-            div.innerHTML += '<br><br>';
+            div.innerHTML += '<br>';
             div.appendChild(spanErr);
             div.appendChild(submitBtn);
             form.appendChild(div);
