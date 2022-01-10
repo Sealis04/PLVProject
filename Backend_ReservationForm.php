@@ -9,6 +9,7 @@
         const secondvalue = await addRestOfForm();
         await runRest();
     })();
+
     function runRest() {
         renderRestofForm();
         var startDate = document.getElementById('startDate').value;
@@ -299,6 +300,7 @@
         input_2.value = select.options[select.selectedIndex].text;
         input_2.className = 'equipInput'
         input_2.readOnly = true;
+        input_2.name = "equipName[]";
         input_2.type = 'text';
         //input properties
         input.type = 'number';
@@ -493,19 +495,12 @@
 
     function renderListEquip(select, element, index) {
         var currentQty = element.equipQty;
-        if (array.length != 0) {
-            for (i = 0; i < array.length; i++) {
-                if (element.equipID == array[i]['equipID']) {
-                    currentQty -= array[i]['qty'];
-                }
+        for (i = 0; i < array.length; i++) {
+            if (element.equipID == array[i]['equipID']) {
+                currentQty -= array[i]['qty'];
             }
-            if (currentQty != 0) {
-                var option = document.createElement('option');
-                option.appendChild(document.createTextNode(element.equipName));
-                option.value = element.equipID;
-                select.appendChild(option);
-            }
-        } else {
+        }
+        if (currentQty != 0) {
             var option = document.createElement('option');
             option.appendChild(document.createTextNode(element.equipName));
             option.value = element.equipID;
@@ -565,8 +560,12 @@
             currentDate.setDate(currentDate.getDate() + 3);
             currentMonth = currentDate.getMonth() + 1;
             currentDay = currentDate.getDate();
-            if (currentMonth < 10) { currentMonth = '0' + currentMonth;}
-            if (currentDay <10) {currentDay = '0' + currentDay};
+            if (currentMonth < 10) {
+                currentMonth = '0' + currentMonth;
+            }
+            if (currentDay < 10) {
+                currentDay = '0' + currentDay
+            };
             var minDate = currentDate.getFullYear() + '-' + (currentMonth) + '-' + currentDay;
             dateInput.setAttribute('value', minDate);
             dateInput.min = minDate;
@@ -641,6 +640,7 @@
             var maxAttendees = document.createElement('input');
             maxAttendees.placeHolder = '# of Attendees'
             maxAttendees.type = 'number';
+            maxAttendees.name = 'attendees';
             // input.max = element.roomCap;
             var label = document.createElement('label');
             label.textContent = '# of Attendees:';
@@ -826,6 +826,7 @@
             let obj = {};
             let equipqty = [];
             let equipID = [];
+            let equipName = [];
             f.querySelectorAll("input").forEach(ele => {
                 if (ele.value != '') {
                     if (ele.id == 'durationDay') {
@@ -873,8 +874,15 @@
                     'ID': result.value
                 });
             })
+
+            f.querySelectorAll('input[name="equipName[]"]').forEach(result => {
+                equipName.push({
+                    'name': result.value
+                });
+            })
             let arr3 = equipqty.map((item, i) => Object.assign({}, item, equipID[i]));
-            obj['EquipmentStuff'] = arr3
+            let arr4 = arr3.map((item, i) => Object.assign({}, item, equipName[i]));
+            obj['EquipmentStuff'] = arr4;
             var numberofloops1 = (obj['duration'] == 1) ? 0 : obj['duration'] - 1;
             var endDate = new Date(obj['startDate']);
             endDate.setDate(endDate.getDate() + Number(numberofloops1));
@@ -957,12 +965,12 @@
             }
         }
         let submitBtn = evt.currentTarget.submitBtn;
-        if (everythingOkay == true) {
-            submitForm(profile,submitBtn);
-        }
+        createModal(profile, x[1].files, function() {
+            submitForm(profile, submitBtn);
+        })
     }
 
-    function submitForm(profile,submitBtn) {
+    function submitForm(profile, submitBtn) {
         var form = document.getElementById('reservationForm');
         profile = JSON.stringify(profile);
         var formData = new FormData(form);
@@ -981,5 +989,159 @@
         }
         xmlhttp.open("POST", "Request_InsertIntoTbl_reservation.php?var=" + profile, true);
         xmlhttp.send(formData);
+    }
+
+    function createModal(profileArr, filesArr, func) {
+        modalBody = document.createElement('div');
+        modalBody.className = 'modalConfirm shadow p-3 mb-5 bg-white rounded'
+        reservationDetails = document.createElement('div');
+        reservationDetails.innerHTML =
+            '<h3> Confirm Reservation of the ff:' +
+            '<h4> Event Name: ' + profileArr[0].event +
+            '<h4> Event Adviser: ' + profileArr[0].adviser +
+            '<h4> From: ' + profileArr[0].startDate + ' to ' + profileArr[0].endDate +
+            '<h4> Time: ' + profileArr[0].startTime + ' to ' + profileArr[0].endTime +
+            '<h4> Room: ' + profileArr[0].room + ' Attendees: ' + profileArr[0].attendees;
+        for (a = 0; a < profileArr[0].EquipmentStuff.length; a++) {
+            reservationDetails.innerHTML += '<h4> Equipment to be reserved: '
+            reservationDetails.innerHTML += '<h5>' + profileArr[0].EquipmentStuff[a].name + ': ' + profileArr[0].EquipmentStuff[a].qty;
+        }
+          modalConfirm = document.createElement('input');
+          modalConfirm.type = 'button';
+          modalConfirm.value = "Confirm";
+          modalConfirm.className = "header-btn btn"
+          modalCancel = document.createElement('input');
+          modalCancel.type = 'button';
+          modalCancel.value = "Cancel";
+          modalCancel.className = "header-btn btn decline"
+        modalBody.appendChild(reservationDetails);
+        if (profileArr.length > 1) {
+            var i = 0;
+            var manipulateDiv = document.createElement('div');
+            var prev = document.createElement('span');
+            prev.className = 'left';
+            var next = document.createElement('span');
+            next.className = 'right';
+            prev.textContent = '<';
+            next.textContent = '>';
+            prev.addEventListener('click', function() {
+                i--;
+                if (i < 0) i = profileArr.length - 1;
+                reservationDetails.innerHTML =
+                    '<h3> Confirm Reservation of the ff:' +
+                    '<h4> Event Name: ' + profileArr[i].event +
+                    '<h4> Event Adviser: ' + profileArr[i].adviser +
+                    '<h4> From: ' + profileArr[i].startDate + ' to ' + profileArr[i].endDate +
+                    '<h4> Time: ' + profileArr[i].startTime + ' to ' + profileArr[i].endTime +
+                    '<h4> Room: ' + profileArr[i].room + ' Attendees: ' + profileArr[i].attendees;
+                for (a = 0; a < profileArr[i].EquipmentStuff.length; a++) {
+                    reservationDetails.innerHTML += '<h4> Equipment to be reserved: '
+                    reservationDetails.innerHTML += '<h5>' + profileArr[i].EquipmentStuff[a].name + ': ' + profileArr[i].EquipmentStuff[a].qty;
+                }
+            })
+            next.addEventListener('click', function() {
+                i++;
+                if (i == profileArr.length) i = 0;
+                reservationDetails.innerHTML =
+                    '<h3> Confirm Reservation of the ff:' +
+                    '<h4> Event Name: ' + profileArr[i].event +
+                    '<h4> Event Adviser: ' + profileArr[i].adviser +
+                    '<h4> From: ' + profileArr[i].startDate + ' to ' + profileArr[i].endDate +
+                    '<h4> Time: ' + profileArr[i].startTime + ' to ' + profileArr[i].endTime +
+                    '<h4> Room: ' + profileArr[i].room + ' Attendees: ' + profileArr[i].attendees;
+                for (a = 0; a < profileArr[i].EquipmentStuff.length; a++) {
+                    reservationDetails.innerHTML += '<h4> Equipment to be reserved: '
+                    reservationDetails.innerHTML += '<h5>' + profileArr[i].EquipmentStuff[a].name + ': ' + profileArr[i].EquipmentStuff[a].qty;
+                }
+            })
+            manipulateDiv.appendChild(prev);
+            manipulateDiv.appendChild(next);
+            modalBody.appendChild(manipulateDiv);
+        }
+        //   modalConfirm.addEventListener('click', function(e) {
+        //       func();
+        //       modalBody.remove();
+        //   });
+        //   modalCancel.addEventListener('click', function(e) {
+        //       modalBody.remove();
+        //       return true;
+        //   });
+        document.body.appendChild(modalBody);
+
+
+        //for modal Image
+        reservationDetails.innerHTML += '<h4> Letters included: ' +
+        '*NOTE: Please make sure all uploaded images are in proper format/orientation to reduce the chances of your reservation being rejected. ';
+        var img = document.createElement('img');
+        img.src = URL.createObjectURL(filesArr[0]);
+       var moveDiv = document.createElement('div');
+       moveDiv.class="moveModal";
+        var modal = document.createElement('div');
+        modal.id = 'myModal';
+        modal.className = 'modal';
+        var span = document.createElement('span');
+        span.className = 'close';
+        span.textContent = 'X';
+        var modalImg = document.createElement('img');
+        modalImg.id = 'modal-content';
+        var boxClicked = false;
+        var modalDiv = document.createElement('div');
+
+        reservationDetails.appendChild(img);
+        reservationDetails.appendChild(modal);
+        modal.appendChild(modalImg);
+            modal.appendChild(moveDiv)
+        span.addEventListener('click', function() {
+              modal.style.display = "none";
+              modalImg.classname = ' ';
+              click = false;
+              flipped = false;
+          });
+
+        document.addEventListener('click', function(e) {
+              if (e.target && e.target == img) {
+                  e.stopPropagation();
+                  modal.style.display = "block";
+                  modalImg.src = e.target.src;
+                  if (!boxClicked) {
+                      document.addEventListener('click', function(event) {
+                          if (event.target == modal) {
+                              boxClicked = false;
+                              modal.style.display = 'none'
+                              modalImg.classname = ' ';
+                              click = false;
+                              flipped = false;
+                              var b = 0;
+                          };
+                      })
+                  }
+                  boxClicked = true;
+              }
+          });
+          if (filesArr.length > 1) {
+              var b = 0;
+              var prev = document.createElement('span');
+              prev.className = 'left';
+              var next = document.createElement('span');
+              next.className = 'right';
+              prev.textContent = '<';
+              next.textContent = '>';
+              prev.addEventListener('click', function() {
+                  b--;
+                  if (b < 0) b = filesArr.length - b;
+                  modalImg.src = URL.createObjectURL(filesArr[b]);
+              })
+              next.addEventListener('click', function() {
+                  b++;
+                  if (b == filesArr.length) b = 0;
+                  console.log(filesArr[b]);
+                  modalImg.src = URL.createObjectURL(filesArr[b]);
+              })
+              moveDiv.appendChild(prev);
+              moveDiv.appendChild(next);
+          }
+
+          modalBody.appendChild(modalConfirm);
+          modalBody.appendChild(modalCancel);
     }
 </script>

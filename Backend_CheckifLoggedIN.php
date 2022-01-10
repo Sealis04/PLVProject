@@ -108,9 +108,7 @@ function closeNav() {
   var url_string = new URL(url);
   var category = url_string.searchParams.get('window');
   document.querySelectorAll('a').forEach(result => {
-    var params = new URLSearchParams(result.search)
-    // console.log(window.location.search)
-    // console.log(result.search)
+    var params = new URLSearchParams(result.search);
     if (result.pathname == '/Window_Panel.php') {
       if (params.get('window') == category) {
         result.className += ' active1';
