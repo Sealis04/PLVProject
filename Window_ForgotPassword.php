@@ -6,6 +6,8 @@
         <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
         <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="css/login.css">
+        <link rel="stylesheet" href="css/SpecificallyForModal.css">
+    <script type="text/javascript" src="Backend_Modal.php"></script>
         </head>
     <body>
     <?php
@@ -33,13 +35,15 @@ $email = $password=$userID="";
               }
         }
 
-        if(empty($emailErr)){
-                $result = forgotPassword($email);
-                if($result != false){
-                echo '<script> alert("A link was sent to your email \nPlease Check"); 
-                 window.location.href= "index.php"</script>';
-                }
-                 
+        if (empty($emailErr)) {
+            $result = forgotPassword($email);
+            if ($result != false) {
+                echo '<script> 
+                modal("A link was sent to your email \nPlease Check",function(){
+                    window.location.href= "index.php"
+                });
+                 </script>';
+            }
         }
     }
         //Cleans content

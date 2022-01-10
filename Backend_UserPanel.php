@@ -17,7 +17,7 @@
                             dropContent();
                             callReservationDetails();
                         }else{
-                            alert("something went wrong");
+                            modal("Something went wrong",()=>{return;});
                         }
                         });
                     }
@@ -107,8 +107,9 @@
                 var xmlhttp = new XMLHttpRequest();
                         xmlhttp.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status==200){
-                                alert(this.responseText);
-                                window.location.href = "Window_UserPanel.php";
+                                modal(this.responseText,function(){
+                                    window.location.href = "Window_UserPanel.php";
+                                })
                             }
                         }
                         xmlhttp.open("GET", "Request_RemoveReservation.php?var="+ eventID, true);

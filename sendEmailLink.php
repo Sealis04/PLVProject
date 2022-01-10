@@ -1,3 +1,4 @@
+<script src="Backend_Modal.php" type="text/javascript"></script>
 <?php
 include "db_connection.php";
 $conn=OpenCon();
@@ -95,7 +96,9 @@ function forgotPassword($email){
                     }
                     }
                 }else{
-                      echo '<script> alert("Email is not registered") </script>';
+                      echo '<script> 
+                      modal("Email is not registered",function(){return;});
+                      </script>';
                       return false;
                 }
                 }

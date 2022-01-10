@@ -1,3 +1,4 @@
+<script type="text/javascript" src="Backend_Modal.php"></script>
 <script>
     var number = 0;
     (async () => {
@@ -851,7 +852,7 @@
                     if (ele.id == 'durationDay') {
                         if (ele.value <= 0) {
                             facts = false;
-                            alert("Invalid value for Input:Duration");
+                            modal("Invalid value for Input:Duration",()=>{return;})
                         } else {
                             obj[ele.name] = ele.value || "";
                         }
@@ -861,19 +862,18 @@
 
                     if (facts) {
                         success = true;
-                        // alert('blank values, please fill them up');
                     }
                 } else {
                     if (facts) {
                         success = false;
-                        alert('blank values, please fill them up');
+                        modal('blank values, please fill them up',()=>{return;})
                         facts = false;
                     }
                 }
             });
             var room = f.querySelectorAll('select');
             if (room[0].value == 0) {
-                alert('No available Room for that slot, please choose a different Date/Time slot.');
+                modal('No available Room for that slot, please choose a different Date/Time slot.',()=>{return;})
                 // location.reload();
                 roomSuccess = false;
                 facts = false;
@@ -910,7 +910,7 @@
         });
         if (uploadedCount == 0) {
             if (facts) {
-                alert("Please upload your attachment letters");
+                modal("Please upload your attachment letters",()=>{return;});
             }
             fileUploadSuccess = false;
         } else {
@@ -918,7 +918,7 @@
         }
         for (var fileCount = 0; fileCount < uploadedCount; fileCount++) {
             if (!x[1].files[fileCount].name.match(/.(jpg|jpeg|png)$/i)) {
-                alert('Invalid file format\n Accepts JPG|JPEG|PNG');
+                modal('Invalid file format\n Accepts JPG|JPEG|PNG',()=>{return;});
                 fileUploadSuccess = false;
                 break;
             }
@@ -953,7 +953,9 @@
                                                         if (profile[iv2]['EquipmentStuff'][equipCount1]['ID'] == profile[i]['EquipmentStuff'][equipCount2]['ID']) {
                                                             var currentQty = parseInt(profile[iv2]['EquipmentStuff'][equipCount1]['qty']) + parseInt(profile[i]['EquipmentStuff'][equipCount2]['qty']);
                                                             if (currentQty > parseInt(profile[iv2]['EquipmentStuff'][equipCount1]['max'])) {
-                                                                alert('Total quantity of equipment has exceeded the maximum capacity possible.\nPlease change before proceeding');
+                                                                modal('Total quantity of equipment has exceeded the maximum capacity possible.\nPlease change before proceeding',function(){
+                                                                    return;
+                                                                })
                                                                 var everythingOkay = false;
                                                                 break loop1;
                                                             } else {
@@ -965,7 +967,9 @@
                                             }
                                         }
                                         if (profile[i]['room'] == profile[iv2]['room']) {
-                                            alert("Conflicting schedule in rooms. \nPlease change one before proceeding.");
+                                            modal('Conflicting schedule in rooms. \nPlease change one before proceeding.',function(){
+                                                                    return;
+                                                                })
                                             var everythingOkay = false;
                                             break loop1;
                                         } else {
@@ -998,11 +1002,13 @@
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 if (this.responseText == 'success') {
-                    alert("Reservation success\nStatus: Pending");
-                    window.location.href = "Window_HomePage.php"
+                    modal("Reservation success\nStatus: Pending",function(){
+                        window.location.href = "Window_HomePage.php"
+                    })
                 } else {
-                    alert(this.responseText)
-                    location.reload();
+                    modal(this.responseText,function(){
+                        location.reload();
+                    })
                 }
             }
         }
