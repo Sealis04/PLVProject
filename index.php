@@ -149,9 +149,9 @@ $sql_timezonecode = "set time_zone = '+08:00'";
             </div>
             </div>
         </nav>
-        <div class="container">
+        <div class="container ">
             <div class="col-sm-6 col-lg-5"></div>
-            <div class="loginForm col-sm-6 col-lg-5">
+            <div class="loginForm col-sm-6 col-lg-5 shadow-lg p-3 mb-5 bg-white rounded">
                 <img id="plv-logo" src="assets/plv.png">
                 <form action-="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                     <div class="md-form form-group">
