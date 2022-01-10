@@ -2,7 +2,6 @@
         <head>
         <title>PLVRS</title>
         <link rel="icon" href="assets/plv.png">
-        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta charset="UTF-8">
         <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
         <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
@@ -20,7 +19,7 @@ session_start();
 $count = 0;
 $emailErr = $passwordErr="";
 $email = $password=$userID="";
-include "sendEmailLink.php";
+ include "db_connection.php";
  $conn = OpenCon();
     if($_SERVER["REQUEST_METHOD"]=="POST"){
         //Email check
@@ -49,12 +48,25 @@ include "sendEmailLink.php";
                 if($sql ->execute()){
                     $sql->store_result();
                     if($sql->num_rows ==1){
-                        $sql->bind_result($userID,$userIDNumber,$email,$password_db,$userfn,$usermn,$userln,$usercn,$usercourse,$isAdmin,$isApproved,$isMarked,$section,$userverified,$userOTP,$useractivation,$userTimeStamp);
+                        $sql->bind_result($userID,$email,$password_db,$userfn,$usermn,$userln,$usercn,$usercourse,$userIDImage,$isAdmin,$isApproved,$isMarked,$section,$userverified,$userOTP,$useractivation);
                         if($sql->fetch()){
                             if($isApproved == 1 || $isApproved == 2){
                                 if(password_verify($password,$password_db)){
-                                     session_regenerate_id();
-//stores user info
+                                    if($isApproved == 2){
+                                        if ($userverified == 'not verified') {
+                                            echo '<script>alert("Please confirm the OTP that was sent to your Email!")
+                                            window.location.href="Window_OTP.php?code='.$useractivation.'"
+                                            </script>';
+                                        } else {
+                                            echo '<script>alert("Account is still pending. User is unable to reserve until approved")
+                                            window.location.href="Window_HomePage.php"
+                                            </script>';
+                                        }
+                                    }else if($isApproved == 1){
+                                            header("location: Window_HomePage.php");
+                                        }
+                                    //Stores user info
+                                    session_regenerate_id();
                                     $_SESSION["loggedin"] = true;
                                     $_SESSION["fullName"]=$userfn." ".$usermn." ". $userln;
                                     $_SESSION["userID"] = $userID;
@@ -66,6 +78,7 @@ include "sendEmailLink.php";
                                     $_SESSION["isApproved"]=$isApproved;
                                     $_SESSION["password"] = $password_db;
                                     $_SESSION['isMarked'] = $isMarked;
+                                    $_SESSION['ID_img'] = $userIDImage;
                                     $_SESSION['user_ID'] = $userID;
                                     $_SESSION['user_verified']= $userverified;
                                     $_SESSION['user_code']=$useractivation;
@@ -74,24 +87,8 @@ include "sendEmailLink.php";
                                     } else {
                                         $_SESSION['approveID'] = 2;
                                     }
-                                    if($isApproved == 2){
-                                if ($userverified == 'not verified') {
-                                        resetOTP($conn,$userID,$email);
-                                        echo '<script>
-                                            alert("Please confirm the OTP that was sent to your Email!")
-                                            window.location.href = "/Window_OTP.php?code='.$_SESSION['user_code'].'&userID='.$userID.'"
-                                            </script>';
-                                        } else {
-                                            echo '<script>alert("Account is still pending. User is unable to reserve until approved")
-                                            window.location.href="Window_HomePage.php"
-                                            </script>';
-                                        }
-                                    }else if($isApproved == 1){
-                                            header("location: Window_HomePage.php");
-                                        }
-                                
                                 }else{
-                                    $passwordErr="Invalid email and/or password";  
+                                    $passwordErr="Invalid password";  
                                 }
                             }else if($isApproved==3){
                                 echo '<script>alert("Account has been rejected, please try again")
@@ -101,7 +98,7 @@ include "sendEmailLink.php";
                             
                         }
                 }else{
-                    $emailErr="Invalid email and/or password";
+                    $emailErr="Invalid Email";
                     $email="";
                 }
             }else {
@@ -119,25 +116,6 @@ include "sendEmailLink.php";
             $data = htmlspecialchars($data);
             return $data;
         }
-        
-function resetOTP($conn,$userID,$email){
-$sql_timezonecode = "set time_zone = '+08:00'";
- if($sql12=$conn->prepare($sql_timezonecode)){
-     $sql12->execute();
-     $sql12->close();
- }
-                    $userOTP = rand(100000,999999);
-                    $user_activationCode = getToken(12);
-                      $_SESSION['user_code']=$user_activationCode;
-                     $sql_code2 = "UPDATE `tbl_user` SET `user_activationcode` = ?, `user_timeStamp` = now(), user_OTP = ? WHERE `user_ID` = ?";
-                    if($sql2=$conn->prepare($sql_code2)){
-                        $sql2->bind_param('sii',$user_activationCode,$userOTP, $userID);
-                        if($sql2->execute()){
-                            sendOTP($userOTP,$email);
-                        }
-                        $sql2->close();
-                    }
-            }
         ?>
         <!--CHANGES-->
         <nav>
@@ -149,9 +127,9 @@ $sql_timezonecode = "set time_zone = '+08:00'";
             </div>
             </div>
         </nav>
-        <div class="container ">
+        <div class="container">
             <div class="col-sm-6 col-lg-5"></div>
-            <div class="loginForm col-sm-6 col-lg-5 shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="loginForm col-sm-6 col-lg-5">
                 <img id="plv-logo" src="assets/plv.png">
                 <form action-="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                     <div class="md-form form-group">
@@ -164,7 +142,6 @@ $sql_timezonecode = "set time_zone = '+08:00'";
                       </div>
                       <button type="submit" id="login2">Login</button>
                       <a id="signup" href="Window_RegistrationPage.php">Sign up</a>
-                      <a id="signup" href="Window_ForgotPassword.php">Forgot Password?</a>
                 </form>
             </div>
             <div class="col-sm-6 col-lg-5"></div>
