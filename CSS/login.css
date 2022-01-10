@@ -104,7 +104,9 @@ form {
     margin-top: 20%;
 }
 
-
+span.hamburger{
+  color: white;
+}
 
 /* text boxes*/
 #email{

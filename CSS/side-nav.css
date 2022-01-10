@@ -5,7 +5,7 @@ body {
 
 .sidenav {
   height: 100%;
-  width: 250px;
+  width: 265px;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -81,7 +81,7 @@ margin-left: 10px;
 }
 
 hr{
-  color: #f2f2f2;
+  background: white;
 }
 
 #login{
@@ -155,7 +155,7 @@ hr{
 }
 .sidenav1 {
   height: 100%;
-  width: 250px;
+  width: 265px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -211,7 +211,7 @@ hr{
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 300px) {
   .sidenav1 {padding-top: 15px;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
   }
   .sidenav1 {width: 0;}
@@ -224,60 +224,54 @@ hr{
 /* Extra Small Devices, Phones */ 
 @media only screen and (min-width : 480px) {
   .sidenav1 {padding-top: 15px;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;}
-  .sidenav1 {width: 0;}
-  .hamburger {
-    color: white;
-    
- 
-}
+  .hamburger {color: white;}
 .hamburger{visibility: visible !important;}
-.sidenav1 {width: 250px;}
+.sidenav1 {width: 0;}
 }
 
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
   .sidenav1 {padding-top: 15px;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;}
   .sidenav1 {width: 0;}
   .hamburger{
-    visibility: hidden !important;
+    visibility: visible !important;
   }
 }
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width : 992px) {
-  .sidenav1 {padding-top: 15px;
-    overflow-y: hidden;
-    overflow-x: hidden;}
-  .sidenav1 {width: 0;}
-}
-
-/* Large Devices, Wide Screens */
-@media only screen and (min-width : 1000) {
-  .sidenav1 {width: 250px;
+   .sidenav1 {width: 265px;
     overflow-y: hidden;
     overflow-x: hidden;}
   .sidenav1 .closebtn {visibility: hidden;}
   .hamburger{ visibility: hidden;}
+    .hamburger{color: white;}
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1000) {
+   .sidenav1 {width: 265px;
+    overflow-y: hidden;
+    overflow-x: hidden;}
+  .sidenav1 .closebtn {visibility: hidden;}
+  .hamburger{ visibility: hidden;}
+    .hamburger{color: white;}
   
 }
 
 
 @media only screen and (min-width : 1900px) {
-  .sidenav1 {width: 250px;
+  .sidenav1 {width: 265px;
     overflow-y: hidden;
-    overflow-x: hidden;
-  }
+    overflow-x: hidden;}
   .sidenav1 .closebtn {visibility: hidden;}
   .hamburger{ visibility: hidden;}
-}
-
-.hamburger{
-  color: black;
- 
+    .hamburger{color: white;}
+    
 }
 
 
