@@ -68,7 +68,7 @@
                             }else if(result == false){
                                unRenderEquipList();
                             }else{
-                                alert("ok what the fuck happened");
+                                modal("Something went wrong",()=>{return;})
                             }
                             }
                         }

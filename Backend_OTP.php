@@ -1,3 +1,4 @@
+<script type="text/javascript" src="Backend_Modal.php"></script>
 <script>
     var resend = document.getElementById('resend');
     var label = document.getElementById('timer');
@@ -46,10 +47,9 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                startInterval();
-                alert('OTP resent!');
-                // alert('A link was sent to your email \nPlease Check');
-                // document.location.reload();
+                modal('OTP resent!',function(){
+                    startInterval();
+                })
             }
         }
         xmlhttp.open("GET", "/sendEmailLink.php?var=" + c + '&type=OTP', true);

@@ -131,7 +131,6 @@
                         active[0].className = active[0].className.replace(" active", "");
                         row.className += ' active';
                         var id = row.innerHTML;
-                        alert(id + ' '+ currentMonth + ' ' + currentYear);
                         //openDate(currentMonth,currentYear,id);
                     }
                 }

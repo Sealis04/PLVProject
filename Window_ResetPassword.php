@@ -6,8 +6,9 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
     <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
-
     <link rel="stylesheet" href="css/Resetpw.css">
+    <link rel="stylesheet" href="css/SpecificallyForModal.css">
+    <script type="text/javascript" src="Backend_Modal.php"></script>
 </head>
 
 <body>
@@ -18,8 +19,10 @@
     if(isset($_GET['forget'])){
         if(!$_GET['forget']){
             if(!isset($_SESSION['user_ID'])){
-              echo '<script> alert("Please login First!") 
+              echo '<script> 
+              modal("Please login First!",function(){
                 window.location.href = "index.php"
+                });
               </script>';
         } 
         }
@@ -43,7 +46,11 @@
                             if (password_verify($usercode, $_GET['code'])) {
                                if (isset($_POST['submit'])) {
                                       if (empty($_POST['old']) || (empty($_POST['new'])) || (empty($_POST['confirm']))) {
-                                    echo '<script> alert("Please fill up all blank inputs before proceeding") </script>';
+                                    echo '<script> 
+                                    modal("Please fill up all blank inputs before proceeding",function(){
+                                        return;
+                                        });
+                                    </script>';
                                 } else {
                                     $sql_code3 = "SELECT `user_password` FROM `tbl_user` WHERE `user_ID` = ?";
                                     if ($sql3 = $conn->prepare($sql_code3)) {
@@ -58,7 +65,11 @@
                                                              if ($_POST['new'] == $_POST['confirm']) {
                                                                        $newpass = test_input($_POST['new']);
                                                                         if(strlen($newpass) < 7){
-                                                                            echo '<script> alert("Password must be 7 characters or longer") </script>';
+                                                                            echo '<script> 
+                                                                            modal("Password must be 7 characters or longer",function(){
+                                                                                return;
+                                                                                });
+                                                                         </script>';
                                                                         }else{
                                                                             $sql_code4 = "UPDATE tbl_user SET user_password = ?, user_activationcode = ? WHERE tbl_user.user_ID = ? ";
                                                                                 if ($sql4 = $conn->prepare($sql_code4)) {
@@ -66,8 +77,10 @@
                                                                                     $sql4->bind_param('ssi', $password_hash, $code, $_GET['userID']);
                                                                                     $password_hash = password_hash($newpass, PASSWORD_DEFAULT);
                                                                                     if ($sql4->execute()) {
-                                                                                              echo '<script> alert("Password changed successfully!")
-                                                                                            window.location.href="Backend_LOGOUT.php";
+                                                                                              echo '<script>
+                                                                                              modal("Password changed successfully!",function(){
+                                                                                                window.location.href="Backend_LOGOUT.php";
+                                                                                                });
                                                                                           </script>';
                                                                                     }
                                                                                     $sql4->close();
@@ -75,14 +88,24 @@
                                                                         }
                                                            
                                                         }else{
-                                                            echo '<script> alert("New Passwords do not match") </script>';
+                                                            echo '<script> 
+                                                            modal("New Passwords do not match",function(){
+                                                              return;
+                                                                });
+                                                            </script>';
                                                         }
                                                         }else{
-                                                           echo '<script> alert("Please input a new password!") </script>'; 
+                                                           echo '<script> modal("Please input a new password!",function(){
+                                                            return;
+                                                            });
+                                                           </script>'; 
                                                         }
                                                        
                                                     }else{
-                                                        echo '<script> alert("New password does not match old password") </script>';
+                                                        echo '<script> 
+                                                        modal("New password does not match old password",function(){
+                                                           return;
+                                                            });</script>';
                                                     }
                                                 }
                                             }
@@ -92,13 +115,16 @@
                                 }
                             }else{
                                   echo '<script> 
-                                  alert("Invalid User Access") 
-                                  window.location.href="index.php"
+                                  modal("Invalid User Access",function(){
+                                    window.location.href="index.php"
+                                     });
                                   </script>';
                             }
                             }else{
-                               echo  '<script> alert("Link has expired") 
+                               echo  '<script> 
+                               modal("Link has expired",function(){
                                 window.location.href="index.php"
+                                 });
                                </script>';
                            }
                         }
@@ -125,12 +151,18 @@
                             if (password_verify($usercode, $_GET['code'])) {
                                if (isset($_POST['submit'])) {
                                       if ((empty($_POST['new'])) || (empty($_POST['confirm']))) {
-                                    echo '<script> alert("Please fill up all blank inputs before proceeding") </script>';
+                                    echo '<script>
+                                        modal("Please fill up all blank inputs before proceeding",function(){
+                                        return;
+                                        }); </script>';
                                 } else {
                                                         if ($_POST['new'] == $_POST['confirm']) {
                                                             $newpass = test_input($_POST['new']);
                                                                if(strlen($newpass) < 7){
-                                                                            echo '<script> alert("Password must be 7 characters or longer") </script>';
+                                                                            echo '<script> 
+                                                                            modal("Password must be 7 characters or longer",function(){
+                                                                                return;
+                                                                                }); </script>';
                                                                         }else{
                                                                             $sql_code4 = "UPDATE tbl_user SET user_password = ?, user_activationcode = ? WHERE tbl_user.user_ID = ? ";
                                                             if ($sql4 = $conn->prepare($sql_code4)) {
@@ -138,27 +170,36 @@
                                                                 $sql4->bind_param('ssi', $password_hash, $code, $_GET['userID']);
                                                                 $password_hash = password_hash($newpass, PASSWORD_DEFAULT);
                                                                 if ($sql4->execute()) {
-                                                                          echo '<script> alert("Password changed successfully!")
-                                                                      window.location.href="Backend_LOGOUT.php";
-                                                                      </script>';
+                                                                          echo '<script> 
+                                                                          modal("Password changed successfully!",function(){
+                                                                            window.location.href="Backend_LOGOUT.php";
+                                                                            });
+                                                                            </script>';
                                                                 }
                                                                 $sql4->close();
                                                             }
                                                                         }
                                                         }else{
-                                                            echo '<script> alert("Passwords do not match") </script>';
+                                                            echo '<script> 
+                                                            modal("New Passwords do not match",function(){
+                                                              return;
+                                                                });
+                                                            </script>';
                                                         }
                                 }       
                                 }
                             }else{
                                   echo '<script> 
-                                  alert("Invalid User Access") 
-                                  window.location.href="index.php"
+                                  modal("Invalid User Access",function(){
+                                    window.location.href="index.php"
+                                      });
                                   </script>';
                             }
                             }else{
-                               echo  '<script> alert("Link has expired") 
+                               echo  '<script>
+                               modal("Link has expired",function(){
                                 window.location.href="index.php"
+                                  });
                                </script>';
                            }
                         }
