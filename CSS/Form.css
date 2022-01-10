@@ -304,15 +304,34 @@ input[type='time']:invalid+.validity:after {
   border-radius: 5px;
 }
 
+input#submitBtn {
+  margin-top: -10px;
+}
+
+input.btn.btn-primary {
+  font-size: 13px;
+}
+
+.form-control{
+  padding:0%;
+}
+
+.form-control:disabled, .form-control[readonly] {
+  background-color: #e9ecef;
+  opacity: 1;
+  margin-bottom: -25;
+}
+
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
-  .form-container{margin-left: 46px; margin-right: 46px;height: 95% !important;}
+  .form-container{margin-left: 46px; margin-right: 46px;height: auto !important;}
   #room0{margin-left: 1px;max-width: 100%; width: 99%;}
   input#File {padding-bottom: 25px !important;}
   .navbar {width: 5vm;display: flex;margin-left: 0px;
     background-color: #0077b6;border: none;
     margin-top: -50;width: 100%;z-index: -1;}
     .form-control{font-size: 1.2rem;}
+    .submit{padding: 5px;}
   
 }
 
@@ -325,6 +344,7 @@ input[type='time']:invalid+.validity:after {
     background-color: #0077b6;border: none;
     margin-top: -50;width: 100%;z-index: -1;}
     .form-control{font-size: 1.2rem;}
+    .submit{padding: 5px;}
 }
 
 /* Small Devices, Tablets */
@@ -336,6 +356,7 @@ input[type='time']:invalid+.validity:after {
     background-color: #0077b6;border: none;
     margin-top: -50;width: 100%;z-index: -1;}
     .form-control{font-size: 1.2rem;}
+    .submit{padding: 5px;}
 }
 
 /* Medium Devices, Desktops */
@@ -346,7 +367,7 @@ input[type='time']:invalid+.validity:after {
   input#File {
     padding-bottom: 40 !important;}
     .form-control{padding: 1.375rem 0.75rem;}
-
+    .submit{padding: 10px;}
 }
 
 
@@ -356,7 +377,8 @@ input[type='time']:invalid+.validity:after {
   input#File {
     padding-bottom: 40 !important;}
     .form-control{padding: 1.375rem 0.75rem;}
-    .form-container{height: 145% !important;}
+    .form-container{height: auto !important;}
+    .submit{padding: 10px;}
 }
 
 /* Large Devices, Wide Screens */
@@ -365,5 +387,6 @@ input[type='time']:invalid+.validity:after {
   input#File {
     padding-bottom: 40 !important;}
     .form-control{padding: 1.375rem 0.75rem;}
-    .form-container{height: 145% !important;}
+    .form-container{height: auto !important;}
+    .submit{padding: 10px;}
 }
