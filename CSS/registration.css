@@ -8,23 +8,25 @@
     position: fixed;
 }
 
+.nav2 {
+  width: 5vm;
+  display: flex;
+  margin-left: 0;
+  background-color: red;
+  border: none;
+  margin-top: 0;
+  z-index: -1;
+}
 
-.navbar{
-width:85%;
-margin:auto;
-display:flex;
+span.hamburger {
+  margin-left: 5;
 }
 .nav1{
 display:flex;
 width:50%
 }
 
-.nav2{
-  display:flex;
-  width:50%;
-  flex-direction: row;
-  justify-content: flex-end;
-}
+
 
 a {
   text-decoration: underline; 
@@ -92,12 +94,12 @@ body {
 /*END*/
 .loginForm{
     
-    margin-top: 7%;
-     width: 40%;
-     background-color: white;
-     border-radius: 20px;
-     border: 1px black solid;
- 
+  margin-top: 10%;
+  width: 90%;
+  border-radius: 20px;
+  border: 1px black solid;
+  margin-left: 15px;
+  text-align: center;
 }
 
 form {

@@ -10,10 +10,18 @@
     position: fixed;
 }
 
-.navbar{
-width:85%;
-margin:auto;
-display:flex;
+.navbar {
+  width: 5vm;
+  display: flex;
+  margin-left: -295px;
+  background-color: #0077b6;
+  border: none;
+  margin-top: -50;
+  z-index: -1;
+}
+
+span.hamburger {
+  margin-left: 4;
 }
 
 
@@ -95,6 +103,7 @@ body {
 
 #notif{
   width: 100%;
+  color: white;
 }
 
 #notifDropdown{
@@ -165,12 +174,20 @@ body {
 ul{list-style-type:none;}
 /*CALENDAR CHANGES*/
 #calendar{
-    border:solid;
-    padding: 1vh;
-    border-radius: 10px;
-    width: 85% !important;
-    margin-left: 5%;
-    color: black;
+   
+  padding: 1vh;
+  border-radius: 10px;
+  width: 95% !important;
+  margin-left: 2.5%;
+  color: black;
+}
+
+table{
+  background-color: #83bcff;
+}
+
+td, th{
+  padding: 14px;
 }
 
 
@@ -259,14 +276,18 @@ justify-items:end;
 
 /*Reservations*/
 .reservations{
-  margin-left: 5vw !important;
+  margin-left: 2vw !important;
   color: black;
-  border: 2px black solid;
-  width: 85% !important;
+
+  width: 97% !important;
   margin-top: 20px;
   border-radius: 7px;
   font-size: 25px;
   font-weight: bold;
+}
+
+.bg-info{
+  background-color: #0077b6 !important;
 }
 
 .reservations h3{
@@ -276,15 +297,21 @@ justify-items:end;
 
 /*Create reservation*/
 .create-reservation{
-  margin-left: 67.5vw !important;
+  margin-left: 2.5vw !important;
   margin: 10px;
   margin-top: 20px;
   border-radius: 7px;
 
 }
 
+.create-reservation:hover{
+  background-color: white;
+  border-color: #0077b6;
+  color: #0077b6;
+}
+
 .reservations h5{
-  color: orange;
+  color: black;
   display: inline-flex;
   margin-left: 10px;
   margin-right: 10px;
@@ -309,7 +336,7 @@ h5{
 }
 
 input[type="button"]{
-  background-color :#0F1057;
+  background-color :#0077b6;
   color: white;
 }
 
@@ -317,4 +344,77 @@ input[type="button"]{
   margin: 0;
   padding: 0;
   margin-left: 250px !important;
+}
+
+
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width : 320px) {
+    
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (min-width : 480px) {
+  
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+  .navbar{
+    
+    margin-left: -90%;
+    visibility: visible;
+  }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+  #calendar {margin-left: 15% !important;
+    width: 80% !important;
+
+  }
+  .reservations {
+    margin-left: 14.80vw !important;  
+    width: 80% !important; 
+  }
+  .create-reservation{
+    margin-left: 15vw !important;
+  }
+
+}
+
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1000) {
+  #calendar {margin-left: 15% !important;
+    width: 80% !important;
+
+  }
+  .reservations {
+    margin-left: 14.80vw !important;  
+    width: 80% !important; 
+  }
+  .create-reservation{
+    margin-left: 15vw !important;
+  }
+  .navbar{
+    background-color:transparent !important;
+  }
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+  #calendar {margin-left: 15% !important;
+    width: 80% !important;
+
+  }
+  .reservations {
+    margin-left: 14.80vw !important;  
+    width: 80% !important; 
+  }
+  .create-reservation{
+    margin-left: 15vw !important;
+  }
+  .navbar{
+    background-color:transparent !important;
+  }
 }

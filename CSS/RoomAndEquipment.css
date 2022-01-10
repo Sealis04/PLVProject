@@ -11,11 +11,18 @@
   z-index: 1;
 }
 
-.navbar{
-width:85%;
-margin:auto;
-display:flex;
+.navbar {
+  display: flex;
+  margin-left: -50px;
+  margin-right: -50x;
+  background-color: #0077b6;
+  border: none;
+  margin-top: -50;
+  width: 130%;
+  z-index: -1;
 }
+
+
 .nav1{
 display:flex;
 width:50%
@@ -127,6 +134,11 @@ body {
  #notifDropdown{
    width: 100%;
  }
+
+ .hamburger{
+  margin-left: -13px;
+ 
+}
  
  
  .dropdown:hover .dropdown-content {
@@ -162,7 +174,7 @@ ul input {
   margin:3vw;
   display:flex;
    margin-right: -15px;
-  margin-left: 145px;
+
 }
 .side-nav{
   margin: auto;
@@ -174,28 +186,33 @@ ul input {
 
 .big-contents{
   padding-left: 4vw;
-  width: 70%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  border-radius: 10px;  
-  margin-top: 30px;
-  background-color: rgba(228, 228, 228, 0.904);
-  margin-left: 20px;
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    border-radius: 10px;
+    margin-top: 36px;
+    background-color: rgba(228, 228, 228, 0.904);
+    margin-left: 10px;
+    margin-right: 40px;
 }
 
 legend{
   margin-top: 50px;
   font-weight: bold;
    margin-right: -15px;
-  margin-left: 145px;
+
 }
 
 
 .content{
   color: black;
 }
-
+svg:not(:root) {
+  /* margin: 1px; */
+  margin-bottom: 0 !important;
+  margin-right: 6 !important;
+}
 
 
 .btns{
@@ -270,3 +287,39 @@ padding:1vh 0 5vh 0 ;
 
 
 
+
+ @media screen and (max-height: 450px) {
+  
+}  
+
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width : 320px) {
+ 
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (min-width : 480px) {
+  
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+  .navbar{
+    background-color:transparent !important;
+  }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+  .navbar{
+    background-color:transparent !important;
+  }
+} 
+
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+  .navbar{
+    background-color:transparent !important;
+  }
+}

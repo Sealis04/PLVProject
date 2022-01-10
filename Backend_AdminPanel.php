@@ -1,4 +1,4 @@
-  <script>
+<script>
       //public form changes
       var isAdmin = <?php echo isset($_SESSION['isAdmin']) ? $_SESSION['isAdmin'] : NULL ?>;
       var equipBtn;
