@@ -1758,9 +1758,7 @@
             inputParam = (e.currentTarget.imageUploadParam) ? e.currentTarget.imageUploadParam.disabled = false : ' ';
             checker = false;
         } else {
-
             //disabling part 
-
             name = (e.currentTarget.nameParam) ? e.currentTarget.nameParam.value : ' ';
             qty = (e.currentTarget.quantityParam) ? e.currentTarget.quantityParam.value : ' ';
             desc = (e.currentTarget.descParam) ? e.currentTarget.descParam.value : ' ';
@@ -1772,7 +1770,6 @@
             inputParam = (e.currentTarget.imageUploadParam) ? e.currentTarget.imageUploadParam : ' ';
             addParam = (e.currentTarget.addParam) ? e.currentTarget.addParam : '';
             var target = e.currentTarget;
-
             var text;
             if (addParam) {
                 if (type == 'policiesID') {
@@ -1918,9 +1915,9 @@
                 y[a].disabled = true;
             }
         }
-        //to change edit and cancel icons
-        //   value.src = 'assets/Huwao.jpg';
-        //   value2.src = 'assets/Huwao.jpg';
+        // to change edit and cancel icons
+          value.src = 'assets/Check.png';
+          value2.src = 'assets/Cross.png';
     }
 
     function addRoomQuery(name, quantity, desc, availability, inputParam) {
