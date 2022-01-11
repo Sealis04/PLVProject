@@ -22,7 +22,6 @@
   margin-top: 250px !important;
   transform: scale(3,3);
   transition: transform 0.50s ease-in-out !important;
-  cursor: zoom-out;
 }
 .modalConfirm h4{
   font-size: 24px;
