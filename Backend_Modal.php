@@ -4,9 +4,10 @@ function modal(text,func){
           modalMessage = document.createElement('h4');
           modalMessage.textContent = text;
           modalConfirm = document.createElement('input');
+          modalConfirm.className = 'header-btn btn m-confirm';
           modalConfirm.type = 'button';
           modalConfirm.value = "Ok";
-          modalConfirm.className = "header-btn btn"
+
           modalCancel = document.createElement('input');
           modalBody.appendChild(modalMessage);
           modalBody.appendChild(modalConfirm);

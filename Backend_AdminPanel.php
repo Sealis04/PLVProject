@@ -24,17 +24,17 @@
 
     function createModal(text, func) {
         modalBody = document.createElement('div');
-        modalBody.className = 'modalConfirm shadow p-3 mb-5 bg-white rounded'
+        modalBody.className = 'modalConfirm shadow p-3 mb-5 bg-white rounded';  
         modalMessage = document.createElement('h4');
         modalMessage.textContent = text;
         modalConfirm = document.createElement('input');
         modalConfirm.type = 'button';
         modalConfirm.value = "Confirm";
-        modalConfirm.className = "header-btn btn"
+        modalConfirm.className = "header-btn btn g-confirm";
         modalCancel = document.createElement('input');
         modalCancel.type = 'button';
         modalCancel.value = "Cancel";
-        modalCancel.className = "header-btn btn decline"
+        modalCancel.className = "header-btn btn decline g-decline";
         modalBody.appendChild(modalMessage);
         modalBody.appendChild(modalConfirm);
         modalBody.appendChild(modalCancel);

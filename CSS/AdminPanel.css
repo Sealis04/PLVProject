@@ -730,19 +730,29 @@ div.pagination span.disabled {
 }
 
 .left{
-  color: #f1f1f1;
+  color: #f1f1f1 !important;
   font-size: 40px;
   font-weight: bold;
-  float:left;
-  margin: 5px;
+  float: left;
+  /* margin: 5px; */
+  TOP: 124px !important;
+  margin-top: -485px;
+  /* margin-bottom: 17px; */
+  margin-left: 50;
+  font-weight: bolder;
 }
 
 .right{
-  color: #f1f1f1;
+  color: #f1f1f1 !important;
   font-size: 40px;
   font-weight: bold;
-  float:right;
-  margin: 5px;
+  float: right;
+  /* margin: 5px; */
+  TOP: 124px !important;
+  margin-top: -500px;
+  /* margin-bottom: 17px; */
+  margin-right: 50;
+  font-weight: bolder;
 }
 
 .modalEdit{
@@ -935,9 +945,39 @@ div#finishedContent {
 }
 
 .hr{
-  width: 115%;
+  width: 100%;
 }
 
+
+.g-confirm, .g-decline {
+  margin-left: 20px !important;
+  text-align: center;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+
+
+input.header-btn.btn.decline.g-decline {
+  padding-left: 13px !important;
+  padding-right: 8px !important;
+}
+
+  .modalConfirm{
+    width: 270px ;
+  }
+
+  .left {
+    color: #f1f1f1 !important;
+    margin-top: -271px;
+    margin-left: 8px;
+}
+
+.right {
+  color: #f1f1f1 !important;
+  margin-top: -266px;
+  margin-right: 5px;
+}
 
 }
 
@@ -1015,7 +1055,31 @@ div#finishedContent {
     width: 50;
 }
 .hr{
-  width: 120%;
+  width: 100%;
+}
+
+
+.g-confirm, .g-decline {
+  margin-left: 20px !important;
+  text-align: center;
+  font-size: 14px;
+}
+
+input.header-btn.btn.decline.g-decline {
+  padding-left: 13px !important;
+  padding-right: 8px !important;
+}
+
+.left {
+  color: #f1f1f1 !important;
+  margin-top: -271px;
+  margin-left: 8px;
+}
+
+.right {
+color: #f1f1f1 !important;
+margin-top: -266px;
+margin-right: 5px;
 }
 
 }
@@ -1074,6 +1138,30 @@ div#finishedContent {
     width: 50;
     
 }
+
+.g-confirm, .g-decline {
+  margin-left: 20px !important;
+  text-align: center;
+  font-size: 14px;
+}
+
+input.header-btn.btn.decline.g-decline {
+  padding-left: 13px !important;
+  padding-right: 8px !important;
+}
+
+.left {
+  color: #f1f1f1 !important;
+  margin-top: -395px;
+  margin-left: 8px;
+}
+
+.right {
+color: #f1f1f1 !important;
+margin-top: -415px;
+margin-right: 5px;
+}
+
 
 }
 
@@ -1200,8 +1288,29 @@ div#finishedContent {
     background-color:transparent !important;
   }
   .hr{
-    width: 120%;
+    width: 100%;
   }
+
+  .g-confirm, .g-decline {
+    margin-left: 20px !important;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .left {
+    color: #f1f1f1 !important;
+    margin-top: -395px;
+    margin-left: 8px;
+  }
+  
+  .right {
+  color: #f1f1f1 !important;
+  margin-top: -415px;
+  margin-right: 5px;
+  }
+  
+  
+
 
 }
 
@@ -1211,14 +1320,18 @@ div#finishedContent {
   top: 50%;
   transform: translate(-50%, -50%);
   padding: 50px !important;
-  border: 3.5px solid #FEC260 !important;
+  border: 3.5px inset #1C1D91 !important;
 
 }
 
 .modalConfirm h4{
   font-size: 24px;
-  margin:  0 0 30 0;
+  margin:  0 5 30 5;
+  text-align: center;
 }
 .modalConfirm input{
   margin-left: 30px;
+
+  
 }
+

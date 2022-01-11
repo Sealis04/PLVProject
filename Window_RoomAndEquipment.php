@@ -30,6 +30,13 @@
                require "Backend_CheckifLoggedIN.php";
                 ?>        
         </sidenav>
+        <nav>
+            <div class="navbar">
+            <div class="nav2">
+                  
+            </div>
+            </div>
+        </nav>
 
         <!--body-->
         <div class="container">

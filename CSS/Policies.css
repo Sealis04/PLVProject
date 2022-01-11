@@ -223,9 +223,6 @@ legend{
   font-weight: bold;
 }
 
-@media screen and (max-height: 450px) {
-  
-}  
 
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
@@ -243,13 +240,18 @@ legend{
 /* Extra Small Devices, Phones */ 
 @media only screen and (min-width : 480px) {
   .container{
-    margin-left: 45px !important;
+    margin-left: 35px !important;
   }
   legend{
     margin-top: 80px;
   }
   .policy{
     font-size: 14px;
+    margin-right: 60px !important;
+    margin-right: -30px;
+  }
+  .navbar{
+    margin-left: -40px;
   }
 }
 

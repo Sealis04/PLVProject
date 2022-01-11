@@ -1,17 +1,93 @@
 .modalConfirm{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    padding: 50px !important;
-    border: 3.5px solid #FEC260 !important;
-  
-  }
-  
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 3.5px inset #1C1D91 !important;
+
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  /* display: none; */
+  overflow: hidden;
+  outline: 0;
+  margin: 100;
+  margin-left: 95px !important;
+  margin-top: 250px !important;
+  transform: scale(3,3);
+  transition: transform 0.50s ease-in-out !important;
+  cursor: zoom-out;
+}
+.modalConfirm h4{
+  font-size: 24px;
+  margin:  0 0 30 0;
+}
+.modalConfirm input{
+  margin-left: 130px;
+}
+
+
+.modalConfirm.shadow.p-3.mb-5.bg-white.rounded img {
+  height: 110px;
+  width: 110px;
+}
+
+span.left, span.right{
+color: blue;
+}
+
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width : 320px) {
+.modalConfirm input{
+  margin-left: 0px;}
   .modalConfirm h4{
-    font-size: 24px;
-    margin:  0 0 30 0;
+    font-size: 15px;
   }
-  .modalConfirm input{
-    margin-left: 30px;
+  
+  input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
+    margin-top: 25px;
+    margin-left: 40px;
   }
+  .modalConfirm {
+    position: fixed;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    border: 3.5px inset #1C1D91 !important;
+    font-size: 14px !important;
+    margin-top: 21px;
+    width: 311;
+}
+  
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (min-width : 480px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+.navbar{
+  background-color:transparent !important;
+}
+} 
+
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+.modalConfirm input{
+  margin-left: 130px;
+}
+
+}
