@@ -97,10 +97,9 @@
                             } else {
                                 row.className += 'active';
                             }
-                            var id = row.innerHTML;
+                            id = row.getElementsByTagName('div')[0].textContent
                             activeYear = currentYear;
                             activeMonth= currentMonth;
-                            // activeDay = id;
                             openDate(currentMonth, currentYear, id);
                         }
                     }
@@ -109,7 +108,7 @@
         }
     }
 
-    function calendar(month, year,activeDay) {
+  function calendar(month, year,activeDay) {
         var firstDay = (new Date(year, month)).getDay();
         let daysInMonth = new Date(year, month + 1, 0).getDate();
         let tbl_body = document.getElementById('calendar-body');
@@ -132,13 +131,27 @@
                     let cell = document.createElement('td');
                     cell.style = 'height:5vw;text-align:left;vertical-align:top';
                     let cellText = document.createTextNode(date);
+                    let note;
                     if (date === today.getDate() && year == today.getFullYear() && month === today.getMonth()) {
                         cell.classList.add('bg-info');
                     }
                     if(activeDay == date){
                         cell.classList.add('active');
                     }
-                    cell.appendChild(cellText);
+                    var textNodeDiv = document.createElement('div');
+                    textNodeDiv.appendChild(cellText);
+                    cell.appendChild(textNodeDiv);
+                    checkIfReservationExists(date,month,year).then((value)=>{
+                        if(value>0){
+                        var text = document.createTextNode(value + ' reservations');
+                        var label = document.createElement('label');
+                        label.appendChild(text);
+                        label.className = 'reservationCount';
+                        var br = document.createElement('br');
+                        cell.appendChild(br);
+                        cell.appendChild(label);
+                    }
+                    });
                     row.appendChild(cell);
                     date++;
                 }
@@ -147,7 +160,19 @@
         }
         addRowHandlers();
     }
-
+    async function checkIfReservationExists(day,month,year){
+        month = ("0" + (month + 1)).slice(-2);
+        return new Promise(resolve=>{
+            var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                 resolve(this.responseText);
+            }
+        }
+        xmlhttp.open("GET", "/Request_CheckCountOfReservations.php?day=" +  day + '&month=' + month + '&year=' + year, true);
+        xmlhttp.send();
+        })
+    }
     // opens scheduled reservations
     function openDate(currentMonth, currentYear, selectedDay) {
        var date = currentYear + '-' + (currentMonth + 1) + '-' + selectedDay;
@@ -158,7 +183,6 @@
                 var mainDiv = document.getElementById('listBody');
                 var x = fullmonths[currentMonth];
                 currentDate = x + ' ' + selectedDay + ', ' + currentYear;
-                console.log(currentDate);
                 if (myObj.length != 0) {
                     mainDiv.innerHTML = "";
                     myObj.forEach(function(element,index){
