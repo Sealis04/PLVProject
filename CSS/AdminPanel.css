@@ -947,7 +947,10 @@ div#finishedContent {
 .hr{
   width: 100%;
 }
+hr.hro{
 
+  width: 118% !important;
+}
 
 .g-confirm, .g-decline {
   margin-left: 20px !important;
@@ -1335,3 +1338,11 @@ margin-right: 5px;
   
 }
 
+hr.hro{
+  top: 20px;
+  border: none;
+  height: 2px;
+  background: black;
+  margin-bottom: 50px;
+  width: 120%;
+}
