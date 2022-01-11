@@ -15,7 +15,7 @@ else
     INNER JOIN tbl_notification ON tbl_notification.notificationID = tbl_reservation.notifID 
     WHERE (tbl_reservation.r_approved_ID = 2 OR tbl_reservation.r_approved_ID = 1) 
     AND tbl_reservation.r_status = 0 AND tbl_notification.forRegistration = 0 
-    AND r_reviewed = 0";
+    AND r_reviewed = 0 AND DateEnd > CURDATE()";
 		$sql5=$conn->prepare($query);
 			$sql5->execute();
 			$result = $sql5->get_result();
