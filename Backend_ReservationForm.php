@@ -701,7 +701,7 @@
             //append to switchLabel
             var CBinput = document.createElement('input');
             CBinput.id = 'equipmentCB' + number;
-            
+
             CBinput.type = 'checkbox';
             CBinput.name = 'equipAdd';
             CBinput.checked = true;
@@ -852,7 +852,9 @@
                     if (ele.id == 'durationDay') {
                         if (ele.value <= 0) {
                             facts = false;
-                            modal("Invalid value for Input:Duration",()=>{return;})
+                            modal("Invalid value for Input:Duration", () => {
+                                return;
+                            })
                         } else {
                             obj[ele.name] = ele.value || "";
                         }
@@ -866,14 +868,18 @@
                 } else {
                     if (facts) {
                         success = false;
-                        modal('blank values, please fill them up',()=>{return;})
+                        modal('blank values, please fill them up', () => {
+                            return;
+                        })
                         facts = false;
                     }
                 }
             });
             var room = f.querySelectorAll('select');
             if (room[0].value == 0) {
-                modal('No available Room for that slot, please choose a different Date/Time slot.',()=>{return;})
+                modal('No available Room for that slot, please choose a different Date/Time slot.', () => {
+                    return;
+                })
                 // location.reload();
                 roomSuccess = false;
                 facts = false;
@@ -910,7 +916,9 @@
         });
         if (uploadedCount == 0) {
             if (facts) {
-                modal("Please upload your attachment letters",()=>{return;});
+                modal("Please upload your attachment letters", () => {
+                    return;
+                });
             }
             fileUploadSuccess = false;
         } else {
@@ -918,7 +926,9 @@
         }
         for (var fileCount = 0; fileCount < uploadedCount; fileCount++) {
             if (!x[1].files[fileCount].name.match(/.(jpg|jpeg|png)$/i)) {
-                modal('Invalid file format\n Accepts JPG|JPEG|PNG',()=>{return;});
+                modal('Invalid file format\n Accepts JPG|JPEG|PNG', () => {
+                    return;
+                });
                 fileUploadSuccess = false;
                 break;
             }
@@ -953,7 +963,7 @@
                                                         if (profile[iv2]['EquipmentStuff'][equipCount1]['ID'] == profile[i]['EquipmentStuff'][equipCount2]['ID']) {
                                                             var currentQty = parseInt(profile[iv2]['EquipmentStuff'][equipCount1]['qty']) + parseInt(profile[i]['EquipmentStuff'][equipCount2]['qty']);
                                                             if (currentQty > parseInt(profile[iv2]['EquipmentStuff'][equipCount1]['max'])) {
-                                                                modal('Total quantity of equipment has exceeded the maximum capacity possible.\nPlease change before proceeding',function(){
+                                                                modal('Total quantity of equipment has exceeded the maximum capacity possible.\nPlease change before proceeding', function() {
                                                                     return;
                                                                 })
                                                                 var everythingOkay = false;
@@ -967,9 +977,9 @@
                                             }
                                         }
                                         if (profile[i]['room'] == profile[iv2]['room']) {
-                                            modal('Conflicting schedule in rooms. \nPlease change one before proceeding.',function(){
-                                                                    return;
-                                                                })
+                                            modal('Conflicting schedule in rooms. \nPlease change one before proceeding.', function() {
+                                                return;
+                                            })
                                             var everythingOkay = false;
                                             break loop1;
                                         } else {
@@ -1002,11 +1012,11 @@
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 if (this.responseText == 'success') {
-                    modal("Reservation success\nStatus: Pending",function(){
+                    modal("Reservation success\nStatus: Pending", function() {
                         window.location.href = "Window_HomePage.php";
                     })
                 } else {
-                    modal(this.responseText,function(){
+                    modal(this.responseText, function() {
                         location.reload();
                     })
                 }
@@ -1031,14 +1041,14 @@
             reservationDetails.innerHTML += '<h4> Equipment to be reserved: ';
             reservationDetails.innerHTML += '<h5>' + profileArr[0].EquipmentStuff[a].name + ': ' + profileArr[0].EquipmentStuff[a].qty;
         }
-          modalConfirm = document.createElement('input');
-          modalConfirm.type = 'button';
-          modalConfirm.value = "Confirm";
-          modalConfirm.className = 'header-btn btn f-confirm';
-          modalCancel = document.createElement('input');
-          modalCancel.type = 'button';
-          modalCancel.value = "Cancel";
-          modalCancel.className = 'header-btn btn decline f-decline';
+        modalConfirm = document.createElement('input');
+        modalConfirm.type = 'button';
+        modalConfirm.value = "Confirm";
+        modalConfirm.className = 'header-btn btn f-confirm';
+        modalCancel = document.createElement('input');
+        modalCancel.type = 'button';
+        modalCancel.value = "Cancel";
+        modalCancel.className = 'header-btn btn decline f-decline';
         modalBody.appendChild(reservationDetails);
         if (profileArr.length > 1) {
             var i = 0;
@@ -1083,25 +1093,25 @@
             manipulateDiv.appendChild(next);
             modalBody.appendChild(manipulateDiv);
         }
-        //   modalConfirm.addEventListener('click', function(e) {
-        //       func();
-        //       modalBody.remove();
-        //   });
-        //   modalCancel.addEventListener('click', function(e) {
-        //       modalBody.remove();
-        //       return true;
-        //   });
+        modalConfirm.addEventListener('click', function(e) {
+            func();
+            modalBody.remove();
+        });
+        modalCancel.addEventListener('click', function(e) {
+            modalBody.remove();
+            return true;
+        });
         document.body.appendChild(modalBody);
 
 
         //for modal Image
         reservationDetails.innerHTML += '<h4> Letters included: ' +
-        '*NOTE: Please make sure all uploaded images are in proper format/orientation to reduce the chances of your reservation being rejected. ';
+            '*NOTE: Please make sure all uploaded images are in proper format/orientation to reduce the chances of your reservation being rejected. ';
         var img = document.createElement('img');
-        img.className ='zoomOut';
+        img.className = 'zoomOut';
         img.src = URL.createObjectURL(filesArr[0]);
-       var moveDiv = document.createElement('div');
-       moveDiv.class="moveModal";
+        var moveDiv = document.createElement('div');
+        moveDiv.class = "moveModal";
         var modal = document.createElement('div');
         modal.id = 'myModal';
         modal.className = 'modal';
@@ -1116,58 +1126,58 @@
         reservationDetails.appendChild(img);
         reservationDetails.appendChild(modal);
         modal.appendChild(modalImg);
-            modal.appendChild(moveDiv)
+        modal.appendChild(moveDiv)
         span.addEventListener('click', function() {
-              modal.style.display = "none";
-              modalImg.classname = ' ';
-              click = false;
-              flipped = false;
-          });
+            modal.style.display = "none";
+            modalImg.classname = ' ';
+            click = false;
+            flipped = false;
+        });
 
         document.addEventListener('click', function(e) {
-              if (e.target && e.target == img) {
-                  e.stopPropagation();
-                  modal.style.display = "block";
-                  modalImg.src = e.target.src;
-                  if (!boxClicked) {
-                      document.addEventListener('click', function(event) {
-                          if (event.target == modal) {
-                              boxClicked = false;
-                              modal.style.display = 'none'
-                              modalImg.classname = ' ';
-                              click = false;
-                              flipped = false;
-                              var b = 0;
-                          };
-                      })
-                  }
-                  boxClicked = true;
-              }
-          });
-          if (filesArr.length > 1) {
-              var b = 0;
-              var prev = document.createElement('span');
-              prev.className = 'left';
-              var next = document.createElement('span');
-              next.className = 'right';
-              prev.textContent = '<';
-              next.textContent = '>';
-              prev.addEventListener('click', function() {
-                  b--;
-                  if (b < 0) b = filesArr.length - b;
-                  modalImg.src = URL.createObjectURL(filesArr[b]);
-              })
-              next.addEventListener('click', function() {
-                  b++;
-                  if (b == filesArr.length) b = 0;
-                  console.log(filesArr[b]);
-                  modalImg.src = URL.createObjectURL(filesArr[b]);
-              })
-              moveDiv.appendChild(prev);
-              moveDiv.appendChild(next);
-          }
+            if (e.target && e.target == img) {
+                e.stopPropagation();
+                modal.style.display = "block";
+                modalImg.src = e.target.src;
+                if (!boxClicked) {
+                    document.addEventListener('click', function(event) {
+                        if (event.target == modal) {
+                            boxClicked = false;
+                            modal.style.display = 'none'
+                            modalImg.classname = ' ';
+                            click = false;
+                            flipped = false;
+                            var b = 0;
+                        };
+                    })
+                }
+                boxClicked = true;
+            }
+        });
+        if (filesArr.length > 1) {
+            var b = 0;
+            var prev = document.createElement('span');
+            prev.className = 'left';
+            var next = document.createElement('span');
+            next.className = 'right';
+            prev.textContent = '<';
+            next.textContent = '>';
+            prev.addEventListener('click', function() {
+                b--;
+                if (b < 0) b = filesArr.length - b;
+                modalImg.src = URL.createObjectURL(filesArr[b]);
+            })
+            next.addEventListener('click', function() {
+                b++;
+                if (b == filesArr.length) b = 0;
+                console.log(filesArr[b]);
+                modalImg.src = URL.createObjectURL(filesArr[b]);
+            })
+            moveDiv.appendChild(prev);
+            moveDiv.appendChild(next);
+        }
 
-          modalBody.appendChild(modalConfirm);
-          modalBody.appendChild(modalCancel);
+        modalBody.appendChild(modalConfirm);
+        modalBody.appendChild(modalCancel);
     }
 </script>
