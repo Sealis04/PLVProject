@@ -647,7 +647,7 @@
             roomLabel.setAttribute('for', 'room');
             roomLabel.textContent = 'Room: '
             var selectLabel = document.createElement('select');
-
+            selectLabel.className="nRoom";
             selectLabel.name = 'room';
             selectLabel.id = 'room' + number;
             await listRoom(selectLabel, ...Array(1), roomDiv);
@@ -1101,7 +1101,7 @@
         span.className = 'close';
         span.textContent = 'X';
         var modalImg = document.createElement('img');
-        modalImg.id = 'modal-content zoomOut';
+        modalImg.id = 'modal-content';
         var boxClicked = false;
         var modalDiv = document.createElement('div');
 
