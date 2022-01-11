@@ -879,13 +879,13 @@
             if (room[0].value == 0) {
                 modal('No available Room for that slot, please choose a different Date/Time slot.', () => {
                     return;
-                })
-                // location.reload();
+                });
                 roomSuccess = false;
                 facts = false;
             } else {
                 roomSuccess = true;
                 obj['room'] = room[0].value;
+                obj['roomName'] = room[0].options[room[0].selectedIndex].text;
             }
 
             f.querySelectorAll('input[name="qty[]"]').forEach(result => {
@@ -998,9 +998,11 @@
             }
         }
         let submitBtn = evt.currentTarget.submitBtn;
-        createModal(profile, x[1].files, function() {
+        if(everythingOkay){
+            createModal(profile, x[1].files, function() {
             submitForm(profile, submitBtn);
         })
+        }
     }
 
     function submitForm(profile, submitBtn) {
@@ -1026,21 +1028,22 @@
         xmlhttp.send(formData);
     }
 
-    function createModal(profileArr, filesArr, func) {
+    function createModal(profileArr, filesArr, func, i = 0) {
         modalBody = document.createElement('div');
         modalBody.className = 'modalConfirm shadow p-3 mb-5 bg-white rounded';
         reservationDetails = document.createElement('div');
         reservationDetails.innerHTML =
             '<h3> Confirm Reservation of the ff:' +
-            '<h4> Event Name: ' + profileArr[0].event +
-            '<h4> Event Adviser: ' + profileArr[0].adviser +
-            '<h4> From: ' + profileArr[0].startDate + ' to ' + profileArr[0].endDate +
-            '<h4> Time: ' + profileArr[0].startTime + ' to ' + profileArr[0].endTime +
-            '<h4> Room: ' + profileArr[0].room + ' Attendees: ' + profileArr[0].attendees;
-        for (a = 0; a < profileArr[0].EquipmentStuff.length; a++) {
+            '<h4> Event Name: ' + profileArr[i].event +
+            '<h4> Event Adviser: ' + profileArr[i].adviser +
+            '<h4> From: ' + profileArr[i].startDate + ' to ' + profileArr[i].endDate +
+            '<h4> Time: ' + profileArr[i].startTime + ' to ' + profileArr[i].endTime +
+            '<h4> Room: ' + profileArr[i].roomName + ' Attendees: ' + profileArr[i].attendees;
+        for (a = i; a < profileArr[i].EquipmentStuff.length; a++) {
             reservationDetails.innerHTML += '<h4> Equipment to be reserved: ';
-            reservationDetails.innerHTML += '<h5>' + profileArr[0].EquipmentStuff[a].name + ': ' + profileArr[0].EquipmentStuff[a].qty;
+            reservationDetails.innerHTML += '<h5>' + profileArr[i].EquipmentStuff[a].name + ': ' + profileArr[i].EquipmentStuff[a].qty;
         }
+        console.log(profileArr)
         modalConfirm = document.createElement('input');
         modalConfirm.type = 'button';
         modalConfirm.value = "Confirm";
@@ -1051,7 +1054,6 @@
         modalCancel.className = 'header-btn btn decline f-decline';
         modalBody.appendChild(reservationDetails);
         if (profileArr.length > 1) {
-            var i = 0;
             var manipulateDiv = document.createElement('div');
             var prev = document.createElement('span');
             prev.className = 'left';
@@ -1062,32 +1064,15 @@
             prev.addEventListener('click', function() {
                 i--;
                 if (i < 0) i = profileArr.length - 1;
-                reservationDetails.innerHTML =
-                    '<h3> Confirm Reservation of the ff:' +
-                    '<h4> Event Name: ' + profileArr[i].event +
-                    '<h4> Event Adviser: ' + profileArr[i].adviser +
-                    '<h4> From: ' + profileArr[i].startDate + ' to ' + profileArr[i].endDate +
-                    '<h4> Time: ' + profileArr[i].startTime + ' to ' + profileArr[i].endTime +
-                    '<h4> Room: ' + profileArr[i].room + ' Attendees: ' + profileArr[i].attendees;
-                for (a = 0; a < profileArr[i].EquipmentStuff.length; a++) {
-                    reservationDetails.innerHTML += '<h4> Equipment to be reserved: '
-                    reservationDetails.innerHTML += '<h5>' + profileArr[i].EquipmentStuff[a].name + ': ' + profileArr[i].EquipmentStuff[a].qty;
-                }
+                modalBody.remove();
+                createModal(profileArr,filesArr,func,i);
             })
+
             next.addEventListener('click', function() {
                 i++;
                 if (i == profileArr.length) i = 0;
-                reservationDetails.innerHTML =
-                    '<h3> Confirm Reservation of the ff:' +
-                    '<h4> Event Name: ' + profileArr[i].event +
-                    '<h4> Event Adviser: ' + profileArr[i].adviser +
-                    '<h4> From: ' + profileArr[i].startDate + ' to ' + profileArr[i].endDate +
-                    '<h4> Time: ' + profileArr[i].startTime + ' to ' + profileArr[i].endTime +
-                    '<h4> Room: ' + profileArr[i].room + ' Attendees: ' + profileArr[i].attendees;
-                for (a = 0; a < profileArr[i].EquipmentStuff.length; a++) {
-                    reservationDetails.innerHTML += '<h4> Equipment to be reserved: '
-                    reservationDetails.innerHTML += '<h5>' + profileArr[i].EquipmentStuff[a].name + ': ' + profileArr[i].EquipmentStuff[a].qty;
-                }
+                modalBody.remove();
+                createModal(profileArr,filesArr,func,i);
             })
             manipulateDiv.appendChild(prev);
             manipulateDiv.appendChild(next);
@@ -1102,11 +1087,9 @@
             return true;
         });
         document.body.appendChild(modalBody);
-
-
         //for modal Image
         reservationDetails.innerHTML += '<h4> Letters included: ' +
-            '*NOTE: Please make sure all uploaded images are in proper format/orientation to reduce the chances of your reservation being rejected. ';
+        '*NOTE: Please make sure all uploaded images are in proper format/orientation to reduce the chances of your reservation being rejected. ';
         var img = document.createElement('img');
         img.className = 'zoomOut';
         img.src = URL.createObjectURL(filesArr[0]);
