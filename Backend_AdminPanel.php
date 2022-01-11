@@ -1618,11 +1618,9 @@
         if (add) {
             btn.disabled = true;
             checkbox.disabled = false;
-            editBtn.src = "assets/c2.png";
-            removeBtn.src = "assets/c1.png";
             checker = false;
             checkbox.checked = true;
-            disableButtons(this);
+            disableButtons(editBtn, removeBtn);
             if (type == 'roomID') {
                 var img = document.createElement('input');
                 img.type = 'image';
