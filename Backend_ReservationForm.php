@@ -1091,13 +1091,12 @@
         reservationDetails.innerHTML += '<h4> Letters included: ' +
         '*NOTE: Please make sure all uploaded images are in proper format/orientation to reduce the chances of your reservation being rejected. ';
         var img = document.createElement('img');
-        img.className = 'zoomOut';
         img.src = URL.createObjectURL(filesArr[0]);
         var moveDiv = document.createElement('div');
         moveDiv.class = "moveModal";
         var modal = document.createElement('div');
         modal.id = 'myModal';
-        modal.className = 'modal';
+        modal.className = 'modal modal-f';
         var span = document.createElement('span');
         span.className = 'close';
         span.textContent = 'X';

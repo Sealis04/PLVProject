@@ -7,7 +7,10 @@
         <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="css/login.css">
         <link rel="stylesheet" href="css/SpecificallyForModal.css">
+        <link rel="stylesheet" href="bootstrap-4.1.3-dist/css/bootstrap.min.css">
+    <script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="Backend_Modal.php"></script>
+    
         </head>
     <body>
     <?php
@@ -66,7 +69,7 @@ $email = $password=$userID="";
         </nav>
         <div class="container">
             <div class="col-sm-6 col-lg-5"></div>
-            <div class="loginForm col-sm-6 col-lg-5">
+            <div class="loginForm col-sm-6col-lg-5 shadow-lg p-3 mb-5 bg-white rounded">
                 <img id="plv-logo" src="assets/plv.png">
                 <form action-="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                     <div class="md-form form-group">

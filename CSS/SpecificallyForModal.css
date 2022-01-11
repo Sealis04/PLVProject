@@ -7,22 +7,16 @@
 
 }
 
-.modal {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1050;
-  /* display: none; */
-  overflow: hidden;
-  outline: 0;
-  margin: 100;
-  margin-left: 95px !important;
-  margin-top: 250px !important;
-  transform: scale(3,3);
-  transition: transform 0.50s ease-in-out !important;
-  cursor: zoom-out;
+.modal-f{
+z-index: 1050;
+overflow: hidden;
+outline: 0;
+margin: 100;
+margin-left: 115px !important;
+margin-top: 155px !important;
+transform: scale(3,3);
+width: 150px;
+height: 150px;
 }
 .modalConfirm h4{
   font-size: 24px;
@@ -34,8 +28,12 @@
 
 
 .modalConfirm.shadow.p-3.mb-5.bg-white.rounded img {
-  height: 110px;
-  width: 110px;
+  height: 90;
+  width: 90;
+}
+
+img#modal-content {
+margin-left: 22px;
 }
 
 span.left, span.right{
@@ -49,20 +47,34 @@ color: blue;
   .modalConfirm h4{
     font-size: 15px;
   }
+
+  img#modal-content {
+    margin-left: 11px;
+  }
   
   input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
     margin-top: 25px;
-    margin-left: 40px;
+    margin-left: 30px;
   }
   .modalConfirm {
     position: fixed;
     left: 50%;
-    top: 45%;
+    top: 47%;
     transform: translate(-50%, -50%);
     border: 3.5px inset #1C1D91 !important;
     font-size: 14px !important;
     margin-top: 21px;
-    width: 311;
+    width: 274px;
+    
+} .modal-f {
+  z-index: 1050;
+  overflow: hidden;
+  outline: 0;
+  margin: 100;
+  margin-left: 115px !important;
+  margin-top: 155px !important;
+  transform: scale(3,3);
+
 }
   
 }
@@ -70,16 +82,105 @@ color: blue;
 /* Extra Small Devices, Phones */ 
 @media only screen and (min-width : 480px) {
 
+img#modal-content {
+  margin-left: 11px;
+}
+
+input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
+  margin-top: 25px;
+  margin-left: 30px;
+}
+.modalConfirm {
+  position: fixed;
+  left: 50%;
+  top: 47%;
+  transform: translate(-50%, -50%);
+  border: 3.5px inset #1C1D91 !important;
+  font-size: 14px !important;
+  margin-top: 21px;
+  width: 274px;
+  
+} .modal-f {
+z-index: 1050;
+overflow: hidden;
+outline: 0;
+margin: 100;
+margin-left: 115px !important;
+margin-top: 155px !important;
+transform: scale(3,3);
+}
+
 }
 
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
+
+img#modal-content {
+  margin-left: 11px;
+}
+
+input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
+  margin-top: 25px;
+  margin-left: 30px;
+}
+.modalConfirm {
+  position: fixed;
+  left: 50%;
+  top: 35%;
+  transform: translate(-50%, -50%);
+  border: 3.5px inset #1C1D91 !important;
+  font-size: 14px !important;
+  margin-top: 21px;
+  width: 274px;
+  
+} .modal-f {
+z-index: 1050;
+overflow: hidden;
+outline: 0;
+margin: 100;
+margin-left: 115px !important;
+margin-top: 155px !important;
+transform: scale(3,3);
+}
 }
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width : 992px) {
 .navbar{
   background-color:transparent !important;
+}
+
+.modalConfirm input{
+  margin-left: 130px;
+}
+
+img#modal-content {
+  margin-left: 12px;
+}
+
+input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
+  margin-top: 25px;
+  margin-left: 60px;
+}
+.modalConfirm {
+  position: fixed;
+  left: 50%;
+  top: 35%;
+  transform: translate(-50%, -50%);
+  border: 3.5px inset #1C1D91 !important;
+  font-size: 14px !important;
+  margin-top: 21px;
+  width: 350px;
+  
+} .modal-f {
+z-index: 1050;
+overflow: hidden;
+outline: 0;
+margin: 100;
+margin-left: 115px !important;
+margin-top: 155px !important;
+transform: scale(3,3);
+
 }
 } 
 
@@ -88,6 +189,35 @@ color: blue;
 @media only screen and (min-width : 1200px) {
 .modalConfirm input{
   margin-left: 130px;
+}
+
+img#modal-content {
+  margin-left: 25px;
+}
+
+input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
+  margin-top: 25px;
+  margin-left: 60px;
+}
+.modalConfirm {
+  position: fixed;
+  left: 50%;
+  top: 35%;
+  transform: translate(-50%, -50%);
+  border: 3.5px inset #1C1D91 !important;
+  font-size: 14px !important;
+  margin-top: 21px;
+  width: 350px;
+  
+} .modal-f {
+z-index: 1050;
+overflow: hidden;
+outline: 0;
+margin: 100;
+margin-left: 115px !important;
+margin-top: 155px !important;
+transform: scale(3,3);
+
 }
 
 }
