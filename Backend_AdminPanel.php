@@ -1618,11 +1618,9 @@
         if (add) {
             btn.disabled = true;
             checkbox.disabled = false;
-            editBtn.src = "assets/c2.png";
-            removeBtn.src = "assets/c1.png";
             checker = false;
             checkbox.checked = true;
-            disableButtons(this);
+            disableButtons(editBtn, removeBtn);
             if (type == 'roomID') {
                 var img = document.createElement('input');
                 img.type = 'image';
@@ -1758,9 +1756,7 @@
             inputParam = (e.currentTarget.imageUploadParam) ? e.currentTarget.imageUploadParam.disabled = false : ' ';
             checker = false;
         } else {
-
             //disabling part 
-
             name = (e.currentTarget.nameParam) ? e.currentTarget.nameParam.value : ' ';
             qty = (e.currentTarget.quantityParam) ? e.currentTarget.quantityParam.value : ' ';
             desc = (e.currentTarget.descParam) ? e.currentTarget.descParam.value : ' ';
@@ -1772,7 +1768,6 @@
             inputParam = (e.currentTarget.imageUploadParam) ? e.currentTarget.imageUploadParam : ' ';
             addParam = (e.currentTarget.addParam) ? e.currentTarget.addParam : '';
             var target = e.currentTarget;
-
             var text;
             if (addParam) {
                 if (type == 'policiesID') {
@@ -1918,9 +1913,9 @@
                 y[a].disabled = true;
             }
         }
-        //to change edit and cancel icons
-        //   value.src = 'assets/Huwao.jpg';
-        //   value2.src = 'assets/Huwao.jpg';
+        // to change edit and cancel icons
+          value.src = 'assets/Check.png';
+          value2.src = 'assets/Cross.png';
     }
 
     function addRoomQuery(name, quantity, desc, availability, inputParam) {
