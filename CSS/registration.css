@@ -12,7 +12,7 @@
   width: 5vm;
   display: flex;
   margin-left: 0;
-  background-color: red;
+  background-color: #0077b6;
   border: none;
   margin-top: 0;
   z-index: -1;
@@ -138,3 +138,67 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+label{
+  float: left;
+}
+
+
+
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width : 320px) {
+ 
+  select#Type {
+    margin-left: -35%;}
+    select#course {
+      margin-left: -33%;
+      max-width: 190px;
+  }
+  }
+  
+  /* Extra Small Devices, Phones */ 
+  @media only screen and (min-width : 480px) {
+    select#Type {
+      margin-left: -60%;}
+      select#course {
+        margin-left: -53%;
+        max-width: 190px;
+    }
+
+  }
+  
+  /* Small Devices, Tablets */
+  @media only screen and (min-width : 768px) {
+    select#Type {
+      margin-left: -75%;}
+      select#course {
+        margin-left: -72%;
+        max-width: 190px;
+    }
+
+  }
+  
+  /* Medium Devices, Desktops */
+  @media only screen and (min-width : 992px) {
+    .nav2{
+      background-color:transparent !important;
+      
+    }
+    select#Type {
+      margin-left: -80%;}
+      select#course {
+        margin-left: -82%;
+        max-width: 190px;
+    }
+
+  } 
+  
+  
+  /* Large Devices, Wide Screens */
+  @media only screen and (min-width : 1200px) {
+    .nav2{
+      background-color:transparent !important;
+      
+    }
+
+  }
