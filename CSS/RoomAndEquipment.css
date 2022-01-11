@@ -186,7 +186,7 @@ ul input {
 
 .big-contents{
   padding-left: 4vw;
-    width: 70%;
+    width: 58%;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -288,18 +288,33 @@ padding:1vh 0 5vh 0 ;
 
 
 
- @media screen and (max-height: 450px) {
-  
-}  
+
 
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
  
+img#roomImg {
+  height: 600px;
+  width: 800px;
+  text-align: center;
+  margin-left: 3%;
+  margin-right: 20%;
+  overflow-x: scroll;
+}
+
 }
 
 /* Extra Small Devices, Phones */ 
 @media only screen and (min-width : 480px) {
   
+img#roomImg {
+  height: 600px;
+  width: 800px;
+  text-align: center;
+  margin-left: 3%;
+  margin-right: 20%;
+  overflow-x: scroll !important;
+  }
 }
 
 /* Small Devices, Tablets */
@@ -311,6 +326,14 @@ padding:1vh 0 5vh 0 ;
   .navbar{
     background-color:transparent !important;
   }
+  img#roomImg {
+    height: 400px;
+    width: 550px;
+    text-align: center;
+    margin-left: 0%;
+    margin-right: 20%;
+    overflow-x: hidden !important;
+    }
 } 
 
 
@@ -318,5 +341,14 @@ padding:1vh 0 5vh 0 ;
 @media only screen and (min-width : 1200px) {
   .navbar{
     background-color:transparent !important;
+    
   }
+  img#roomImg {
+    height: 400px;
+    width: 550px;
+    text-align: center;
+    margin-left: 0%;
+    margin-right: 20%;
+    overflow-x:hidden !important;
+    }
 }

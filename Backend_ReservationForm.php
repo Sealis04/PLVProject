@@ -300,7 +300,7 @@
         hiddenInput.className = 'hiddenEquipInput';
         //label properties
         input_2.value = select.options[select.selectedIndex].text;
-        input_2.className = 'equipInput'
+        input_2.className = 'equipInput';
         input_2.readOnly = true;
         input_2.name = "equipName[]";
         input_2.type = 'text';
@@ -552,7 +552,7 @@
 
             var wrapper = document.createElement('div');
             wrapper.id = 'wrapper';
-            wrapper.className = 'eventChanger'
+            wrapper.className = 'eventChanger';
             div.appendChild(wrapper);
             //Date
             var currentDate = new Date();
@@ -688,7 +688,7 @@
             equipLabel.className = 'labelName';
             equipLabel.className = 'col-sm-5 col-form-select';
             equipLabel.textContent = 'Add Equipment?';
-
+            equipLabel.innerHTML += '<br>';
             var switchLabel = document.createElement('label');
             switchLabel.className = 'col-sm-5 col-form-select';
             switchLabel.className = 'switch';
@@ -1003,7 +1003,7 @@
             if (this.readyState == 4 && this.status == 200) {
                 if (this.responseText == 'success') {
                     modal("Reservation success\nStatus: Pending",function(){
-                        window.location.href = "Window_HomePage.php"
+                        window.location.href = "Window_HomePage.php";
                     })
                 } else {
                     modal(this.responseText,function(){
@@ -1018,7 +1018,7 @@
 
     function createModal(profileArr, filesArr, func) {
         modalBody = document.createElement('div');
-        modalBody.className = 'modalConfirm shadow p-3 mb-5 bg-white rounded'
+        modalBody.className = 'modalConfirm shadow p-3 mb-5 bg-white rounded';
         reservationDetails = document.createElement('div');
         reservationDetails.innerHTML =
             '<h3> Confirm Reservation of the ff:' +
@@ -1028,17 +1028,17 @@
             '<h4> Time: ' + profileArr[0].startTime + ' to ' + profileArr[0].endTime +
             '<h4> Room: ' + profileArr[0].room + ' Attendees: ' + profileArr[0].attendees;
         for (a = 0; a < profileArr[0].EquipmentStuff.length; a++) {
-            reservationDetails.innerHTML += '<h4> Equipment to be reserved: '
+            reservationDetails.innerHTML += '<h4> Equipment to be reserved: ';
             reservationDetails.innerHTML += '<h5>' + profileArr[0].EquipmentStuff[a].name + ': ' + profileArr[0].EquipmentStuff[a].qty;
         }
           modalConfirm = document.createElement('input');
           modalConfirm.type = 'button';
           modalConfirm.value = "Confirm";
-          modalConfirm.className = "header-btn btn"
+          modalConfirm.className = 'header-btn btn f-confirm';
           modalCancel = document.createElement('input');
           modalCancel.type = 'button';
           modalCancel.value = "Cancel";
-          modalCancel.className = "header-btn btn decline"
+          modalCancel.className = 'header-btn btn decline f-decline';
         modalBody.appendChild(reservationDetails);
         if (profileArr.length > 1) {
             var i = 0;
@@ -1047,8 +1047,8 @@
             prev.className = 'left';
             var next = document.createElement('span');
             next.className = 'right';
-            prev.textContent = '<';
-            next.textContent = '>';
+            prev.textContent = ' previous ';
+            next.textContent = ' next  ';
             prev.addEventListener('click', function() {
                 i--;
                 if (i < 0) i = profileArr.length - 1;
@@ -1098,6 +1098,7 @@
         reservationDetails.innerHTML += '<h4> Letters included: ' +
         '*NOTE: Please make sure all uploaded images are in proper format/orientation to reduce the chances of your reservation being rejected. ';
         var img = document.createElement('img');
+        img.className ='zoomOut';
         img.src = URL.createObjectURL(filesArr[0]);
        var moveDiv = document.createElement('div');
        moveDiv.class="moveModal";
@@ -1108,7 +1109,7 @@
         span.className = 'close';
         span.textContent = 'X';
         var modalImg = document.createElement('img');
-        modalImg.id = 'modal-content';
+        modalImg.id = 'modal-content zoomOut';
         var boxClicked = false;
         var modalDiv = document.createElement('div');
 

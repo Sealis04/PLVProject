@@ -50,7 +50,7 @@
                                 img.id = 'roomImg';
                                 document.getElementById('contentDiv').insertBefore(img,document.getElementById('h1'));                      
                                 var myObj = JSON.parse(this.responseText);
-                                img.src = '/' + myObj.imgPath;
+                                img.src = 'assets/301.jpg' + myObj.imgPath;
                                 document.getElementById("h1").textContent=myObj.roomName;
                                 document.getElementById("h2").textContent="Capacity: " + myObj.room_capacity;
                                 document.getElementById("p1").textContent=myObj.roomDesc;

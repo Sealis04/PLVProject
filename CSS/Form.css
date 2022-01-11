@@ -34,21 +34,27 @@ a {
 
 .header-btn{
   text-decoration: none;
-  background-color: #008F00;
+  background-color: none;
   color: white;
-  text-shadow: black 1px 1px;
-  padding: 10px;
+  background-color: #0F1057;
   font-size: 15px;
   margin-bottom: 30px;
+  margin-left: -10px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 .header-btn:active{
   color: white;
-  background-color: #00f500;
+  background-color: #000099 ;
 }
 .header-btn:hover{
   color: white;
 }
 
+
+.decline{
+  background-color: red;
+}
 
 #fb {
   height: 80;
@@ -310,6 +316,7 @@ input#submitBtn {
 
 input.btn.btn-primary {
   font-size: 13px;
+  margin-bottom: 5px;
 }
 
 .form-control{
@@ -322,6 +329,17 @@ input.btn.btn-primary {
   margin-bottom: -25;
 }
 
+label.form-label {
+  margin-top: 10px;
+}
+
+select#equipList0 {
+  margin-left: -41.5% !important;
+}
+
+
+
+
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
   .form-container{margin-left: 46px; margin-right: 46px;height: auto !important;}
@@ -332,7 +350,10 @@ input.btn.btn-primary {
     margin-top: -50;width: 100%;z-index: -1;}
     .form-control{font-size: 1.2rem;}
     .submit{padding: 5px;}
-  
+    select#equipList0 {
+      margin-left: 0% !important;
+    }
+
 }
 
 /* Extra Small Devices, Phones */ 
@@ -345,6 +366,10 @@ input.btn.btn-primary {
     margin-top: -50;width: 100%;z-index: -1;}
     .form-control{font-size: 1.2rem;}
     .submit{padding: 5px;}
+    select#equipList0 {
+      margin-left: 0% !important;
+    }
+
 }
 
 /* Small Devices, Tablets */
@@ -357,6 +382,9 @@ input.btn.btn-primary {
     margin-top: -50;width: 100%;z-index: -1;}
     .form-control{font-size: 1.2rem;}
     .submit{padding: 5px;}
+    select#equipList0 {
+      margin-left: -41.5% !important;
+    }
 }
 
 /* Medium Devices, Desktops */
@@ -368,6 +396,9 @@ input.btn.btn-primary {
     padding-bottom: 40 !important;}
     .form-control{padding: 1.375rem 0.75rem;}
     .submit{padding: 10px;}
+    select#equipList0 {
+      margin-left: -41.5% !important;
+    }
 }
 
 
@@ -379,6 +410,9 @@ input.btn.btn-primary {
     .form-control{padding: 1.375rem 0.75rem;}
     .form-container{height: auto !important;}
     .submit{padding: 10px;}
+    select#equipList0 {
+      margin-left: -41.5% !important;
+    }
 }
 
 /* Large Devices, Wide Screens */
@@ -389,4 +423,9 @@ input.btn.btn-primary {
     .form-control{padding: 1.375rem 0.75rem;}
     .form-container{height: auto !important;}
     .submit{padding: 10px;}
+    select#equipList0 {
+      margin-left: -41.5% !important;
+    }
+    
 }
+
