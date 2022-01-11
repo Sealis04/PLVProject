@@ -1683,10 +1683,11 @@
                     });
                     var img = document.createElement('input');
                     img.type = 'image';
+                    img.className = 'editC';
                     img.src = element.imgPath;
                     tr.appendChild(img);
                     var input = document.createElement('input');
-                    input.setAttribute('name', 'roomImg');
+                    input.setAttribute('name', 'roomImg', 'editC img-thumbnail');
                     input.type = 'file';
                     input.style = 'display:none';
                     img.addEventListener('click', function() {
@@ -2251,7 +2252,7 @@
                 mainDiv.innerHTML += '<h4>Full Name: ' + fullName + '</h4>';
                 const first = await loadRoomDetails(myObj.roomID, mainDiv, ID, myObj.userID, review, remarks)
                 div.appendChild(mainDiv);
-                mainDiv.innerHTML += '<hr class="hr">';
+                mainDiv.innerHTML += '<hr class="hro">';
             }
         }
         xmlhttp.open("GET", "/Request_SpecificReservation.php?r_ID=" + ID + '&isReviewed=' + review, true);
