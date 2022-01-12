@@ -1683,7 +1683,7 @@
                     });
                     var img = document.createElement('input');
                     img.type = 'image';
-                    img.className = 'editC';
+                    img.className = 'editC img-thumbnail';
                     img.src = element.imgPath;
                     tr.appendChild(img);
                     var input = document.createElement('input');
@@ -1915,8 +1915,8 @@
             }
         }
         // to change edit and cancel icons
-          value.src = 'assets/Check.png';
-          value2.src = 'assets/Cross.png';
+          value.src = 'assets/checked.png';
+          value2.src = 'assets/cross.png';
     }
 
     function addRoomQuery(name, quantity, desc, availability, inputParam) {
