@@ -350,12 +350,18 @@ input[type="button"]{
 
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
-    
+  .reservationCount {
+    font-size: 10px;
+    word-break: break-word;
+  }
 }
 
 /* Extra Small Devices, Phones */ 
 @media only screen and (min-width : 480px) {
-  
+  .reservationCount {
+    font-size: 10px;
+    word-break: break-word;
+  }
 }
 
 /* Small Devices, Tablets */
@@ -363,6 +369,10 @@ input[type="button"]{
   .navbar{
     margin-left: -90%;
     visibility: visible;
+  }
+  .reservationCount {
+    font-size: 10px;
+    word-break: break-word;
   }
 }
 
@@ -381,6 +391,10 @@ input[type="button"]{
   }
   .hamburger{
     visibility: hidden !important;
+  }
+  .reservationCount {
+    font-size: 13px;
+    word-break: break-word;
   }
 
 }
@@ -405,6 +419,10 @@ input[type="button"]{
   .hamburger{
     visibility: hidden !important;
   }
+  .reservationCount {
+    font-size: 13px;
+    word-break: break-word;
+  }
 }
 
 /* Large Devices, Wide Screens */
@@ -426,4 +444,9 @@ input[type="button"]{
   .hamburger{
     visibility: hidden !important;
   }
+  .reservationCount {
+    font-size: 13px;
+    word-break: break-word;
+  }
 }
+

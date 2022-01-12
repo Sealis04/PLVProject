@@ -55,10 +55,10 @@ margin-left: 10px;
 
 
 #fb {
-  height: 50;
-  width: 50;
-  margin-top: 20px;
-  margin-left: 90px;
+  height: 110;
+  width: 110;
+  margin-top: -35px;
+  margin-left: 70px;
 
   margin-bottom: auto;
 }
@@ -211,7 +211,7 @@ hr{
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 300px) {
   .sidenav1 {padding-top: 15px;
-    overflow-y: hidden;
+    overflow-y: visible;
     overflow-x: hidden;
   }
   .sidenav1 {width: 0;}
@@ -225,7 +225,7 @@ hr{
 @media only screen and (min-width : 480px) {
   .sidenav1 {padding-top: 15px;
     overflow-y: hidden;
-    overflow-x: hidden;}
+    overflow-x: visible;}
   .hamburger {color: white;}
 .hamburger{visibility: visible !important;}
 .sidenav1 {width: 0;}
@@ -235,7 +235,7 @@ hr{
 @media only screen and (min-width : 768px) {
   .sidenav1 {padding-top: 15px;
     overflow-y: hidden;
-    overflow-x: hidden;}
+    overflow-x: visible;}
   .sidenav1 {width: 0;}
   .hamburger{
     visibility: visible !important;

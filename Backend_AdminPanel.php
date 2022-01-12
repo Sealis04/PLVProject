@@ -1683,10 +1683,11 @@
                     });
                     var img = document.createElement('input');
                     img.type = 'image';
+                    img.className = 'editC img-thumbnail';
                     img.src = element.imgPath;
                     tr.appendChild(img);
                     var input = document.createElement('input');
-                    input.setAttribute('name', 'roomImg');
+                    input.setAttribute('name', 'roomImg', 'editC img-thumbnail');
                     input.type = 'file';
                     input.style = 'display:none';
                     img.addEventListener('click', function() {
@@ -1914,8 +1915,8 @@
             }
         }
         // to change edit and cancel icons
-          value.src = 'assets/Check.png';
-          value2.src = 'assets/Cross.png';
+          value.src = 'assets/checked.png';
+          value2.src = 'assets/cross.png';
     }
 
     function addRoomQuery(name, quantity, desc, availability, inputParam) {
