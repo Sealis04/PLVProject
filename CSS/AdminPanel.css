@@ -90,6 +90,12 @@ body {
 
 .btn{
   margin-left: 10px;
+  border-radius: 7px;
+}
+.btn:hover{
+  color: black;
+  background-color: white;
+  border-color: rgb(1, 1, 141);
 }
 
 .hn-c{
@@ -251,10 +257,12 @@ ul input {
 #profContent h4{
   margin: 0;
   padding: 0;
+  font-weight: bold;
 }
 #profContent h3{
   margin-top: 30;
   margin-bottom: -10;
+  font-weight: bold;
 }
 
 #resContent h3{
@@ -297,6 +305,7 @@ ul input {
 #userProfContent h3{
   margin: 0;
   padding: 0;
+  font-size: 25px;
 }
 
 ._edit{
@@ -307,6 +316,7 @@ ul input {
   margin-top: 30px;
   margin-left: auto;
   margin-right: 10px;
+  border-radius: 7px;
 }
 
 .accepted{
@@ -386,7 +396,8 @@ color: white;
  }
 
  .pendingDiv h2{
-   font-size: 24px;
+   font-size: 25px;
+   font-weight: bold;
  }
 
 /*User Reservation*/
@@ -396,6 +407,9 @@ color: white;
    margin-bottom: 40px;
  }
 
+ .finishedDiv h3{
+   font-size: 25px;
+ }
  /*User Reservation Outter Button 1*/
 .pendingDiv .openBtn{
   margin-top: -38px;
@@ -437,6 +451,12 @@ color: white;
   margin-top: -10px;
 }
 
+.subclassname h4{
+  font-size: 20px;
+}
+
+
+
 /*Monitoring Form*/
 .content .row .openBtn{
   margin-right: 15px;
@@ -445,7 +465,7 @@ color: white;
 
 /*Monitoring Form Content*/
 .content .row h3{
-  font-size: 20;
+  font-size: 25;
 }
 
 .content .row #EventDate{
@@ -786,10 +806,10 @@ label{
 
 .submitMf{
   margin-left: 0;
+  border-radius: 7px;
 }
 #Filter{
     margin-top: 7px;
- 
 }
 
 input#myInput {
@@ -855,6 +875,14 @@ img.rotate.modalEdit {
 
 .resetPW{
     margin:0;
+    border-radius: 7px;
+    
+}
+
+.resetPW:hover{
+  background-color: white;
+  color: black;
+  border-color: blue;
 }
 
 /*Wrap content*/
@@ -868,7 +896,6 @@ div#finishedContent {
   word-wrap: break-word;
   width: 80%;
 }
-
 
 
 /* Custom, iPhone Retina */ 
@@ -925,6 +952,7 @@ div#finishedContent {
   }
   #pendingContent input{
     font-size: 10px;
+    border-radius: 7px;
   }
   #resContent input{
     font-size: 10px;
@@ -1345,7 +1373,20 @@ hr.hro{
   background: black;
   margin-bottom: 50px;
   width: 120%;
-  
+}
+
+
 .img-thumbnail {
   height: 60px;
   width: 60px;
+}
+
+input.removeButton {
+  height: 50px;
+  width: 50px;
+}
+
+input.editButton {
+  height: 50px;
+  width: 50px;
+}

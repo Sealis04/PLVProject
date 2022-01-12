@@ -224,6 +224,7 @@ svg:not(:root) {
   background-color: #000C7A;
   cursor:pointer; 
   color: white;
+  font-size: 15px;
   font-weight: bold;
 }
 

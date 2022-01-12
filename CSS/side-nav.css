@@ -55,12 +55,11 @@ margin-left: 10px;
 
 
 #fb {
-  height: 110;
-  width: 110;
-  margin-top: -35px;
-  margin-left: 70px;
-
-  margin-bottom: auto;
+  height: 200;
+  width: 200;
+  margin-top: -60px;
+  margin-left: 36px;
+  margin-bottom: -60px;
 }
 .LogoName{
   font-size: 30px;
@@ -188,7 +187,7 @@ hr{
 }
 
 .sidenav1 a:hover {
-  color: black;
+  color: #53adcb;
 }
 
 .sidenav1 .closebtn {
