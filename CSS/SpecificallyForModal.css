@@ -64,6 +64,8 @@ color: blue;
     font-size: 14px !important;
     margin-top: 21px;
     width: 274px;
+    background-color: white;
+    z-index: 2;
     
 } .modal-f {
   z-index: 1050;
@@ -98,6 +100,8 @@ input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
   font-size: 14px !important;
   margin-top: 21px;
   width: 274px;
+  background-color: white;
+  z-index: 2;
   
 } .modal-f {
 z-index: 1050;
@@ -131,6 +135,8 @@ input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
   font-size: 14px !important;
   margin-top: 21px;
   width: 274px;
+  background-color: white;
+  z-index: 2;
   
 } .modal-f {
 z-index: 1050;
@@ -170,6 +176,8 @@ input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
   border: 3.5px inset #1C1D91 !important;
   font-size: 14px !important;
   margin-top: 21px;
+  background-color: white;
+  z-index: 2;
   width: 350px;
   
 } .modal-f {
@@ -207,6 +215,8 @@ input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
   border: 3.5px inset #1C1D91 !important;
   font-size: 14px !important;
   margin-top: 21px;
+  background-color: white;
+  z-index: 2;
   width: 350px;
   
 } .modal-f {
