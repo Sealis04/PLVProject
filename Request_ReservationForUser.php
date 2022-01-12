@@ -81,7 +81,7 @@ $url = '/Window_Panel.php?window=MyReservations';
 // $sql_code2 = "SELECT * FROM tbl_join";
 
 $conn->close();
-$pagination = getPaginationString($page, $total_items, $limit, false, $url, "&page=", "&category=", $type);
+$pagination = getPaginationString($page, $total_items, $limit, false, $url, "&page=", "&category=", $type,$month,$year);
 if (count($reservation) != 0) {
     $reservation[count($reservation) - 1] += array(
         'pagination' => $pagination
