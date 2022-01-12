@@ -1,36 +1,107 @@
-.OTP{
-    margin-left: 40%;
-    margin-right: 30%;
-}
+
 form{
-     display:inline-block;
-    margin:0;
+    display:inline-block;
+   margin:0;
 }
 
 input#submit {
-    margin-top: 13px;
-    width: 100%;
-    margin-left: 0;
-    background-color: #1C1D91;
-    
+   margin-top: 13px;
+   width: 100%;
+   margin-left: 0;
+   background-color: #1C1D91;
+   
 }
 #tACode{
-    width: 70%;
+   width: 70%;
 }
 #Resend {
-    width: auto;
-    margin-left: 5px;
-    border: none;
-    background-color: none;
-    background: none;
-    color: #1C1D91;
-    font-weight: bold;
+   width: auto;
+   margin-left: 5px;
+   border: none;
+   background-color: none;
+   background: none;
+   color: #1C1D91;
+   font-weight: bold;
 }
 
 #Resend:focus{
-    color: #c3c4f8;
+   color: #c3c4f8;
 }
 
 h3{
-    font-weight: bold;
+   font-weight: bold;
 }
+
+
+.navbar {
+
+   display: flex;
+   margin-left: -295px;
+   background-color: #0077b6;
+   border: none;
+
+   z-index: -1;
+ }
+ 
+ span.hamburger {
+   margin-left: 4;
+ }
+ 
+ 
+ .nav2{
+   display:flex;
+   width:50%;
+   flex-direction: row;
+   justify-content: flex-end;
+ }
+ 
+
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width : 300px) {
+  
+   .OTP{
+       margin-left: 15%;;
+   }
+   input#submit {
+       width: 94%;}
+ }
+ 
+ /* Extra Small Devices, Phones */ 
+ @media only screen and (min-width : 480px) {
+   
+ }
+ 
+ /* Small Devices, Tablets */
+ @media only screen and (min-width : 768px) {
+   .OTP{
+       margin-left: 40%;
+       margin-right: 30%;
+   }
+   
+ }
+ 
+ /* Medium Devices, Desktops */
+ @media only screen and (min-width : 992px) {
+   .OTP{
+       margin-left: 40%;
+       margin-right: 30%;
+   }
+ }
+ 
+ /* Large Devices, Wide Screens */
+ @media only screen and (min-width : 1000) {
+  
+   .OTP{
+       margin-left: 40%;
+       margin-right: 30%;
+   }
+  
+ }
+ 
+ 
+ @media only screen and (min-width : 1900px) {
+   .OTP{
+       margin-left: 40%;
+       margin-right: 30%;
+   }
+ }

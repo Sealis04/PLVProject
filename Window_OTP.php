@@ -97,11 +97,13 @@
     // }
     ?>
     <!--CHANGES-->
-    <div class="nav2">
-        <?php
-        // require "Backend_CheckifLoggedIN.php";
-        ?>
-    </div>
+    <nav>
+        <div class="navbar">
+            <div class="nav2">
+
+            </div>
+        </div>
+    </nav>
 
     <body>
           <div class="OTP">
