@@ -2070,6 +2070,15 @@
                 }
             }
         }
+        var nofilter = document.createElement('option');
+        nofilter.textContent = 'No Filter';
+        nofilter.value = 0;
+
+        var nofilter2 = document.createElement('option');
+        nofilter2.textContent = 'No Filter';
+        nofilter2.value = 0;
+        monthDropdown.appendChild(nofilter2);
+        yearDropdown.appendChild(nofilter);
 
         for (count = 0; count < monthDropdown.length; count++) {
             if (monthDropdown[count].value == new Date().getMonth() + 1) {
@@ -2120,26 +2129,33 @@
         if (e.currentTarget == e.currentTarget.yearParam) {
             let value = e.currentTarget.yearParam.value;
             let date = new Date(e.currentTarget.yearParam.value).getFullYear();
-            removeOptions(e.currentTarget.yearParam, value)
-            for (var a = value; a < date + 5; a++) {
-                if (a != value) {
-                    var option = document.createElement('option');
-                    option.textContent = a;
-                    option.value = a;
-                    e.currentTarget.appendChild(option);
-                }
-            }
-            for (var x = value; x > date - 5; x--) {
-                if (x != value) {
-                    var option = document.createElement('option');
-                    option.textContent = x;
-                    option.value = x;
-                    var i, L = e.currentTarget.options.length - 1;
-                    for (i = L; i >= 0; i--) {
-                        e.currentTarget.yearParam.insertBefore(option, e.currentTarget.options[i])
+            if (value != 0) {
+                removeOptions(e.currentTarget.yearParam, value)
+                for (var a = value; a < date + 5; a++) {
+                    if (a != value) {
+                        var option = document.createElement('option');
+                        option.textContent = a;
+                        option.value = a;
+                        e.currentTarget.appendChild(option);
                     }
                 }
+                for (var x = value; x > date - 5; x--) {
+                    if (x != value) {
+                        var option = document.createElement('option');
+                        option.textContent = x;
+                        option.value = x;
+                        var i, L = e.currentTarget.options.length - 1;
+                        for (i = L; i >= 0; i--) {
+                            e.currentTarget.yearParam.insertBefore(option, e.currentTarget.options[i])
+                        }
+                    }
+                }
+                var nofilter = document.createElement('option');
+                nofilter.textContent='No Filter';
+                nofilter.value = 0;
+                e.currentTarget.yearParam.appendChild(nofilter);
             }
+
         }
 
         mainDiv = e.currentTarget.mainDivParam;

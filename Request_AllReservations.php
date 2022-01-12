@@ -38,11 +38,16 @@ else
 $query = "SELECT COUNT(*) as num FROM tbl_reservation WHERE DateEnd < CURRENT_DATE()
         AND tbl_reservation.r_approved_ID = 1 
         AND tbl_reservation.r_reviewed = 1 
-        AND tbl_reservation.isDeleted = 0 AND 
-        MONTH(tbl_reservation.DateStart) = ? AND 
-        YEAR(tbl_reservation.DateStart) = ?";
+        AND tbl_reservation.isDeleted = 0 AND (CASE WHEN ? != 0
+     THEN MONTH(tbl_reservation.DateStart) = ?
+     ELSE TRUE
+     END)
+AND (CASE WHEN ? != 0
+THEN YEAR(tbl_reservation.DateStart) = ?
+ELSE TRUE
+END) ";
 $sql5 = $conn->prepare($query);
-$sql5->bind_param("ii",$month,$year);
+$sql5->bind_param("iiii",$month,$month,$year,$year);
 $sql5->execute();
 $result = $sql5->get_result();
 $user = $result->fetch_array(MYSQLI_ASSOC);
@@ -55,9 +60,16 @@ INNER JOIN tbl_user ON tbl_reservation.r_user_ID = tbl_user.user_ID
 INNER JOIN tbl_room ON tbl_reservation.r_room_ID = tbl_room.room_ID 
 WHERE DateEnd < CURRENT_DATE AND tbl_reservation.r_approved_ID = 1 
 AND tbl_reservation.r_reviewed = 1 AND r_status = 0 AND tbl_reservation.isDeleted = 0 
-AND MONTH(tbl_reservation.DateStart) = ? AND YEAR(tbl_reservation.DateStart) = ?  LIMIT $start,$limit ";
+AND (CASE WHEN ? != 0
+     THEN MONTH(tbl_reservation.DateStart) = ?
+     ELSE TRUE
+     END)
+AND (CASE WHEN ? != 0
+THEN YEAR(tbl_reservation.DateStart) = ?
+ELSE TRUE
+END)  LIMIT $start,$limit ";
 if ($sql = $conn->prepare($sql_code)) {
-    $sql->bind_param("ii",$month,$year);
+    $sql->bind_param("iiii",$month,$month,$year,$year);
     if ($sql->execute()) {
         $result = $sql->get_result();
         while ($row = $result->fetch_assoc()){
