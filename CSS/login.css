@@ -67,7 +67,7 @@ a {
 
 
 #plv-logo{
-    display: block; margin-left: auto; margin-right: auto; margin-bottom: 50; height: 100; width: 100; margin-top: 30;
+    display: block; margin-left: auto; margin-right: auto; height: 250; width: 250;
 }
 
 
@@ -100,9 +100,6 @@ body {
     
 }
 
-form {
-    margin-top: 20%;
-}
 
 span.hamburger{
   color: white;
@@ -112,7 +109,7 @@ span.hamburger{
 #email{
     background: transparent;
     border: none;
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #00000041;
     -webkit-box-shadow: none;
     box-shadow: none; 
     border-radius: 0;
@@ -122,7 +119,7 @@ span.hamburger{
 #password{
     background: transparent;
     border: none;
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #00000041;
     -webkit-box-shadow: none;
     box-shadow: none; 
     border-radius: 0;

@@ -311,12 +311,15 @@ input[type='time']:invalid+.validity:after {
 }
 
 input#submitBtn {
-  margin-top: -10px;
+  margin-top: -20px;
+  border-radius: 7px;
+  font-size: 15px;
 }
 
 input.btn.btn-primary {
   font-size: 13px;
   margin-bottom: 5px;
+  border-radius: 7px;
 }
 
 .form-control{
