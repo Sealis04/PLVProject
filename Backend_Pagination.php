@@ -1,5 +1,5 @@
 <?php
-function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1, $targetpage = "/", $pagestring = "?page=",$category = "&category=",$type = null)
+function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1, $targetpage = "/", $pagestring = "?page=",$category = "&category=",$type = null,$month = null, $year = null)
 {	
 //TotalItems get
 //limit get
@@ -8,6 +8,16 @@ function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1
 	if(!$limit) $limit = 5;
 	if(!$page) $page = 1;
 	if(!$targetpage) $targetpage = "/Window_Panel.php/";
+	if($type == "user"){
+		$monthLink = "&month=";
+		$yearLink = "&year=";
+	}else{
+		$monthLink = '';
+		$yearLink ='';
+		$month = null;
+		$year = null;
+	}
+	
 	//other vars
 	$prev = $page - 1;									//previous page is page - 1
 	$next = $page + 1;									//next page is page + 1
@@ -33,7 +43,7 @@ function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1
 		$pagination .= ">";
 		//previous button
 		if ($page > 1) 
-			$pagination .= "<a href=\"$targetpage$pagestring$prev$category$type\">&#8249; prev</a>";
+			$pagination .= "<a href=\"$targetpage$pagestring$prev$category$type$monthLink$month$yearLink$year\">&#8249; prev</a>";
 		else
 			$pagination .= "<span class=\"disabled\">&#8249; prev</span>";	
 		
@@ -45,7 +55,7 @@ function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1
 				if ($counter == $page)
 					$pagination .= "<span class=\"current\">$counter</span>";
 				else
-					$pagination .= "<a href=\"" . $targetpage . $pagestring . $counter . $category . $type."\">$counter</a>";			
+					$pagination .= "<a href=\"" . $targetpage . $pagestring . $counter . $category . $type.$monthLink.$month.$yearLink.$year."\">$counter</a>";			
 				
 			}
 		}
@@ -60,28 +70,28 @@ function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1
 					if ($counter == $page)
 						$pagination .= "<span class=\"current\">$counter</span>";
 					else
-						$pagination .= "<a href=\"" . $targetpage . $pagestring . $counter . $category . $type."\">$counter</a>";					
+						$pagination .= "<a href=\"" . $targetpage . $pagestring . $counter . $category . $type.$monthLink.$month.$yearLink.$year."\">$counter</a>";					
 				}
 				$pagination .= "<span class=\"elipses\">...</span>";
-				$pagination .= "<a href=\"" . $targetpage . $pagestring . $lpm1 . $category . $type."\">$lpm1</a>";
-				$pagination .= "<a href=\"" . $targetpage . $pagestring . $lastpage . $category . $type."\">$lastpage</a>";		
+				$pagination .= "<a href=\"" . $targetpage . $pagestring . $lpm1 . $category . $type.$monthLink.$month.$yearLink.$year."\">$lpm1</a>";
+				$pagination .= "<a href=\"" . $targetpage . $pagestring . $lastpage . $category . $type.$monthLink.$month.$yearLink.$year."\">$lastpage</a>";		
 			}
 			//in middle; hide some front and some back
 			elseif($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2))
 			{
-				$pagination .= "<a href=\"" . $targetpage . $pagestring . "1".$category . $type."\">1</a>";
-				$pagination .= "<a href=\"" . $targetpage . $pagestring . "2".$category . $type."\">2</a>";
+				$pagination .= "<a href=\"" . $targetpage . $pagestring . "1".$category . $type.$monthLink.$month.$yearLink.$year."\">1</a>";
+				$pagination .= "<a href=\"" . $targetpage . $pagestring . "2".$category . $type.$monthLink.$month.$yearLink.$year."\">2</a>";
 				$pagination .= "<span class=\"elipses\">...</span>";
 				for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++)
 				{
 					if ($counter == $page)
 						$pagination .= "<span class=\"current\">$counter</span>";
 					else
-						$pagination .= "<a href=\"" . $targetpage . $pagestring . $counter . $category . $type."\">$counter</a>";					
+						$pagination .= "<a href=\"" . $targetpage . $pagestring . $counter . $category . $type.$monthLink.$month.$yearLink.$year."\">$counter</a>";					
 				}
 				$pagination .= "...";
-				$pagination .= "<a href=\"" . $targetpage . $pagestring . $lpm1 . $category . $type."\">$lpm1</a>";
-				$pagination .= "<a href=\"" . $targetpage . $pagestring . $lastpage . $category . $type."\">$lastpage</a>";		
+				$pagination .= "<a href=\"" . $targetpage . $pagestring . $lpm1 . $category . $type.$monthLink.$month.$yearLink.$year."\">$lpm1</a>";
+				$pagination .= "<a href=\"" . $targetpage . $pagestring . $lastpage . $category . $type.$monthLink.$month.$yearLink.$year."\">$lastpage</a>";		
 			}
 			//close to end; only hide early pages
 			else
@@ -94,14 +104,14 @@ function getPaginationString($page = 1, $totalitems, $limit = 15, $adjacents = 1
 					if ($counter == $page)
 						$pagination .= "<span class=\"current\">$counter</span>";
 					else
-						$pagination .= "<a href=\"" . $targetpage . $pagestring . $counter . $category . $type."\">$counter</a>";					
+						$pagination .= "<a href=\"" . $targetpage . $pagestring . $counter . $category . $type.$monthLink.$month.$yearLink.$year."\">$counter</a>";					
 				}
 			}
 		}
 		
 		//next button
 		if ($page < $counter - 1) 
-			$pagination .= "<a href=\"" . $targetpage . $pagestring . $next . $category . $type."\">next &#8250;</a>";
+			$pagination .= "<a href=\"" . $targetpage . $pagestring . $next . $category . $type.$monthLink.$month.$yearLink.$year."\">next &#8250;</a>";
 			// $pagination .= "<a href=".'google.com'.">next �</a>";
 		else
 			$pagination .= "<span class=\"disabled\">next &#8250;</span>";

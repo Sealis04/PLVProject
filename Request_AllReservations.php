@@ -1,34 +1,10 @@
 <?php
-// if($_REQUEST['keyword'] != 'undefined'){
-//    $keyword = $_REQUEST['keyword'];
-// }
-// if($_REQUEST['year'] != 'undefined'){
-//     $year = $_REQUEST['year'];
-//  }
- 
-//  if($_REQUEST['month'] != 'undefined'){
-//     $month = $_REQUEST['month'];
-//  }
-//  echo $_REQUEST['filter'];
-//returns array of reservation
 $month = $_REQUEST['month'];
 $year = $_REQUEST['year'];
 $reservation = array();
 include "db_connection.php";
 $conn = OpenCon();
 include "Backend_Pagination.php";
-
-// function getEquip(){
-//     $equip = array();
-//     $conn=OpenCon();
-//     $sql_code = "SELECT * FROM tbl_equipment_reserved WHERE r_ID = ?";
-//     if($sql=$conn->prepare($sql_code)){
-//         $sql->bind_param('i',$)
-//     }
-// }
-
-
-
 $page = $_REQUEST['page'];
 $limit = 5;
 if ($page)
@@ -98,7 +74,7 @@ if ($sql = $conn->prepare($sql_code)) {
 $conn->close();
 $url = '/Window_Panel.php?window=Archives';
 $type = 'finished';
-$pagination = getPaginationString($page, $total_items, $limit, false, $url, "&page=", "&category=", $type);
+$pagination = getPaginationString($page, $total_items, $limit, false, $url, "&page=", "&category=", $type,$month,$year);
 if (count($reservation) != 0) {
     $reservation[count($reservation) - 1] += array(
         'pagination' => $pagination,

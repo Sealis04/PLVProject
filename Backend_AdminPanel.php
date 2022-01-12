@@ -19,12 +19,14 @@
     var c = url_string.searchParams.get('page');
     var category = url_string.searchParams.get('category');
     var windowType = url_string.searchParams.get('window');
+    var monthFilter = url_string.searchParams.get('month');
+    var yearFilter = url_string.searchParams.get('year');
     var page_number;
     loadStuff(category, windowType)
 
     function createModal(text, func) {
         modalBody = document.createElement('div');
-        modalBody.className = 'modalConfirm shadow p-3 mb-5 bg-white rounded';  
+        modalBody.className = 'modalConfirm shadow p-3 mb-5 bg-white rounded';
         modalMessage = document.createElement('h4');
         modalMessage.textContent = text;
         modalConfirm = document.createElement('input');
@@ -306,16 +308,22 @@
         page.id = 'pages';
         filterPart(mainDiv, page, 'userres');
         callReservationDetails(mainDiv, page, page_number);
+        console.log(mainDiv);
         document.getElementById('content').appendChild(mainDiv);
     }
 
     function callReservationDetails(mainDiv, page, page_number = 1, month = new Date().getMonth() + 1, year = new Date().getFullYear()) {
         userID = <?php echo $_SESSION["userID"] ?>;
+        if (monthFilter != null){
+            month = monthFilter;
+        }
+        if(yearFilter != null){
+            year = yearFilter;
+        }
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
-                console.log(myObj);
                 var motherDiv = document.createElement('div');
                 motherDiv.id = "currentUserReservation";
                 if (myObj[0] == null) {
@@ -323,7 +331,7 @@
                         motherDiv.innerHTML += '<h3> No reservations </h3?>';
                     } else {
                         page_number -= 1;
-                        callReservationDetails(page_number, month, year);
+                        callReservationDetails(mainDiv, page, page_number, month, year);
                     }
                 } else {
                     var x = [];
@@ -337,6 +345,7 @@
                     page.innerHTML = myObj[myObj.length - 1].pagination;
                     motherDiv.appendChild(page);
                 }
+                // console.log(mainDiv);
                 mainDiv.appendChild(motherDiv);
             }
         }
@@ -1801,7 +1810,7 @@
                     selectedList = (target.listParam) ? target.listParam.disabled = true : ' ';
                     listParam = (target.listParam) ? target.listParam.disabled = true : ' ';
                     inputParam = (target.imageUploadParam) ? target.imageUploadParam.disabled = true : ' ';
-                }else{
+                } else {
                     checker = false;
                 }
             });
@@ -1837,10 +1846,10 @@
                     }
                 } else {
                     if (type == 'roomID') {
-                         addRoomQuery(name, quantity, desc, availability, inputParam);
+                        addRoomQuery(name, quantity, desc, availability, inputParam);
                         return true;
                     } else if (type == 'equipID') {
-                         addEquipQuery(name, quantity, desc, availability);
+                        addEquipQuery(name, quantity, desc, availability);
                         return true;
                     }
 
@@ -1857,11 +1866,11 @@
                     })
                     return false;
                 } else {
-                     editPoliciesQuery(listParam, desc, ID);
+                    editPoliciesQuery(listParam, desc, ID);
                     return true;
                 }
             } else if (type == 'userID') {
-                 editUserQuery(availability, ID);
+                editUserQuery(availability, ID);
                 return true;
             } else {
                 if (name == '' || desc == '' || quantity == '' || quantity == 0) {
@@ -1915,8 +1924,8 @@
             }
         }
         // to change edit and cancel icons
-          value.src = 'assets/checked.png';
-          value2.src = 'assets/cross.png';
+        value.src = 'assets/checked.png';
+        value2.src = 'assets/cross.png';
     }
 
     function addRoomQuery(name, quantity, desc, availability, inputParam) {
@@ -2035,9 +2044,6 @@
     function filterPart(mainDiv, page, type) {
         var div = document.createElement('div');
         div.id = 'Filter';
-        //   var search = document.createElement('input');
-        //   search.type = 'text';
-        //   search.id = 'myInput';
         var button = document.createElement('button');
         button.id = 'myInput';
         button.textContent = 'Filter'
@@ -2050,6 +2056,8 @@
             option.value = a + 1;
             monthDropdown.appendChild(option);
         }
+
+
         var currentYear = new Date().getFullYear();
         var yearDropdown = document.createElement('select');
         for (var i = currentYear; i < currentYear + 5; i++) {
@@ -2079,41 +2087,39 @@
         nofilter2.value = 0;
         monthDropdown.appendChild(nofilter2);
         yearDropdown.appendChild(nofilter);
-
         for (count = 0; count < monthDropdown.length; count++) {
             if (monthDropdown[count].value == new Date().getMonth() + 1) {
                 monthDropdown.options[count].selected = true;
             }
         }
 
+
         for (count = 0; count < yearDropdown.length; count++) {
             if (yearDropdown[count].value == new Date().getFullYear()) {
                 yearDropdown.options[count].selected = true;
             }
         }
-        //   monthDropdown.appendChild(defaultOption2);
-        //   yearDropdown.appendChild(defaultOption);
-        //   div.appendChild(search);
+        if (monthFilter != null) {
+            monthDropdown.value = monthFilter;
+        }
+        if (yearFilter != null) {
+            yearDropdown.value = yearFilter;
+        }
         div.appendChild(monthDropdown);
         div.appendChild(yearDropdown);
-        //   div.appendChild(button);
         mainDiv.appendChild(div);
         monthDropdown.addEventListener('change', filterSearchQuery);
         yearDropdown.addEventListener('change', filterSearchQuery)
-        //   button.addEventListener('click', filterSearchQuery);
-        // monthDropdown.searchParam = search;
         monthDropdown.monthParam = monthDropdown;
         monthDropdown.yearParam = yearDropdown;
         monthDropdown.pageParam = page;
         monthDropdown.mainDivParam = mainDiv;
         monthDropdown.typeParam = type;
-        // yearDropdown.searchParam = search;
         yearDropdown.monthParam = monthDropdown;
         yearDropdown.yearParam = yearDropdown;
         yearDropdown.pageParam = page;
         yearDropdown.mainDivParam = mainDiv;
         yearDropdown.typeParam = type;
-        //   return [search.value,monthDropdown.value,yearDropdown.value];
     }
 
     function removeOptions(selectElement, exception) {
@@ -2151,7 +2157,7 @@
                     }
                 }
                 var nofilter = document.createElement('option');
-                nofilter.textContent='No Filter';
+                nofilter.textContent = 'No Filter';
                 nofilter.value = 0;
                 e.currentTarget.yearParam.appendChild(nofilter);
             }
@@ -2170,16 +2176,26 @@
             document.getElementById('currentUserReservation').remove();
             callReservationDetails(mainDiv, page, 1, month, year);
         }
-
+        var url = new URL(location.href);
+        url.searchParams.set('month',month);
+        url.searchParams.set('year',year)
+        var modifiedURL = url.toString();
+        window.location.href = modifiedURL;
     }
 
     //ALl functions related to archives and to be reviewed
     //Archived Query
     function loadFinishedReservation(bigDiv, page, page_number = 1, month = new Date().getMonth() + 1, year = new Date().getFullYear()) {
         var motherDiv = document.createElement('div');
+        if (monthFilter != null){
+            month = monthFilter;
+        }
+        if(yearFilter != null){
+            year = yearFilter;
+        }
         motherDiv.className = "userResContent";
         motherDiv.id = "resList";
-        var params = "?page=" + page_number + "&month=" + month + "&year=" + year + '&filter=ON';
+        var params = "?page=" + page_number + "&month=" + month + "&year=" + year;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -2338,9 +2354,9 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                modal(this.responseText,function(){
-                document.getElementById('monitoringContent').remove();
-                loadStuff(...Array(1), 'Monitoring');
+                modal(this.responseText, function() {
+                    document.getElementById('monitoringContent').remove();
+                    loadStuff(...Array(1), 'Monitoring');
                 })
             }
         }
