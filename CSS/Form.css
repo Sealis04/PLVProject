@@ -297,7 +297,7 @@ input[type='time']:invalid+.validity:after {
   padding-right: 0px;
 }
 
-#room0 {
+.drop-rooms {
   margin-left: 10px;
   z-index: 2;
   padding: 10px;
@@ -343,8 +343,8 @@ select#equipList0 {
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
   .form-container{margin-left: 46px; margin-right: 46px;height: auto !important;}
-  #room0{margin-left: 1px;max-width: 100%; width: 99%;}
-  input#File {padding-bottom: 25px !important;}
+  .drop-rooms{margin-left: 1px;max-width: 100%; width: 99%;}
+  input#File {padding-bottom: 24px !important;}
   .navbar {width: 5vm;display: flex;margin-left: 0px;
     background-color: #0077b6;border: none;
     margin-top: -50;width: 100%;z-index: -1;}
@@ -359,7 +359,7 @@ select#equipList0 {
 /* Extra Small Devices, Phones */ 
 @media only screen and (min-width : 480px) {
   .form-container{margin-left: 46px; margin-right: 46px;}
-  #room0{margin-left: 1px;max-width: 100%; width: 99%;}
+  .drop-rooms{margin-left: 1px;max-width: 100%; width: 99%;}
   input#File {padding-bottom: 25px !important;}
   .navbar {width: 5vm;display: flex;margin-left: 0px;
     background-color: #0077b6;border: none;
@@ -375,7 +375,7 @@ select#equipList0 {
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
   .form-container{margin-left: 46px; margin-right: 46px;}
-  #room0{margin-left: 1px;max-width: 100%; width: 99%;}
+  .drop-rooms{margin-left: 1px;max-width: 100%; width: 99%;}
   input#File {padding-bottom: 50px !important;}
   .navbar {width: 5vm;display: flex;margin-left: 0px;
     background-color: #0077b6;border: none;

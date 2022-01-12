@@ -2252,7 +2252,7 @@
                 mainDiv.innerHTML += '<h4>Full Name: ' + fullName + '</h4>';
                 const first = await loadRoomDetails(myObj.roomID, mainDiv, ID, myObj.userID, review, remarks)
                 div.appendChild(mainDiv);
-                mainDiv.innerHTML += '<hr class="hr">';
+                mainDiv.innerHTML += '<hr class="hro">';
             }
         }
         xmlhttp.open("GET", "/Request_SpecificReservation.php?r_ID=" + ID + '&isReviewed=' + review, true);

@@ -32,7 +32,7 @@ height: 150px;
   width: 90;
 }
 
-img#modal-content {
+.adjust {
 margin-left: 22px;
 }
 
@@ -47,8 +47,7 @@ color: blue;
   .modalConfirm h4{
     font-size: 15px;
   }
-
-  img#modal-content {
+  .adjust {
     margin-left: 11px;
   }
   
@@ -82,7 +81,7 @@ color: blue;
 /* Extra Small Devices, Phones */ 
 @media only screen and (min-width : 480px) {
 
-img#modal-content {
+  .adjust {
   margin-left: 11px;
 }
 
@@ -115,7 +114,7 @@ transform: scale(3,3);
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
 
-img#modal-content {
+  .adjust {
   margin-left: 11px;
 }
 
@@ -154,7 +153,8 @@ transform: scale(3,3);
   margin-left: 130px;
 }
 
-img#modal-content {
+.adjust {
+
   margin-left: 12px;
 }
 
@@ -191,7 +191,7 @@ transform: scale(3,3);
   margin-left: 130px;
 }
 
-img#modal-content {
+.adjust {
   margin-left: 25px;
 }
 
