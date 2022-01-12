@@ -14,9 +14,17 @@ if ($page)
     $start = ($page - 1) * $limit;             //first item to display on this page
 else
     $start = 0;
-$query = "SELECT COUNT(*) as num FROM tbl_reservation WHERE r_user_ID = ? AND MONTH(tbl_reservation.DateStart) = ? AND YEAR(tbl_reservation.DateStart) = ?  ";
+$query = "SELECT COUNT(*) as num FROM tbl_reservation WHERE r_user_ID = ? 
+AND (CASE WHEN ? != 0
+     THEN MONTH(tbl_reservation.DateStart) = ?
+     ELSE TRUE
+     END)
+AND (CASE WHEN ? != 0
+THEN YEAR(tbl_reservation.DateStart) = ?
+ELSE TRUE
+END)   ";
 $sql5 = $conn->prepare($query);
-$sql5->bind_param("iii", $userID, $month,$year);
+$sql5->bind_param("iiiii", $userID, $month,$month,$year,$year);
 $sql5->execute();
 $result2 = $sql5->get_result();
 $user = $result2->fetch_array(MYSQLI_ASSOC);
@@ -26,13 +34,21 @@ $sql5->close();
 $sql_code = "SELECT * FROM tbl_reservation 
 INNER JOIN tbl_room ON tbl_reservation.r_room_ID = tbl_room.room_ID 
 INNER JOIN tbl_notification ON tbl_reservation.notifID = tbl_notification.notificationID
-WHERE tbl_reservation.r_user_ID = ? AND tbl_notification.forRegistration = 0 AND MONTH(tbl_reservation.DateStart) = ? AND YEAR(tbl_reservation.DateStart) = ?
+WHERE tbl_reservation.r_user_ID = ? AND tbl_notification.forRegistration = 0 
+AND (CASE WHEN ? != 0
+     THEN MONTH(tbl_reservation.DateStart) = ?
+     ELSE TRUE
+     END)
+AND (CASE WHEN ? != 0
+THEN YEAR(tbl_reservation.DateStart) = ?
+ELSE TRUE
+END)
 ORDER BY tbl_reservation.r_status, FIELD(r_approved_ID,'1') DESC, (CASE WHEN DATE(NOW()) < DATE(tbl_reservation.DateStart)
      THEN 1
      ELSE 0
      END) DESC , tbl_reservation.DateStart LIMIT $start, $limit";
 if ($sql = $conn->prepare($sql_code)) {
-    $sql->bind_param('iii', $r_user,$month,$year);
+    $sql->bind_param('iiiii', $r_user,$month,$month,$year,$year);
     $r_user = $userID;
     if ($sql->execute()) {
         $result = $sql->get_result();
