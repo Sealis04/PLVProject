@@ -1,5 +1,7 @@
 function modal(text,func){
    modalBody = document.createElement('div');
+   invisibleContainer = document.createElement('div');
+        invisibleContainer.className = 'fullscreenContainer';
           modalBody.className = 'modalConfirm shadow p-3 mb-5 bg-white rounded'
           modalMessage = document.createElement('h4');
           modalMessage.textContent = text;
@@ -8,13 +10,12 @@ function modal(text,func){
           modalConfirm.type = 'button';
           modalConfirm.style= "font-size:15px; margin-left:45%;"
           modalConfirm.value = "Ok";
-
-          modalCancel = document.createElement('input');
           modalBody.appendChild(modalMessage);
           modalBody.appendChild(modalConfirm);
+          invisibleContainer.appendChild(modalBody);
           modalConfirm.addEventListener('click', function(e) {
               func();
-              modalBody.remove();
+              invisibleContainer.remove();
           });
-          document.body.appendChild(modalBody);
+          document.body.appendChild(invisibleContainer);
 }

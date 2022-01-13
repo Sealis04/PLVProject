@@ -93,7 +93,12 @@
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText)
-                document.getElementById("course").value = myObj.coursename + ' ' + myObj.sectionname;
+                if(myObj.sectionname == "Teacher"){
+                    document.getElementById("course").value = myObj.coursename;
+                }else{
+                    document.getElementById("course").value = myObj.coursename + ' ' + myObj.sectionname;
+                }
+              
             }
         }
         xmlhttp.open("GET", "Request_Course.php?var=" + x + '&section=' + section + '&userID=' + null, true);
@@ -1031,6 +1036,8 @@
     function createModal(profileArr, filesArr, func, i = 0) {
         modalBody = document.createElement('div');
         modalBody.className = 'modalConfirm shadow p-3 mb-5 bg-white rounded';
+        invisibleContainer = document.createElement('div');
+        invisibleContainer.className = 'fullscreenContainer';
         reservationDetails = document.createElement('div');
         reservationDetails.innerHTML =
             '<h3> Confirm Reservation of the ff:' +
@@ -1043,7 +1050,6 @@
             reservationDetails.innerHTML += '<h4> Equipment to be reserved: ';
             reservationDetails.innerHTML += '<h5>' + profileArr[i].EquipmentStuff[a].name + ': ' + profileArr[i].EquipmentStuff[a].qty;
         }
-        console.log(profileArr)
         modalConfirm = document.createElement('input');
         modalConfirm.type = 'button';
         modalConfirm.value = "Confirm";
@@ -1053,6 +1059,7 @@
         modalCancel.value = "Cancel";
         modalCancel.className = 'header-btn btn decline f-decline';
         modalBody.appendChild(reservationDetails);
+        invisibleContainer.appendChild(modalBody);
         if (profileArr.length > 1) {
             var manipulateDiv = document.createElement('div');
             var prev = document.createElement('span');
@@ -1064,14 +1071,14 @@
             prev.addEventListener('click', function() {
                 i--;
                 if (i < 0) i = profileArr.length - 1;
-                modalBody.remove();
+                invisibleContainer.remove();
                 createModal(profileArr,filesArr,func,i);
             })
 
             next.addEventListener('click', function() {
                 i++;
                 if (i == profileArr.length) i = 0;
-                modalBody.remove();
+                invisibleContainer.remove();
                 createModal(profileArr,filesArr,func,i);
             })
             manipulateDiv.appendChild(prev);
@@ -1080,13 +1087,13 @@
         }
         modalConfirm.addEventListener('click', function(e) {
             func();
-            modalBody.remove();
+            invisibleContainer.remove();
         });
         modalCancel.addEventListener('click', function(e) {
-            modalBody.remove();
+            invisibleContainer.remove();
             return true;
         });
-        document.body.appendChild(modalBody);
+        document.body.appendChild(invisibleContainer);
         //for modal Image
         reservationDetails.innerHTML += '<h4> Letters included: ' +
         '*NOTE: Please make sure all uploaded images are in proper format/orientation to reduce the chances of your reservation being rejected. ';

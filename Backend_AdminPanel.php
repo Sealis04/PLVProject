@@ -25,6 +25,8 @@
     loadStuff(category, windowType)
 
     function createModal(text, func) {
+        invisibleContainer = document.createElement('div');
+        invisibleContainer.className = 'fullscreenContainer';
         modalBody = document.createElement('div');
         modalBody.className = 'modalConfirm shadow p-3 mb-5 bg-white rounded';
         modalMessage = document.createElement('h4');
@@ -40,18 +42,21 @@
         modalBody.appendChild(modalMessage);
         modalBody.appendChild(modalConfirm);
         modalBody.appendChild(modalCancel);
+        invisibleContainer.appendChild(modalBody);
+        document.addEventListener('click',onclick);
         modalConfirm.addEventListener('click', function(e) {
-            modalBody.remove();
+            invisibleContainer.remove();
             func();
         });
         modalCancel.addEventListener('click', function(e) {
-            modalBody.remove();
+            invisibleContainer.remove();
+            document.removeEventListener('click',onclick)
             return true;
         });
-        document.body.appendChild(modalBody);
+      
+        document.body.appendChild(invisibleContainer);
 
     }
-
     function loadStuff(categ, windowType) {
         if (c == null) {
             if (isAdmin == 0) {
@@ -1756,7 +1761,6 @@
     function editContent(e) {
         if (checker == true) {
             disableButtons(e.currentTarget, e.currentTarget.removeButton);
-            console.log(e.currentTarget.removeButton);
             name = (e.currentTarget.nameParam) ? e.currentTarget.nameParam.disabled = false : ' ';
             qty = (e.currentTarget.quantityParam) ? e.currentTarget.quantityParam.disabled = false : ' ';
             desc = (e.currentTarget.descParam) ? e.currentTarget.descParam.disabled = false : ' ';
@@ -1925,7 +1929,10 @@
         }
         // to change edit and cancel icons
         value.src = 'assets/checked.png';
-        value2.src = 'assets/cross.png';
+        if(typeof(value2)!=  undefined && value2 != null){
+            value2.src = 'assets/cross.png';
+        }
+        
     }
 
     function addRoomQuery(name, quantity, desc, availability, inputParam) {
