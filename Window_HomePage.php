@@ -39,7 +39,7 @@
             </div>
         </nav>
     <mainBody class='main'>
-        <div style="text-align:center">
+        <div style="text-align:center" class="nav-calendar">
             <input value='<' onclick='prevMonth()' type='button' style="display:inline-block;   ">
             <h3 id="monthAndYear" style="display:inline-block; "></h3>
             <input value='>' onclick='nextMonth()' type='button' style="display:inline-block; ">

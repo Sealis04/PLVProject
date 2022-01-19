@@ -312,38 +312,38 @@
   <!--END-->
   <div class="container">
     <div class="col-sm-6 col-lg-4"></div>
-    <div class="loginForm col-sm-6 col-lg-4">
+    <div class="loginForm col-sm-6 col-lg-7 shadow-lg p-3 mb-5 bg-white rounded">
       <img src="assets/plv.png" style="display: block; margin-left: auto; margin-right: auto; margin-bottom: 50; height: 100; width: 100; margin-top: 100;">
       <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
         <div class="md-form form-group">
-          <input required type="text" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="userID" placeholder="ID #" value="<?php echo (isset($userID)) ? $userID : '' ?>">
+          <input required type="text" style="margin-bottom:40px;font-size:20px;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="userID" placeholder="ID #" value="<?php echo (isset($userID)) ? $userID : '' ?>">
           <span class="error"><?php echo $userIDErr; ?></span>
         </div>
         <div class="md-form form-group">
-          <input required type="text" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="email" placeholder="Email" value="<?php echo (isset($email)) ? $email : '' ?>">
+          <input required type="text" style="margin-bottom:40px;font-size:20px;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="email" placeholder="Email" value="<?php echo (isset($email)) ? $email : '' ?>">
           <span class="error"><?php echo $emailErr; ?></span>
         </div>
         <div class="md-form form-group">
-          <input required type="password" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="password" placeholder="Password">
+          <input required type="password" style="margin-bottom:40px;font-size:20px;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="password" placeholder="Password">
           <span class="error"><?php echo $passwordErr; ?></span>
         </div>
         <div class="md-form form-group">
-          <input required type="password" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="retypePassword" placeholder="Re-type password">
+          <input required type="password" style="margin-bottom:40px;font-size:20px;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="retypePassword" placeholder="Re-type password">
         </div>
         <div class="md-form form-group">
-          <input required type="number" maxlength="11" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="contact" placeholder="Contact Number" value="<?php echo (isset($contact)) ? $contact : '' ?>">
+          <input required type="number" maxlength="11" style="margin-bottom:40px;font-size:20px;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="contact" placeholder="Contact Number" value="<?php echo (isset($contact)) ? $contact : '' ?>">
           <span class="error"><?php echo $contactErr; ?></span>
         </div>
         <div class="md-form form-group">
-          <input required type="text" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="firstName" placeholder="First Name" value="<?php echo (isset($firstName)) ? $firstName : '' ?>">
+          <input required type="text" style="margin-bottom:40px;font-size:20px;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="firstName" placeholder="First Name" value="<?php echo (isset($firstName)) ? $firstName : '' ?>">
           <span class="error"><?php echo $firstNameErr; ?></span>
         </div>
         <div class="md-form form-group">
-          <input type="text" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="middleName" placeholder="Middle Name" value="<?php echo (isset($middleName)) ? $middleName : '' ?>">
+          <input type="text" style="margin-bottom:40px;font-size:20px;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="middleName" placeholder="Middle Name" value="<?php echo (isset($middleName)) ? $middleName : '' ?>">
           <span class="error"><?php echo $middleNameErr; ?></span>
         </div>
         <div class="md-form form-group">
-          <input required type="text" style="background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="lastName" placeholder="Last Name" value="<?php echo (isset($lastName)) ? $lastName : '' ?>">
+          <input required type="text" style="margin-bottom:40px;font-size:20px;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="lastName" placeholder="Last Name" value="<?php echo (isset($lastName)) ? $lastName : '' ?>">
           <span class="error"><?php echo $lastNameErr; ?></span>
         </div>
         <!--CHANGES-->
