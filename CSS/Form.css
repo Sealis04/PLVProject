@@ -353,7 +353,7 @@ select#equipList0 {
     margin-top: -50;width: 100%;z-index: -1;}
     .form-control{font-size: 1.2rem;}
     .submit{padding: 5px;}
-    select#equipList0 {
+    select#equipList0,  select#equipList1,  select#equipList2,  select#equipList3,  select#equipList4,  select#equipList5, select#equipList6, select#equipList7, select#equipList8, select#equipList9, select#equipList10 {
       margin-left: 0% !important;
     }
 
@@ -369,7 +369,7 @@ select#equipList0 {
     margin-top: -50;width: 100%;z-index: -1;}
     .form-control{font-size: 1.2rem;}
     .submit{padding: 5px;}
-    select#equipList0 {
+    select#equipList0,  select#equipList1,  select#equipList2,  select#equipList3,  select#equipList4,  select#equipList5, select#equipList6, select#equipList7, select#equipList8, select#equipList9, select#equipList10 {
       margin-left: 0% !important;
     }
 
@@ -385,7 +385,7 @@ select#equipList0 {
     margin-top: -50;width: 100%;z-index: -1;}
     .form-control{font-size: 1.2rem;}
     .submit{padding: 5px;}
-    select#equipList0 {
+    select#equipList0,  select#equipList1,  select#equipList2,  select#equipList3,  select#equipList4,  select#equipList5, select#equipList6, select#equipList7, select#equipList8, select#equipList9, select#equipList10 {
       margin-left: -41.5% !important;
     }
 }
@@ -399,7 +399,7 @@ select#equipList0 {
     padding-bottom: 40 !important;}
     .form-control{padding: 1.375rem 0.75rem;}
     .submit{padding: 10px;}
-    select#equipList0 {
+    select#equipList0,  select#equipList1,  select#equipList2,  select#equipList3,  select#equipList4,  select#equipList5,  select#equipList1,  select#equipList2,  select#equipList3,  select#equipList4,  select#equipList5 {
       margin-left: -41.5% !important;
     }
 }
@@ -413,7 +413,7 @@ select#equipList0 {
     .form-control{padding: 1.375rem 0.75rem;}
     .form-container{height: auto !important;}
     .submit{padding: 10px;}
-    select#equipList0 {
+    select#equipList0,  select#equipList1,  select#equipList2,  select#equipList3,  select#equipList4,  select#equipList5, select#equipList6, select#equipList7, select#equipList8, select#equipList9, select#equipList10 {
       margin-left: -41.5% !important;
     }
 }
@@ -426,7 +426,7 @@ select#equipList0 {
     .form-control{padding: 1.375rem 0.75rem;}
     .form-container{height: auto !important;}
     .submit{padding: 10px;}
-    select#equipList0 {
+    select#equipList0,  select#equipList1,  select#equipList2,  select#equipList3,  select#equipList4,  select#equipList5, select#equipList6, select#equipList7, select#equipList8, select#equipList9, select#equipList10 {
       margin-left: -41.5% !important;
     }
     

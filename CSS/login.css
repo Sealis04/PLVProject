@@ -211,6 +211,7 @@ span.hamburger{
     color: white;
  
 }
+  .nav2{width: 0;}
   
 }
 
@@ -227,7 +228,7 @@ span.hamburger{
     margin-left: 35%;
   }
   .navbar{
-    background-color:transparent !important;
+    background-color: #0077b6 !important;
   }
 }
 

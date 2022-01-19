@@ -260,14 +260,14 @@ legend{
     margin-right: -30px;
   }
   .navbar{
-    margin-left: -40px;
+    margin-left: -50px;
   }
 }
 
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
   .container{
-    margin-left: 45px !important;
+    margin-left: 20px !important;
   }
   legend{
     margin-top: 80px;
@@ -275,15 +275,14 @@ legend{
   .policy{
     font-size: 14px;
   }
-  .navbar{
-    background-color:transparent !important;
-  }
+
 }
 
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 1000) {
+@media only screen and (min-width : 992px) {
   .container{
-    margin-left: 200px !important;
+    margin-left: 240px !important;
+    width: 79%;
   }
   .policy{
     font-size: 24px;
@@ -297,7 +296,7 @@ legend{
 /* Large Devices, Wide Screens */
 @media only screen and (min-width : 1200px) {
   .container{
-    margin-left: 200px !important;
+    margin-left: 400px !important;
   }
   .policy{
     font-size: 24px;

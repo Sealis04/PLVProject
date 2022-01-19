@@ -277,7 +277,7 @@ justify-items:end;
 .reservations{
   margin-left: 2vw !important;
   color: black;
-
+  word-wrap: break-word !important;
   width: 97% !important;
   margin-top: 20px;
   border-radius: 7px;
@@ -313,13 +313,16 @@ justify-items:end;
 
 .reservations h5{
   color: black;
-  display: inline-flex;
+  display: initial;
   margin-left: 10px;
   margin-right: 10px;
+  word-wrap: break-word;
+
 }
 
 h5{
     font-size: 20px;
+      word-wrap: break-word !important;
 }
 
 .reservations h4{
@@ -358,6 +361,8 @@ input[type="button"]{
     word-break: break-word;
     color: #32cd32;
   }
+  .nav-calendar{    margin-left: 0%;
+    margin-bottom: 5px;}
 }
 
 /* Extra Small Devices, Phones */ 
@@ -384,16 +389,16 @@ input[type="button"]{
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width : 992px) {
-  #calendar {margin-left: 15% !important;
-    width: 80% !important;
+  #calendar {margin-left: 27.5% !important;
+    width: 70% !important;
 
   }
   .reservations {
-    margin-left: 14.80vw !important;  
-    width: 80% !important; 
+    margin-left: 27.8vw !important;  
+    width: 70% !important; 
   }
   .create-reservation{
-    margin-left: 15vw !important;
+    margin-left: 28vw !important;
   }
   .hamburger{
     visibility: hidden !important;
@@ -403,35 +408,13 @@ input[type="button"]{
     word-break: break-word;
     color: #32cd32;
   }
+  .nav-calendar{    margin-left: 30%;
+    margin-bottom: 5px;}
 
 }
 
 
-/* Large Devices, Wide Screens */
-@media only screen and (min-width : 1000) {
-  #calendar {margin-left: 15% !important;
-    width: 80% !important;
 
-  }
-  .reservations {
-    margin-left: 14.80vw !important;  
-    width: 80% !important; 
-  }
-  .create-reservation{
-    margin-left: 15vw !important;
-  }
-  .navbar{
-    background-color:transparent !important;
-  }
-  .hamburger{
-    visibility: hidden !important;
-  }
-  .reservationCount {
-    font-size: 13px;
-    word-break: break-word;
-    color: #32cd32;
-  }
-}
 
 /* Large Devices, Wide Screens */
 @media only screen and (min-width : 1200px) {
@@ -457,5 +440,8 @@ input[type="button"]{
     word-break: break-word;
     color: #32cd32;
   }
+  .nav-calendar{    margin-left: 8%;
+    margin-bottom: 10px;}
+
 }
 

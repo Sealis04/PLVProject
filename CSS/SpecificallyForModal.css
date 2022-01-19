@@ -19,7 +19,8 @@ width: 150px;
 height: 150px;
 }
 .modalConfirm h4{
-  font-size: 24px;
+  font-size: 12px;
+    text-align: center;
   margin:  0 0 30 0;
 }
 .modalConfirm input{
@@ -45,7 +46,8 @@ color: blue;
 .modalConfirm input{
   margin-left: 0px;}
   .modalConfirm h4{
-    font-size: 15px;
+    font-size: 12px;
+    text-align: center;
   }
   .adjust {
     margin-left: 11px;
@@ -66,6 +68,7 @@ color: blue;
     width: 274px;
     background-color: white;
     z-index: 2;
+    word-break: break-all;
     
 } .modal-f {
   z-index: 1050;
@@ -77,6 +80,10 @@ color: blue;
   transform: scale(3,3);
 
 }
+span.left, span.right{
+  color: blue;
+  margin-left: 33;
+  }
   
 }
 
@@ -102,6 +109,7 @@ input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
   width: 274px;
   background-color: white;
   z-index: 2;
+  word-break: break-all;
   
 } .modal-f {
 z-index: 1050;
@@ -112,6 +120,10 @@ margin-left: 115px !important;
 margin-top: 155px !important;
 transform: scale(3,3);
 }
+span.left, span.right{
+  color: blue;
+  margin-left: 33;
+  }
 
 }
 
@@ -137,6 +149,7 @@ input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
   width: 274px;
   background-color: white;
   z-index: 2;
+  word-break: break-all;
   
 } .modal-f {
 z-index: 1050;
@@ -147,6 +160,10 @@ margin-left: 115px !important;
 margin-top: 155px !important;
 transform: scale(3,3);
 }
+span.left, span.right{
+  color: blue;
+  margin-left: 33;
+  }
 }
 
 /* Medium Devices, Desktops */
@@ -179,6 +196,7 @@ input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
   background-color: white;
   z-index: 2;
   width: 350px;
+  word-break: break-all;
   
 } .modal-f {
 z-index: 1050;
@@ -190,6 +208,10 @@ margin-top: 155px !important;
 transform: scale(3,3);
 
 }
+span.left, span.right{
+  color: blue;
+  margin-left: 41;
+  }
 } 
 
 
@@ -218,6 +240,7 @@ input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
   background-color: white;
   z-index: 2;
   width: 350px;
+  word-break: break-all;
   
 } .modal-f {
 z-index: 1050;
@@ -229,5 +252,21 @@ margin-top: 155px !important;
 transform: scale(3,3);
 
 }
+span.left, span.right{
+  color: blue;
+  margin-left: 41;
+  }
 
+}
+
+
+.fullscreenContainer{
+  /* display: none; */
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(90, 90, 90, 0.5);
+  z-index: 9999;
 }
