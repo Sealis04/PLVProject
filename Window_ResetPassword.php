@@ -246,11 +246,13 @@
     }
 
     ?>
-    <sidenav>
-        <?php
-            require "Backend_CheckifLoggedIN.php";
-        ?>
-    </sidenav>
+       <nav>
+    <div class="nav2">
+      <?php
+      require "Backend_CheckifLoggedIN.php";
+      ?>
+    </div>
+  </nav>
     <div class="OTP">
         <h3>Reset Password</h3>
         <div id="otpForm">

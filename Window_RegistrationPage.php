@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/registration.css">
   <link rel="stylesheet" href="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
   <script src="bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="bootstrap-4.1.3-dist/css/bootstrap.min.css">
+    <script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="css/registration.css">
   <link rel="stylesheet" href="css/SpecificallyForModal.css">
   <script type="text/javascript" src="Backend_Modal.php"></script>
@@ -312,7 +314,7 @@
   <!--END-->
   <div class="container">
     <div class="col-sm-6 col-lg-4"></div>
-    <div class="loginForm col-sm-6 col-lg-7 shadow-lg p-3 mb-5 bg-white rounded">
+             <div class="loginForm col-sm-6 col-lg-7 shadow-lg p-3 mb-5 bg-white rounded">
       <img src="assets/plv.png" style="display: block; margin-left: auto; margin-right: auto; margin-bottom: 50; height: 100; width: 100; margin-top: 100;">
       <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
         <div class="md-form form-group">
@@ -328,14 +330,14 @@
           <span class="error"><?php echo $passwordErr; ?></span>
         </div>
         <div class="md-form form-group">
-          <input required type="password" style="margin-bottom:40px;font-size:20px;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="retypePassword" placeholder="Re-type password">
+          <input required type="password" style="margin-bottom:40px;font-size:20px;;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="retypePassword" placeholder="Re-type password">
         </div>
         <div class="md-form form-group">
           <input required type="number" maxlength="11" style="margin-bottom:40px;font-size:20px;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="contact" placeholder="Contact Number" value="<?php echo (isset($contact)) ? $contact : '' ?>">
           <span class="error"><?php echo $contactErr; ?></span>
         </div>
         <div class="md-form form-group">
-          <input required type="text" style="margin-bottom:40px;font-size:20px;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="firstName" placeholder="First Name" value="<?php echo (isset($firstName)) ? $firstName : '' ?>">
+          <input required type="text"style="margin-bottom:40px;font-size:20px;background: transparent;border: none;border-bottom: 1px solid #000000;-webkit-box-shadow: none;box-shadow: none; border-radius: 0;" class="form-control .w-25" name="firstName" placeholder="First Name" value="<?php echo (isset($firstName)) ? $firstName : '' ?>">
           <span class="error"><?php echo $firstNameErr; ?></span>
         </div>
         <div class="md-form form-group">

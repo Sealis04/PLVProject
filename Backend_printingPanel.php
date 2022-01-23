@@ -5,7 +5,7 @@
 
     <link rel="stylesheet" href="/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css">
     <script src="/bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="css/printLetter.css">
 </head>
 
 <body>
@@ -64,21 +64,27 @@
             if (this.readyState == 4 && this.status == 200) {
                 const myObj = JSON.parse(this.responseText);
                 var div = document.createElement('div');
+                
+                div.className="sample";
                 var fullName = myObj.firstName + ' ' + myObj.middleName + ' ' + myObj.lastName;
                 var array = await callUserDetails();
-                div.innerHTML += '<h4>Name: ' + fullName + '</h4>';
-                div.innerHTML += '<h4> Course and Section: ' + array.coursename + ' ' + array.sectionname + '<h4>';
-                div.innerHTML += '<h4>Event: ' + myObj.eventName + '</h4>';
-                div.innerHTML += '<h4>Adviser: ' + myObj.eventAdviser + '</h4>';
-                div.innerHTML += '<h4>Starting Date: ' + myObj.dateStart + '</h4>';
-                div.innerHTML += '<h4>Ending Date: ' + myObj.dateEnd + '</h4>';
+                div.innerHTML += '<img class="header" id="plvlogo" src="assets/plvlogo.png"/>';
+                div.innerHTML += '<header class="header" id="plvtext">PAMANTASAN NG LUNGSOD NG VALENZUELA'+'<br>'+'Tongco St., Maysan, Valenzuela City</header>';
+                div.innerHTML += '<h5><i>The purpose of this document is a hard copy proof of approved reservation that must be shown to Engr. Psalms June H. Tan at the General Services Office for signatories of the room and equipment reserved.</i></h5>';
+                div.innerHTML += '<h4><b>The reservation details of Reservation ID#1 are stated below:</b></h4>';
+                div.innerHTML += '<h4><b>Name:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>'+ fullName + '</h4>';
+                div.innerHTML += '<h4><b>Course and Section:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </b>' + array.coursename + ' ' + array.sectionname + '<h4>';
+                div.innerHTML += '<h4><b>Event:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + myObj.eventName + '</h4>';
+                div.innerHTML += '<h4><b>Adviser:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </b>' + myObj.eventAdviser + '</h4>';
+                div.innerHTML += '<h4><b>Starting Date:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + myObj.dateStart + '</h4>';
+                div.innerHTML += '<h4><b>Ending Date:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + myObj.dateEnd + '</h4>';
                 console.log(myObj.timeStart);
                 var timeStart = tConvert(myObj.timeStart);
                 var timeEnd = tConvert(myObj.timeEnd);
-                div.innerHTML += '<h4>From: ' + timeStart + ' to ' + timeEnd + '</h4>';
+                div.innerHTML += '<h4><b>Time:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b> ' + timeStart + ' to ' + timeEnd + '</h4>';
                 document.getElementById('mainBody').appendChild(div);
                 var x = await loadRoomDetails(myObj.roomID, div, ID, myObj.userID)
-                div.innerHTML += '<h4>Original Letter: </h4>';
+                div.innerHTML += '<h4><b>Scanned Copy of Approval Letter:</b> </h4>';
              //   var a = await loadImages(div,myObj.imgLetter);+
                 var a = await callReservationImage(div,ID);
                 resolve('success');
@@ -115,7 +121,7 @@
             xmlhttp.onreadystatechange = async function() {
                 if (this.readyState == 4 && this.status == 200) {
                     var myObj = JSON.parse(this.responseText);
-                    div.innerHTML += '<h4>Room Reserved : ' + myObj.roomName + '</h4>';
+                    div.innerHTML += '<h4><b>Room Reserved:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + myObj.roomName + '</h4>';
                     const second = await loadEquipDetails(ID, div, userID);
                     resolve('success');
                 }
@@ -132,9 +138,9 @@
                 if (this.readyState == 4 && this.status == 200) {
                     var myObj = JSON.parse(this.responseText);
                     if (myObj.length == 0) {
-                        mainDiv.innerHTML += await '<br><label class="equipID" placeholder = "EquipName"> No Equipment Borrowed </label>'
+                        mainDiv.innerHTML += await '<br><h4 class="equipID" placeholder = "EquipName"> No Equipment Borrowed </h4 >'
                     } else {
-                        mainDiv.innerHTML += '<br><label class="equipID" placeholder = "EquipName"> Equipment Borrowed:  </label>'
+                        mainDiv.innerHTML += '<br><h4 class="equipID" placeholder = "EquipName"> Equipment Borrowed:  </h4 >'
                         var x = await myObj.forEach((element, index) =>  listEquipDetails(ID, mainDiv, element, index));
                     }
                     resolve('success');
@@ -148,8 +154,8 @@
 
     function listEquipDetails(ID, mainDiv, element, index) {
         return new Promise(resolve=>{
-        mainDiv.innerHTML += '<br><label class="equipID" placeholder = "EquipName">' + element.equipName + ': </label>'
-        mainDiv.innerHTML += '<label disabled class="equipQty" placeholder = "EquipName">' + element.qty + '</label> ';
+        mainDiv.innerHTML += '<br><h4  class="equipID" placeholder = "EquipName">' + element.equipName + ': </h4 >'
+        mainDiv.innerHTML += '<h4  disabled class="equipQty" placeholder = "EquipName">' + element.qty + '</h4 > ';
         resolve('success');
         })
         

@@ -93,12 +93,11 @@
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText)
-                if(myObj.sectionname == "Teacher"){
+                 if(myObj.sectionname == "Teacher"){
                     document.getElementById("course").value = myObj.coursename;
                 }else{
                     document.getElementById("course").value = myObj.coursename + ' ' + myObj.sectionname;
                 }
-              
             }
         }
         xmlhttp.open("GET", "Request_Course.php?var=" + x + '&section=' + section + '&userID=' + null, true);
@@ -1034,7 +1033,7 @@
     }
 
     function createModal(profileArr, filesArr, func, i = 0) {
-        modalBody = document.createElement('div');
+         modalBody = document.createElement('div');
         modalBody.className = 'modalConfirm shadow p-3 mb-5 bg-white rounded';
         invisibleContainer = document.createElement('div');
         invisibleContainer.className = 'fullscreenContainer';
@@ -1046,10 +1045,12 @@
             '<h4> From: ' + profileArr[i].startDate + ' to ' + profileArr[i].endDate +
             '<h4> Time: ' + profileArr[i].startTime + ' to ' + profileArr[i].endTime +
             '<h4> Room: ' + profileArr[i].roomName + ' Attendees: ' + profileArr[i].attendees;
-        for (a = i; a < profileArr[i].EquipmentStuff.length; a++) {
-            reservationDetails.innerHTML += '<h4> Equipment to be reserved: ';
-            reservationDetails.innerHTML += '<h5>' + profileArr[i].EquipmentStuff[a].name + ': ' + profileArr[i].EquipmentStuff[a].qty;
-        }
+            if(profileArr[i].EquipmentStuff.length >0){
+                reservationDetails.innerHTML += '<h4> Equipment to be reserved: ';
+                  for (a = i; a < profileArr[i].EquipmentStuff.length; a++) {
+                    reservationDetails.innerHTML += '<h5>' + profileArr[i].EquipmentStuff[a].name + ': ' + profileArr[i].EquipmentStuff[a].qty;
+                }
+            }
         modalConfirm = document.createElement('input');
         modalConfirm.type = 'button';
         modalConfirm.value = "Confirm";

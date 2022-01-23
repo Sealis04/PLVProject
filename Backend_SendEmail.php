@@ -23,26 +23,20 @@
         if($rid != null){
             $conn=OpenCon();
             //qquerying reservation details
-            $sql_code = "SELECT * FROM tbl_reservation WHERE r_ID = ?";
+            $sql_code = "SELECT tbl_reservation.r_event, tbl_reservation.DateStart,tbl_reservation.DateEnd,tbl_reservation.TimeStart, tbl_reservation.TimeEnd, tbl_room.room_name from 
+                tbl_reservation INNER JOIN
+                tbl_room
+                ON tbl_reservation.r_room_ID = tbl_room.room_ID 
+                WHERE r_ID = ?";
             if($sql=$conn->prepare($sql_code)){
                 $sql->bind_param("i",$r_user);
                 $r_user = $rid;
                     if($sql->execute()){
-                        $result = $sql->get_result();
-                            while($row = $result->fetch_assoc()){
-                                $event = $row['r_event'];
-                                $start = $row['DateStart'];
-                                $end = $row['DateEnd'];
-                                $startTime = $row['TimeStart'];
-                                $endTime = $row['TimeEnd'];
-                                $room = $row['r_room_ID'];
-                            }
-                        }else{
-                            echo $conn->error;
-                        }
-                     $sql->close();
-                }
-                $startTime = strtotime($startTime);
+                        $sql->store_result();
+                        if($sql->num_rows==1){
+                            $sql->bind_result($event,$start,$end,$startTime,$endTime,$room);
+                            if($sql->fetch()){
+                                 $startTime = strtotime($startTime);
                 $endTime = strtotime($endTime);
                 $formattedStartTime = date('h:i:s A',$startTime);
                 $formattedEndTime = date('h:i:s A',$endTime);
@@ -73,8 +67,7 @@
         }else{
             if($approval == 3){
                 $message = 'Hello, '.$fn."<br>";
-                $message .= 'This is to inform you that your registration has been rejected';
-                $message .= 'You can now start creating reservations for the facilities under the GSO!'."<br>";
+                $message .= 'This is to inform you that your registration has been rejected <br>';
                 if($remarks != ' '){
                     $message .='Remarks from admin:' .$remarks;
                 }else{
@@ -89,6 +82,14 @@
             }
             }         
         }
+                            }
+                        }
+                        }else{
+                            echo $conn->error;
+                        }
+                     $sql->close();
+                }
+               
      
         $fromEmail = $_SESSION["email"];
         $headers = "MIME-Version: 1.0" . "\r\n";

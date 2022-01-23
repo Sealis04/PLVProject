@@ -56,28 +56,7 @@
         calendar(currentMonth, currentYear);
     }
 
-    // function loopYear(year) {
-    //     var yearList = document.getElementById('year');
-    //     yearList.addEventListener('change', jump);
-    //     for (a = 15; a > 0; a--) {
-    //         var option = document.createElement('option');
-    //         option.textContent = year - a;
-    //         option.value = year - a;
-    //         yearList.appendChild(option);
-    //     }
-    //     for (a = 0; a < 15; a++) {
-    //         var option = document.createElement('option');
-    //         option.textContent = year + a;
-    //         option.value = year + a;
-    //         yearList.appendChild(option);
-    //     }
-    //     for (a = 0; a < yearList.length; a++) {
-    //         if (yearList.options[a].value == year) {
-    //             console.log("im in");
-    //             yearList.selectedIndex = a;
-    //         }
-    //     }
-    // }
+
 
     function addRowHandlers() {
         var table = document.getElementById('calendar');
@@ -162,6 +141,8 @@
     }
     async function checkIfReservationExists(day,month,year){
         month = ("0" + (month + 1)).slice(-2);
+        var date = year + '-' + (month) + '-' + day;
+        console.log(date)
         return new Promise(resolve=>{
             var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -169,7 +150,7 @@
                  resolve(this.responseText);
             }
         }
-        xmlhttp.open("GET", "/Request_CheckCountOfReservations.php?day=" +  day + '&month=' + month + '&year=' + year, true);
+        xmlhttp.open("GET", "/Request_CheckCountOfReservations.php?date=" + date, true);
         xmlhttp.send();
         })
     }
