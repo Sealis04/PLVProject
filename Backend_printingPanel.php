@@ -29,8 +29,9 @@
     console.log(c);
     (async()=>{
         await onLoad(c)
-        window.print();
+        
     })();
+    createButton();
     function loadImages(mainDiv, path,count) {
         return new Promise(resolve=>{ 
           var i = 0;
@@ -56,7 +57,36 @@
         }
         return time.join(''); // return adjusted time or original string
     }
+    function createButton(){
+        var main = document.getElementById('mainBody');
+        var buttonsDiv = document.createElement('div');
+        buttonsDiv.id = 'buttonsDiv';
+        var print = document.createElement('input');
+        var save = document.createElement('input');
+        print.type='button';
+        print.value = 'Print';
+        save.type= 'button';
+        save.value='Save as PDF';
+        print.addEventListener('click',print);
+        buttonsDiv.appendChild(print);
+        buttonsDiv.appendChild(save);
+        main.appendChild(buttonsDiv);
+    }
+    function print(e){
+    console.log('asd');
+    // var prtContent = document.getElementById('main');
+    // var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+    
+    // // WinPrint.document.write('<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">');
 
+    // WinPrint.document.write(prtContent.innerHTML);
+    // WinPrint.document.close();
+    // WinPrint.setTimeout(function(){
+    //   WinPrint.focus();
+    //   WinPrint.print();
+    //   WinPrint.close();
+    // }, 1000);
+    }
     function onLoad(ID) {
         return new Promise(resolve=>{
             var xmlhttp = new XMLHttpRequest();
@@ -64,7 +94,6 @@
             if (this.readyState == 4 && this.status == 200) {
                 const myObj = JSON.parse(this.responseText);
                 var div = document.createElement('div');
-                
                 div.className="sample";
                 var fullName = myObj.firstName + ' ' + myObj.middleName + ' ' + myObj.lastName;
                 var array = await callUserDetails();
