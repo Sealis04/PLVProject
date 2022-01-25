@@ -54,3 +54,348 @@ h5{
         top:0;
     }
 }
+
+.header-btn{
+    text-decoration: none;
+    background-color: none;
+    color: white;
+    background-color: #0077b6;;
+    font-size: 20px;
+    margin-bottom: 30px;
+    margin-left: -10px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .header-btn:active{
+    color: white;
+    background-color: #000099 ;
+  }
+  .header-btn:hover{
+    background-color: white;
+    border-color: #0077b6;
+    color: #0077b6;
+  }
+
+  .btn{
+    margin-left: 10px;
+    border-radius: 7px;
+  }
+  .btn:hover{
+  
+    background-color: white;
+    border-color: #0077b6;
+    color: #0077b6;
+  }
+
+  #buttonsDiv{
+      margin: 10px;
+      text-align: center;
+      
+  }
+
+
+  /*MODALS*/
+  .modalConfirm{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 3.5px inset #1C1D91 !important;
+  
+  }
+  
+  .modal-f{
+  z-index: 1050;
+  overflow: hidden;
+  outline: 0;
+  margin: 100;
+  margin-left: 115px !important;
+  margin-top: 155px !important;
+  transform: scale(3,3);
+  width: 150px;
+  height: 150px;
+  }
+  .modalConfirm h4{
+    font-size: 12px;
+      text-align: center;
+    margin:  0 0 30 0;
+  }
+  .modalConfirm input{
+    margin-left: 130px;
+  }
+  
+  
+  .modalConfirm.shadow.p-3.mb-5.bg-white.rounded img {
+    height: 90;
+    width: 90;
+  }
+  
+  .adjust {
+  margin-left: 22px;
+  }
+  
+  span.left, span.right{
+  color: blue;
+  }
+  
+  /* Custom, iPhone Retina */ 
+  @media only screen and (min-width : 320px) {
+  .modalConfirm input{
+    margin-left: 0px;}
+    .modalConfirm h4{
+      font-size: 12px;
+      text-align: center;
+    }
+    .adjust {
+      margin-left: 11px;
+    }
+    
+    input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
+      margin-top: 25px;
+      margin-left: 30px;
+    }
+    .modalConfirm {
+      position: fixed;
+      left: 50%;
+      top: 47%;
+      transform: translate(-50%, -50%);
+      border: 3.5px inset #1C1D91 !important;
+      font-size: 14px !important;
+      margin-top: 21px;
+      width: 274px;
+      background-color: white;
+      z-index: 2;
+      word-break: break-all;
+      
+  } 
+  .modalConfirm.shadow.p-3.mb-5.bg-white.rounded img{
+    height: 50%;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+.okay{
+    margin: 10px;
+}
+
+.fullscreenContainer h4{
+    margin: 5px;
+    font-size: 20px;
+}
+  .modal-f {
+    z-index: 1050;
+    overflow: hidden;
+    outline: 0;
+    margin: 100;
+    margin-left: 115px !important;
+    margin-top: 155px !important;
+    transform: scale(3,3);
+  
+  }
+  span.left, span.right{
+    color: blue;
+    margin-left: 33;
+    }
+    
+  }
+  
+  /* Extra Small Devices, Phones */ 
+  @media only screen and (min-width : 480px) {
+  
+    .adjust {
+    margin-left: 11px;
+  }
+  
+  input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
+    margin-top: 25px;
+    margin-left: 30px;
+  }
+  .modalConfirm {
+    position: fixed;
+    left: 50%;
+    top: 47%;
+    transform: translate(-50%, -50%);
+    border: 3.5px inset #1C1D91 !important;
+    font-size: 14px !important;
+    margin-top: 21px;
+    width: 274px;
+    background-color: white;
+    z-index: 2;
+    word-break: break-all;
+    
+  } .modal-f {
+  z-index: 1050;
+  overflow: hidden;
+  outline: 0;
+  margin: 100;
+  margin-left: 115px !important;
+  margin-top: 155px !important;
+  transform: scale(3,3);
+  }
+  span.left, span.right{
+    color: blue;
+    margin-left: 33;
+    }
+  
+  }
+  
+  /* Small Devices, Tablets */
+  @media only screen and (min-width : 768px) {
+  
+    .adjust {
+    margin-left: 11px;
+  }
+  
+  input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
+    margin-top: 25px;
+    margin-left: 30px;
+  }
+  .modalConfirm {
+    position: fixed;
+    left: 50%;
+    top: 35%;
+    transform: translate(-50%, -50%);
+    border: 3.5px inset #1C1D91 !important;
+    font-size: 14px !important;
+    margin-top: 21px;
+    width: 274px;
+    background-color: white;
+    z-index: 2;
+    word-break: break-all;
+    
+  } .modal-f {
+  z-index: 1050;
+  overflow: hidden;
+  outline: 0;
+  margin: 100;
+  margin-left: 115px !important;
+  margin-top: 155px !important;
+  transform: scale(3,3);
+  }
+  span.left, span.right{
+    color: blue;
+    margin-left: 33;
+    }
+  }
+  
+  /* Medium Devices, Desktops */
+  @media only screen and (min-width : 992px) {
+  .navbar{
+    background-color:transparent !important;
+  }
+  
+  .modalConfirm input{
+    margin-left: 130px;
+  }
+  
+  .adjust {
+  
+    margin-left: 12px;
+  }
+  
+  input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
+    margin-top: 25px;
+    margin-left: 60px;
+  }
+  .modalConfirm {
+    position: fixed;
+    left: 50%;
+    top: 35%;
+    transform: translate(-50%, -50%);
+    border: 3.5px inset #1C1D91 !important;
+    font-size: 14px !important;
+    margin-top: 21px;
+    background-color: white;
+    z-index: 2;
+    width: 350px;
+    word-break: break-all;
+    
+  } .modal-f {
+  z-index: 1050;
+  overflow: hidden;
+  outline: 0;
+  margin: 100;
+  margin-left: 115px !important;
+  margin-top: 155px !important;
+  transform: scale(3,3);
+  
+  }
+  span.left, span.right{
+    color: blue;
+    margin-left: 41;
+    }
+  } 
+  
+  
+  /* Large Devices, Wide Screens */
+  @media only screen and (min-width : 1200px) {
+  .modalConfirm input{
+    margin-left: 130px;
+  }
+  
+  .adjust {
+    margin-left: 25px;
+  }
+  
+  input.header-btn.btn.decline.f-decline, input.header-btn.btn.f-confirm{
+    margin-top: 25px;
+    margin-left: 60px;
+  }
+  .modalConfirm {
+    position: fixed;
+    left: 50%;
+    top: 35%;
+    transform: translate(-50%, -50%);
+    border: 3.5px inset #1C1D91 !important;
+    font-size: 14px !important;
+    margin-top: 21px;
+    background-color: white;
+    z-index: 2;
+    width: 900px;
+    word-break: break-all;
+    
+  } 
+  .modalConfirm.shadow.p-3.mb-5.bg-white.rounded img{
+      height: 50%;
+      width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+  }
+  .okay{
+      margin: 10px;
+  }
+
+  .fullscreenContainer h4{
+      margin: 5px;
+      font-size: 20px;
+  }
+  .modal-f {
+  z-index: 1050;
+  overflow: hidden;
+  outline: 0;
+  margin: 100;
+  margin-left: 115px !important;
+  margin-top: 155px !important;
+  transform: scale(3,3);
+  
+  }
+  span.left, span.right{
+    color: blue;
+    margin-left: 41;
+    }
+  
+  }
+  
+  
+  .fullscreenContainer{
+    /* display: none; */
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(90, 90, 90, 0.5);
+    z-index: 9999;
+  }
