@@ -1,5 +1,5 @@
 
-.sample{
+#sample{
     margin-top: 1px;
     margin-left: 30px;
     margin-bottom: 30px;
@@ -37,4 +37,20 @@ h5{
     font-size: 17px;
     font-weight: bold;
     
+}
+
+@media print {
+    body *{
+        visibility: hidden;
+    }
+    
+    #sample, #sample *{
+        visibility: visible;
+    }
+
+    #sample{
+        position: absolute;
+        left:0;
+        top:0;
+    }
 }
