@@ -84,7 +84,11 @@
                 div.innerHTML += '<h4><b>Time:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b> ' + timeStart + ' to ' + timeEnd + '</h4>';
                 document.getElementById('mainBody').appendChild(div);
                 var x = await loadRoomDetails(myObj.roomID, div, ID, myObj.userID)
-                div.innerHTML += '<h4><b>Scanned Copy of Approval Letter:</b> </h4>';
+                div.innerHTML += '<h4><br><br><br>Approved by:</h4>';
+                div.innerHTML += '<h4>__________________________</h4>';
+                div.innerHTML += '<h4>ENGR. PSALMS JUNE H. TAN</h4>';
+                div.innerHTML += '<h4><i>Assistant Building Administrator</i></h4>';
+                div.innerHTML += '<h4><br><br><b>Scanned Copy of Approval Letter:</b> </h4>';
              //   var a = await loadImages(div,myObj.imgLetter);+
                 var a = await callReservationImage(div,ID);
                 resolve('success');
