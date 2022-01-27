@@ -263,14 +263,6 @@
             manipulateDiv.appendChild(prev);
             manipulateDiv.appendChild(next);
         }
-        //      rotation stuff
-        //   var rotateLeft = document.createElement('span');
-        //   span.className = 'rotateLeft';
-        //   var rotateRight = document.createElement('span');
-        //   span.className = 'rotateRight';
-        //   modal.appendChild(rotateLeft);
-        //   modal.appendChild(rotateRight);
-        // When the user clicks on <span> (x), close the modal3
         span.addEventListener('click', function() {
             modal.style.display = "none";
             modalImg.classname = ' ';
@@ -329,6 +321,7 @@
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
+                console.log(myObj)
                 var motherDiv = document.createElement('div');
                 motherDiv.id = "currentUserReservation";
                 if (myObj[0] == null) {
@@ -344,8 +337,8 @@
                     var list = document.createElement('li');
                     myObj.forEach(function(element, index) {
                         let result = reservationContent(motherDiv, userID, page, element, index);
-                        reservedEquipment(element.reservationID, result[1], userID, true, element.status, status, ...Array(1), element.notifID, element.notif_remark, element.dateStart, element.timeStart, element.decision, element.event);
-                        motherDiv.appendChild(result[2]);
+                        reservedEquipment(element,result[0], userID, true);
+                        motherDiv.appendChild(result[1]);
                     });
                     page.innerHTML = myObj[myObj.length - 1].pagination;
                     motherDiv.appendChild(page);
@@ -358,42 +351,69 @@
         xmlhttp.send();
     }
 
-    function reservedEquipment(resID, mainDiv, userID, forUser, status, approval, typePending, notifID, remarks, date, time, decision, eventName) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = async function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var myObj = JSON.parse(this.responseText);
-                var recordedDate = new Date(date + ' ' + time);
+    function reservationContent(motherDiv, userID, page, element, index) {
+        var div = document.createElement('div')
+        var date = new Date(element.dateStart + ' ' + element.timeStart);
+        var diffTime = Math.abs(new Date(element.dateEnd) - new Date(element.dateStart));
+        var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24) + 1);
+        var startTime = tConvert(element.timeStart);
+        var endTime = tConvert(element.timeEnd)
+        div.id = "resContent";
+        div.className = "resContent";
+        div.innerHTML = '<h3 class="_edit"> Event:' + element.event + '</h3>';
+        div.innerHTML += '<h3> Event Adviser:' + element.eventAdviser + '</h3>';
+        div.innerHTML += '<h3>Starting Date: ' + element.dateStart + " </h3>";
+        div.innerHTML += '<h3>Time:' + startTime + ' to ' + endTime + " </h3>";
+        div.innerHTML += '<h3>Duration:' + numberofloops + " day/s. (Ends at: " + element.dateEnd + ") </h3>";
+        div.innerHTML += '<h3>Room: ' + element.room + '</h3>';
+        var date = new Date();
+        var d1 = new Date(element.end);
+        if (d1 < date) {
+            status = 4;
+        } else {
+            status = element.approval;
+        }
+        document.getElementById("content").appendChild(motherDiv)
+        motherDiv.appendChild(div);
+        if (typeof(element.pagination) != undefined && element.pagination != null) {
+            page.innerHTML = element.pagination;
+        }
+        return [div, page];
+    }
+    function reservedEquipment(element,mainDiv, userID, forUser,typePending) {
+                var recordedDate = new Date(element.date + ' ' + element.time);
                 var list = document.createElement('div');
-                if (myObj.length == 0) {
+                equipArr = element[0];
+                letterArr = element[1];
+                if (equipArr.length == 0) {
                     mainDiv.innerHTML += '<h3> No Equipment Borrowed </h3>';
                 } else {
                     mainDiv.innerHTML += '<h3> Equipment Borrowed: </h3>';
-                    myObj.forEach(function(element, index) {
+                    equipArr.forEach(function(element, index) {
                         listEquipmentReserved(mainDiv, element, index);
                     });
                 }
-                var printingPanel = "'/Backend_printingPanel.php?id=" + resID + "'";
+                var printingPanel = "'/Backend_printingPanel.php?id=" + element.reservationID + "'";
                 if (forUser) {
-                    if (status != 1) {
-                        if (approval == 2) {
+                    if (element.status != 1) {
+                        if (element.approval == 2) {
                             mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
                             mainDiv.innerHTML += '<br>';
                             mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
-                            mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="' + 'createModal(' + "'Confirm cancellation of " + eventName + "?'" + ', function(){cancelReservation(' + resID + ',' + "'MyReservations'" + ')})' + '"' + 'value="Cancel">';
+                            mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="' + 'createModal(' + "'Confirm cancellation of " + element.event + "?'" + ', function(){cancelReservation(' + element.reservationID + ',' + "'MyReservations'" + ')})' + '"' + 'value="Cancel">';
                             mainDiv.innerHTML += '<hr class="hr">';
-                        } else if (approval == 3) {
+                        } else if (element.approval == 3) {
                             mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '</h4>';
-                            mainDiv.innerHTML += '<h4>Remarks: ' + remarks + '</h4>';
+                            mainDiv.innerHTML += '<h4>Remarks: ' + element.remarks + '</h4>';
                             mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                             mainDiv.innerHTML += '<hr class="hr">';
-                        } else if (approval == 1) {
+                        } else if (element.approval == 1) {
                             mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
                             mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                             if (new Date() >= new Date(recordedDate.setDate(recordedDate.getDate() - 1))) {
-                                mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="' + 'createModal(' + "'Confirm cancellation of " + eventName + "?'" + ', function(){cancelReservation(' + resID + ',' + "'MyReservations'" + ')})' + '"' + 'value="Cancel" disabled>';
+                                mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="' + 'createModal(' + "'Confirm cancellation of " +  element.event + "?'" + ', function(){cancelReservation(' + element.reservationID + ',' + "'MyReservations'" + ')})' + '"' + 'value="Cancel" disabled>';
                             } else {
-                                mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="' + 'createModal(' + "'Confirm cancellation of " + eventName + "?'" + ', function(){cancelReservation(' + resID + ',' + "'MyReservations'" + ')})' + '"' + 'value="Cancel">';
+                                mainDiv.innerHTML += '<input type="button" class="decline header-btn btn" onclick="' + 'createModal(' + "'Confirm cancellation of " +  element.event + "?'" + ', function(){cancelReservation(' + element.reservationID + ',' + "'MyReservations'" + ')})' + '"' + 'value="Cancel">';
                             }
                             mainDiv.innerHTML += '<hr class="hr">';
                         } else {
@@ -401,9 +421,9 @@
                             mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                         }
                     } else {
-                        if (decision == 4) {
+                        if (element.decision == 4) {
                             mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '</h4>';
-                            mainDiv.innerHTML += '<h4>Remarks: ' + remarks + '</h4>';
+                            mainDiv.innerHTML += '<h4>Remarks: ' + element.remarks + '</h4>';
                             mainDiv.innerHTML += '<hr class="hr">';
                         } else {
                             mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '</h4>';
@@ -415,30 +435,24 @@
                     var textarea = document.createElement('textarea');
                     textarea.className = 'remarks';
                     textarea.placeholder = "Remarks";
-                    textarea.id = 'remarks' + resID;
-                    if (approval == 1) {
+                    textarea.id = 'remarks' + element.reservationID;
+                    if (element.approval == 1) {
                         mainDiv.innerHTML += '<h4 class="accepted"> Status:' + "Accepted" + '</h4>';
                         mainDiv.innerHTML += '<br>';
                         mainDiv.appendChild(textarea);
-                        mainDiv.innerHTML += '<br><br><input type="button" class="decline header-btn btn" onclick="' + 'createModal(' + "'Confirm cancellation of " + eventName + "?'" + ', function(){cancelreservationforadmin(' + resID + ',' + userID + ',' + notifID + ')})" value="Cancel">';
+                        mainDiv.innerHTML += '<br><br><input type="button" class="decline header-btn btn" onclick="' + 'createModal(' + "'Confirm cancellation of " +  element.event + "?'" + ', function(){cancelreservationforadmin(' + element.reservationID + ',' + userID + ',' + element.notifID + ')})" value="Cancel">';
                     } else {
                         mainDiv.innerHTML += '<h4 class="pending"> Status:' + "Pending" + '</h4>';
                         mainDiv.innerHTML += '<br>';
                         mainDiv.appendChild(textarea);
-                        mainDiv.innerHTML += '<br><br><input type="button" class = "header-btn btn" value = "Accept" onclick="' + 'createModal(' + "'Confirm Accept of " + eventName + "?'" + ', function(){AcceptReservation(' + resID + ',' + userID + ',' + notifID + ')})">'
-                        mainDiv.innerHTML += '<input type="button" class ="header-btn btn decline" value = "Decline" onclick="' + 'createModal(' + "'Confirm Decline of " + eventName + "?'" + ', function(){DeclineReservation(' + resID + ',' + userID + ',' + notifID + ')})"">'
-
+                        mainDiv.innerHTML += '<br><br><input type="button" class = "header-btn btn" value = "Accept" onclick="' + 'createModal(' + "'Confirm Accept of " +  element.event + "?'" + ', function(){AcceptReservation(' + element.reservationID + ',' + userID + ',' + element.notifID + ')})">'
+                        mainDiv.innerHTML += '<input type="button" class ="header-btn btn decline" value = "Decline" onclick="' + 'createModal(' + "'Confirm Decline of " + element.event + "?'" + ', function(){DeclineReservation(' + element.reservationID + ',' + userID + ',' + element.notifID + ')})"">'
                     }
                     mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                     mainDiv.innerHTML += '<hr class="hr">'
                 }
-                callReservationImage(mainDiv, resID);
+                loadImages(mainDiv, letterArr);
             }
-        }
-        xmlhttp.open("GET", "/Request_ReservationForUserEquipment.php?var=" + resID, true);
-        xmlhttp.send();
-    }
-
     function openNewTab(url) {
         window.open(url, '_blank').focus();
     }
@@ -591,8 +605,9 @@
                     }
                 } else {
                     myObj.forEach(function(element, index) {
-                        var x = userReservationContent(motherDiv, page, element, index, );
-                        reservedEquipment(element.reservationID, x[2], element.userID, false, ...Array(1), element.approval, true, element.notifID, ...Array(4), element.event);
+                        var x = userReservationContent(motherDiv, page, element, index);
+                        // reservedEquipment(element.reservationID, x[2], element.userID, false, ...Array(1), element.approval, true, element.notifID, ...Array(4), element.event);
+                        reservedEquipment(element,x[2],element.userID,false,true);
                         motherDiv.appendChild(x[0]);
                     });
                 }
@@ -1046,35 +1061,7 @@
     }
 
     //HTML PART THAT LISTS THE RESERVATIONS IN THE WINDOW
-    function reservationContent(motherDiv, userID, page, element, index) {
-        var div = document.createElement('div')
-        var date = new Date(element.dateStart + ' ' + element.timeStart);
-        var diffTime = Math.abs(new Date(element.dateEnd) - new Date(element.dateStart));
-        var numberofloops = (diffTime == 0) ? 1 : Math.ceil(diffTime / (1000 * 60 * 60 * 24) + 1);
-        var startTime = tConvert(element.timeStart);
-        var endTime = tConvert(element.timeEnd)
-        div.id = "resContent";
-        div.className = "resContent";
-        div.innerHTML = '<h3 class="_edit"> Event:' + element.event + '</h3>';
-        div.innerHTML += '<h3> Event Adviser:' + element.eventAdviser + '</h3>';
-        div.innerHTML += '<h3>Starting Date: ' + element.dateStart + " </h3>";
-        div.innerHTML += '<h3>Time:' + startTime + ' to ' + endTime + " </h3>";
-        div.innerHTML += '<h3>Duration:' + numberofloops + " day/s. (Ends at: " + element.dateEnd + ") </h3>";
-        div.innerHTML += '<h3>Room: ' + element.room + '</h3>';
-        var date = new Date();
-        var d1 = new Date(element.end);
-        if (d1 < date) {
-            status = 4;
-        } else {
-            status = element.approval;
-        }
-        document.getElementById("content").appendChild(motherDiv)
-        motherDiv.appendChild(div);
-        if (typeof(element.pagination) != undefined && element.pagination != null) {
-            page.innerHTML = element.pagination;
-        }
-        return [element.reservationID, div, page];
-    }
+    
 
 
     //HTML PART THAT LISTS THE REGISTRATION OF USERS

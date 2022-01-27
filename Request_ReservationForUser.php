@@ -6,6 +6,8 @@ $window = $_REQUEST['window'];
 $month = $_REQUEST['month'];
 $year = $_REQUEST['year'];
 $reservation = array();
+$letters = array();
+$equip = array();
 include "db_connection.php";
 include 'Backend_Pagination.php';
 $conn = OpenCon();
@@ -31,46 +33,93 @@ $user = $result2->fetch_array(MYSQLI_ASSOC);
 $total_items = $user['num'];
 $sql5->close();
 
-$sql_code = "SELECT * FROM tbl_reservation 
-INNER JOIN tbl_room ON tbl_reservation.r_room_ID = tbl_room.room_ID 
-INNER JOIN tbl_notification ON tbl_reservation.notifID = tbl_notification.notificationID
-WHERE tbl_reservation.r_user_ID = ? AND tbl_notification.forRegistration = 0 
+$sql_code = "SELECT res.r_ID, res.r_event, res.r_eventAdviser,res.DateStart,res.DateEnd,res.r_approved_ID,
+res.TimeStart,res.TimeEnd,res.r_status,room.room_name,res.r_user_ID, res.notifID,
+res.r_Remarks,notif.remarks,notif.decision FROM tbl_reservation as res
+INNER JOIN tbl_room as room ON res.r_room_ID = room.room_ID
+INNER JOIN	tbl_notification as notif ON res.notifID = notif.notificationID
+WHERE res.r_user_ID = ? 
 AND (CASE WHEN ? != 0
-     THEN MONTH(tbl_reservation.DateStart) = ?
+     THEN MONTH(res.DateStart) = ?
      ELSE TRUE
      END)
 AND (CASE WHEN ? != 0
-THEN YEAR(tbl_reservation.DateStart) = ?
+THEN YEAR(res.DateStart) = ?
 ELSE TRUE
 END)
-ORDER BY tbl_reservation.r_status, FIELD(r_approved_ID,'1') DESC, (CASE WHEN DATE(NOW()) < DATE(tbl_reservation.DateStart)
+ORDER BY res.r_status, FIELD(res.r_approved_ID,'1') DESC, (CASE WHEN DATE(NOW()) < DATE(res.DateStart)
      THEN 1
      ELSE 0
-     END) DESC , tbl_reservation.DateStart LIMIT $start, $limit";
+     END) DESC , res.DateStart LIMIT $start,$limit
+";
 if ($sql = $conn->prepare($sql_code)) {
-    $sql->bind_param('iiiii', $r_user,$month,$month,$year,$year);
+    $sql->bind_param('iiiii',$userID,$month,$month,$year,$year);
     $r_user = $userID;
     if ($sql->execute()) {
-        $result = $sql->get_result();
-        while ($row = $result->fetch_assoc()) {
-            $reservation[] = array(
-                'event' => $row["r_event"],
-                'eventAdviser' => $row["r_eventAdviser"],
-                'dateStart' => $row["DateStart"],
-                'dateEnd' => $row["DateEnd"],
-                'timeStart' => $row['TimeStart'],
-                'timeEnd' => $row['TimeEnd'],
-                'approval' => $row['r_approved_ID'],
-                'reservationID' => $row["r_ID"],
-                'status' => $row['r_status'],
-                'room' => $row['room_name'],
-                'userID' => $row['r_user_ID'],
-                'eventAdviser'=>$row['r_eventAdviser'],
-                'notifID'=>$row['notifID'],
-                'remark'=>$row['r_Remarks'],
-                'notif_remark'=>$row['remarks'],
-                'decision'=>$row['decision'],
+        $sql->store_result();
+        $sql->bind_result($reservationID,$event,$eventAdviser,$dateStart,$dateEnd, $approval,$timeStart,$timeEnd,$status,$room,$userID,$notifID,$remark,$notif_remark,$decision);
+        while($sql->fetch()){
+             $reservation[] = array(
+                'event' => $event,
+                'eventAdviser' => $eventAdviser,
+                'dateStart' => $dateStart,
+                'dateEnd' => $dateEnd,
+                'timeStart' => $timeStart,
+                'timeEnd' => $timeEnd,
+                'approval' => $approval,
+                'reservationID' => $reservationID,
+                'status' => $status,
+                'room' => $room,
+                'userID' => $userID,
+                'notifID'=>$notifID,
+                'remark'=>$remark,
+                'notif_remark'=>$notif_remark,
+                'decision'=>$decision,
             );
+            $letterquery = "SELECT letter.letter_Path FROM tbl_reservation as res INNER JOIN
+            tbl_jointable as jointbl
+            ON res.r_ID = jointbl.r_ID
+            INNER JOIN tbl_letterlist as letter
+            ON jointbl.letter_ID = letter.letter_ID
+            WHERE res.r_ID = ?";
+            if($sql2=$conn->prepare($letterquery)){
+                $sql2->bind_param('i',$reservationID);
+                if($sql2->execute()){
+                    $sql2->store_result();
+                    $sql2->bind_result($letterPath);
+                    while($sql2->fetch()){
+                        array_push($letters,$letterPath);
+                    }
+                }
+            }
+            $equipQuery = "SELECT equipment_ID,Qty FROM `tbl_equipment_reserved` WHERE `r_ID` = ?";
+            if($sql3=$conn->prepare($equipQuery)){
+                $sql3->bind_param('i',$reservationID);
+                if($sql3->execute()){
+                    $sql3->store_result();
+                    $sql3->bind_result($equipmentID,$Qty);
+                    while($sql3->fetch()){
+                        $equipnamequery = "SELECT equipment_name FROM tbl_equipment WHERE equipment_ID = ?";
+                        if($sql4=$conn->prepare($equipnamequery)){
+                            $sql4->bind_param('i',$equipmentID);
+                            if($sql4->execute()){
+                                $sql4->store_result();
+                                $sql4->bind_result($equipName);
+                                while($sql4->fetch()){
+                                    $equip[] = array(
+                                        'equipName'=> $equipName,
+                                        'qty' => $Qty,
+                                    );
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            array_push($reservation[count($reservation) - 1],$equip);
+            array_push($reservation[count($reservation) - 1],$letters);
+            $equip = array();
+            $letters = array();
         }
     }
     $sql->close();

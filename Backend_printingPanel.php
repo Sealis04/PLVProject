@@ -51,7 +51,6 @@
     function tConvert(time) {
         // Check correct time format and split into components
         time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-
         if (time.length > 1) { // If time format correct
             time = time.slice(1); // Remove full string match value
             time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
@@ -118,13 +117,33 @@
                     div.innerHTML += '<header class="header" id="plvtext">PAMANTASAN NG LUNGSOD NG VALENZUELA' + '<br>' + 'Tongco St., Maysan, Valenzuela City</header>';
                     div.innerHTML += '<h5><i>The purpose of this document is a hard copy proof of approved reservation that must be shown to Engr. Psalms June H. Tan at the General Services Office for signatories of the room and equipment reserved.</i></h5>';
                     div.innerHTML += '<h4><b>The reservation details of Reservation ID#1 are stated below:</b></h4>';
+                    div.innerHTML += '<h4><b>Reservation ID:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + myObj.r_ID + '</h4>';
                     div.innerHTML += '<h4><b>Name:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + fullName + '</h4>';
-                    div.innerHTML += '<h4><b>Course and Section:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </b>' + array.coursename + ' ' + array.sectionname + '<h4>';
+                    if (array.coursename == array.sectionname) {
+                        div.innerHTML += '<h4><b>Course:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </b>' + array.coursename + '<h4>';
+                    } else {
+                        div.innerHTML += '<h4><b>Course and Section:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </b>' + array.coursename + ' ' + array.sectionname + '<h4>';
+                    }
+                    const monthNames = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                    ];
+                    var startdate = new Date(myObj.dateStart);
+                  
+                    var startDay = startdate.getDay();
+                    var startYear = startdate.getFullYear();
+                    var startMonth = startdate.getMonth();
+                    var startMWord = monthNames[startMonth];
+                    var newStart = startMWord + ' ' + startDay + ', ' + startYear;
+                    var enddate = new Date(myObj.dateEnd);
+                    var endDay = enddate.getDay();
+                    var endYear = enddate.getFullYear();
+                    var endMonth = enddate.getMonth();
+                    var endMWord = monthNames[endMonth];
+                    var newEnd =  endMWord + ' ' + endDay + ', ' + endYear;
                     div.innerHTML += '<h4><b>Event:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + myObj.eventName + '</h4>';
                     div.innerHTML += '<h4><b>Adviser:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </b>' + myObj.eventAdviser + '</h4>';
-                    div.innerHTML += '<h4><b>Starting Date:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + myObj.dateStart + '</h4>';
-                    div.innerHTML += '<h4><b>Ending Date:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + myObj.dateEnd + '</h4>';
-                    console.log(myObj.timeStart);
+                    div.innerHTML += '<h4><b>Starting Date:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + newStart + '</h4>';
+                    div.innerHTML += '<h4><b>Ending Date:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + newEnd + '</h4>';
                     var timeStart = tConvert(myObj.timeStart);
                     var timeEnd = tConvert(myObj.timeEnd);
                     div.innerHTML += '<h4><b>Time:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b> ' + timeStart + ' to ' + timeEnd + '</h4>';
