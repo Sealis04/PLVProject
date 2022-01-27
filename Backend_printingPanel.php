@@ -239,8 +239,11 @@
                 if (this.readyState == 4 && this.status == 200) {
                     var myObj = JSON.parse(this.responseText);
                     var imgArray = Object.values(myObj);
+                    var div = document.createElement('div');
+                        div.id = 'pagebreak';
+                        mainDiv.appendChild(div);
                     for (a = 0; a < imgArray.length; a++) {
-                        loadImages(mainDiv, imgArray, a);
+                        loadImages(div, imgArray, a);
                     }
                     resolve('success');
                 }
