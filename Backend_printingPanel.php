@@ -64,7 +64,9 @@
         var buttonsDiv = document.createElement('div');
         buttonsDiv.id = 'buttonsDiv';
         var print = document.createElement('input');
+        print.className ='header-btn btn printBtn';
         var save = document.createElement('input');
+        save.className ='header-btn btn printBtn';
         print.type = 'button';
         print.value = 'Print';
         save.type = 'button';
@@ -88,7 +90,7 @@
         modalImg = document.createElement('img');
         modalImg.src = "assets/saveaspdfGuide.png";
         modalConfirm = document.createElement('input');
-        modalConfirm.className = 'btn btn-primary';
+        modalConfirm.className = 'btn btn-primary okay';
         modalConfirm.type = 'button';
         modalConfirm.style = "font-size:15px; margin-left:45%;"
         modalConfirm.value = "Ok";
