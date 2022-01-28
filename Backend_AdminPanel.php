@@ -1628,6 +1628,8 @@
             if (type == 'roomID') {
                 var img = document.createElement('input');
                 img.type = 'image';
+                img.src = 'assets/no.png';
+                img.className = 'img-thumbnail';
                 tr.appendChild(img);
                 var input = document.createElement('input');
                 input.type = 'file';
