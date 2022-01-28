@@ -64,9 +64,9 @@
         var buttonsDiv = document.createElement('div');
         buttonsDiv.id = 'buttonsDiv';
         var print = document.createElement('input');
-        print.className ='header-btn btn printBtn';
+        print.className = 'header-btn btn printBtn';
         var save = document.createElement('input');
-        save.className ='header-btn btn printBtn';
+        save.className = 'header-btn btn printBtn';
         print.type = 'button';
         print.value = 'Print';
         save.type = 'button';
@@ -140,7 +140,7 @@
                     var endYear = enddate.getFullYear();
                     var endMonth = enddate.getMonth();
                     var endMWord = monthNames[endMonth];
-                    var newEnd =  endMWord + ' ' + endDay + ', ' + endYear;
+                    var newEnd = endMWord + ' ' + endDay + ', ' + endYear;
                     div.innerHTML += '<h4><b>Event:     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + myObj.eventName + '</h4>';
                     div.innerHTML += '<h4><b>Adviser: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </b>' + myObj.eventAdviser + '</h4>';
                     div.innerHTML += '<h4><b>Starting Date:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + newStart + '</h4>';
@@ -151,6 +151,16 @@
                     div.innerHTML += '<h4><b>Time:&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b> ' + timeStart + ' to ' + timeEnd + '</h4>';
                     document.getElementById('mainBody').appendChild(div);
                     div.innerHTML += '<h4><b>Room Reserved:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>' + myObj.roomname + '</h4>';
+                    if ((myObj.equip).length == 0) {
+                        div.innerHTML += '<br><h4 class="equipID" placeholder = "EquipName"> No Equipment Borrowed </h4 >'
+                    } else {
+                        div.innerHTML += '<br><h4 class="equipID" placeholder = "EquipName"> Equipment Borrowed:  </h4 >';
+                        (myObj.equip).forEach(function(element, index) {
+                        listEquipDetails(div, element, index);
+                    })
+                    }
+
+                    
                     div.innerHTML += '<h4><br><br><br>Approved by:</h4>';
                     div.innerHTML += '<h4>__________________________</h4>';
                     div.innerHTML += '<h4>ENGR. PSALMS JUNE H. TAN</h4>';
@@ -160,7 +170,7 @@
                     newdiv.id = 'pagebreak';
                     div.appendChild(newdiv);
                     for (a = 0; a < (myObj.letters).length; a++) {
-                        loadImages(newdiv,myObj.letters,a)
+                        loadImages(newdiv, myObj.letters, a)
                     }
                     resolve('success');
                 }
@@ -168,37 +178,11 @@
             xmlhttp.open("GET", "/Request_SpecificReservation.php?r_ID=" + ID + '&isReviewed=' + null, true);
             xmlhttp.send();
         })
-
     }
 
-
-    // function loadEquipDetails(ID, mainDiv, userID) {
-    //     return new Promise(resolve => {
-    //         var xmlhttp = new XMLHttpRequest();
-    //         xmlhttp.onreadystatechange = async function() {
-    //             if (this.readyState == 4 && this.status == 200) {
-    //                 var myObj = JSON.parse(this.responseText);
-    //                 if (myObj.length == 0) {
-    //                     mainDiv.innerHTML += await '<br><h4 class="equipID" placeholder = "EquipName"> No Equipment Borrowed </h4 >'
-    //                 } else {
-    //                     mainDiv.innerHTML += '<br><h4 class="equipID" placeholder = "EquipName"> Equipment Borrowed:  </h4 >'
-    //                     var x = await myObj.forEach((element, index) => listEquipDetails(ID, mainDiv, element, index));
-    //                 }
-    //                 resolve('success');
-    //             }
-    //         }
-    //         xmlhttp.open("GET", "/Request_ReservationForUserEquipment.php?var=" + ID, true);
-    //         xmlhttp.send();
-    //     })
-
-    // }
-
-    function listEquipDetails(ID, mainDiv, element, index) {
-        return new Promise(resolve => {
-            mainDiv.innerHTML += '<br><h4  class="equipID" placeholder = "EquipName">' + element.equipName + ': </h4 >'
-            mainDiv.innerHTML += '<h4  disabled class="equipQty" placeholder = "EquipName">' + element.qty + '</h4 > ';
-            resolve('success');
-        })
+    function listEquipDetails(mainDiv, element, index) {
+        mainDiv.innerHTML += '<br><h4  class="equipID" placeholder = "EquipName">' + element.equipName + ': </h4 >'
+        mainDiv.innerHTML += '<h4  disabled class="equipQty" placeholder = "EquipName">' + element.qty + '</h4 > ';
     }
 
     // function callReservationImage(mainDiv, r_ID) {

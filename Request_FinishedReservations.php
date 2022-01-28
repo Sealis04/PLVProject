@@ -1,6 +1,7 @@
 <?php
 //returns array of reservation 
 $reservation = array();
+$equip = array();
 include "db_connection.php";
 include "Backend_Pagination.php";
 $conn = OpenCon();
@@ -21,23 +22,61 @@ $total_items = $user['num'];
 $sql5->close();
 
 
-$sql_code = "SELECT * FROM tbl_reservation 
-WHERE r_approved_ID = 1 AND r_status = 0 AND r_reviewed = 0 AND DateEnd < CURRENT_DATE() LIMIT $start,$limit";
+$sql_code = "SELECT user.user_firstName,user.user_middleName,
+user.user_lastName,room.room_name,user.user_ID,res.r_event,res.r_eventAdviser,res.r_ID
+,res.DateStart,res.DateEnd,res.TimeStart,res.TimeEnd FROM tbl_reservation res
+    INNER JOIN tbl_user user
+    ON res.r_user_ID = user.user_ID
+    INNER JOIN tbl_room room 
+    ON res.r_room_ID = room.room_ID
+WHERE r_approved_ID = 1 AND r_status = 0 AND r_reviewed = 0 AND DateEnd < CURRENT_DATE() 
+ORDER BY DateEnd LIMIT $start,$limit";
 if ($sql = $conn->prepare($sql_code)) {
     if ($sql->execute()) {
-        $result = $sql->get_result();
-        while ($row = $result->fetch_assoc()) {
+        $sql->store_result();
+        $sql->bind_result($fn,$mn,$ln,$roomName,$userID,$event,$adviser,$rID,$DateStart,$DateEnd,$TimeStart,$TimeEnd);
+        while ($sql->fetch()) {
             $reservation[] = array(
-                'event' => $row["r_event"],
-                'dateStart' => $row['DateStart'],
-                'dateEnd' => $row['DateEnd'],
-                'timeStart' => $row['TimeStart'],
-                'timeEnd' => $row['TimeEnd'],
-                'approval' => $row['r_approved_ID'],
-                'reservationID' => $row["r_ID"],
-                'status' => $row['r_status'],
-                'userID' => $row['r_user_ID']
+                'firstName' => $fn,
+                'middleName' => $mn,
+                'lastName' => $ln,
+                'roomName' => $roomName,
+                'userID' => $userID,
+                'eventname' => $event,
+                'eventAdviser' => $adviser,
+                'r_ID' => $rID,
+                'dateStart' => $DateStart,
+                'dateEnd' => $DateEnd,
+                'timeStart' => $TimeStart,
+                'timeEnd' => $TimeEnd
             );
+
+            $equipQuery = "SELECT equipment_ID,Qty FROM `tbl_equipment_reserved` WHERE `r_ID` = ?";
+                if($sql3=$conn->prepare($equipQuery)){
+                    $sql3->bind_param('i',$rID);
+                    if($sql3->execute()){
+                        $sql3->store_result();
+                        $sql3->bind_result($equipmentID,$Qty);
+                        while($sql3->fetch()){
+                            $equipnamequery = "SELECT equipment_name FROM tbl_equipment WHERE equipment_ID = ?";
+                            if($sql4=$conn->prepare($equipnamequery)){
+                                $sql4->bind_param('i',$equipmentID);
+                                if($sql4->execute()){
+                                    $sql4->store_result();
+                                    $sql4->bind_result($equipName);
+                                    while($sql4->fetch()){
+                                        $equip[] = array(
+                                            'equipName'=> $equipName,
+                                            'qty' => $Qty,
+                                        );
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                array_push($reservation[count($reservation) - 1],$equip);
+                $equip = array();
         }
     } else {
         echo $conn->error;
