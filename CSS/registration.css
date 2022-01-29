@@ -156,8 +156,8 @@ input#File {
   select#Type {
     margin-left: -35%;}
     select#course {
-      margin-left: -30%;
-      max-width: 190px;
+      margin-left: -35%;
+      max-width: 165px;
       margin-right: 5px;
       margin-top: 5px;
   }
@@ -202,14 +202,15 @@ input#File {
     }
 
     select#Type {
-      margin-left: -70%;
-    font-size: 20px;}
+    margin-left: -63%;
+    font-size: 20px;
+                }
       select#course {
-        margin-left: -28%;
-        margin-top: 10px;
-        margin-right: 10px;
-        max-width: 370px;
-        font-size: 20px;
+       margin-left: -13%;
+    margin-top: 10px;
+    margin-right: 10px;
+    max-width: 370px;
+    font-size: 20px;
     }
     select#section{
       font-size: 20px;
@@ -230,11 +231,11 @@ input#File {
       margin-left: -70%;
     font-size: 20px;}
       select#course {
-        margin-left: -38%;
-        margin-top: 10px;
-        margin-right: 10px;
-        max-width: 370px;
-        font-size: 20px;
+      margin-left: -27%;
+    margin-top: 10px;
+    margin-right: 10px;
+    max-width: 370px;
+    font-size: 20px;
     }
     select#section{
       font-size: 20px;
