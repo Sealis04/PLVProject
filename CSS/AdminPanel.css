@@ -1231,9 +1231,9 @@ margin-right: 5px;
 }
 
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992) {
+@media only screen and (min-width : 1000) {
   .big-contents{
-    margin-left: 285px !important;
+    margin-left: 265px !important;
   }
   div#content {
     word-wrap: break-word;
