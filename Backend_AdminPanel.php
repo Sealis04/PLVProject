@@ -306,11 +306,11 @@
         page.id = 'pages';
         filterPart(mainDiv, page, 'userres');
         callReservationDetails(mainDiv, page, page_number);
-        console.log(mainDiv);
         document.getElementById('content').appendChild(mainDiv);
     }
 
     function callReservationDetails(mainDiv, page, page_number = 1, month = new Date().getMonth() + 1, year = new Date().getFullYear()) {
+        console.log(page_number)
         userID = <?php echo $_SESSION["userID"] ?>;
         if (monthFilter != null) {
             month = monthFilter;
@@ -322,7 +322,7 @@
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
-                console.log(myObj)
+
                 var motherDiv = document.createElement('div');
                 motherDiv.id = "currentUserReservation";
                 if (myObj[0] == null) {
@@ -334,7 +334,6 @@
                     }
                 } else {
                     var x = [];
-                    console.log(myObj);
                     var list = document.createElement('li');
                     myObj.forEach(function(element, index) {
                         let result = reservationContent(motherDiv, userID, page, element, index);
@@ -395,6 +394,7 @@
                 listEquipmentReserved(mainDiv, element, index);
             });
         }
+        console.log(element)
         var printingPanel = "'/Backend_printingPanel.php?id=" + element.reservationID + "'";
         if (forUser) {
             if (element.status != 1) {
@@ -406,7 +406,7 @@
                     mainDiv.innerHTML += '<hr class="hr">';
                 } else if (element.approval == 3) {
                     mainDiv.innerHTML += '<h4 class="declined"> Status:' + "Declined" + '</h4>';
-                    mainDiv.innerHTML += '<h4>Remarks: ' + element.remarks + '</h4>';
+                    mainDiv.innerHTML += '<h4>Remarks: ' + element.notif_remark + '</h4>';
                     mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
                     mainDiv.innerHTML += '<hr class="hr">';
                 } else if (element.approval == 1) {
@@ -425,7 +425,7 @@
             } else {
                 if (element.decision == 4) {
                     mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '</h4>';
-                    mainDiv.innerHTML += '<h4>Remarks: ' + element.remarks + '</h4>';
+                    mainDiv.innerHTML += '<h4>Remarks: ' + element.notif_remark + '</h4>';
                     mainDiv.innerHTML += '<hr class="hr">';
                 } else {
                     mainDiv.innerHTML += '<h4 class="cancelled"> Status:' + "Cancelled" + '</h4>';
@@ -968,7 +968,6 @@
         const date2 = new Date();
         const diffTime = Math.abs(date2 - date1);
         if (x) {
-            console.log(diffTime);
             if (diffTime / 1000 >= 300) {
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
@@ -2177,6 +2176,7 @@
         var url = new URL(location.href);
         url.searchParams.set('month', month);
         url.searchParams.set('year', year)
+        url.searchParams.set('page', 1)
         var modifiedURL = url.toString();
         window.location.href = modifiedURL;
     }
@@ -2201,7 +2201,6 @@
                 if (myObj[0] == null) {
                     motherDiv.innerHTML = '<h3> No user reservation </h3?>';
                 } else {
-                    console.log(myObj)
                     myObj.forEach((element, index) => {
                         finishedReservationContent(motherDiv, 1, element, index, page);
                     })
@@ -2221,7 +2220,6 @@
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var myObj = JSON.parse(this.responseText);
-                console.log(myObj)
                 if (myObj[0] == null) {
                     div.innerHTML += '<h3> Reservations to be monitored:  </h3>'
                     div.innerHTML += '<h3> No user reservation </h3>';
@@ -2277,7 +2275,6 @@
                     equipArr.forEach(function(element, index) {
                         listEquipDetails(mainDiv, element, index);
                     })
-                    console.log(ID)
                     if (review == 0) {
                         mainDiv.innerHTML += '<textarea id ="remarksArea">'
                         mainDiv.innerHTML += '<br><label>Mark User? <input type="checkbox" id="markUser">'
