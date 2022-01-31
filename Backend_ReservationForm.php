@@ -1,6 +1,7 @@
 <script type="text/javascript" src="Backend_Modal.php"></script>
 <script>
     var number = 0;
+    var isAdmin = <?php $_SESSION['isAdmin']?>
     (async () => {
         const value = await generateForm(number);
         const valve = new Promise(resolve => {
@@ -580,7 +581,10 @@
             };
             var minDate = currentDate.getFullYear() + '-' + (currentMonth) + '-' + currentDay;
             dateInput.setAttribute('value', minDate);
-            dateInput.min = minDate;
+            if(isAdmin == 0){
+                dateInput.min = minDate;
+            }
+         
             dateInput.required = true;
 
             wrapper.appendChild(dateLabel);
@@ -612,11 +616,12 @@
             var startInput = document.createElement('input');
             startInput.className = 'form-control';
             startInput.id = 'startTime';
-
             startInput.name = 'startTime';
             startInput.type = 'time';
+            if(isAdmin == 0){
             startInput.min = "08:00";
             startInput.max = "17:00";
+            }
             startInput.setAttribute('value', '08:00');
             startInput.required = true;
             var span = document.createElement('span');
@@ -629,8 +634,10 @@
             endInput.id = 'endTime';
             endInput.name = 'endTime';
             endInput.type = 'time';
+            if(isAdmin == 0){
             endInput.min = "08:00";
             endInput.max = "17:00";
+            }
             endInput.setAttribute('value', '09:00');
             endInput.required = true;
 
@@ -918,7 +925,8 @@
             obj['endDate'] = endDate.toISOString().split('T')[0];
             profile.push(obj);
         });
-        if (uploadedCount == 0) {
+        if(isAdmin == 0){
+            if (uploadedCount == 0) {
             if (facts) {
                 modal("Please upload your attachment letters", () => {
                     return;
@@ -928,6 +936,10 @@
         } else {
             fileUploadSuccess = true;
         }
+        }else{
+            fileUploadSuccess = true;
+        }
+       
         for (var fileCount = 0; fileCount < uploadedCount; fileCount++) {
             if (!x[1].files[fileCount].name.match(/.(jpg|jpeg|png)$/i)) {
                 modal('Invalid file format\n Accepts JPG|JPEG|PNG', () => {
@@ -1098,8 +1110,10 @@
         //for modal Image
         reservationDetails.innerHTML += '<h4> Letters included: ' +
         '*NOTE: Please make sure all uploaded images are in proper format/orientation to reduce the chances of your reservation being rejected. ';
+        if(filesArr.length != 0){
         var img = document.createElement('img');
         img.src = URL.createObjectURL(filesArr[0]);
+        }
         var moveDiv = document.createElement('div');
         moveDiv.class = "moveModal";
         var modal = document.createElement('div');
@@ -1113,8 +1127,10 @@
         modalImg.className = 'adjust';
         var boxClicked = false;
         var modalDiv = document.createElement('div');
-
-        reservationDetails.appendChild(img);
+        if(filesArr.length !=0){
+            reservationDetails.appendChild(img);
+        }
+        
         reservationDetails.appendChild(modal);
         modal.appendChild(modalImg);
         modal.appendChild(moveDiv)
