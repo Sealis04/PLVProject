@@ -68,6 +68,7 @@ if ($sql = $conn->prepare($sql_code)) {
                                         $equip[] = array(
                                             'equipName'=> $equipName,
                                             'qty' => $Qty,
+                                            'ID'=>$equipmentID
                                         );
                                     }
                                 }
@@ -76,7 +77,8 @@ if ($sql = $conn->prepare($sql_code)) {
                     }
                 }
                 array_push($reservation[count($reservation) - 1],$equip);
-                $equip = array();
+                $equip = array(); 
+            
         }
     } else {
         echo $conn->error;

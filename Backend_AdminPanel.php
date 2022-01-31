@@ -1049,11 +1049,103 @@
         } else {
             div.innerHTML = '<h3> Name: ' + fn + '</h3> <br>';
             div.innerHTML += '<h4> Email: ' + email + '<h4><br>';
+            var generateReport = document.createElement('input');
+            generateReport.type = 'button';
+            generateReport.value = 'Generate Report for:';
+            generateReport.addEventListener('click', genreport);
+            div.appendChild(generateReport);
+            var abs = generateMonthYearforreport(div);
+            generateReport.yearParam = abs[0];
+            generateReport.monthParam = abs[1];
         }
         div.appendChild(forgotBtn);
         // modal img code
         let x = callRegistrationImage(div, userID);
         document.getElementById("content").appendChild(div);
+    }
+
+    function genreport(e) {
+        var url = "Backend_GenerateReport.php?year=" + e.currentTarget.yearParam.value + "&month=" + e.currentTarget.monthParam.value + "";
+        window.open(url, '_blank').focus();
+    }
+
+    function generateMonthYearforreport(mainDiv) {
+        var div = document.createElement('div');
+        div.id = 'Filter';
+        var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var monthDropdown = document.createElement('select');
+
+        for (a = 0; a < monthNames.length; a++) {
+            var option = document.createElement('option');
+            option.textContent = monthNames[a];
+            option.value = a + 1;
+            monthDropdown.appendChild(option);
+        }
+        var currentYear = new Date().getFullYear();
+        var yearDropdown = document.createElement('select');
+        for (var i = currentYear; i < currentYear + 5; i++) {
+            var option = document.createElement('option');
+            option.textContent = i;
+            option.value = i;
+            yearDropdown.appendChild(option);
+        }
+
+        for (var x = currentYear; x > currentYear - 5; x--) {
+            if (x != currentYear) {
+                var option = document.createElement('option');
+                option.textContent = x;
+                option.value = x;
+                var i, L = yearDropdown.options.length - 1;
+                for (i = L; i >= 0; i--) {
+                    yearDropdown.insertBefore(option, yearDropdown.options[i])
+                }
+            }
+        }
+
+        for (count = 0; count < yearDropdown.length; count++) {
+            if (yearDropdown[count].value == new Date().getFullYear()) {
+                yearDropdown.options[count].selected = true;
+            }
+        }
+        if (monthFilter != null) {
+            monthDropdown.value = monthFilter;
+        }
+        if (yearFilter != null) {
+            yearDropdown.value = yearFilter;
+        }
+        div.appendChild(monthDropdown);
+        div.appendChild(yearDropdown);
+        mainDiv.appendChild(div);
+        yearDropdown.addEventListener('change', function(e) {
+            if (e.currentTarget == yearDropdown) {
+                let value = yearDropdown.value;
+                let date = new Date(yearDropdown.value).getFullYear();
+                if (value != 0) {
+                    removeOptions(yearDropdown, value)
+                    for (var a = value; a < date + 5; a++) {
+                        if (a != value) {
+                            var option = document.createElement('option');
+                            option.textContent = a;
+                            option.value = a;
+                            e.currentTarget.appendChild(option);
+                        }
+                    }
+                    for (var x = value; x > date - 5; x--) {
+                        if (x != value) {
+                            var option = document.createElement('option');
+                            option.textContent = x;
+                            option.value = x;
+                            var i, L = e.currentTarget.options.length - 1;
+                            for (i = L; i >= 0; i--) {
+                                yearDropdown.insertBefore(option, e.currentTarget.options[i])
+                            }
+                        }
+                    }
+                }
+
+            }
+        })
+        return [yearDropdown, monthDropdown];
     }
     //HTML PART THAT LISTS THE EQUIPMENT IN THE WINDOW
     function listEquipmentReserved(mainDiv, element, index) {
@@ -1541,8 +1633,7 @@
             btn.disabled = true;
             editBtn.placeholder = 'Save';
             removeBtn.placeholder = 'Cancel';
-            editBtn.src = 'assets/c2.png';
-            removeBtn.src = 'assets/c1.png';
+            disableButtons(editBtn, removeBtn);
             checker = false;
             listCategPolicies(listName, add);
         } else {
@@ -2037,6 +2128,12 @@
         mainDiv.innerHTML += '<h4 class="equipID" placeholder = "EquipName">' + element.equipName + ':' + +element.qty + ' </h4>'
     }
 
+    function listEquipDetailswithdamage(mainDiv, ID, element, index) {
+        mainDiv.innerHTML += '<h4 class="equipID" placeholder = "EquipName">' + element.equipName + ':' + +element.qty + ' </h4>'
+        mainDiv.innerHTML += '<h4 class="equipID" placeholder = "EquipName">Damaged: </h4>';
+        mainDiv.innerHTML += '<input required type="number" max = ' + element.qty + ' class = ' + ID + ' ID = ' + element.ID + '   >';
+    }
+
 
     function filterPart(mainDiv, page, type) {
         var div = document.createElement('div');
@@ -2224,6 +2321,7 @@
                     div.innerHTML += '<h3> Reservations to be monitored:  </h3>'
                     div.innerHTML += '<h3> No user reservation </h3>';
                 } else {
+                    console.log(myObj)
                     myObj.forEach(function(element, index) {
                         finishedReservationContent(div, 0, element, index, page);
                     });
@@ -2246,6 +2344,7 @@
         var endTime = tConvert(element.timeEnd);
         label.textContent = 'Event: ' + element.eventname;
         var space = document.createElement('br');
+        // onLoad(element.reservationID, review, mainDiv, element.remarks);
         mainDiv.appendChild(label);
         mainDiv.innerHTML += '<h3>Event Date: ' + element.dateStart + ' to ' + element.dateEnd + '</h3>';
         mainDiv.innerHTML += '<h3>From: ' + startTime + ' to ' + endTime + '</h3>';
@@ -2257,34 +2356,39 @@
         mainDiv2.innerHTML = '<h4>Adviser: ' + element.eventAdviser + '</h4>';
         mainDiv2.innerHTML += '<h4>Full Name: ' + fullName + '</h4>';
         mainDiv2.innerHTML += '<h4>Room Borrowed: ' + element.roomName + '</h4>';
-        loadEquipDetails(element[0],element.r_ID, mainDiv2, element.userID, review,element.remarks);
+        loadEquipDetails(element[0], element.r_ID, mainDiv2, element.userID, review, element.remarks);
         mainDiv.appendChild(mainDiv2);
         div.appendChild(mainDiv)
-        mainDiv.innerHTML += '<hr class="hr">';
+        mainDiv.innerHTML += '<hr class="hro">';
         if (typeof(element.pagination) != undefined && element.pagination != null) {
             page.innerHTML = element.pagination;
             div.appendChild(page);
         }
     }
-    function loadEquipDetails(equipArr,ID, mainDiv, userID, review, remarks) {     
-                    if (equipArr.length == 0) {
-                        mainDiv.innerHTML += '<h4>No Equipment Borrowed</h4>';
-                    } else {
-                        mainDiv.innerHTML += '<h4>Equipment Borrowed: </h4>';
-                    }
-                    equipArr.forEach(function(element, index) {
-                        listEquipDetails(mainDiv, element, index);
-                    })
-                    if (review == 0) {
-                        mainDiv.innerHTML += '<textarea id ="remarksArea">'
-                        mainDiv.innerHTML += '<br><label>Mark User? <input type="checkbox" id="markUser">'
-                        mainDiv.innerHTML += '<br><input class="header-btn btn submitMf" type="button" value="Submit" id = "' + ID + '" onclick="submitRemark(' + ID + ',' + userID + ')" >'
-                    } else {
-                        mainDiv.innerHTML += '<h4>Remarks: ' + remarks + '</h4>';
-                    }
-                    var printingPanel = "'/Backend_printingPanel.php?id=" + ID + "'";
-                    mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
-                    callReservationImage(mainDiv, ID)
+
+    function loadEquipDetails(equipArr, ID, mainDiv, userID, review, remarks) {
+        if (equipArr.length == 0) {
+            mainDiv.innerHTML += '<h4>No Equipment Borrowed</h4>';
+        } else {
+            mainDiv.innerHTML += '<h4>Equipment Borrowed: </h4>';
+        }
+
+        if (review == 0) {
+            equipArr.forEach(function(element, index) {
+                listEquipDetailswithdamage(mainDiv, ID, element, index);
+            })
+            mainDiv.innerHTML += '<textarea id ="remarksArea">'
+            mainDiv.innerHTML += '<br><label>Mark User? <input type="checkbox" id="markUser">'
+            mainDiv.innerHTML += '<br><input class="header-btn btn submitMf" type="button" value="Submit" id = "' + ID + '" onclick="submitRemark(' + ID + ',' + userID + ')" >'
+        } else {
+            equipArr.forEach(function(element, index) {
+                listEquipDetails(mainDiv, element, index);
+            })
+            mainDiv.innerHTML += '<h4>Remarks: ' + remarks + '</h4>';
+        }
+        var printingPanel = "'/Backend_printingPanel.php?id=" + ID + "'";
+        mainDiv.innerHTML += '<input class="header-btn btn" type="button" value="Print" onclick="openNewTab(' + printingPanel + ')"> ';
+        callReservationImage(mainDiv, ID)
     }
 
 
@@ -2292,22 +2396,48 @@
     function submitRemark(btnID, userID) {
         var x = document.getElementById('remarksArea');
         var id = document.getElementById('markUser');
+        var s = [];
+        var success;
+        for (a = 0; a < document.getElementsByClassName(btnID).length; a++) {
+            var z = {};
+            // qtyarr.push(document.getElementsByClassName(btnID)[a].value);
+            var max = parseInt(document.getElementsByClassName(btnID)[a].max);
+            var value = parseInt(document.getElementsByClassName(btnID)[a].value);
+            if (value > max) {
+                modal('Quantity must be less than the stated reserved equipment', function() {
+                    return;
+                })
+                success = false;
+                break;
+            } else {
+                var id = document.getElementsByClassName(btnID)[a].id;
+                z['ID'] = id;
+                z['equipmentQty'] = value;
+                s.push(z);
+                success = true;
+            }
+        }
+        console.log(s)
         var marked;
         if (id.checked == true) {
             marked = 1;
         } else {
             marked = 0;
         }
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                modal(this.responseText, function() {
-                    document.getElementById('monitoringContent').remove();
-                    loadStuff(...Array(1), 'Monitoring');
-                })
+        if (success) {
+            s = JSON.stringify(s);
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    modal("Submission", function() {
+                        document.getElementById('monitoringContent').remove();
+                        loadStuff(...Array(1), 'Monitoring');
+                    })
+                }
             }
-        }
-        xmlhttp.open("GET", "/Request_EditFinishedReservation.php?var=" + btnID + "&remark=" + x.value + "&marked=" + marked + "&userID=" + userID, true);
-        xmlhttp.send();
+            xmlhttp.open("GET", "/Request_EditFinishedReservation.php?var=" + btnID + "&remark=" + x.value + "&marked=" + marked + "&userID=" + userID + "&damagedQty=" + s, true);
+            xmlhttp.send();
+        }   
+
     }
 </script>
