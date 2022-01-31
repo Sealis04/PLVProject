@@ -19,7 +19,7 @@ width: 150px;
 height: 150px;
 }
 .modalConfirm h4{
-  font-size: 12px;
+  font-size: 11px;
     text-align: center;
   margin:  0 0 30 0;
 }
@@ -46,7 +46,7 @@ color: blue;
 .modalConfirm input{
   margin-left: 0px;}
   .modalConfirm h4{
-    font-size: 12px;
+    font-size: 11px;
     text-align: center;
   }
   .adjust {

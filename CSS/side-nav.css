@@ -141,6 +141,7 @@ hr{
   text-decoration: none !important;
   background-color: none !important;
   font-size: 14px !important;
+  font-weight: normal !important;
 }
 
 .active1, .btns:hover:not(.active1) {
