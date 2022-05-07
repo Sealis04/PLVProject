@@ -816,7 +816,13 @@ label{
   border-radius: 7px;
 }
 #Filter{
-    margin-top: 7px;
+   margin-left: 0px !important;
+   margin-top: -10px !important;
+}
+
+.reportFil{
+  display: inline-flex;
+  margin-bottom: 10px !important;
 }
 
 input#myInput {
@@ -884,6 +890,8 @@ img.rotate.modalEdit {
     margin:0;
     border-radius: 7px;
     background-color: #0077b6;;
+    display: block;
+    margin-left: 10px;
 }
 
 .resetPW:hover{
@@ -940,6 +948,7 @@ div#finishedContent {
   }
   .resetPW{
     font-size: 10;
+    margin-left: 0px !important;
   }
   ._profContent img {
     margin-top: -68px !important;
@@ -1024,6 +1033,25 @@ input.header-btn.btn.decline.g-decline {
   color: #f1f1f1 !important;
   margin-top: -266px;
   margin-right: 5px;
+}
+
+#Filter{
+  margin-left: 0px !important;
+  margin-top: -10px !important;
+}
+
+.reportFil{
+ display: block;
+ margin-left: 0px !important;
+ margin-bottom: 15px !important;
+ font-size: 10px !important;
+
+}
+
+
+
+.reportFil select{
+  font-size: 15px;
 }
 
 }
@@ -1297,6 +1325,24 @@ margin-right: 5px;
     background-color:transparent !important;
   }
 
+  #Filter{
+    margin-left: 1px !important;
+    margin-top: -10px !important;
+  }
+  
+  .reportFil{
+   display: inline-flex;
+   margin-left: 5px !important;
+   margin-bottom: 20px !important;
+   font-size: 15px !important;
+    margin-right: 10px !important;
+  
+  }
+  
+  
+  .reportFil select{
+    font-size: 15px;
+  }
  
 
 }
@@ -1330,6 +1376,7 @@ margin-right: 5px;
 }
   .resetPW{
     font-size: 15;
+    margin-left: 5 !important;
   }
   ._profContent img {
     margin-top: -110px !important;  
@@ -1392,7 +1439,26 @@ margin-right: 5px;
   margin-right: 5px;
   }
   
+
+  #Filter{
+    margin-left: 1px !important;
+  }
   
+  .reportFil{
+   display: inline-flex;
+   margin-left: 5px !important;
+   margin-bottom: 12 !important;
+   font-size: 15px !important;
+    margin-right: 10px !important;
+  
+  }
+  
+  
+  .reportFil select{
+    font-size: 20px;
+  }
+ 
+
 
 
 }

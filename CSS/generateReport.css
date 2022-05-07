@@ -1,0 +1,83 @@
+.header-btn{
+    text-decoration: none;
+    background-color: none;
+    color: white;
+    background-color: #0077b6;;
+    font-size: 20px;
+    margin-bottom: 30px;
+    margin-left: -10px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .header-btn:active{
+    color: white;
+    background-color: #000099 ;
+  }
+  .header-btn:hover{
+    background-color: white;
+    border-color: #0077b6;
+    color: #0077b6;
+  }
+
+  .btn{
+    margin-left: 10px;
+    border-radius: 7px;
+  }
+  .btn:hover{
+  
+    background-color: white;
+    border-color: #0077b6;
+    color: #0077b6;
+  }
+
+  #buttonsDiv{
+    margin: 10px !important;
+    text-align: center;
+  
+}
+
+
+
+#roomChartContainer{
+    height: 70% !important;
+    width: 100% !important;
+  
+}
+
+
+
+#equipChartContainer{
+    height: 70% !important;
+    width: 100% !important;
+  
+}
+
+div#roomChartContainer > div{
+    left: -500px !important;
+    font-size: 30px !important;
+    position: relative!important; 
+    top: 0px!important; 
+    overflow: visible!important; 
+    width: 300% !important; 
+    height: 100%!important; 
+}
+
+
+div#equipChartContainer > div{
+    left: -500 !important;
+    font-size: 20px;
+    position: relative!important; 
+    top: 0px!important; 
+    overflow: visible!important; 
+    width: 300% !important; 
+    height: 100%!important; 
+}
+
+title{text-align: center !important;}
+
+@media print{@page {size: landscape}
+footer {page-break-after: always;}
+
+
+}
+
