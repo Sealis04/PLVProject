@@ -2,6 +2,7 @@
 Thesis project
 
 
-You guys know what to do.
-Study this if you guys don't know stuff boutg Github (It's where I studied it) 
-https://guides.github.com/activities/hello-world/ 
+Thesis Project for the students of the Pamantasan ng Lungsod ng Valenzuela
+An Online Monitoring System for the GSO Department to record and manage room and equipment reservations as well as their current status. 
+
+Done with Plain Javascript/PHP
